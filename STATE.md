@@ -8,6 +8,7 @@
 ## M-075 (2026-10-18): two update channels
 - Builds now publish to release `test` (owner's phone). Release `latest` = what all users get = run 78 (approved "מושלם"). Promote only on "משחררים לכולם": set `run N` in release/stable.txt, push only that file.
 - Delivery loop below now downloads from releases/download/test/ (not latest).
+- M-076 friendly permission screens, build 82 installed 20:50 (hash FD268802). Shareable APK for owner: /mnt/project-files/medtime-share/MedTime.apk (build 82). Users (latest) still on run 80 = same app as 78.
 
 ## HANDOFF (2026-10-18 night, end of session) - read this first
 - Latest: build 78 (run 78) = M-067..M-074, all ⏳ waiting for owner test. Build 78 installed on the phone 20:30.
