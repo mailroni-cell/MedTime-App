@@ -2262,7 +2262,9 @@
 
         /* M-057: opening flows to the end: CSS parts wait for the first 3D frame, soft long fade out; professional credit */
         #splash:not(.go) *, #splash:not(.go) .sl { animation-play-state: paused !important; }
-        #splash.out { transition: opacity 1.2s ease, transform 1.2s ease, filter 1.2s ease !important; transform: scale(1.12) !important; filter: blur(3px) !important; }
+        /* M-084: smooth hand-over: only fade + a slight zoom (the full-screen blur made the last frames stutter) */
+        #splash { will-change: opacity, transform; }
+        #splash.out { transition: opacity 1.1s cubic-bezier(.4, 0, .2, 1), transform 1.1s cubic-bezier(.4, 0, .2, 1) !important; transform: scale(1.06) !important; filter: none !important; }
         #splash .sp-credit { display: flex; flex-direction: column; align-items: center; gap: 2px; bottom: calc(5vh + env(safe-area-inset-bottom)) !important;
             background: none !important; -webkit-background-clip: border-box !important; background-clip: border-box !important; color: #fff !important;
             animation: spFade 1s ease 4.6s both !important; }

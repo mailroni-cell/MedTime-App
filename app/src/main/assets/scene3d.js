@@ -22,8 +22,8 @@
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 0.95;
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    // M-084: no soft shadows: they were the heaviest part, and turning them off later rebuilt every shader (a visible freeze)
+    renderer.shadowMap.enabled = false;
 
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x120a2e, 0.03);
@@ -498,7 +498,7 @@
     // ---- loop with automatic quality control ----
     const clock = new THREE.Clock();
     let paused = false;
-    let running = true, frames = 0, fpsTime = 0, lowQuality = false, quality = 3, sdt = 1 / 60;
+    let running = true, frames = 0, fpsTime = 0, lowQuality = false, quality = 2, sdt = 1 / 60, warm = 0;
     document.addEventListener('visibilitychange', () => {
         running = !document.hidden;
         if (running && !paused) { clock.getDelta(); requestAnimationFrame(loop); }
@@ -511,6 +511,8 @@
         const spl = document.getElementById('splash');
         if (spl && !spl.classList.contains('out')) { clock.getDelta(); return; }
         const rawDt = Math.min(clock.getDelta(), 0.05);
+        // M-084: measure speed only once the opening is gone and things settled (not during the hand-over)
+        if (spl) { warm = 0; frames = 0; fpsTime = 0; } else if (warm < 2.5) { warm += rawDt; frames = 0; fpsTime = 0; }
         sdt += (rawDt - sdt) * 0.15; // M-053: smoothed step = no tiny jumps when a frame is late
         const dt = sdt;
         const t = clock.elapsedTime;
@@ -520,9 +522,8 @@
         if (fpsTime > 3) {
             const fps = frames / fpsTime;
             // M-053: step down early so motion stays smooth (shadows -> resolution -> bloom)
-            if (fps < 52 && quality === 3) { quality = 2; renderer.shadowMap.enabled = false; scene.traverse(o => { if (o.material) o.material.needsUpdate = true; }); }
-            else if (fps < 48 && quality === 2) { quality = 1; dpr = Math.min(dpr, 1.15); renderer.setPixelRatio(dpr); resize(); }
-            else if (fps < 40 && quality === 1) { quality = 0; lowQuality = true; dpr = 1; renderer.setPixelRatio(dpr); if (bloom) bloom.enabled = false; resize(); }
+            if (fps < 46 && quality === 2) { quality = 1; dpr = Math.min(dpr, 1.15); renderer.setPixelRatio(dpr); resize(); }
+            else if (fps < 36 && quality === 1) { quality = 0; lowQuality = true; dpr = 1; renderer.setPixelRatio(dpr); if (bloom) bloom.enabled = false; resize(); }
             frames = 0; fpsTime = 0;
         }
 

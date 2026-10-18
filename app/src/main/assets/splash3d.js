@@ -130,6 +130,8 @@
         if (!alive) return;
         if (!document.body.contains(sp)) { cleanup(); return; }
         requestAnimationFrame(frame);
+        // M-084: while it fades out, the last picture stays; the main screen gets the phone's full power
+        if (sp.classList.contains('out')) return;
         // M-057: start only once the page is ready (the go-signal exists), and run on our own clock so a slow frame never skips part of the show
         if (!t0) { if (!window.__spGo) return; t0 = now; last = now; window.__sp3d = true; window.__spGo(); }
         var dt = Math.min(0.1, (now - last) / 1000); last = now; T += dt;
