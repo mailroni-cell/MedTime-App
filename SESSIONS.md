@@ -25,5 +25,5 @@
 - Build 22 installed 10:44. Owner: no scrolling, no frames, more color/depth in background; chose icon grid -> M-015.
 - Owner: autocomplete medicine names after 2 letters -> M-016 (built-in list, recommended). Owner: frameless floating buttons/fields, centred text, capsule colour too pale -> M-017.
 - Build 24 installed 11:01. Owner accepted typical-dose idea -> M-018; form scrolls again and blends into background -> M-019. Later: first-launch language screen + opening animation with owner credit.
-- Build 25 installed 11:08. Owner: menu must really glow -> M-020. Build 26 OK; labels inside fields, drop item/type labels, bigger type buttons -> M-021. Build 27 installed 12:05; clear fields on 'another medicine' + glowing plus -> M-022. Build 28 12:11; smaller buttons, list scrolls, dose unit templates -> M-023. Build 29 12:17; keyboard hid suggestions -> M-024.
+- Build 25 installed 11:08. Owner: menu must really glow -> M-020. Build 26 OK; labels inside fields, drop item/type labels, bigger type buttons -> M-021. Build 27 installed 12:05; clear fields on 'another medicine' + glowing plus -> M-022. Build 28 12:11; smaller buttons, list scrolls, dose unit templates -> M-023. Build 29 12:17; keyboard hid suggestions -> M-024. Time sheet below screen -> M-025.
 - Open: owner tests stage 1 and M-004.
