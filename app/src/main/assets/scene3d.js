@@ -125,16 +125,23 @@
     ];
 
     // ---- shapes ----
-    function capsule(c1, c2, scale) {
+    // M-017: vivid = saturated colour that glows from inside, so ACES tone mapping does not wash it out
+    const vividMat = (color, glow) => glossy(color, {
+        roughness: 0.22, clearcoatRoughness: 0.03, envMapIntensity: 0.3, emissive: color, emissiveIntensity: glow,
+        toneMapped: false, fog: false
+    });
+    function capsule(c1, c2, scale, glow) {
         const g = new THREE.Group();
         const r = 0.5, len = 1.0;
-        const body1 = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len / 2, 40, 1, true), glossy(c1));
+        const m1 = glow ? vividMat(c1, glow) : glossy(c1, { emissive: c1, emissiveIntensity: 0.12 });
+        const m2 = glow ? vividMat(c2, glow * 0.8) : glossy(c2, { emissive: c2, emissiveIntensity: 0.08 });
+        const body1 = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len / 2, 40, 1, true), m1);
         body1.position.y = len / 4;
-        const cap1 = new THREE.Mesh(new THREE.SphereGeometry(r, 40, 20, 0, Math.PI * 2, 0, Math.PI / 2), glossy(c1));
+        const cap1 = new THREE.Mesh(new THREE.SphereGeometry(r, 40, 20, 0, Math.PI * 2, 0, Math.PI / 2), m1);
         cap1.position.y = len / 2;
-        const body2 = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len / 2, 40, 1, true), glossy(c2));
+        const body2 = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len / 2, 40, 1, true), m2);
         body2.position.y = -len / 4;
-        const cap2 = new THREE.Mesh(new THREE.SphereGeometry(r, 40, 20, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), glossy(c2));
+        const cap2 = new THREE.Mesh(new THREE.SphereGeometry(r, 40, 20, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), m2);
         cap2.position.y = -len / 2;
         const band = new THREE.Mesh(new THREE.TorusGeometry(r * 1.005, 0.025, 8, 40), glossy(0xffffff, { metalness: 0.8, roughness: 0.2 }));
         band.rotation.x = Math.PI / 2;
@@ -223,7 +230,7 @@
     addFloater(syringe(0.8), rnd(2, 5), rnd(-3, 0), -8);
 
     // ---- hero capsule at the top of the screen ----
-    const hero = capsule(0xef4444, 0xf8fafc, 1.25);
+    const hero = capsule(0xd4001f, 0x0066ee, 1.25, 0.12); // M-017: strong red + bright blue
     hero.traverse(o => { if (o.isMesh) o.castShadow = true; });
     scene.add(hero);
     const halo = new THREE.Mesh(

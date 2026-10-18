@@ -1260,6 +1260,92 @@
             background: #000 !important;
             border-top: 3px solid #ffe500;
         }
+
+        /* ================= M-017: frameless floating controls, centred text ================= */
+        .card {
+            background: none !important;
+            border: none !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        .card::before { display: none; }
+        .item-row {
+            position: relative;
+            background: none !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 6px 2px !important;
+        }
+        .item-head, .field-label, #med-form .field-label { text-align: center !important; justify-content: center; }
+        .item-head { position: relative; }
+        .item-head .btn-remove-item { position: absolute; inset-inline-end: 0; top: 50%; transform: translateY(-50%); }
+        .field-label { text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9); }
+        #med-form input[type=text], #med-form select, .time-btn,
+        #med-form button, .type-btn {
+            border: none !important;
+            outline: none;
+            text-align: center !important;
+            justify-content: center;
+        }
+        #med-form input[type=text] {
+            background: radial-gradient(ellipse at 50% 0%, rgba(125, 211, 252, 0.16), rgba(15, 23, 42, 0.30) 70%) !important;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border-radius: 999px !important;
+            box-shadow: 0 12px 26px rgba(0, 0, 0, 0.45), 0 0 22px rgba(56, 189, 248, 0.10) !important;
+            font-size: 1.25rem !important;
+            padding: 14px 18px !important;
+            color: #f0f9ff !important;
+            animation: floatY 6s ease-in-out infinite;
+        }
+        #med-form input[type=text]::placeholder { text-align: center; color: rgba(186, 230, 253, 0.55); }
+        #med-form input[type=text]:focus {
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5), 0 0 26px rgba(56, 189, 248, 0.55) !important;
+        }
+        .type-btn {
+            background: radial-gradient(ellipse at 50% 20%, rgba(148, 163, 184, 0.22), rgba(15, 23, 42, 0.25) 75%) !important;
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.45) !important;
+            border-radius: 20px !important;
+        }
+        .type-btn.sel {
+            background: radial-gradient(ellipse at 50% 20%, rgba(34, 211, 238, 0.65), rgba(14, 116, 144, 0.45) 75%) !important;
+            box-shadow: 0 12px 26px rgba(0, 0, 0, 0.45), 0 0 26px rgba(34, 211, 238, 0.7) !important;
+        }
+        .time-btn {
+            background: none !important;
+            box-shadow: none !important;
+            font-size: 3rem !important;
+            animation: floatY 7s ease-in-out infinite;
+        }
+        button.btn-add-item { background: none !important; box-shadow: none !important; text-shadow: 0 0 12px rgba(56, 189, 248, 0.8); }
+        button.btn-add { border-radius: 999px !important; }
+        @keyframes floatY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+
+        /* M-016: medicine name suggestions */
+        .name-wrap { position: relative; }
+        .card { position: relative; z-index: 5; }
+        .name-wrap:focus-within, .item-row:focus-within { z-index: 50; }
+        .suggest {
+            position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 40;
+            display: none; flex-direction: column; gap: 6px;
+            padding: 8px; border-radius: 22px;
+            background: rgba(10, 14, 40, 0.88);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(168, 85, 247, 0.25);
+        }
+        .suggest.open { display: flex; }
+        .sug {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            padding: 12px 14px; border-radius: 16px; text-align: center;
+            background: rgba(56, 189, 248, 0.10); color: #f0f9ff; font-size: 1.2rem;
+        }
+        .sug:active { background: rgba(56, 189, 248, 0.35); }
+        .sug b { font-weight: 800; }
+        .sug small { color: #a5b4fc; font-size: 0.9rem; }
+        .sug .ico { font-size: 1.3rem; }
+        html.lowvision .sug { background: #000; color: #ffeb3b; font-size: 1.5rem; outline: 2px solid #ffeb3b; }
+        html.lowvision #med-form input[type=text] { background: #000 !important; outline: 3px solid #ffeb3b !important; animation: none; }
     </style>
 </head>
 <body>
@@ -1873,7 +1959,7 @@
                     `<button type="button" class="type-btn${ty === 'pill' ? ' sel' : ''}" data-type="${ty}">` +
                     `<span class="ico">${TYPE_ICON[ty]}</span><span data-i18n="type_${ty}">${t('type_' + ty)}</span></button>`).join('')}</div>` +
                 `<div class="field-label" data-i18n="nameLabel">${t('nameLabel')}</div>` +
-                `<input type="text" class="it-name" data-i18n-ph="namePh" placeholder="${t('namePh')}">` +
+                `<div class="name-wrap"><input type="text" class="it-name" autocomplete="off" data-i18n-ph="namePh" placeholder="${t('namePh')}"><div class="suggest"></div></div>` +
                 `<div class="field-label" data-i18n="doseLabel">${t('doseLabel')}</div>` +
                 `<input type="text" class="it-dose" data-i18n-ph="dosePh" placeholder="${t('dosePh')}">`;
             row.querySelectorAll('.type-btn').forEach(b => {
@@ -1889,8 +1975,67 @@
                 else { row.querySelector('.it-name').value = ''; row.querySelector('.it-dose').value = ''; }
                 numberRows();
             };
+            attachSuggest(row);
             itemRows.appendChild(row);
             numberRows();
+        }
+
+        // ---------- M-016: medicine name autocomplete after 2 letters ----------
+        const normName = s => (s || '').toLowerCase().replace(/[\u0591-\u05C7'"׳״\-]/g, '').replace(/\s+/g, ' ').trim();
+        function medSuggestions(q) {
+            const nq = normName(q);
+            if (nq.length < 2) return [];
+            const own = [];
+            try {
+                JSON.parse(localStorage.getItem('medtime_list') || '[]').forEach(r =>
+                    (r.items || [{ name: r.name, type: 'pill' }]).forEach(it => { if (it && it.name) own.push({ h: it.name, e: '', t: it.type || 'pill', own: true }); }));
+            } catch (e) { }
+            const all = own.concat(window.MED_DB || []);
+            const starts = [], inside = [], seen = new Set();
+            all.forEach(m => {
+                const key = normName(m.h);
+                if (seen.has(key)) return;
+                const fields = [normName(m.h), normName(m.e)];
+                const words = fields.join(' ').split(/[\s()\/+]+/);
+                if (fields.some(f => f.startsWith(nq)) || words.some(w => w.startsWith(nq))) { starts.push(m); seen.add(key); }
+                else if (fields.some(f => f.includes(nq))) { inside.push(m); seen.add(key); }
+            });
+            return starts.concat(inside).filter(m => normName(m.h) !== nq).slice(0, 6);
+        }
+        function attachSuggest(row) {
+            const inp = row.querySelector('.it-name');
+            const box = row.querySelector('.suggest');
+            const close = () => box.classList.remove('open');
+            const show = () => {
+                const list = medSuggestions(inp.value);
+                if (!list.length) { close(); return; }
+                const latin = /^[a-z]/i.test(inp.value.trim());
+                box.innerHTML = '';
+                list.forEach(m => {
+                    const b = document.createElement('div');
+                    b.className = 'sug';
+                    const main = latin && m.e ? m.e : m.h;
+                    const sub = latin ? m.h : m.e;
+                    b.innerHTML = `<span class="ico">${m.own ? '⭐' : (TYPE_ICON[m.t] || '💊')}</span><b></b>${sub ? '<small></small>' : ''}`;
+                    b.querySelector('b').textContent = main;
+                    if (sub) b.querySelector('small').textContent = sub;
+                    b.addEventListener('pointerdown', ev => {
+                        ev.preventDefault();
+                        inp.value = latin && m.e ? m.e.replace(/\s*\(.*\)\s*$/, '') : m.h;
+                        const tb = row.querySelector(`.type-btn[data-type="${m.t}"]`);
+                        if (tb && !tb.classList.contains('sel')) tb.click();
+                        close();
+                        if (navigator.vibrate) navigator.vibrate(15);
+                        const dose = row.querySelector('.it-dose');
+                        if (dose && !dose.value) dose.focus();
+                    });
+                    box.appendChild(b);
+                });
+                box.classList.add('open');
+            };
+            inp.addEventListener('input', show);
+            inp.addEventListener('focus', show);
+            inp.addEventListener('blur', () => setTimeout(close, 150));
         }
 
         function numberRows() {
@@ -2147,6 +2292,7 @@
         syncNative(loadMeds());
         renderStatus();
     </script>
+    <script src="meds.js"></script>
     <script src="scene3d.js"></script>
 </body>
 </html>

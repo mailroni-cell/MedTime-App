@@ -23,4 +23,5 @@
 - Build 20 installed 10:27. Owner: full 3D graphics upgrade, best engine, shadows/gloss/motion/depth -> M-013 (Three.js, free; card offered Babylon.js / Unity as alternatives).
 - Build 21 installed 10:35: owner: "moves and looks wonderful", but settings screen narrow and generic -> M-014.
 - Build 22 installed 10:44. Owner: no scrolling, no frames, more color/depth in background; chose icon grid -> M-015.
+- Owner: autocomplete medicine names after 2 letters -> M-016 (built-in list, recommended). Owner: frameless floating buttons/fields, centred text, capsule colour too pale -> M-017.
 - Open: owner tests stage 1 and M-004.
