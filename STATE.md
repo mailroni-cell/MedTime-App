@@ -22,7 +22,7 @@ Sources of the old version:
 - GitHub repo mailroni-cell/pill-reminder: .github/workflows/build.yml (whole Flutter app embedded in the workflow)
 Proposed stages (owner to approve order):
 1. Real reminders: Android AlarmManager + notifications that fire when the app is closed, full-screen pop-up, sound + vibration, TTS reading of medicine name + dose (Java bridge to WebView).
-2. Doctor appointments: type, doctor, date/time, clinic address, alert before (0/15/30/60/120 min/1 day), Waze + Google Maps buttons.
+2. Doctor appointments: type, doctor, date/time, clinic address, alert before (0/15/30/60/120 min/1 day), Waze + Google Maps buttons. Owner additions 2026-10-18: own "appointment reminder" control, clinic phone (tap to call), automatic Waze when it is time to leave, street/city autocomplete, and if possible clinic data from the web by health fund (Clalit/Maccabi/Meuhedet/Leumit). Start only after "עוברים לשלב הבא".
 3. Dose picker by horizontal scroll [1 2 3 4 5 6 8 10] with neon highlight + haptic click.
 4. Look: 3D "pneumatic" buttons with vibration, thick frames with 4 materials (glossy polymer, brushed titanium, carbon neon, quantum gold), deep 3D layers, 14 animated 3D backgrounds (seamless loop), neon color themes.
 5. Settings screen: live preview, background / theme / frame pickers, language, 16 alert sounds with test, volume slider, accessibility + voice switches.
