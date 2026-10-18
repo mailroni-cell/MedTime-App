@@ -243,7 +243,7 @@
         .type-btn.sel {
             border-color: #38bdf8;
             background: #0c4a6e;
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+            box-shadow: 0 0 10px rgba(var(--gA), 0.6);
         }
 
         /* M-010: time button + scroll wheel picker */
@@ -646,7 +646,7 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.55)) drop-shadow(0 4px 2px rgba(0, 0, 0, 0.6));
+            filter: drop-shadow(0 0 12px rgba(var(--gA), 0.55)) drop-shadow(0 4px 2px rgba(0, 0, 0, 0.6));
         }
 
         /* glass cards with depth, rim light and inner gloss */
@@ -658,7 +658,7 @@
             border-radius: 20px !important;
             box-shadow:
                 0 1px 0 rgba(255, 255, 255, 0.18) inset,
-                0 -12px 30px rgba(56, 189, 248, 0.06) inset,
+                0 -12px 30px rgba(var(--gA), 0.06) inset,
                 0 18px 40px rgba(0, 0, 0, 0.55),
                 0 4px 12px rgba(0, 0, 0, 0.4);
             transform-style: preserve-3d;
@@ -697,7 +697,7 @@
 
         .item-row {
             background: rgba(2, 6, 23, 0.55) !important;
-            border: 1px solid rgba(56, 189, 248, 0.25) !important;
+            border: 1px solid rgba(var(--gA), 0.25) !important;
             border-radius: 16px !important;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45) inset, 0 1px 0 rgba(255, 255, 255, 0.06);
         }
@@ -710,7 +710,7 @@
 
         input:focus {
             border-color: #38bdf8 !important;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5) inset, 0 0 0 3px rgba(56, 189, 248, 0.25);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5) inset, 0 0 0 3px rgba(var(--gA), 0.25);
         }
 
         /* pneumatic 3D buttons: raised edge, glow, press down */
@@ -742,7 +742,7 @@
 
         .type-btn.sel {
             background: linear-gradient(180deg, #0e7490, #0c4a6e) !important;
-            box-shadow: 0 4px 0 #082f49, 0 0 18px rgba(56, 189, 248, 0.8), 0 1px 0 rgba(255, 255, 255, 0.3) inset !important;
+            box-shadow: 0 4px 0 #082f49, 0 0 18px rgba(var(--gA), 0.8), 0 1px 0 rgba(255, 255, 255, 0.3) inset !important;
         }
 
         .type-btn .ico {
@@ -758,17 +758,17 @@
             font-size: 2.2rem !important;
             background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.9)) !important;
             color: #e0f2fe !important;
-            text-shadow: 0 0 14px rgba(56, 189, 248, 0.8);
+            text-shadow: 0 0 14px rgba(var(--gA), 0.8);
             box-shadow: 0 5px 0 rgba(2, 6, 23, 0.9), 0 10px 22px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.12) inset !important;
         }
 
         button.btn-add-item {
-            background: rgba(56, 189, 248, 0.08) !important;
+            background: rgba(var(--gA), 0.08) !important;
             border-radius: 14px !important;
         }
 
         .gear-btn {
-            filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.6));
+            filter: drop-shadow(0 0 8px rgba(var(--gA), 0.6));
             transition: transform 0.6s;
         }
 
@@ -779,7 +779,7 @@
         .med-info h3 {
             font-size: 1.35rem !important;
             color: #e0f2fe;
-            text-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+            text-shadow: 0 0 10px rgba(var(--gA), 0.6);
         }
 
         .med-info li {
@@ -839,7 +839,7 @@
         .hero-gear {
             font-size: 4.2rem;
             line-height: 1;
-            filter: drop-shadow(0 0 18px rgba(56, 189, 248, 0.8)) drop-shadow(0 8px 6px rgba(0, 0, 0, 0.6));
+            filter: drop-shadow(0 0 18px rgba(var(--gA), 0.8)) drop-shadow(0 8px 6px rgba(0, 0, 0, 0.6));
             animation: gearSpin 14s linear infinite;
             display: inline-block;
         }
@@ -856,7 +856,7 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.5));
+            filter: drop-shadow(0 0 10px rgba(var(--gA), 0.5));
         }
 
         .close-3d {
@@ -996,7 +996,7 @@
         .lang-btn.sel {
             border-color: #38bdf8;
             background: linear-gradient(180deg, #0e7490, #0c4a6e);
-            box-shadow: 0 4px 0 #082f49, 0 0 18px rgba(56, 189, 248, 0.8);
+            box-shadow: 0 4px 0 #082f49, 0 0 18px rgba(var(--gA), 0.8);
         }
 
         .toggle-row {
@@ -1293,7 +1293,7 @@
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
             border-radius: 999px !important;
-            box-shadow: 0 12px 26px rgba(0, 0, 0, 0.45), 0 0 22px rgba(56, 189, 248, 0.10) !important;
+            box-shadow: 0 12px 26px rgba(0, 0, 0, 0.45), 0 0 22px rgba(var(--gA), 0.10) !important;
             font-size: 1.25rem !important;
             padding: 14px 18px !important;
             color: #f0f9ff !important;
@@ -1301,7 +1301,7 @@
         }
         #med-form input[type=text]::placeholder { text-align: center; color: rgba(186, 230, 253, 0.55); }
         #med-form input[type=text]:focus {
-            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5), 0 0 26px rgba(56, 189, 248, 0.55) !important;
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5), 0 0 26px rgba(var(--gA), 0.55) !important;
         }
         .type-btn {
             background: radial-gradient(ellipse at 50% 20%, rgba(148, 163, 184, 0.22), rgba(15, 23, 42, 0.25) 75%) !important;
@@ -1309,8 +1309,8 @@
             border-radius: 20px !important;
         }
         .type-btn.sel {
-            background: radial-gradient(ellipse at 50% 20%, rgba(34, 211, 238, 0.65), rgba(14, 116, 144, 0.45) 75%) !important;
-            box-shadow: 0 12px 26px rgba(0, 0, 0, 0.45), 0 0 26px rgba(34, 211, 238, 0.7) !important;
+            background: radial-gradient(ellipse at 50% 20%, rgba(var(--gA), 0.65), rgba(14, 116, 144, 0.45) 75%) !important;
+            box-shadow: 0 12px 26px rgba(0, 0, 0, 0.45), 0 0 26px rgba(var(--gA), 0.7) !important;
         }
         .time-btn {
             background: none !important;
@@ -1318,7 +1318,7 @@
             font-size: 3rem !important;
             animation: floatY 7s ease-in-out infinite;
         }
-        button.btn-add-item { background: none !important; box-shadow: none !important; text-shadow: 0 0 12px rgba(56, 189, 248, 0.8); }
+        button.btn-add-item { background: none !important; box-shadow: none !important; text-shadow: 0 0 12px rgba(var(--gA), 0.8); }
         button.btn-add { border-radius: 999px !important; }
         @keyframes floatY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 
@@ -1333,15 +1333,15 @@
             padding: 8px; border-radius: 22px;
             background: rgba(10, 14, 40, 0.88);
             backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(168, 85, 247, 0.25);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(var(--gB), 0.25);
         }
         .suggest.open { display: flex; }
         .sug {
             display: flex; align-items: center; justify-content: center; gap: 10px;
             padding: 12px 14px; border-radius: 16px; text-align: center;
-            background: rgba(56, 189, 248, 0.10); color: #f0f9ff; font-size: 1.2rem;
+            background: rgba(var(--gA), 0.10); color: #f0f9ff; font-size: 1.2rem;
         }
-        .sug:active { background: rgba(56, 189, 248, 0.35); }
+        .sug:active { background: rgba(var(--gA), 0.35); }
         .sug b { font-weight: 800; }
         .sug small { color: #a5b4fc; font-size: 0.9rem; }
         .sug .ico { font-size: 1.3rem; }
@@ -1383,12 +1383,12 @@
             box-shadow:
                 inset 0 1px 0 rgba(255, 255, 255, 0.3),
                 0 0 16px 3px rgba(3, 5, 20, 0.5),
-                0 0 30px 6px rgba(34, 211, 238, 0.65) !important;
+                0 0 30px 6px rgba(var(--gA), 0.65) !important;
         }
         .time-btn, button.btn-add-item { border-radius: 999px !important; }
         .time-btn { background: rgba(3, 7, 25, 0.25) !important; }
         .field-label, .item-head, button.btn-add-item, .time-btn, .type-btn {
-            text-shadow: 0 0 4px rgba(0, 0, 0, 0.95), 0 0 12px rgba(0, 0, 0, 0.8), 0 0 22px rgba(56, 189, 248, 0.35) !important;
+            text-shadow: 0 0 4px rgba(0, 0, 0, 0.95), 0 0 12px rgba(0, 0, 0, 0.8), 0 0 22px rgba(var(--gA), 0.35) !important;
         }
         html.lowvision .type-btn, html.lowvision .time-btn { backdrop-filter: none !important; background: #000 !important; }
 
@@ -1407,19 +1407,19 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.35),
                 inset 0 0 14px rgba(103, 232, 249, 0.25),
                 0 0 0 1.5px rgba(103, 232, 249, 0.55),
-                0 0 14px 2px rgba(34, 211, 238, 0.75),
-                0 0 34px 8px rgba(168, 85, 247, 0.45),
+                0 0 14px 2px rgba(var(--gA), 0.75),
+                0 0 34px 8px rgba(var(--gB), 0.45),
                 0 12px 26px rgba(0, 0, 0, 0.6) !important;
             animation: neonBreath 3.2s ease-in-out infinite !important;
             color: #ffffff !important;
         }
         .type-btn.sel {
-            background: linear-gradient(180deg, rgba(34, 211, 238, 0.85), rgba(14, 116, 144, 0.85)) !important;
+            background: linear-gradient(180deg, rgba(var(--gA), 0.85), rgba(14, 116, 144, 0.85)) !important;
             box-shadow:
                 inset 0 1px 0 rgba(255, 255, 255, 0.6),
                 0 0 0 2px rgba(207, 250, 254, 0.9),
-                0 0 20px 4px rgba(34, 211, 238, 1),
-                0 0 44px 12px rgba(34, 211, 238, 0.55) !important;
+                0 0 20px 4px rgba(var(--gA), 1),
+                0 0 44px 12px rgba(var(--gA), 0.55) !important;
         }
         @keyframes neonBreath {
             0%, 100% { filter: brightness(1); }
@@ -1428,13 +1428,13 @@
         #med-form input[type=text]::placeholder { color: rgba(207, 250, 254, 0.75) !important; }
         .field-label, .item-head {
             color: #e0f2fe !important; font-weight: 700;
-            text-shadow: 0 0 3px #000, 0 0 10px rgba(0, 0, 0, 0.9), 0 0 16px rgba(34, 211, 238, 0.9) !important;
+            text-shadow: 0 0 3px #000, 0 0 10px rgba(0, 0, 0, 0.9), 0 0 16px rgba(var(--gA), 0.9) !important;
         }
         .time-btn, button.btn-add-item, .type-btn {
-            text-shadow: 0 0 6px rgba(255, 255, 255, 0.7), 0 0 14px rgba(34, 211, 238, 1) !important;
+            text-shadow: 0 0 6px rgba(255, 255, 255, 0.7), 0 0 14px rgba(var(--gA), 1) !important;
         }
         button.btn-add {
-            box-shadow: 0 6px 0 #1e3a8a, 0 0 22px 4px rgba(59, 130, 246, 0.9), 0 0 48px 12px rgba(168, 85, 247, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+            box-shadow: 0 6px 0 #1e3a8a, 0 0 22px 4px rgba(59, 130, 246, 0.9), 0 0 48px 12px rgba(var(--gB), 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
         }
         html.lowvision #med-form input[type=text], html.lowvision .type-btn, html.lowvision .time-btn { animation: none !important; box-shadow: 0 0 0 3px #ffeb3b !important; }
 
@@ -1460,8 +1460,8 @@
         .item-row.collapsed .it-chip {
             display: flex; align-items: center; justify-content: center; gap: 10px;
             padding: 8px 14px; border-radius: 999px; color: #fff; font-size: 1.1rem; font-weight: 700;
-            background: linear-gradient(180deg, rgba(34, 211, 238, 0.35), rgba(14, 116, 144, 0.35));
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 14px 2px rgba(34, 211, 238, 0.6), 0 0 28px 6px rgba(168, 85, 247, 0.3);
+            background: linear-gradient(180deg, rgba(var(--gA), 0.35), rgba(14, 116, 144, 0.35));
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 14px 2px rgba(var(--gA), 0.6), 0 0 28px 6px rgba(var(--gB), 0.3);
             text-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
             animation: chipIn 0.35s cubic-bezier(.2, .8, .2, 1);
         }
@@ -1478,7 +1478,7 @@
             width: 40px; height: 40px; border-radius: 50%;
             font-size: 2rem; font-weight: 900; line-height: 1; color: #fff;
             background: radial-gradient(circle at 35% 30%, #a5f3fc, #06b6d4 55%, #7c3aed);
-            box-shadow: 0 0 12px 3px rgba(34, 211, 238, 0.9), 0 0 30px 8px rgba(168, 85, 247, 0.55), inset 0 2px 3px rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 12px 3px rgba(var(--gA), 0.9), 0 0 30px 8px rgba(var(--gB), 0.55), inset 0 2px 3px rgba(255, 255, 255, 0.6);
             text-shadow: none !important;
             animation: orbPulse 2.4s ease-in-out infinite;
         }
@@ -1494,27 +1494,27 @@
             display: none; flex-wrap: wrap; justify-content: center; gap: 6px;
             position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 40;
             padding: 8px; border-radius: 22px; background: rgba(10, 14, 40, 0.9);
-            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(34, 211, 238, 0.35);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(var(--gA), 0.35);
         }
         .dose-wrap:focus-within .dose-units { display: flex; }
         .dose-wrap:focus-within { z-index: 50; }
         .unit-chip {
             border: none !important; border-radius: 999px; padding: 9px 14px; font-size: 1.05rem; font-weight: 700; color: #fff;
-            background: linear-gradient(180deg, rgba(34, 211, 238, 0.45), rgba(124, 58, 237, 0.45));
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 10px rgba(34, 211, 238, 0.6);
+            background: linear-gradient(180deg, rgba(var(--gA), 0.45), rgba(124, 58, 237, 0.45));
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 10px rgba(var(--gA), 0.6);
         }
         .unit-chip:active { transform: scale(0.94); }
         .list-btn {
             display: flex; align-items: center; justify-content: center; gap: 10px;
             border: none !important; border-radius: 999px; padding: 10px 14px; color: #fff; font-size: 1.05rem; font-weight: 700;
-            background: linear-gradient(180deg, rgba(168, 85, 247, 0.55), rgba(76, 29, 149, 0.6));
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 16px 3px rgba(168, 85, 247, 0.7), 0 0 34px 8px rgba(34, 211, 238, 0.25);
+            background: linear-gradient(180deg, rgba(var(--gB), 0.55), rgba(76, 29, 149, 0.6));
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 16px 3px rgba(var(--gB), 0.7), 0 0 34px 8px rgba(var(--gA), 0.25);
             text-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
         }
         .lb-count { display: inline-flex; align-items: center; justify-content: center; min-width: 30px; height: 30px; border-radius: 50%; background: #fff; color: #6d28d9; font-weight: 900; text-shadow: none; }
         .lb-next { font-weight: 500; opacity: 0.9; }
         .list-btn.bump { animation: lbBump 0.7s cubic-bezier(.2, .8, .2, 1); }
-        @keyframes lbBump { 0% { transform: scale(1); } 35% { transform: scale(1.12); box-shadow: 0 0 30px 10px rgba(168, 85, 247, 1); } 100% { transform: scale(1); } }
+        @keyframes lbBump { 0% { transform: scale(1); } 35% { transform: scale(1.12); box-shadow: 0 0 30px 10px rgba(var(--gB), 1); } 100% { transform: scale(1); } }
         .list-page { z-index: 45 !important; background: radial-gradient(ellipse at 50% 0%, rgba(76, 29, 149, 0.55), rgba(7, 11, 26, 0.94) 70%) !important; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
         .list-page .med-list { width: 100%; margin: 0; padding: 0; }
 
@@ -1532,26 +1532,42 @@
         /* ================= M-026: dose picker + quick times ================= */
         .dose-units { display: none !important; }
         .ds-units { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 6px 0 14px; }
-        .unit-chip.sel { background: linear-gradient(180deg, #22d3ee, #0e7490) !important; box-shadow: 0 0 0 2px #cffafe, 0 0 18px 4px rgba(34, 211, 238, 0.9) !important; }
+        .unit-chip.sel { background: linear-gradient(180deg, #22d3ee, #0e7490) !important; box-shadow: 0 0 0 2px #cffafe, 0 0 18px 4px rgba(var(--gA), 0.9) !important; }
         .qty-row { display: flex; align-items: center; justify-content: center; gap: 18px; direction: ltr; }
         .qty-btn {
             width: 72px; height: 72px; border-radius: 50%; border: none !important; font-size: 2.6rem; font-weight: 900; color: #fff; line-height: 1;
             background: radial-gradient(circle at 35% 30%, #a5f3fc, #06b6d4 55%, #7c3aed);
-            box-shadow: 0 0 14px 3px rgba(34, 211, 238, 0.8), 0 0 30px 8px rgba(168, 85, 247, 0.45), inset 0 2px 3px rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 14px 3px rgba(var(--gA), 0.8), 0 0 30px 8px rgba(var(--gB), 0.45), inset 0 2px 3px rgba(255, 255, 255, 0.6);
             touch-action: none; user-select: none;
         }
         .qty-btn:active { transform: scale(0.92); }
-        .qty-val { min-width: 120px; text-align: center; font-size: 3.4rem; font-weight: 800; color: #fff; text-shadow: 0 0 16px rgba(34, 211, 238, 0.9); }
+        .qty-val { min-width: 120px; text-align: center; font-size: 3.4rem; font-weight: 800; color: #fff; text-shadow: 0 0 16px rgba(var(--gA), 0.9); }
         .ds-preview { text-align: center; font-size: 1.3rem; color: #fde68a; margin: 10px 0 4px; min-height: 1.6em; }
         .ds-manual { display: block; margin: 4px auto 0; background: none !important; border: none !important; color: #93c5fd; font-size: 1rem; text-decoration: underline; }
         .quick-times { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 12px; }
         .quick-times button {
             border: none !important; border-radius: 16px; padding: 8px 2px; color: #fff; font-size: 0.85rem;
             display: flex; flex-direction: column; align-items: center; gap: 2px;
-            background: linear-gradient(180deg, rgba(34, 211, 238, 0.3), rgba(124, 58, 237, 0.35));
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 0 10px rgba(34, 211, 238, 0.5);
+            background: linear-gradient(180deg, rgba(var(--gA), 0.3), rgba(124, 58, 237, 0.35));
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 0 10px rgba(var(--gA), 0.5);
         }
         .quick-times b { font-size: 1.15rem; direction: ltr; }
+
+        /* ================= M-028: themes ================= */
+        :root { --gA: 34, 211, 238; --gB: 168, 85, 247; }
+        .set-grid .set-tile:last-child { grid-column: auto !important; }
+        .theme-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 4px 2px 10px; }
+        .theme-sw {
+            border: none !important; border-radius: 18px; padding: 0; overflow: hidden; color: #fff; position: relative;
+            aspect-ratio: 1 / 1.05; display: flex; align-items: flex-end; justify-content: center;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            transition: transform 0.15s;
+        }
+        .theme-sw:active { transform: scale(0.95); }
+        .theme-sw .tw-name { width: 100%; padding: 6px 4px; font-size: 0.82rem; font-weight: 700; background: linear-gradient(transparent, rgba(0, 0, 0, 0.75)); text-shadow: 0 1px 3px #000; }
+        .theme-sw .tw-dot { position: absolute; top: 10px; width: 22px; height: 22px; border-radius: 50%; }
+        .theme-sw.sel { box-shadow: 0 0 0 3px #fff, 0 0 22px 6px rgba(var(--gA), 0.9) !important; }
+        .theme-sw.sel::after { content: '✓'; position: absolute; top: 6px; inset-inline-end: 8px; font-weight: 900; font-size: 1.2rem; text-shadow: 0 0 6px #000; }
     </style>
 </head>
 <body>
@@ -1635,6 +1651,16 @@
             </button>
             <div class="set-body">
                 <div id="sound-list" class="sound-list"></div>
+            </div>
+        </section>
+        <section class="set-tile" style="--g:linear-gradient(135deg,#ec4899,#7c3aed)">
+            <button type="button" class="set-tile-head" onclick="toggleTile(this)">
+                <span class="set-ico">🎨</span>
+                <span class="set-txt"><span class="set-title" data-i18n-strip="themeTitle"></span><span class="set-sub" id="sub-themeTitle"></span></span>
+                <span class="set-chev">⌄</span>
+            </button>
+            <div class="set-body">
+                <div id="theme-grid" class="theme-grid"></div>
             </div>
         </section>
         <section class="set-tile" style="--g:linear-gradient(135deg,#facc15,#ca8a04)">
@@ -1804,6 +1830,8 @@
           "addMore": "➕ עוד תרופה / זריקה לאותה שעה",
           "myReminders": "התזכורות שלי", "nextAt": "הבאה", "noReminders": "אין עדיין תזכורות",
           "typeManually": "⌨ הקלדה חופשית", "qMorning": "בוקר", "qNoon": "צהריים", "qEvening": "ערב", "qNight": "לילה",
+          "soundMedTime": "✨ צלילים מיוחדים של MedTime",
+          "themeTitle": "🎨 תצוגה",
           "addReminder": "הוסף תזכורת",
           "voiceTitle": "🔊 הקראה קולית בתזכורת",
           "voiceOn": "להקריא בקול",
@@ -1870,6 +1898,8 @@
           "addMore": "➕ دواء / حقنة أخرى في نفس الوقت",
           "myReminders": "تذكيراتي", "nextAt": "التالي", "noReminders": "لا توجد تذكيرات بعد",
           "typeManually": "⌨ كتابة يدوية", "qMorning": "صباح", "qNoon": "ظهر", "qEvening": "مساء", "qNight": "ليل",
+          "soundMedTime": "✨ أصوات MedTime الخاصة",
+          "themeTitle": "🎨 المظهر",
           "addReminder": "أضف تذكيرًا",
           "voiceTitle": "🔊 القراءة الصوتية في التذكير",
           "voiceOn": "القراءة بصوت عالٍ",
@@ -1936,6 +1966,8 @@
           "addMore": "➕ Încă un medicament / o injecție la aceeași oră",
           "myReminders": "Mementourile mele", "nextAt": "Următorul", "noReminders": "Încă nu există mementouri",
           "typeManually": "⌨ Scriere liberă", "qMorning": "Dimineața", "qNoon": "Prânz", "qEvening": "Seara", "qNight": "Noaptea",
+          "soundMedTime": "✨ Sunete speciale MedTime",
+          "themeTitle": "🎨 Aspect",
           "addReminder": "Adaugă memento",
           "voiceTitle": "🔊 Citire vocală la memento",
           "voiceOn": "Citește cu voce tare",
@@ -2002,6 +2034,8 @@
           "addMore": "➕ Un autre médicament / une injection à la même heure",
           "myReminders": "Mes rappels", "nextAt": "Prochain", "noReminders": "Aucun rappel pour l’instant",
           "typeManually": "⌨ Saisie libre", "qMorning": "Matin", "qNoon": "Midi", "qEvening": "Soir", "qNight": "Nuit",
+          "soundMedTime": "✨ Sons spéciaux MedTime",
+          "themeTitle": "🎨 Apparence",
           "addReminder": "Ajouter un rappel",
           "voiceTitle": "🔊 Lecture vocale du rappel",
           "voiceOn": "Lire à voix haute",
@@ -2068,6 +2102,8 @@
           "addMore": "➕ Another medicine / injection at the same time",
           "myReminders": "My reminders", "nextAt": "Next", "noReminders": "No reminders yet",
           "typeManually": "⌨ Type it", "qMorning": "Morning", "qNoon": "Noon", "qEvening": "Evening", "qNight": "Night",
+          "soundMedTime": "✨ MedTime special sounds",
+          "themeTitle": "🎨 Display",
           "addReminder": "Add reminder",
           "voiceTitle": "🔊 Voice readout",
           "voiceOn": "Read aloud",
@@ -2588,6 +2624,7 @@
         function openSettingsPage() {
             document.getElementById('settings-page').classList.add('open');
             renderSounds();
+            renderThemes();
             renderStatus();
             updateSettingsSummary();
         }
@@ -2625,6 +2662,39 @@
             body.insertBefore(head, body.firstChild);
         });
 
+        // ---------- M-028: 30 display themes ----------
+        function hexRgb(h) { const n = parseInt(h.slice(1), 16); return ((n >> 16) & 255) + ', ' + ((n >> 8) & 255) + ', ' + (n & 255); }
+        function curTheme() { try { return parseInt(localStorage.getItem('medtime_theme') || '0', 10) || 0; } catch (e) { return 0; } }
+        function themeName(th) { return th.n[LANG_IDX[LANG] - 1] || th.n[4]; }
+        function applyThemeUI(i) {
+            const th = (window.MED_THEMES || [])[i]; if (!th) return;
+            document.documentElement.style.setProperty('--gA', hexRgb(th.ga));
+            document.documentElement.style.setProperty('--gB', hexRgb(th.gb));
+            document.querySelector('meta[name=theme-color]') && document.querySelector('meta[name=theme-color]').setAttribute('content', th.sky[0]);
+        }
+        function renderThemes() {
+            const box = document.getElementById('theme-grid'); if (!box || !window.MED_THEMES) return;
+            const cur = curTheme();
+            box.innerHTML = '';
+            MED_THEMES.forEach((th, i) => {
+                const b = document.createElement('button');
+                b.type = 'button'; b.className = 'theme-sw' + (i === cur ? ' sel' : '');
+                b.style.background = `radial-gradient(circle at 30% 25%, ${th.neb[0]}cc, transparent 55%), radial-gradient(circle at 75% 45%, ${th.neb[1]}aa, transparent 50%), radial-gradient(circle at 50% 85%, ${th.neb[2]}88, transparent 55%), linear-gradient(180deg, ${th.sky[2]}, ${th.sky[1]} 60%, ${th.sky[0]})`;
+                b.innerHTML = `<span class="tw-dot" style="background:linear-gradient(135deg,${th.hero[0]} 50%,${th.hero[1]} 50%);box-shadow:0 0 12px ${th.ga}"></span><span class="tw-name"></span>`;
+                b.querySelector('.tw-name').textContent = themeName(th);
+                b.onclick = () => {
+                    try { localStorage.setItem('medtime_theme', String(i)); } catch (e) { }
+                    if (window.MedTime3D && MedTime3D.setTheme) MedTime3D.setTheme(i);
+                    applyThemeUI(i);
+                    box.querySelectorAll('.theme-sw').forEach(x => x.classList.toggle('sel', x === b));
+                    updateSettingsSummary();
+                    if (navigator.vibrate) navigator.vibrate(12);
+                };
+                box.appendChild(b);
+            });
+        }
+        applyThemeUI(curTheme());
+
         var lastStatusProblem = false;
         function updateSettingsSummary() {
             const set = (k, v) => { const el = document.getElementById('sub-' + k); if (el) el.textContent = v; };
@@ -2635,6 +2705,7 @@
             const chosen = document.querySelector('#sound-list input[name=snd]:checked');
             set('soundTitle', chosen ? chosen.parentElement.textContent.trim() : t('tapToChange'));
             set('lowVisionTitle', document.getElementById('low-vision').checked ? t('on') : t('off'));
+            if (window.MED_THEMES) set('themeTitle', themeName(MED_THEMES[curTheme()] || MED_THEMES[0]));
             set('statusTitle', lastStatusProblem ? t('statusProblem') : t('statusOk'));
         }
 
@@ -2650,6 +2721,10 @@
             if (Native && Native.stopPreview) { try { Native.stopPreview(); } catch (e) { } }
         }
 
+        // M-027: names of MedTime's own sounds [icon, he, ar, ro, fr, en]
+        const SOUND_NAMES = {"space_ping": ["🛰️", "פינג חללי", "رنين فضائي", "Ping spațial", "Ping spatial", "Space ping"], "nebula": ["🌌", "ערפילית", "سديم", "Nebuloasă", "Nébuleuse", "Nebula"], "orbit": ["🪐", "מסלול", "مدار", "Orbită", "Orbite", "Orbit"], "starfall": ["🌠", "מטר כוכבים", "شهب", "Ploaie de stele", "Pluie d’étoiles", "Starfall"], "warp": ["🚀", "קפיצת חלל", "قفزة فضائية", "Salt warp", "Saut spatial", "Warp jump"], "sonar": ["📡", "סונאר", "سونار", "Sonar", "Sonar", "Sonar"], "bird_chirp": ["🐦", "ציוץ ציפור", "زقزقة عصفور", "Ciripit", "Gazouillis", "Bird chirp"], "morning_birds": ["🌅", "ציפורי בוקר", "طيور الصباح", "Păsări de dimineață", "Oiseaux du matin", "Morning birds"], "nightingale": ["🎶", "זמיר", "عندليب", "Privighetoare", "Rossignol", "Nightingale"], "cuckoo": ["🕰️", "קוקייה", "وقواق", "Cuc", "Coucou", "Cuckoo"], "owl": ["🦉", "ינשוף", "بومة", "Bufniță", "Hibou", "Owl"], "crystal_bells": ["💎", "פעמוני קריסטל", "أجراس كريستال", "Clopoței de cristal", "Cloches de cristal", "Crystal bells"], "wind_chimes": ["🎐", "פעמוני רוח", "أجراس الرياح", "Clopoței de vânt", "Carillon à vent", "Wind chimes"], "tibetan_bowl": ["🥣", "קערה טיבטית", "وعاء تبتي", "Bol tibetan", "Bol tibétain", "Tibetan bowl"], "marimba": ["🪘", "מרימבה", "ماريمبا", "Marimbă", "Marimba", "Marimba"], "harp": ["🪕", "נבל", "قيثارة", "Harpă", "Harpe", "Harp"], "music_box": ["🎁", "תיבת נגינה", "صندوق موسيقى", "Cutie muzicală", "Boîte à musique", "Music box"], "piano_rise": ["🎹", "פסנתר עולה", "بيانو صاعد", "Pian ascendent", "Piano montant", "Rising piano"], "kalimba": ["🎵", "קלימבה", "كاليمبا", "Kalimba", "Kalimba", "Kalimba"], "glass": ["🥂", "כוס זכוכית", "كأس زجاج", "Pahar de cristal", "Verre", "Glass"], "water_drops": ["💧", "טיפות מים", "قطرات ماء", "Picături de apă", "Gouttes d’eau", "Water drops"], "bubbles": ["🫧", "בועות", "فقاعات", "Bule", "Bulles", "Bubbles"], "ocean": ["🌊", "גלי ים", "أمواج البحر", "Valuri", "Vagues", "Ocean waves"], "rain": ["🌧️", "גשם קל", "مطر خفيف", "Ploaie ușoară", "Pluie légère", "Light rain"], "gong": ["🔔", "גונג", "غونغ", "Gong", "Gong", "Gong"], "sunrise": ["☀️", "זריחה", "شروق", "Răsărit", "Lever du soleil", "Sunrise"], "fairy": ["🧚", "אבק פיות", "غبار الجنيات", "Praf de zâne", "Poussière de fée", "Fairy dust"], "arcade": ["👾", "ארקייד", "أركيد", "Arcade", "Arcade", "Arcade"], "digital": ["⌚", "דיגיטלי", "رقمي", "Digital", "Numérique", "Digital"], "heartbeat": ["💓", "פעימות לב", "نبضات القلب", "Bătăi de inimă", "Battements de cœur", "Heartbeat"], "fanfare": ["🎺", "תרועה", "فانفار", "Fanfară", "Fanfare", "Fanfare"], "zen": ["🧘", "זן", "زن", "Zen", "Zen", "Zen"]};
+        var LANG_IDX = { he: 1, ar: 2, ro: 3, fr: 4, en: 5 };
+        const soundName = id => { const n = SOUND_NAMES[id]; return n ? n[0] + ' ' + n[LANG_IDX[LANG] || 5] : id; };
         function renderSounds() {
             const box = document.getElementById('sound-list');
             let list = [], chosen = '';
@@ -2665,9 +2740,9 @@
             list.forEach(sd => {
                 if (sd.kind !== lastKind) {
                     lastKind = sd.kind;
-                    html += `<div class="sound-group">${t(sd.kind === 'alarm' ? 'soundAlarm' : 'soundNotif')}</div>`;
+                    html += `<div class="sound-group">${t(sd.kind === 'medtime' ? 'soundMedTime' : sd.kind === 'alarm' ? 'soundAlarm' : 'soundNotif')}</div>`;
                 }
-                html += row(sd.uri, sd.title);
+                html += row(sd.uri, sd.kind === 'medtime' ? soundName(sd.title) : sd.title);
             });
             box.innerHTML = html;
             box.querySelectorAll('input[name=snd]').forEach(r => r.addEventListener('change', () => {
@@ -2730,6 +2805,7 @@
         renderStatus();
     </script>
     <script src="meds.js"></script>
+    <script src="themes.js"></script>
     <script src="scene3d.js"></script>
 </body>
 </html>

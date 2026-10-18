@@ -22,9 +22,18 @@ public class Sounds {
     private static Ringtone preview;
     private static final Handler handler = new Handler(Looper.getMainLooper());
 
-    /** [{title, uri}] alarm sounds first, then notification sounds. */
+    /** M-027: MedTime's own sounds in res/raw (mt_*.ogg), made for the app. Title is translated on the page. */
+    static final String[] APP_SOUNDS = {"arcade", "bird_chirp", "bubbles", "crystal_bells", "cuckoo", "digital", "fairy", "fanfare", "glass", "gong", "harp", "heartbeat", "kalimba", "marimba", "morning_birds", "music_box", "nebula", "nightingale", "ocean", "orbit", "owl", "piano_rise", "rain", "sonar", "space_ping", "starfall", "sunrise", "tibetan_bowl", "warp", "water_drops", "wind_chimes", "zen"};
+
+    /** [{title, uri, kind}] MedTime sounds, then the phone's alarm sounds, then notification sounds. */
     static String list(Context ctx) {
         JSONArray out = new JSONArray();
+        for (String n : APP_SOUNDS) {
+            try {
+                out.put(new JSONObject().put("title", n)
+                        .put("uri", "android.resource://" + ctx.getPackageName() + "/raw/mt_" + n).put("kind", "medtime"));
+            } catch (Exception ignored) { }
+        }
         addAll(ctx, RingtoneManager.TYPE_ALARM, out);
         addAll(ctx, RingtoneManager.TYPE_NOTIFICATION, out);
         return out.toString();
