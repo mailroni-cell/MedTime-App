@@ -31,3 +31,4 @@
 
 ## 2026-10-18 (new thread, continued from handoff)
 - M-032 opening animation + first-launch language screen (credit text placeholder, asked owner). M-033 separate volume sliders: background / alert / voice.
+- Same day, later: M-042 appointment wizard, M-043 title font (owner chose Audiowide, option 2 of 7) + power-symbol exit, M-044 calm mode (3D worlds + zen sounds + sleep timer), M-045 medical look (Rubik, medical add button). Builds 46, 47.
