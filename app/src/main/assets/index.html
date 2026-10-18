@@ -177,16 +177,187 @@
             font-size: 0.95rem;
         }
 
-        /* M-006: several medicines / injections in one reminder */
+        /* M-006 / M-010: one card per medicine, large and readable */
         .item-row {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .item-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            color: #38bdf8;
+        }
+
+        .field-label {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .item-row input {
+            font-size: 1.15rem;
+            padding: 14px 12px;
+        }
+
+        .type-grid {
             display: grid;
-            grid-template-columns: 112px 1fr 1fr 34px;
+            grid-template-columns: repeat(3, 1fr);
             gap: 6px;
         }
 
-        .item-row input, .item-row select {
-            min-width: 0;
-            padding: 10px 8px;
+        .type-btn {
+            background: #1e293b;
+            border: 2px solid #334155;
+            color: var(--text);
+            border-radius: 10px;
+            padding: 8px 4px;
+            font-size: 0.95rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .type-btn .ico {
+            font-size: 1.6rem;
+        }
+
+        .type-btn.sel {
+            border-color: #38bdf8;
+            background: #0c4a6e;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+        }
+
+        /* M-010: time button + scroll wheel picker */
+        .time-btn {
+            background: #334155;
+            border: 1px solid #475569;
+            color: var(--text);
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            direction: ltr;
+        }
+
+        .sheet-bg {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 50;
+        }
+
+        .sheet-bg.open {
+            display: flex;
+        }
+
+        .sheet {
+            background: var(--card);
+            width: 100%;
+            max-width: 480px;
+            border-radius: 18px 18px 0 0;
+            padding: 16px 16px 24px;
+        }
+
+        .sheet h3 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #38bdf8;
+        }
+
+        .wheels {
+            direction: ltr;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .wheel-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .wheel-col small {
+            color: var(--text-muted);
+        }
+
+        .wheel {
+            height: 220px;
+            width: 96px;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scrollbar-width: none;
+            position: relative;
+            -webkit-mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent);
+            mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent);
+        }
+
+        .wheel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .wheel div {
+            height: 44px;
+            line-height: 44px;
+            text-align: center;
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            scroll-snap-align: center;
+        }
+
+        .wheel div.on {
+            color: #f8fafc;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .wheel-sep {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-top: 20px;
+        }
+
+        .wheel-band {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: calc(50% + 10px);
+            height: 46px;
+            transform: translateY(-50%);
+            border-top: 2px solid #38bdf8;
+            border-bottom: 2px solid #38bdf8;
+            pointer-events: none;
+            border-radius: 6px;
+        }
+
+        .sheet-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .sheet-actions button {
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            border: none;
         }
 
         select {
@@ -292,7 +463,9 @@
         <form id="med-form" class="form-group">
             <div id="item-rows" class="form-group"></div>
             <button type="button" class="btn-add-item" onclick="addItemRow()" data-i18n="addMore"></button>
-            <input type="time" id="med-time" required>
+            <div class="field-label" data-i18n="timeLabel"></div>
+            <input type="hidden" id="med-time">
+            <button type="button" id="time-btn" class="time-btn" onclick="openTimePicker()">--:--</button>
             <button type="submit" class="btn-add" data-i18n="addReminder"></button>
         </form>
     </div>
@@ -307,6 +480,23 @@
     </div>
 
     <ul id="med-list" class="med-list"></ul>
+
+    <!-- M-010: scroll wheel time picker -->
+    <div id="time-sheet" class="sheet-bg" onclick="if (event.target === this) closeTimePicker()">
+        <div class="sheet">
+            <h3 data-i18n="timeLabel"></h3>
+            <div class="wheels">
+                <div class="wheel-col"><small data-i18n="hours"></small><div id="wheel-h" class="wheel"></div></div>
+                <div class="wheel-sep">:</div>
+                <div class="wheel-col"><small data-i18n="minutes"></small><div id="wheel-m" class="wheel"></div></div>
+                <div class="wheel-band"></div>
+            </div>
+            <div class="sheet-actions">
+                <button type="button" style="background:#334155;color:#f8fafc" onclick="closeTimePicker()" data-i18n="cancel"></button>
+                <button type="button" style="background:var(--primary);color:#fff" onclick="confirmTimePicker()" data-i18n="ok"></button>
+            </div>
+        </div>
+    </div>
 
     <script>
         const container = document.getElementById('canvas-container');
@@ -424,6 +614,17 @@
         // M-009: all texts in 5 languages
         const I18N = {
          "he": {
+          "item": "פריט",
+          "typeLabel": "סוג",
+          "nameLabel": "שם התרופה",
+          "namePh": "למשל: אקמול",
+          "doseLabel": "מינון",
+          "dosePh": "למשל: 1 כדור, 10 יחידות",
+          "timeLabel": "שעת התזכורת",
+          "ok": "אישור",
+          "cancel": "ביטול",
+          "hours": "שעה",
+          "minutes": "דקות",
           "addMore": "➕ עוד תרופה / זריקה לאותה שעה",
           "addReminder": "הוסף תזכורת",
           "voiceTitle": "🔊 הקראה קולית בתזכורת",
@@ -456,6 +657,17 @@
           "type_inhaler": "משאף"
          },
          "ar": {
+          "item": "عنصر",
+          "typeLabel": "النوع",
+          "nameLabel": "اسم الدواء",
+          "namePh": "مثال: باراسيتامول",
+          "doseLabel": "الجرعة",
+          "dosePh": "مثال: حبة واحدة، 10 وحدات",
+          "timeLabel": "وقت التذكير",
+          "ok": "تأكيد",
+          "cancel": "إلغاء",
+          "hours": "الساعة",
+          "minutes": "الدقائق",
           "addMore": "➕ دواء / حقنة أخرى في نفس الوقت",
           "addReminder": "أضف تذكيرًا",
           "voiceTitle": "🔊 القراءة الصوتية في التذكير",
@@ -488,6 +700,17 @@
           "type_inhaler": "بخاخ"
          },
          "ro": {
+          "item": "Element",
+          "typeLabel": "Tip",
+          "nameLabel": "Numele medicamentului",
+          "namePh": "ex.: Paracetamol",
+          "doseLabel": "Doza",
+          "dosePh": "ex.: 1 pastilă, 10 unități",
+          "timeLabel": "Ora mementoului",
+          "ok": "OK",
+          "cancel": "Anulează",
+          "hours": "Ora",
+          "minutes": "Minute",
           "addMore": "➕ Încă un medicament / o injecție la aceeași oră",
           "addReminder": "Adaugă memento",
           "voiceTitle": "🔊 Citire vocală la memento",
@@ -520,6 +743,17 @@
           "type_inhaler": "Inhalator"
          },
          "fr": {
+          "item": "Élément",
+          "typeLabel": "Type",
+          "nameLabel": "Nom du médicament",
+          "namePh": "ex. : Doliprane",
+          "doseLabel": "Dose",
+          "dosePh": "ex. : 1 comprimé, 10 unités",
+          "timeLabel": "Heure du rappel",
+          "ok": "OK",
+          "cancel": "Annuler",
+          "hours": "Heure",
+          "minutes": "Minutes",
           "addMore": "➕ Un autre médicament / une injection à la même heure",
           "addReminder": "Ajouter un rappel",
           "voiceTitle": "🔊 Lecture vocale du rappel",
@@ -552,6 +786,17 @@
           "type_inhaler": "Inhalateur"
          },
          "en": {
+          "item": "Item",
+          "typeLabel": "Type",
+          "nameLabel": "Medicine name",
+          "namePh": "e.g. Paracetamol",
+          "doseLabel": "Dose",
+          "dosePh": "e.g. 1 pill, 10 units",
+          "timeLabel": "Reminder time",
+          "ok": "OK",
+          "cancel": "Cancel",
+          "hours": "Hour",
+          "minutes": "Minutes",
           "addMore": "➕ Another medicine / injection at the same time",
           "addReminder": "Add reminder",
           "voiceTitle": "🔊 Voice readout",
@@ -598,6 +843,7 @@
             document.documentElement.dir = RTL_LANGS.includes(LANG) ? 'rtl' : 'ltr';
             document.getElementById('lang-select').value = LANG;
             document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+            document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
             if (Native && Native.setLanguage) {
                 try { Native.setLanguage(LANG); } catch (e) { }
             }
@@ -669,30 +915,107 @@
         const TYPE_ICON = { pill: '💊', injection: '💉', drops: '💧', syrup: '🥄', cream: '🧴', inhaler: '🌬️' };
         const itemRows = document.getElementById('item-rows');
 
+        // M-010: one big readable card per medicine: type buttons with icons, labelled fields
         function addItemRow() {
             const row = document.createElement('div');
             row.className = 'item-row';
+            row.dataset.type = 'pill';
             row.innerHTML =
-                `<select class="it-type">${TYPES.map(ty => `<option value="${ty}">${t('type_' + ty)}</option>`).join('')}</select>` +
-                `<input type="text" class="it-name" placeholder="${t('name')}">` +
-                `<input type="text" class="it-dose" placeholder="${t('dose')}">` +
-                `<button type="button" class="btn-remove-item" title="${t('remove')}">✕</button>`;
+                `<div class="item-head"><span><span data-i18n="item">${t('item')}</span> <span class="it-num"></span></span>` +
+                `<button type="button" class="btn-remove-item" data-i18n-title="remove" title="${t('remove')}">✕</button></div>` +
+                `<div class="field-label" data-i18n="typeLabel">${t('typeLabel')}</div>` +
+                `<div class="type-grid">${TYPES.map(ty =>
+                    `<button type="button" class="type-btn${ty === 'pill' ? ' sel' : ''}" data-type="${ty}">` +
+                    `<span class="ico">${TYPE_ICON[ty]}</span><span data-i18n="type_${ty}">${t('type_' + ty)}</span></button>`).join('')}</div>` +
+                `<div class="field-label" data-i18n="nameLabel">${t('nameLabel')}</div>` +
+                `<input type="text" class="it-name" data-i18n-ph="namePh" placeholder="${t('namePh')}">` +
+                `<div class="field-label" data-i18n="doseLabel">${t('doseLabel')}</div>` +
+                `<input type="text" class="it-dose" data-i18n-ph="dosePh" placeholder="${t('dosePh')}">`;
+            row.querySelectorAll('.type-btn').forEach(b => {
+                b.onclick = () => {
+                    row.querySelectorAll('.type-btn').forEach(x => x.classList.remove('sel'));
+                    b.classList.add('sel');
+                    row.dataset.type = b.dataset.type;
+                    if (navigator.vibrate) navigator.vibrate(15);
+                };
+            });
             row.querySelector('.btn-remove-item').onclick = () => {
                 if (itemRows.children.length > 1) row.remove();
                 else { row.querySelector('.it-name').value = ''; row.querySelector('.it-dose').value = ''; }
+                numberRows();
             };
             itemRows.appendChild(row);
+            numberRows();
+        }
+
+        function numberRows() {
+            [...itemRows.children].forEach((r, i) => { r.querySelector('.it-num').textContent = i + 1; });
+        }
+
+        // ---------- M-010: scroll wheel time picker ----------
+        const WHEEL_ITEM = 44;
+
+        function buildWheel(el, count) {
+            let html = '<div></div><div></div>';
+            for (let i = 0; i < count; i++) html += `<div>${String(i).padStart(2, '0')}</div>`;
+            html += '<div></div><div></div>';
+            el.innerHTML = html;
+            let last = -1, timer = null;
+            el.addEventListener('scroll', () => {
+                const idx = wheelIndex(el, count);
+                if (idx !== last) {
+                    last = idx;
+                    el.querySelectorAll('div').forEach((d, i) => d.classList.toggle('on', i === idx + 2));
+                    if (navigator.vibrate) navigator.vibrate(5);
+                }
+            });
+        }
+
+        function wheelIndex(el, count) {
+            return Math.max(0, Math.min(count - 1, Math.round(el.scrollTop / WHEEL_ITEM)));
+        }
+
+        function setWheel(el, value) {
+            el.scrollTop = value * WHEEL_ITEM;
+            el.querySelectorAll('div').forEach((d, i) => d.classList.toggle('on', i === value + 2));
+        }
+
+        const wheelH = document.getElementById('wheel-h');
+        const wheelM = document.getElementById('wheel-m');
+        buildWheel(wheelH, 24);
+        buildWheel(wheelM, 60);
+
+        function openTimePicker() {
+            const cur = document.getElementById('med-time').value;
+            let h, m;
+            if (cur) { [h, m] = cur.split(':').map(Number); }
+            else { const d = new Date(); h = d.getHours(); m = d.getMinutes(); }
+            document.getElementById('time-sheet').classList.add('open');
+            setWheel(wheelH, h);
+            setWheel(wheelM, m);
+        }
+
+        function closeTimePicker() {
+            document.getElementById('time-sheet').classList.remove('open');
+        }
+
+        function confirmTimePicker() {
+            const v = String(wheelIndex(wheelH, 24)).padStart(2, '0') + ':' + String(wheelIndex(wheelM, 60)).padStart(2, '0');
+            document.getElementById('med-time').value = v;
+            document.getElementById('time-btn').textContent = '⏰ ' + v;
+            closeTimePicker();
         }
 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             const timeInput = document.getElementById('med-time');
             const items = [...itemRows.querySelectorAll('.item-row')].map(r => ({
-                type: r.querySelector('.it-type').value,
+                type: r.dataset.type || 'pill',
                 name: r.querySelector('.it-name').value.trim(),
                 dose: r.querySelector('.it-dose').value.trim()
             })).filter(it => it.name);
             if (!items.length) { alert(t('needName')); return; }
+            if (!timeInput.value) { openTimePicker(); return; }
 
             const meds = loadMeds();
             meds.push({ id: newId(), time: timeInput.value, items });
@@ -703,6 +1026,7 @@
             itemRows.innerHTML = '';
             addItemRow();
             timeInput.value = '';
+            document.getElementById('time-btn').textContent = '--:--';
         });
 
         applyLanguage();
@@ -712,12 +1036,8 @@
             LANG = e.target.value;
             try { localStorage.setItem('medtime_lang', LANG); } catch (err) { }
             applyLanguage();
-            // Re-draw the rows / list / status in the new language (typed text is kept)
-            itemRows.querySelectorAll('.it-type').forEach(sel => {
-                [...sel.options].forEach(o => { o.textContent = t('type_' + o.value); });
-            });
-            itemRows.querySelectorAll('.it-name').forEach(i => { i.placeholder = t('name'); });
-            itemRows.querySelectorAll('.it-dose').forEach(i => { i.placeholder = t('dose'); });
+            // Re-draw the list / status in the new language (typed text is kept)
+            document.querySelectorAll('[data-i18n-title]').forEach(el => { el.title = t(el.dataset.i18nTitle); });
             renderMeds();
             renderStatus();
         });

@@ -17,4 +17,5 @@
 - Owner: "open the phone from lock when needed" -> M-008.
 - Build 16 installed 09:59 (watcher had hung while phone was locked; owner restarted it).
 - Owner asked for Arabic, Hebrew, Romanian, French, English in menus, voice and everything -> M-009 (was planned for stage 5).
+- Build 17 installed 10:08. Owner asked: scroll wheel for time, more readable medicine form -> M-010; status line + test button to move to settings (stage 5).
 - Open: owner tests stage 1 and M-004.
