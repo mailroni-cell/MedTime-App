@@ -142,7 +142,14 @@
     // ---- glossy floor far below, catches shadows and reflections ----
     const floor = new THREE.Mesh(
         new THREE.CircleGeometry(40, 64),
-        new THREE.MeshStandardMaterial({ color: 0x050816, roughness: 0.55, metalness: 0.3, envMapIntensity: 0.25 })
+        new THREE.MeshStandardMaterial({ color: 0x050816, roughness: 0.55, metalness: 0.3, envMapIntensity: 0.25, transparent: true, depthWrite: false, alphaMap: (function () {
+            // M-064: the floor fades out softly toward its edge, so there is no hard line between the scene and the bottom
+            const c = document.createElement('canvas'); c.width = c.height = 256;
+            const g = c.getContext('2d'), gr = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+            gr.addColorStop(0, '#fff'); gr.addColorStop(0.35, '#fff'); gr.addColorStop(0.75, '#555'); gr.addColorStop(1, '#000');
+            g.fillStyle = gr; g.fillRect(0, 0, 256, 256);
+            return new THREE.CanvasTexture(c);
+        })() })
     );
     floor.rotation.x = -Math.PI / 2;
     floor.position.y = -6.5;

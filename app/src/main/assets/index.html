@@ -2334,6 +2334,14 @@
         /* M-063: no see-through panel around the main menu, the buttons stand on the background */
         .home-card { background: none !important; border: none !important; box-shadow: none !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
         .home-card::before, .home-card::after { display: none !important; }
+
+        /* M-064: main buttons one under the other (all modes), nothing spills out in low-vision / extra-large text */
+        html.lowvision .home-card, html.ts3 .home-card { background: none !important; border: none !important; box-shadow: none !important; }
+        .home-card .nav-row { grid-template-columns: 1fr !important; gap: 10px !important; }
+        .home-card .nav-row > button { min-height: 64px !important; width: 100% !important; }
+        .home-card .appt-btn .ab-txt { flex-direction: row !important; flex-wrap: wrap; justify-content: center; column-gap: 10px; }
+        html.lowvision .appt-btn .ab-title, html.ts3 .appt-btn .ab-title, html.lowvision .appt-btn .ab-sub, html.ts3 .appt-btn .ab-sub { white-space: nowrap; }
+        html.lowvision .mt-glint { display: none !important; }
     </style>
 </head>
 <body>
@@ -3892,6 +3900,7 @@
         // ---------- M-037: text size (normal / large / extra large) ----------
         function applyTextSize(n) {
             document.documentElement.style.fontSize = ({ 1: '', 2: '112%', 3: '125%' })[n] || '';
+            document.documentElement.classList.toggle('ts3', n === 3); // M-064
             document.querySelectorAll('.ts-btns button').forEach(b => b.classList.toggle('sel', +b.dataset.ts === n));
         }
         (function () {
