@@ -590,5 +590,6 @@
         if (composer) composer.render();
         else renderer.render(scene, camera);
     }
+    try { renderer.compile(scene, camera); } catch (e) { } // M-057: no hiccup when the opening ends
     requestAnimationFrame(loop);
 })();

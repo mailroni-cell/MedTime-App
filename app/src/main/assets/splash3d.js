@@ -123,13 +123,17 @@
 
     var ease = function (x) { x = Math.min(1, Math.max(0, x)); return 1 - Math.pow(1 - x, 3); };
     var back = function (x) { x = Math.min(1, Math.max(0, x)); var c = 1.7; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
-    var t0 = performance.now(), last = t0, alive = true, slow = 0;
+    try { renderer.compile(scene, camera); } catch (e) { } // M-057: build shaders before the show starts
+    var t0 = 0, last = 0, T = 0, alive = true, slow = 0;
 
     function frame(now) {
         if (!alive) return;
         if (!document.body.contains(sp)) { cleanup(); return; }
         requestAnimationFrame(frame);
-        var t = (now - t0) / 1000, dt = Math.min(0.05, (now - last) / 1000); last = now;
+        // M-057: start only once the page is ready (the go-signal exists), and run on our own clock so a slow frame never skips part of the show
+        if (!t0) { if (!window.__spGo) return; t0 = now; last = now; window.__spGo(); }
+        var dt = Math.min(0.1, (now - last) / 1000); last = now; T += dt;
+        var t = T;
         if (dt > 0.045) slow++;
         if (slow > 25 && composer) composer = null; // weak phone: drop bloom
 
@@ -171,6 +175,8 @@
         } else { ring.material.opacity = 0; pMat.opacity = 0; }
 
         key.position.x = Math.sin(t) * 6; rim.position.y = Math.cos(t * 0.8) * 4;
+        var fin = ease((t - 6.6) / 1.4); // M-057: finale: capsule and helix rush toward the viewer
+        if (fin > 0) { cap.position.z += fin * 9; helix.position.z = cap.position.z; cap.rotation.y += fin * 4; helix.scale.multiplyScalar(1 + fin * 1.5); capGlow.material.opacity = 0.18 + fin * 0.6; }
         camera.position.set(Math.sin(t * 0.3) * 0.6, Math.cos(t * 0.25) * 0.3, 12 - ease(t / 6) * 1.2);
         camera.lookAt(0, home.y * 0.6, 0);
         if (composer) composer.render(); else renderer.render(scene, camera);

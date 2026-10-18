@@ -2259,6 +2259,64 @@
         #splash .sl { opacity: 0; transform-box: fill-box; transform-origin: center; animation: spLetterSvg 0.9s cubic-bezier(.2, 1.4, .4, 1) forwards; }
         @keyframes spLetterSvg { 0% { opacity: 0; transform: translateY(-40%) scale(2.4); } 100% { opacity: 1; transform: none; } }
         .mt-shine { mix-blend-mode: screen; }
+
+        /* M-057: opening flows to the end: CSS parts wait for the first 3D frame, soft long fade out; professional credit */
+        #splash:not(.go) *, #splash:not(.go) .sl { animation-play-state: paused !important; }
+        #splash.out { transition: opacity 1.2s ease, transform 1.2s ease, filter 1.2s ease !important; transform: scale(1.12) !important; filter: blur(3px) !important; }
+        #splash .sp-credit { display: flex; flex-direction: column; align-items: center; gap: 2px; bottom: calc(5vh + env(safe-area-inset-bottom)) !important;
+            background: none !important; -webkit-background-clip: border-box !important; background-clip: border-box !important; color: #fff !important;
+            animation: spFade 1s ease 4.6s both !important; }
+        #splash .cr-line { width: 120px; height: 2px; margin-bottom: 8px; background: linear-gradient(90deg, transparent, #fbbf24, transparent); box-shadow: 0 0 10px #fbbf24; }
+        #splash .cr-by { font-size: clamp(0.85rem, 3.6vmin, 1.1rem); font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: #cbd5e1; }
+        #splash .cr-name { font-size: clamp(2rem, 10vmin, 3.2rem); font-weight: 800; line-height: 1.15; letter-spacing: 0.04em;
+            background: linear-gradient(90deg, #f59e0b, #fde68a 30%, #fffbeb 45%, #fbbf24 60%, #b45309 100%) 0 0 / 220% 100%;
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            filter: drop-shadow(0 2px 0 #78350f) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 16px rgba(251, 191, 36, 0.55));
+            animation: spShine 3s linear 5s infinite; }
+        #splash .cr-c { font-size: clamp(0.8rem, 3.2vmin, 1rem); color: #94a3b8; letter-spacing: 0.08em; direction: ltr; }
+
+        /* M-058/M-060: updates + help tiles (8 tiles = 4 rows) */
+        .set-grid { grid-template-rows: repeat(4, 1fr) !important; }
+        .set-grid .set-ico { width: min(22vw, 10.5vh, 104px) !important; height: min(22vw, 10.5vh, 104px) !important; font-size: min(10vw, 5vh, 3rem) !important; }
+        .set-grid .set-tile-head { gap: 4px !important; }
+        .upd-ver { display: flex; align-items: baseline; justify-content: center; gap: 10px; margin: 6px 0 12px; color: #cbd5e1; font-size: 1.05rem; }
+        .upd-ver b { font-family: 'MTLogo2', 'MTUI', sans-serif; font-size: 2.2rem; color: #fff; text-shadow: 0 0 14px rgba(56, 189, 248, 0.8); direction: ltr; }
+        .upd-btn { display: block; width: 100%; min-height: 58px; border: none; border-radius: 30px; font: 800 1.15rem 'MTUI', sans-serif; color: #fff;
+            background: linear-gradient(135deg, #38bdf8, #4f46e5); box-shadow: inset 0 2px 1px rgba(255,255,255,.4), inset 0 -5px 8px rgba(0,0,0,.35), 0 8px 18px rgba(0,0,0,.5), 0 0 22px rgba(56,189,248,.45); }
+        .upd-btn.go { background: linear-gradient(135deg, #22c55e, #0d9488); box-shadow: inset 0 2px 1px rgba(255,255,255,.4), inset 0 -5px 8px rgba(0,0,0,.35), 0 8px 18px rgba(0,0,0,.5), 0 0 26px rgba(34,197,94,.7); animation: updPulse 1.6s ease-in-out infinite; }
+        .upd-btn:disabled { opacity: .6; }
+        @keyframes updPulse { 50% { transform: scale(1.03); } }
+        .upd-bar { height: 10px; border-radius: 6px; margin: 12px 4px 0; background: rgba(255,255,255,.12); overflow: hidden; display: none; }
+        .upd-bar.on { display: block; }
+        .upd-bar i { display: block; height: 100%; border-radius: 6px; background: linear-gradient(90deg, #22d3ee, #a78bfa); box-shadow: 0 0 10px #22d3ee; transition: width .3s; }
+        .upd-bar.busy i { animation: updBusy 1.2s ease-in-out infinite alternate; }
+        @keyframes updBusy { from { margin-inline-start: 0; } to { margin-inline-start: 70%; } }
+        .upd-msg { min-height: 1.4em; margin: 10px 4px 6px; text-align: center; font-weight: 700; color: #e2e8f0; line-height: 1.4; }
+        .upd-msg.newer, .upd-msg.ready { color: #86efac; } .upd-msg.error { color: #fca5a5; } .upd-msg.perm { color: #fde68a; }
+        .upd-pill { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom)); transform: translate(-50%, 40px); opacity: 0; z-index: 9000;
+            max-width: 88vw; padding: 10px 18px; border-radius: 22px; background: rgba(15, 23, 42, .92); color: #fff; font: 700 1rem 'MTUI', sans-serif; text-align: center;
+            box-shadow: 0 0 0 1.5px rgba(56,189,248,.6), 0 8px 24px rgba(0,0,0,.6); transition: opacity .3s, transform .3s; pointer-events: none; }
+        .upd-pill.on { opacity: 1; transform: translate(-50%, 0); }
+        .help-list { display: flex; flex-direction: column; gap: 8px; padding-bottom: 8px; }
+        .help-item { border-radius: 20px; background: rgba(255,255,255,.07); box-shadow: inset 0 1px 1px rgba(255,255,255,.18), inset 0 -3px 6px rgba(0,0,0,.3), 0 4px 10px rgba(0,0,0,.35); overflow: hidden; }
+        .help-item summary { list-style: none; display: flex; align-items: center; gap: 10px; padding: 12px 14px; font: 700 1.08rem 'MTUI', sans-serif; color: #f1f5f9; cursor: pointer; }
+        .help-item summary::-webkit-details-marker { display: none; }
+        .help-item .h-ico { font-size: 1.4rem; }
+        .help-item .h-t { flex: 1; }
+        .help-item .h-chev { transition: transform .25s; opacity: .7; }
+        .help-item[open] { background: rgba(56,189,248,.12); box-shadow: inset 0 1px 1px rgba(255,255,255,.2), 0 0 0 1.5px rgba(56,189,248,.5), 0 4px 14px rgba(0,0,0,.4); }
+        .help-item[open] .h-chev { transform: rotate(180deg); }
+        .help-item p { margin: 0; padding: 0 16px 14px; font: 500 1.02rem/1.6 'MTUI', sans-serif; color: #e2e8f0; }
+        html.lowvision .help-item p { font-size: 1.2rem; }
+
+        /* M-059: a thin light runs around a menu frame now and then */
+        @property --ga { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+        .mt-glint { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 3; padding: 2.4px;
+            background: conic-gradient(from var(--ga), transparent 0deg, transparent 250deg, rgba(var(--gA), .5) 300deg, #fff 345deg, #fff 352deg, transparent 360deg);
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+            filter: drop-shadow(0 0 3px #fff) drop-shadow(0 0 6px rgba(var(--gA), .9));
+            animation: mtGlint 1.9s cubic-bezier(.45, .05, .55, .95) forwards; }
+        @keyframes mtGlint { 0% { --ga: var(--gs); opacity: 0; } 15% { opacity: 1; } 80% { opacity: 1; } 100% { --ga: calc(var(--gs) + var(--gd)); opacity: 0; } }
     </style>
 </head>
 <body>
@@ -2300,7 +2358,10 @@
             var sp = document.getElementById('splash');
             document.getElementById('sp-tag').textContent = TX[L].tag;
             var cr = document.getElementById('sp-credit');
-            cr.textContent = TX[L].credit; cr.dir = TX[L].dir;
+            // M-057: professional credit with the owner's name
+            var BY = { he: ['פיתוח ועיצוב', 'רוני'], ar: ['تطوير وتصميم', 'روني'], ro: ['Dezvoltat și proiectat de', 'Roni'], fr: ['Conçu et développé par', 'Roni'], en: ['Designed & developed by', 'Roni'] }[L];
+            cr.innerHTML = '<div class="cr-line"></div><div class="cr-by"></div><div class="cr-name"></div><div class="cr-c">© 2026 · MedTime</div>';
+            cr.querySelector('.cr-by').textContent = BY[0]; cr.querySelector('.cr-name').textContent = BY[1]; cr.dir = TX[L].dir;
             for (var i = 0; i < 46; i++) {
                 var st = document.createElement('div');
                 st.className = 'sp-star';
@@ -2314,10 +2375,14 @@
             window.endSplash = function () {
                 if (done) return; done = true; window.__splashEnd = performance.now();
                 sp.classList.add('out');
-                setTimeout(function () { sp.remove(); }, 750);
+                setTimeout(function () { sp.remove(); }, 1300);
                 if (!TX[stored]) showWelcome();
             };
-            setTimeout(window.endSplash, 6600); // M-048: 3 s longer, 3D
+            // M-057: the timeline starts on the first real frame (splash3d.js adds .go and ends it at 7.6 s); safety net here
+            window.__spGo = function () { if (sp.classList.contains('go')) return; sp.classList.add('go'); setTimeout(window.endSplash, 7600); };
+            setTimeout(function () { if (!window.THREE) window.__spGo(); }, 50);
+            setTimeout(window.__spGo, 4000); // no 3D frame yet: start the show anyway
+            setTimeout(window.endSplash, 20000);
 
             function showWelcome() {
                 var w = document.getElementById('welcome'), title = document.getElementById('wl-title'),
@@ -3590,6 +3655,7 @@
             if (window.apptRender) apptRender(); // M-036
             if (window.relaxRender) relaxRender(); // M-044
             if (window.mwRender) mwRender(); // M-050
+            if (window.xRender) xRender(); // M-058/M-060
         });
 
         // M-013: reminder cards tilt in 3D under the finger
@@ -3951,6 +4017,7 @@
     <script src="appts.js"></script>
     <script src="relax.js"></script>
     <script src="medwiz.js"></script>
+    <script src="extras.js"></script>
     <script src="meds.js"></script>
     <script src="themes.js"></script>
     <script src="worlds.js"></script>

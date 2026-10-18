@@ -17,10 +17,28 @@ import org.json.JSONObject;
 public class NativeBridge {
 
     private final Activity activity;
+    private android.webkit.WebView web; // M-058: for update progress callbacks
 
     NativeBridge(Activity activity) {
         this.activity = activity;
     }
+
+    NativeBridge(Activity activity, android.webkit.WebView web) {
+        this.activity = activity;
+        this.web = web;
+    }
+
+    /** M-058: this build's run number (versionCode - 100). */
+    @JavascriptInterface
+    public int getVersion() { return Updater.currentRun(activity); }
+
+    /** M-058: ask GitHub for the newest build; answer comes back as window.mtUpd({type:'check',...}). */
+    @JavascriptInterface
+    public void checkUpdate() { if (web != null) Updater.check(activity, web); }
+
+    /** M-058: download the newest APK and open the Android installer. */
+    @JavascriptInterface
+    public void installUpdate() { if (web != null) Updater.download(activity, web); }
 
     /** M-031: close the app (alarms are booked in Android, so reminders still come). */
     @JavascriptInterface
