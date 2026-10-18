@@ -8,3 +8,7 @@
 ## 2026-10-18 08:57-09:05 – Auto-install verified, decision to port all old features
 - Owner ran setup (first pasted into CMD by mistake; then via `powershell -ExecutionPolicy Bypass -File ...`). Log: INSTALLED + STARTED.
 - Owner: app looks basic -> chose "bring everything into MedTime". Plan written in STATE.md. Handoff prompt prepared (usage ~80%).
+
+## 2026-10-18 06:00 – Stage 1: reminders when the app is closed + voice
+- Owner approved the stage 1 plan (card). Done: M-005 (alarm clock reminders, full-screen reminder, Hebrew TTS, Taken/Snooze, dose field, test button, status line). Workflow publishes release `latest` so the APK downloads without login.
+- Open: owner tests stage 1 and M-004.

@@ -1,9 +1,13 @@
-# MedTime - STATE (updated 2026-10-18 09:05)
+# MedTime - STATE (updated 2026-10-18, stage 1)
 
 ## Where we are
 - First successful build ever on 2026-10-18 (run #10, before that 9 failed builds).
 - App today: dark Hebrew screen, small Three.js animation on top, add reminder / delete reminder. Basic.
 - Automation set up: GitHub build -> APK to PC folder -> watcher installs + launches on the phone.
+
+## Now
+- Stage 1 (M-005: reminders when app is closed + voice) built and sent to the phone, waiting for owner test. M-004 also still waiting for test.
+- Old app source: the whole Flutter app (main.dart) is embedded in pill-reminder/.github/workflows/build.yml, no Drive needed.
 
 ## Done and verified
 - Auto-install works: watcher registered 2026-10-18 08:58, log shows "INSTALLED + STARTED" (run #10 APK).

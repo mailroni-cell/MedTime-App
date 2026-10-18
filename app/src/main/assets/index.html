@@ -132,6 +132,51 @@
             color: var(--text-muted);
         }
 
+        /* M-005: reminder status + test button */
+        .status-box {
+            width: 100%;
+            max-width: 480px;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .status-line {
+            background: #422006;
+            border: 1px solid #f59e0b;
+            color: #fde68a;
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-line.ok {
+            background: #052e1c;
+            border-color: var(--accent);
+            color: #a7f3d0;
+        }
+
+        .status-line button, button.btn-test {
+            background: transparent;
+            border: 1px solid currentColor;
+            color: inherit;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        button.btn-test {
+            color: #38bdf8;
+            padding: 10px;
+            font-size: 0.95rem;
+        }
+
         .btn-delete {
             background: transparent;
             border: 1px solid var(--danger);
@@ -154,10 +199,13 @@
     <div class="card">
         <form id="med-form" class="form-group">
             <input type="text" id="med-name" placeholder="שם התרופה" required>
+            <input type="text" id="med-dose" placeholder="מינון (למשל: 1 כדור)">
             <input type="time" id="med-time" required>
             <button type="submit" class="btn-add">הוסף תזכורת</button>
         </form>
     </div>
+
+    <div id="status-box" class="status-box"></div>
 
     <ul id="med-list" class="med-list"></ul>
 
@@ -233,15 +281,84 @@
         const form = document.getElementById('med-form');
         const list = document.getElementById('med-list');
 
+        // M-005: native Android bridge (exists only inside the app, not in a browser)
+        const Native = window.MedTimeNative || null;
+
         function loadMeds() {
             const data = localStorage.getItem('medtime_list');
-            return data ? JSON.parse(data) : [];
+            let meds = [];
+            try { meds = data ? JSON.parse(data) : []; } catch (e) { meds = []; }
+            // Older entries have no id / dose: give them one
+            let changed = false;
+            meds.forEach((m, i) => {
+                if (!m.id) { m.id = newId() + i; changed = true; }
+                if (m.dose === undefined) { m.dose = ''; changed = true; }
+            });
+            if (changed) localStorage.setItem('medtime_list', JSON.stringify(meds));
+            return meds;
+        }
+
+        function newId() {
+            // 1..99,999,999 (fits the Android alarm request code)
+            return (Date.now() % 99000000) + 1;
+        }
+
+        function syncNative(meds) {
+            if (!Native) return;
+            try {
+                Native.syncReminders(JSON.stringify(meds.map(m => ({
+                    id: m.id, name: m.name, dose: m.dose || '', time: m.time
+                }))));
+            } catch (e) { console.error(e); }
         }
 
         function saveMeds(meds) {
             localStorage.setItem('medtime_list', JSON.stringify(meds));
+            syncNative(meds);
             renderMeds();
         }
+
+        const STATUS_TEXT = {
+            notifications: 'ההתראות של האפליקציה כבויות',
+            exact: 'אין הרשאה לשעון מעורר מדויק',
+            fullScreen: 'אין הרשאה למסך תזכורת מלא',
+            battery: 'חיסכון בסוללה עלול לעכב תזכורות'
+        };
+
+        function renderStatus() {
+            const box = document.getElementById('status-box');
+            if (!Native) { box.innerHTML = ''; return; }
+            let st = {};
+            try { st = JSON.parse(Native.getStatus()); } catch (e) { }
+            let html = '';
+            ['notifications', 'exact', 'fullScreen', 'battery'].forEach(k => {
+                if (st[k] === false) {
+                    html += `<div class="status-line"><span>⚠️ ${STATUS_TEXT[k]}</span>` +
+                        `<button onclick="MedTimeNative.openSettings('${k}')">תקן</button></div>`;
+                }
+            });
+            if (st.tts === 'no_hebrew') {
+                html += `<div class="status-line"><span>⚠️ אין קול עברי בטלפון להקראה</span>` +
+                    `<button onclick="MedTimeNative.openSettings('tts')">הגדרות קול</button></div>`;
+            }
+            if (!html) html = `<div class="status-line ok"><span>✅ התזכורות פעילות גם כשהאפליקציה סגורה</span></div>`;
+            html += `<button class="btn-test" onclick="testReminder()">🔔 תזכורת ניסיון בעוד דקה</button>`;
+            box.innerHTML = html;
+        }
+
+        function testReminder() {
+            if (!Native) return;
+            Native.testReminder('תרופת ניסיון', '1 כדור', 60);
+            alert('תזכורת ניסיון תופיע בעוד דקה. אפשר לסגור את האפליקציה ולנעול את המסך.');
+        }
+
+        function escapeHtml(s) {
+            return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) renderStatus();
+        });
 
         function deleteMed(index) {
             const meds = loadMeds();
@@ -257,8 +374,8 @@
                 li.className = 'med-item';
                 li.innerHTML = `
                     <div class="med-info">
-                        <h3>${m.name}</h3>
-                        <p>שעה: ${m.time}</p>
+                        <h3>${escapeHtml(m.name)}</h3>
+                        <p>שעה: ${m.time}${m.dose ? ' · מינון: ' + escapeHtml(m.dose) : ''}</p>
                     </div>
                     <button class="btn-delete" onclick="deleteMed(${idx})">מחק</button>
                 `;
@@ -271,8 +388,11 @@
             const nameInput = document.getElementById('med-name');
             const timeInput = document.getElementById('med-time');
 
+            const doseInput = document.getElementById('med-dose');
             const newMed = {
+                id: newId(),
                 name: nameInput.value.trim(),
+                dose: doseInput.value.trim(),
                 time: timeInput.value
             };
 
@@ -282,10 +402,13 @@
             playChime();
 
             nameInput.value = '';
+            doseInput.value = '';
             timeInput.value = '';
         });
 
         renderMeds();
+        syncNative(loadMeds());
+        renderStatus();
     </script>
 </body>
 </html>

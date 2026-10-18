@@ -55,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
         webView.setWebViewClient(new WebViewClient());
         webView.setWebChromeClient(new WebChromeClient());
 
+        // M-005: bridge so the page can book real Android alarms
+        webView.addJavascriptInterface(new NativeBridge(this), "MedTimeNative");
+
         webView.loadUrl("file:///android_asset/index.html");
     }
 

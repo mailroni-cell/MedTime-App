@@ -9,7 +9,7 @@ Every new rule the owner sets is added here right away.
 
 ## Work method (cloud, different from ApexDash)
 - Claude edits the code in the cloud and pushes to `main`. GitHub Actions (`.github/workflows/build-apk.yml`) builds the APK by itself.
-- Claude waits for the build, downloads the APK (artifact `MedTime-Debug-APK`) and drops it into `C:\Users\Roni\Downloads\MedTime\` on the PC as `MedTime-latest.apk`.
+- Claude waits for the build, downloads the APK (artifact `MedTime-Debug-APK`, or without login from the rolling release: https://github.com/mailroni-cell/MedTime-App/releases/download/latest/MedTime-latest.apk; build-info.txt there names the run) and drops it into `C:\Users\Roni\Downloads\MedTime\` on the PC as `MedTime-latest.apk`.
 - The PC watcher (`medtime_autoinstall.ps1`, scheduled task "MedTime AutoInstall") installs it on the phone over adb and launches the app by itself. Result is logged to `C:\Users\Roni\Downloads\MedTime\install_log.txt` - Claude reads it to confirm.
 - Every build is signed with the fixed key `app/medtime-debug.keystore` (do NOT replace it, or updates stop installing over the old app). versionCode = 100 + GitHub run number.
 - State files in this repo are the only source of truth: CLAUDE.md (rules), STATE.md (where we are), CHANGES.md (every change, M-xxx ID, status: ✅ tested / ⏳ waiting / ❌ failed), SESSIONS.md (one entry per session).
