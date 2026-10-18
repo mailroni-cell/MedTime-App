@@ -51,8 +51,7 @@ public class AlarmActivity extends Activity {
     }
 
     private void buildScreen(final Intent src) {
-        String name = src.getStringExtra(Reminders.EXTRA_NAME);
-        String dose = src.getStringExtra(Reminders.EXTRA_DOSE);
+        String[] lines = Reminders.lines(src.getStringExtra(Reminders.EXTRA_ITEMS));
 
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
@@ -63,11 +62,9 @@ public class AlarmActivity extends Activity {
         root.setPadding(pad, pad, pad, pad);
 
         root.addView(text("💊", 72, "#38bdf8"));
-        root.addView(text("הגיע הזמן לקחת תרופה", 22, "#94a3b8"));
-        root.addView(text(name == null ? "" : name, 38, "#f8fafc"));
-        if (dose != null && !dose.trim().isEmpty()) {
-            root.addView(text("מינון: " + dose.trim(), 26, "#10b981"));
-        }
+        root.addView(text(lines.length > 1 ? "הגיע הזמן לקחת תרופות" : "הגיע הזמן לקחת תרופה", 22, "#94a3b8"));
+        int size = lines.length > 3 ? 22 : (lines.length > 1 ? 28 : 34);
+        for (String l : lines) root.addView(text(l, size, "#f8fafc"));
 
         Button taken = button("✅ לקחתי", "#10b981");
         taken.setOnClickListener(v -> answer(src, ActionReceiver.ACTION_TAKEN));
@@ -76,7 +73,14 @@ public class AlarmActivity extends Activity {
         root.addView(taken);
         root.addView(snooze);
 
-        setContentView(root);
+        // Scrolls when there are many items
+        android.widget.ScrollView scroll = new android.widget.ScrollView(this);
+        scroll.setFillViewport(true);
+        scroll.setBackgroundColor(Color.parseColor("#0f172a"));
+        scroll.addView(root, new android.widget.ScrollView.LayoutParams(
+                android.widget.ScrollView.LayoutParams.MATCH_PARENT,
+                android.widget.ScrollView.LayoutParams.MATCH_PARENT));
+        setContentView(scroll);
     }
 
     private void answer(Intent src, String action) {

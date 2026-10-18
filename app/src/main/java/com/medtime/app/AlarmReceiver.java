@@ -10,15 +10,14 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context ctx, Intent intent) {
         int id = intent.getIntExtra(Reminders.EXTRA_ID, 0);
-        String name = intent.getStringExtra(Reminders.EXTRA_NAME);
-        String dose = intent.getStringExtra(Reminders.EXTRA_DOSE);
+        String items = intent.getStringExtra(Reminders.EXTRA_ITEMS);
         String time = intent.getStringExtra(Reminders.EXTRA_TIME);
         boolean daily = intent.getBooleanExtra(Reminders.EXTRA_DAILY, false);
 
         // Daily reminder: book tomorrow's alarm right away
         if (daily && time != null) {
             long next = Reminders.nextOccurrence(time);
-            if (next > 0) Reminders.schedule(ctx, id, name, dose, time, next, true);
+            if (next > 0) Reminders.schedule(ctx, id, items, time, next, true);
         }
 
         Intent svc = new Intent(ctx, ReminderService.class);

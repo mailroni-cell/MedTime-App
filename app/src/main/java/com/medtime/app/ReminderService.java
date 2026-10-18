@@ -48,8 +48,7 @@ public class ReminderService extends Service {
             return START_NOT_STICKY;
         }
         int id = intent.getIntExtra(Reminders.EXTRA_ID, 0);
-        String name = intent.getStringExtra(Reminders.EXTRA_NAME);
-        String dose = intent.getStringExtra(Reminders.EXTRA_DOSE);
+        String items = intent.getStringExtra(Reminders.EXTRA_ITEMS);
 
         Notification n = buildNotification(this, intent);
         int nid = notificationId(id);
@@ -65,13 +64,18 @@ public class ReminderService extends Service {
             wakeLock.acquire(60_000L);
         }
 
-        speak(Reminders.speechText(name, dose));
+        speak(Reminders.speechText(items));
         // Safety net: never keep the service running longer than a minute
         handler.postDelayed(this::finishKeepNotification, 60_000L);
         return START_NOT_STICKY;
     }
 
     private void speak(final String text) {
+        // A second reminder at the same moment replaces the first voice instead of talking over it
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
         tts = new TextToSpeech(getApplicationContext(), status -> {
             if (status != TextToSpeech.SUCCESS || tts == null) {
                 saveTtsState("error");
@@ -166,8 +170,7 @@ public class ReminderService extends Service {
     static Notification buildNotification(Context ctx, Intent src) {
         ensureChannel(ctx);
         int id = src.getIntExtra(Reminders.EXTRA_ID, 0);
-        String name = src.getStringExtra(Reminders.EXTRA_NAME);
-        String dose = src.getStringExtra(Reminders.EXTRA_DOSE);
+        String[] lines = Reminders.lines(src.getStringExtra(Reminders.EXTRA_ITEMS));
         Bundle extras = src.getExtras() != null ? src.getExtras() : new Bundle();
 
         Intent full = new Intent(ctx, AlarmActivity.class);
@@ -183,8 +186,7 @@ public class ReminderService extends Service {
         PendingIntent snoozePi = PendingIntent.getBroadcast(ctx, id * 4 + 3, snooze,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
-        String body = "הגיע הזמן לקחת: " + name
-                + (dose != null && !dose.trim().isEmpty() ? " (מינון: " + dose.trim() + ")" : "");
+        String body = "הגיע הזמן לקחת:\n" + String.join("\n", lines);
 
         Notification.Builder b = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
                 ? new Notification.Builder(ctx, CHANNEL_ID)

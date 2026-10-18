@@ -11,4 +11,6 @@
 
 ## 2026-10-18 06:00 – Stage 1: reminders when the app is closed + voice
 - Owner approved the stage 1 plan (card). Done: M-005 (alarm clock reminders, full-screen reminder, Hebrew TTS, Taken/Snooze, dose field, test button, status line). Workflow publishes release `latest` so the APK downloads without login.
+- Owner asked for several medicines + injection in one reminder -> M-006 added to stage 1 (approved by card).
+- PC watcher did not react to the new APK (log stuck at 09:02); owner asked to restart the scheduled task.
 - Open: owner tests stage 1 and M-004.

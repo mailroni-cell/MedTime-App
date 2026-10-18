@@ -20,8 +20,7 @@ public class ActionReceiver extends BroadcastReceiver {
         if (ACTION_SNOOZE.equals(intent.getAction())) {
             Reminders.snooze(ctx,
                     id,
-                    intent.getStringExtra(Reminders.EXTRA_NAME),
-                    intent.getStringExtra(Reminders.EXTRA_DOSE),
+                    intent.getStringExtra(Reminders.EXTRA_ITEMS),
                     intent.getStringExtra(Reminders.EXTRA_TIME));
         }
         ctx.stopService(new Intent(ctx, ReminderService.class));

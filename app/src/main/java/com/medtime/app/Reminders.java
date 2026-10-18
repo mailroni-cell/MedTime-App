@@ -23,8 +23,7 @@ public class Reminders {
     static final String KEY_LIST = "list";
 
     static final String EXTRA_ID = "id";
-    static final String EXTRA_NAME = "name";
-    static final String EXTRA_DOSE = "dose";
+    static final String EXTRA_ITEMS = "items"; // JSON array [{name,dose,type}]
     static final String EXTRA_TIME = "time";
     static final String EXTRA_DAILY = "daily";
 
@@ -51,7 +50,7 @@ public class Reminders {
             String time = r.optString("time", "");
             long at = nextOccurrence(time);
             if (at <= 0) continue;
-            schedule(ctx, r.optInt("id"), r.optString("name", ""), r.optString("dose", ""), time, at, true);
+            schedule(ctx, r.optInt("id"), itemsOf(r).toString(), time, at, true);
         }
     }
 
@@ -72,10 +71,10 @@ public class Reminders {
     }
 
     /** Daily alarms use request code id*2, one-time alarms (snooze / test) use id*2+1. */
-    static void schedule(Context ctx, int id, String name, String dose, String time, long at, boolean daily) {
+    static void schedule(Context ctx, int id, String items, String time, long at, boolean daily) {
         AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
         if (am == null) return;
-        PendingIntent pi = alarmIntent(ctx, id, name, dose, time, daily);
+        PendingIntent pi = alarmIntent(ctx, id, items, time, daily);
 
         boolean exactAllowed = Build.VERSION.SDK_INT < Build.VERSION_CODES.S || am.canScheduleExactAlarms();
         if (exactAllowed) {
@@ -90,23 +89,22 @@ public class Reminders {
         }
     }
 
-    static void snooze(Context ctx, int id, String name, String dose, String time) {
+    static void snooze(Context ctx, int id, String items, String time) {
         long at = System.currentTimeMillis() + SNOOZE_MINUTES * 60_000L;
-        schedule(ctx, id, name, dose, time, at, false);
+        schedule(ctx, id, items, time, at, false);
     }
 
     static void cancel(Context ctx, int id, boolean daily) {
         AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
         if (am == null) return;
-        am.cancel(alarmIntent(ctx, id, "", "", "", daily));
+        am.cancel(alarmIntent(ctx, id, "[]", "", daily));
     }
 
-    private static PendingIntent alarmIntent(Context ctx, int id, String name, String dose, String time, boolean daily) {
+    private static PendingIntent alarmIntent(Context ctx, int id, String items, String time, boolean daily) {
         Intent i = new Intent(ctx, AlarmReceiver.class);
         i.setAction("com.medtime.app.REMINDER_" + id + (daily ? "_D" : "_S"));
         i.putExtra(EXTRA_ID, id);
-        i.putExtra(EXTRA_NAME, name);
-        i.putExtra(EXTRA_DOSE, dose);
+        i.putExtra(EXTRA_ITEMS, items);
         i.putExtra(EXTRA_TIME, time);
         i.putExtra(EXTRA_DAILY, daily);
         int code = id * 2 + (daily ? 0 : 1);
@@ -114,11 +112,57 @@ public class Reminders {
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
-    /** Spoken text, same wording as the old Cyber Pharma 3D app. */
-    static String speechText(String name, String dose) {
-        String s = "תזכורת. הגיע הזמן לקחת את התרופה: " + name;
-        if (dose != null && !dose.trim().isEmpty()) s += ". מינון: " + dose.trim();
-        return s;
+    // ---------- M-006: several medicines / injections in one reminder ----------
+
+    /** Items of a saved reminder; older entries had a single name + dose. */
+    static JSONArray itemsOf(JSONObject r) {
+        JSONArray items = r.optJSONArray("items");
+        if (items != null && items.length() > 0) return items;
+        JSONArray one = new JSONArray();
+        try {
+            one.put(new JSONObject().put("name", r.optString("name", ""))
+                    .put("dose", r.optString("dose", "")).put("type", "pill"));
+        } catch (Exception ignored) { }
+        return one;
+    }
+
+    static String typeLabel(String type) {
+        if (type == null) return "";
+        switch (type) {
+            case "pill": return "כדור";
+            case "injection": return "זריקה";
+            case "drops": return "טיפות";
+            case "syrup": return "סירופ";
+            case "cream": return "משחה";
+            case "inhaler": return "משאף";
+            default: return "";
+        }
+    }
+
+    /** One line per item, e.g. "זריקה אינסולין · מינון: 10 יחידות". */
+    static String[] lines(String itemsJson) {
+        JSONArray a = parse(itemsJson);
+        String[] out = new String[a.length()];
+        for (int i = 0; i < a.length(); i++) {
+            JSONObject o = a.optJSONObject(i);
+            if (o == null) { out[i] = ""; continue; }
+            String label = typeLabel(o.optString("type"));
+            String s = (label.isEmpty() ? "" : label + " ") + o.optString("name", "").trim();
+            String dose = o.optString("dose", "").trim();
+            if (!dose.isEmpty()) s += " · מינון: " + dose;
+            out[i] = s;
+        }
+        return out;
+    }
+
+    /** Spoken text, based on the wording of the old Cyber Pharma 3D app. */
+    static String speechText(String itemsJson) {
+        String[] l = lines(itemsJson);
+        StringBuilder sb = new StringBuilder(l.length > 1
+                ? "תזכורת. הגיע הזמן לקחת את התרופות: "
+                : "תזכורת. הגיע הזמן לקחת את התרופה: ");
+        for (String s : l) sb.append(s.replace(" · ", ", ")).append(". ");
+        return sb.toString().trim();
     }
 
     private static JSONArray parse(String s) {

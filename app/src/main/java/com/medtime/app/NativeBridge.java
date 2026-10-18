@@ -22,7 +22,7 @@ public class NativeBridge {
         this.activity = activity;
     }
 
-    /** Save the full reminder list ([{id,name,dose,time}]) and book all alarms. */
+    /** Save the full reminder list ([{id,time,items:[{name,dose,type}]}]) and book all alarms. */
     @JavascriptInterface
     public void syncReminders(String json) {
         Reminders.sync(activity.getApplicationContext(), json);
@@ -30,9 +30,9 @@ public class NativeBridge {
 
     /** Test reminder in N seconds (works with the app closed). */
     @JavascriptInterface
-    public void testReminder(String name, String dose, int seconds) {
+    public void testReminder(String itemsJson, int seconds) {
         long at = System.currentTimeMillis() + Math.max(5, seconds) * 1000L;
-        Reminders.schedule(activity.getApplicationContext(), 0, name, dose, "", at, false);
+        Reminders.schedule(activity.getApplicationContext(), 0, itemsJson, "", at, false);
     }
 
     /** What may block reminders on this phone, for the status line in the app. */

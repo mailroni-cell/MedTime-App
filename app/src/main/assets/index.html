@@ -177,6 +177,53 @@
             font-size: 0.95rem;
         }
 
+        /* M-006: several medicines / injections in one reminder */
+        .item-row {
+            display: grid;
+            grid-template-columns: 90px 1fr 1fr 34px;
+            gap: 6px;
+        }
+
+        .item-row input, .item-row select {
+            min-width: 0;
+            padding: 10px 8px;
+        }
+
+        select {
+            background: #334155;
+            border: 1px solid #475569;
+            color: var(--text);
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .item-row .btn-remove-item {
+            background: transparent;
+            border: 1px solid #475569;
+            color: var(--text-muted);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        button.btn-add-item {
+            background: transparent;
+            border: 1px dashed #38bdf8;
+            color: #38bdf8;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .med-info ul {
+            list-style: none;
+            margin-top: 4px;
+        }
+
+        .med-info li {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
         .btn-delete {
             background: transparent;
             border: 1px solid var(--danger);
@@ -198,8 +245,8 @@
 
     <div class="card">
         <form id="med-form" class="form-group">
-            <input type="text" id="med-name" placeholder="שם התרופה" required>
-            <input type="text" id="med-dose" placeholder="מינון (למשל: 1 כדור)">
+            <div id="item-rows" class="form-group"></div>
+            <button type="button" class="btn-add-item" onclick="addItemRow()">➕ עוד תרופה / זריקה לאותה שעה</button>
             <input type="time" id="med-time" required>
             <button type="submit" class="btn-add">הוסף תזכורת</button>
         </form>
@@ -288,11 +335,15 @@
             const data = localStorage.getItem('medtime_list');
             let meds = [];
             try { meds = data ? JSON.parse(data) : []; } catch (e) { meds = []; }
-            // Older entries have no id / dose: give them one
+            // Older entries: give them an id, and turn a single name/dose into an items list
             let changed = false;
             meds.forEach((m, i) => {
                 if (!m.id) { m.id = newId() + i; changed = true; }
-                if (m.dose === undefined) { m.dose = ''; changed = true; }
+                if (!Array.isArray(m.items)) {
+                    m.items = [{ name: m.name || '', dose: m.dose || '', type: 'pill' }];
+                    delete m.name; delete m.dose;
+                    changed = true;
+                }
             });
             if (changed) localStorage.setItem('medtime_list', JSON.stringify(meds));
             return meds;
@@ -307,7 +358,7 @@
             if (!Native) return;
             try {
                 Native.syncReminders(JSON.stringify(meds.map(m => ({
-                    id: m.id, name: m.name, dose: m.dose || '', time: m.time
+                    id: m.id, time: m.time, items: m.items
                 }))));
             } catch (e) { console.error(e); }
         }
@@ -348,7 +399,10 @@
 
         function testReminder() {
             if (!Native) return;
-            Native.testReminder('תרופת ניסיון', '1 כדור', 60);
+            Native.testReminder(JSON.stringify([
+                { name: 'תרופת ניסיון', dose: '1', type: 'pill' },
+                { name: 'אינסולין ניסיון', dose: '10 יחידות', type: 'injection' }
+            ]), 60);
             alert('תזכורת ניסיון תופיע בעוד דקה. אפשר לסגור את האפליקציה ולנעול את המסך.');
         }
 
@@ -374,8 +428,9 @@
                 li.className = 'med-item';
                 li.innerHTML = `
                     <div class="med-info">
-                        <h3>${escapeHtml(m.name)}</h3>
-                        <p>שעה: ${m.time}${m.dose ? ' · מינון: ' + escapeHtml(m.dose) : ''}</p>
+                        <h3>⏰ ${m.time}</h3>
+                        <ul>${m.items.map(it => `<li>${TYPE_ICON[it.type] || '💊'} ${escapeHtml(it.name)}` +
+                            `${it.dose ? ' <span style="color:var(--text-muted)">· מינון: ' + escapeHtml(it.dose) + '</span>' : ''}</li>`).join('')}</ul>
                     </div>
                     <button class="btn-delete" onclick="deleteMed(${idx})">מחק</button>
                 `;
@@ -383,28 +438,50 @@
             });
         }
 
+        const TYPES = [
+            ['pill', 'כדור'], ['injection', 'זריקה'], ['drops', 'טיפות'],
+            ['syrup', 'סירופ'], ['cream', 'משחה'], ['inhaler', 'משאף']
+        ];
+        const TYPE_ICON = { pill: '💊', injection: '💉', drops: '💧', syrup: '🥄', cream: '🧴', inhaler: '🌬️' };
+        const itemRows = document.getElementById('item-rows');
+
+        function addItemRow() {
+            const row = document.createElement('div');
+            row.className = 'item-row';
+            row.innerHTML =
+                `<select class="it-type">${TYPES.map(t => `<option value="${t[0]}">${t[1]}</option>`).join('')}</select>` +
+                `<input type="text" class="it-name" placeholder="שם">` +
+                `<input type="text" class="it-dose" placeholder="מינון">` +
+                `<button type="button" class="btn-remove-item" title="הסר">✕</button>`;
+            row.querySelector('.btn-remove-item').onclick = () => {
+                if (itemRows.children.length > 1) row.remove();
+                else { row.querySelector('.it-name').value = ''; row.querySelector('.it-dose').value = ''; }
+            };
+            itemRows.appendChild(row);
+        }
+
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            const nameInput = document.getElementById('med-name');
             const timeInput = document.getElementById('med-time');
-
-            const doseInput = document.getElementById('med-dose');
-            const newMed = {
-                id: newId(),
-                name: nameInput.value.trim(),
-                dose: doseInput.value.trim(),
-                time: timeInput.value
-            };
+            const items = [...itemRows.querySelectorAll('.item-row')].map(r => ({
+                type: r.querySelector('.it-type').value,
+                name: r.querySelector('.it-name').value.trim(),
+                dose: r.querySelector('.it-dose').value.trim()
+            })).filter(it => it.name);
+            if (!items.length) { alert('צריך לכתוב לפחות שם של תרופה אחת'); return; }
 
             const meds = loadMeds();
-            meds.push(newMed);
+            meds.push({ id: newId(), time: timeInput.value, items });
+            meds.sort((a, b) => a.time.localeCompare(b.time));
             saveMeds(meds);
             playChime();
 
-            nameInput.value = '';
-            doseInput.value = '';
+            itemRows.innerHTML = '';
+            addItemRow();
             timeInput.value = '';
         });
+
+        addItemRow();
 
         renderMeds();
         syncNative(loadMeds());

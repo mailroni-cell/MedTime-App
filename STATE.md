@@ -6,7 +6,7 @@
 - Automation set up: GitHub build -> APK to PC folder -> watcher installs + launches on the phone.
 
 ## Now
-- Stage 1 (M-005: reminders when app is closed + voice) built and sent to the phone, waiting for owner test. M-004 also still waiting for test.
+- Stage 1 (M-005 reminders when app is closed + voice, M-006 several medicines / injections per reminder) built and sent to the phone, waiting for owner test. M-004 also still waiting for test.
 - Old app source: the whole Flutter app (main.dart) is embedded in pill-reminder/.github/workflows/build.yml, no Drive needed.
 
 ## Done and verified
