@@ -1528,6 +1528,30 @@
         .med-list, .card { perspective: 1200px; }
         .sheet-bg { height: 100vh; height: 100dvh; align-items: center !important; padding: 12px; box-sizing: border-box; }
         .sheet { border-radius: 26px !important; max-height: 100%; overflow-y: auto; padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important; }
+
+        /* ================= M-026: dose picker + quick times ================= */
+        .dose-units { display: none !important; }
+        .ds-units { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 6px 0 14px; }
+        .unit-chip.sel { background: linear-gradient(180deg, #22d3ee, #0e7490) !important; box-shadow: 0 0 0 2px #cffafe, 0 0 18px 4px rgba(34, 211, 238, 0.9) !important; }
+        .qty-row { display: flex; align-items: center; justify-content: center; gap: 18px; direction: ltr; }
+        .qty-btn {
+            width: 72px; height: 72px; border-radius: 50%; border: none !important; font-size: 2.6rem; font-weight: 900; color: #fff; line-height: 1;
+            background: radial-gradient(circle at 35% 30%, #a5f3fc, #06b6d4 55%, #7c3aed);
+            box-shadow: 0 0 14px 3px rgba(34, 211, 238, 0.8), 0 0 30px 8px rgba(168, 85, 247, 0.45), inset 0 2px 3px rgba(255, 255, 255, 0.6);
+            touch-action: none; user-select: none;
+        }
+        .qty-btn:active { transform: scale(0.92); }
+        .qty-val { min-width: 120px; text-align: center; font-size: 3.4rem; font-weight: 800; color: #fff; text-shadow: 0 0 16px rgba(34, 211, 238, 0.9); }
+        .ds-preview { text-align: center; font-size: 1.3rem; color: #fde68a; margin: 10px 0 4px; min-height: 1.6em; }
+        .ds-manual { display: block; margin: 4px auto 0; background: none !important; border: none !important; color: #93c5fd; font-size: 1rem; text-decoration: underline; }
+        .quick-times { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 12px; }
+        .quick-times button {
+            border: none !important; border-radius: 16px; padding: 8px 2px; color: #fff; font-size: 0.85rem;
+            display: flex; flex-direction: column; align-items: center; gap: 2px;
+            background: linear-gradient(180deg, rgba(34, 211, 238, 0.3), rgba(124, 58, 237, 0.35));
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+        .quick-times b { font-size: 1.15rem; direction: ltr; }
     </style>
 </head>
 <body>
@@ -1640,6 +1664,12 @@
     <div id="time-sheet" class="sheet-bg" onclick="if (event.target === this) closeTimePicker()">
         <div class="sheet">
             <h3 data-i18n="timeLabel"></h3>
+            <div class="quick-times">
+                <button type="button" onclick="quickTime('08:00')"><span data-i18n="qMorning"></span><b>08:00</b></button>
+                <button type="button" onclick="quickTime('13:00')"><span data-i18n="qNoon"></span><b>13:00</b></button>
+                <button type="button" onclick="quickTime('20:00')"><span data-i18n="qEvening"></span><b>20:00</b></button>
+                <button type="button" onclick="quickTime('22:00')"><span data-i18n="qNight"></span><b>22:00</b></button>
+            </div>
             <div class="wheels">
                 <div class="wheel-col"><small data-i18n="hours"></small><div id="wheel-h" class="wheel"></div></div>
                 <div class="wheel-sep">:</div>
@@ -1649,6 +1679,25 @@
             <div class="sheet-actions">
                 <button type="button" style="background:#334155;color:#f8fafc" onclick="closeTimePicker()" data-i18n="cancel"></button>
                 <button type="button" style="background:var(--primary);color:#fff" onclick="confirmTimePicker()" data-i18n="ok"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- M-026: dose picker: unit chips + quantity with - / + , then OK -->
+    <div id="dose-sheet" class="sheet-bg" onclick="if (event.target === this) closeDosePicker()">
+        <div class="sheet dose-sheet">
+            <h3 data-i18n="doseLabel"></h3>
+            <div id="ds-units" class="ds-units"></div>
+            <div id="ds-qty" class="qty-row">
+                <button type="button" class="qty-btn" data-step="-1">−</button>
+                <div id="ds-val" class="qty-val"></div>
+                <button type="button" class="qty-btn" data-step="1">+</button>
+            </div>
+            <div id="ds-preview" class="ds-preview"></div>
+            <button type="button" class="ds-manual" onclick="doseManual()" data-i18n="typeManually"></button>
+            <div class="sheet-actions">
+                <button type="button" style="background:#334155;color:#f8fafc" onclick="closeDosePicker()" data-i18n="cancel"></button>
+                <button type="button" style="background:var(--primary);color:#fff" onclick="confirmDosePicker()" data-i18n="ok"></button>
             </div>
         </div>
     </div>
@@ -1754,6 +1803,7 @@
           "minutes": "דקות",
           "addMore": "➕ עוד תרופה / זריקה לאותה שעה",
           "myReminders": "התזכורות שלי", "nextAt": "הבאה", "noReminders": "אין עדיין תזכורות",
+          "typeManually": "⌨ הקלדה חופשית", "qMorning": "בוקר", "qNoon": "צהריים", "qEvening": "ערב", "qNight": "לילה",
           "addReminder": "הוסף תזכורת",
           "voiceTitle": "🔊 הקראה קולית בתזכורת",
           "voiceOn": "להקריא בקול",
@@ -1819,6 +1869,7 @@
           "minutes": "الدقائق",
           "addMore": "➕ دواء / حقنة أخرى في نفس الوقت",
           "myReminders": "تذكيراتي", "nextAt": "التالي", "noReminders": "لا توجد تذكيرات بعد",
+          "typeManually": "⌨ كتابة يدوية", "qMorning": "صباح", "qNoon": "ظهر", "qEvening": "مساء", "qNight": "ليل",
           "addReminder": "أضف تذكيرًا",
           "voiceTitle": "🔊 القراءة الصوتية في التذكير",
           "voiceOn": "القراءة بصوت عالٍ",
@@ -1884,6 +1935,7 @@
           "minutes": "Minute",
           "addMore": "➕ Încă un medicament / o injecție la aceeași oră",
           "myReminders": "Mementourile mele", "nextAt": "Următorul", "noReminders": "Încă nu există mementouri",
+          "typeManually": "⌨ Scriere liberă", "qMorning": "Dimineața", "qNoon": "Prânz", "qEvening": "Seara", "qNight": "Noaptea",
           "addReminder": "Adaugă memento",
           "voiceTitle": "🔊 Citire vocală la memento",
           "voiceOn": "Citește cu voce tare",
@@ -1949,6 +2001,7 @@
           "minutes": "Minutes",
           "addMore": "➕ Un autre médicament / une injection à la même heure",
           "myReminders": "Mes rappels", "nextAt": "Prochain", "noReminders": "Aucun rappel pour l’instant",
+          "typeManually": "⌨ Saisie libre", "qMorning": "Matin", "qNoon": "Midi", "qEvening": "Soir", "qNight": "Nuit",
           "addReminder": "Ajouter un rappel",
           "voiceTitle": "🔊 Lecture vocale du rappel",
           "voiceOn": "Lire à voix haute",
@@ -2014,6 +2067,7 @@
           "minutes": "Minutes",
           "addMore": "➕ Another medicine / injection at the same time",
           "myReminders": "My reminders", "nextAt": "Next", "noReminders": "No reminders yet",
+          "typeManually": "⌨ Type it", "qMorning": "Morning", "qNoon": "Noon", "qEvening": "Evening", "qNight": "Night",
           "addReminder": "Add reminder",
           "voiceTitle": "🔊 Voice readout",
           "voiceOn": "Read aloud",
@@ -2286,9 +2340,89 @@
                     box.appendChild(b);
                 });
             };
-            inp.addEventListener('focus', fill);
-            row.querySelectorAll('.type-btn').forEach(b => b.addEventListener('click', fill));
-            fill();
+            // M-026: tapping the dose opens the dose picker instead of the keyboard
+            inp.readOnly = true;
+            inp.setAttribute('inputmode', 'none');
+            inp.addEventListener('click', () => { if (inp.readOnly) openDosePicker(row); });
+            inp.addEventListener('blur', () => { inp.readOnly = true; inp.setAttribute('inputmode', 'none'); });
+        }
+
+        const rng = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => a + i);
+        const QTY = {
+            'מ"ג': [[2.5, 5, 10, 20, 25, 40, 50, 75, 80, 100, 150, 200, 250, 300, 400, 500, 600, 850, 1000], 100],
+            'כדור': [[0.5, 1, 1.5, 2, 2.5, 3, 4], 1], 'כמוסה': [[1, 2, 3, 4], 1],
+            'יחידות': [rng(1, 100), 10], 'מ"ל': [[0.5, 1, 2, 2.5, 3, 4, 5, 7.5, 10, 15, 20], 5],
+            'טיפות': [rng(1, 30), 2], 'כפית': [[0.5, 1, 1.5, 2], 1], 'כף': [[0.5, 1, 1.5, 2], 1],
+            'גרם': [[0.5, 1, 2, 3, 5], 1], 'שאיפות': [rng(1, 8), 2], 'התזות': [rng(1, 8), 2]
+        };
+        let doseRow = null, dsUnit = null, dsIdx = 0;
+        function openDosePicker(row) {
+            doseRow = row;
+            const units = UNITS[row.dataset.type] || UNITS.pill;
+            const cur = row.querySelector('.it-dose').value.trim();
+            const num = parseFloat((cur.match(/^[\d.,]+/) || [''])[0].replace(',', '.'));
+            const rest = cur.replace(/^[\d.,\s]+/, '').trim();
+            const matched = units.find(u => unitText(u) === rest || u === rest);
+            dsUnit = matched || units[0];
+            const q = QTY[dsUnit];
+            dsIdx = q ? Math.max(0, q[0].indexOf(matched && !isNaN(num) && q[0].includes(num) ? num : q[1])) : 0;
+            const box = document.getElementById('ds-units');
+            box.innerHTML = '';
+            units.forEach(u => {
+                const b = document.createElement('button');
+                b.type = 'button'; b.className = 'unit-chip' + (u === dsUnit ? ' sel' : ''); b.textContent = unitText(u);
+                b.onclick = () => {
+                    dsUnit = u; const qq = QTY[u]; dsIdx = qq ? qq[0].indexOf(qq[1]) : 0;
+                    box.querySelectorAll('.unit-chip').forEach(x => x.classList.toggle('sel', x === b));
+                    renderDose(); if (navigator.vibrate) navigator.vibrate(10);
+                };
+                box.appendChild(b);
+            });
+            renderDose();
+            document.getElementById('dose-sheet').classList.add('open');
+        }
+        const fmtNum = n => String(n).replace('.', LANG === 'fr' || LANG === 'ro' ? ',' : '.');
+        function doseValue() {
+            const q = QTY[dsUnit];
+            return q ? fmtNum(q[0][dsIdx]) + ' ' + unitText(dsUnit) : unitText(dsUnit);
+        }
+        function renderDose() {
+            const q = QTY[dsUnit];
+            document.getElementById('ds-qty').style.display = q ? '' : 'none';
+            if (q) document.getElementById('ds-val').textContent = fmtNum(q[0][dsIdx]);
+            document.getElementById('ds-preview').textContent = doseValue();
+        }
+        function doseStep(d) {
+            const q = QTY[dsUnit]; if (!q) return;
+            const n = Math.max(0, Math.min(q[0].length - 1, dsIdx + d));
+            if (n !== dsIdx) { dsIdx = n; renderDose(); if (navigator.vibrate) navigator.vibrate(8); }
+        }
+        // press = one step, hold = keeps stepping
+        document.querySelectorAll('.qty-btn').forEach(b => {
+            let tm = null, iv = null;
+            const stop = () => { clearTimeout(tm); clearInterval(iv); };
+            b.addEventListener('pointerdown', e => {
+                e.preventDefault(); const d = +b.dataset.step; doseStep(d);
+                tm = setTimeout(() => { iv = setInterval(() => doseStep(d), 110); }, 450);
+            });
+            ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => b.addEventListener(ev, stop));
+        });
+        function closeDosePicker() { document.getElementById('dose-sheet').classList.remove('open'); }
+        function confirmDosePicker() {
+            if (doseRow) doseRow.querySelector('.it-dose').value = doseValue();
+            closeDosePicker();
+        }
+        function doseManual() {
+            closeDosePicker();
+            if (!doseRow) return;
+            const inp = doseRow.querySelector('.it-dose');
+            inp.readOnly = false; inp.removeAttribute('inputmode'); inp.focus();
+        }
+        function quickTime(v) {
+            const [h, m] = v.split(':').map(Number);
+            setWheel(wheelH, h); setWheel(wheelM, m);
+            if (navigator.vibrate) navigator.vibrate(15);
+            setTimeout(confirmTimePicker, 180);
         }
 
         function attachSuggest(row) {
