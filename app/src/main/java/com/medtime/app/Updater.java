@@ -90,14 +90,9 @@ class Updater {
     static void download(Activity a, WebView wv) {
         if (busy) return;
         if (Build.VERSION.SDK_INT >= 26 && !a.getPackageManager().canRequestPackageInstalls()) {
-            // Android asks once: "allow MedTime to install apps"
+            // Android asks once: "allow MedTime to install apps".
+            // M-076: the page first explains it kindly, then opens the screen (openInstallPermission).
             send(a, wv, "{\"type\":\"permission\"}");
-            a.runOnUiThread(() -> {
-                try {
-                    a.startActivity(new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
-                            Uri.parse("package:" + a.getPackageName())));
-                } catch (Exception ignored) { }
-            });
             return;
         }
         busy = true;

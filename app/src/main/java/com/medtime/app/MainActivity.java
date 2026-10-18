@@ -35,9 +35,8 @@ public class MainActivity extends AppCompatActivity {
         }
         getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
-        }
+        // M-076: no bare permission pop-up at launch any more; the page shows a friendly
+        // setup screen first (setup.js) and asks through MedTimeNative.requestNotifications().
 
         webView = new WebView(this);
         setContentView(webView);
@@ -87,6 +86,20 @@ public class MainActivity extends AppCompatActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) FullScreen.apply(this); // M-012: hide the bars again after a swipe
+    }
+
+    // M-076: tell the page when we come back from an Android permission screen
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (webView != null) webView.evaluateJavascript("window.mtResumed && mtResumed()", null);
+    }
+
+    // M-076: answered (or skipped by Android without showing anything): same as coming back
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (webView != null) webView.evaluateJavascript("window.mtResumed && mtResumed()", null);
     }
 
     @Override

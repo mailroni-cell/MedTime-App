@@ -40,6 +40,31 @@ public class NativeBridge {
     @JavascriptInterface
     public void installUpdate() { if (web != null) Updater.download(activity, web); }
 
+    /** M-076: the Android "allow notifications" question (Android 13+), else the app's notification settings. */
+    @JavascriptInterface
+    public void requestNotifications() {
+        activity.runOnUiThread(() -> {
+            if (Build.VERSION.SDK_INT >= 33
+                    && activity.checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED
+                    && !askedNotif) {
+                askedNotif = true;
+                activity.requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 101);
+            } else {
+                openSettings("notifications");
+            }
+        });
+    }
+    private static boolean askedNotif = false;
+
+    /** M-076: Android's one-time "allow installs from this source" screen for in-app updates. */
+    @JavascriptInterface
+    public void openInstallPermission() {
+        try {
+            activity.startActivity(new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                    Uri.parse("package:" + activity.getPackageName())));
+        } catch (Exception e) { openSettings(""); }
+    }
+
     /** M-031: close the app (alarms are booked in Android, so reminders still come). */
     @JavascriptInterface
     public void exitApp() {
@@ -150,6 +175,7 @@ public class NativeBridge {
             o.put("exact", Build.VERSION.SDK_INT < Build.VERSION_CODES.S || (am != null && am.canScheduleExactAlarms()));
             o.put("fullScreen", Build.VERSION.SDK_INT < 34 || (nm != null && nm.canUseFullScreenIntent()));
             o.put("battery", pm == null || pm.isIgnoringBatteryOptimizations(ctx.getPackageName()));
+            o.put("install", Build.VERSION.SDK_INT < 26 || ctx.getPackageManager().canRequestPackageInstalls()); // M-076
             o.put("tts", ctx.getSharedPreferences(ReminderService.PREFS_STATUS, Context.MODE_PRIVATE)
                     .getString(ReminderService.KEY_TTS_STATE, "unknown"));
         } catch (Exception ignored) { }

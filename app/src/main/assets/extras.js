@@ -210,7 +210,12 @@
             }
         } else if (r.type === 'progress') { mode = 'loading'; pct = r.pct; drawUpd(); }
         else if (r.type === 'ready') { mode = 'idle'; msgKey = 'ready'; drawUpd(); }
-        else if (r.type === 'permission') { mode = 'idle'; msgKey = 'perm'; drawUpd(); }
+        else if (r.type === 'permission') {
+            // M-076: a friendly explanation first, then Android's one-time screen; when allowed, the download starts by itself
+            mode = 'idle'; msgKey = 'perm'; drawUpd();
+            if (window.mtPermGuide) mtPermGuide('install').then(ok => { if (ok) install(); });
+            else if (has('openInstallPermission')) N.openInstallPermission();
+        }
         else if (r.type === 'error') { mode = 'idle'; msgKey = 'error'; drawUpd(); }
     };
     // small floating line while downloading outside the settings screen

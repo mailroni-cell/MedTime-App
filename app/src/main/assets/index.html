@@ -3327,7 +3327,7 @@
             ['notifications', 'exact', 'fullScreen', 'battery'].forEach(k => {
                 if (st[k] === false) {
                     html += `<div class="status-line"><span>⚠️ ${t('st_' + k)}</span>` +
-                        `<button onclick="MedTimeNative.openSettings('${k}')">${t('fix')}</button></div>`;
+                        `<button onclick="window.mtPermGuide ? mtPermGuide('${k}') : MedTimeNative.openSettings('${k}')">${t('fix')}</button></div>`;
                 }
             });
             if (st.tts === 'no_voice' || st.tts === 'no_hebrew') {
@@ -4207,6 +4207,7 @@
     <script src="relax.js"></script>
     <script src="medwiz.js"></script>
     <script src="extras.js"></script>
+    <script src="setup.js"></script>
     <script src="meds.js"></script>
     <script src="themes.js"></script>
     <script src="worlds.js"></script>
