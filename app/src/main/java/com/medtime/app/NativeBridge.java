@@ -65,6 +65,53 @@ public class NativeBridge {
         } catch (Exception e) { openSettings(""); }
     }
 
+    /** M-080: "did I take it?" log (JSON array) and restoring it from a backup. */
+    @JavascriptInterface
+    public String getLog() { return MedLog.get(activity.getApplicationContext()); }
+
+    @JavascriptInterface
+    public void setLog(String json) { MedLog.set(activity.getApplicationContext(), json); }
+
+    /** M-080: Android share sheet with a text (WhatsApp, mail, SMS...). */
+    @JavascriptInterface
+    public void shareText(String text) {
+        activity.runOnUiThread(() -> {
+            try {
+                Intent i = new Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text);
+                activity.startActivity(Intent.createChooser(i, null));
+            } catch (Exception ignored) { }
+        });
+    }
+
+    /** M-080: writes the backup file and opens the share sheet (Drive, WhatsApp, mail...). */
+    @JavascriptInterface
+    public boolean exportBackup(String fileName, String json) {
+        try {
+            java.io.File dir = new java.io.File(activity.getCacheDir(), "backup");
+            dir.mkdirs();
+            java.io.File f = new java.io.File(dir, fileName.replaceAll("[^A-Za-z0-9._-]", "_"));
+            try (java.io.OutputStream o = new java.io.FileOutputStream(f)) { o.write(json.getBytes("UTF-8")); }
+            Uri uri = androidx.core.content.FileProvider.getUriForFile(activity, activity.getPackageName() + ".updates", f);
+            Intent i = new Intent(Intent.ACTION_SEND).setType("application/json").putExtra(Intent.EXTRA_STREAM, uri)
+                    .putExtra(Intent.EXTRA_SUBJECT, fileName).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            activity.runOnUiThread(() -> {
+                try { activity.startActivity(Intent.createChooser(i, null)); } catch (Exception ignored) { }
+            });
+            return true;
+        } catch (Exception e) { return false; }
+    }
+
+    /** M-080: Android file picker; the chosen file comes back as window.mtRestore(text). */
+    @JavascriptInterface
+    public void pickBackup() {
+        activity.runOnUiThread(() -> {
+            try {
+                Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE).setType("*/*");
+                activity.startActivityForResult(i, MainActivity.REQ_RESTORE);
+            } catch (Exception ignored) { }
+        });
+    }
+
     /** M-079: vibration choice for reminders: off / soft / normal / strong / heart / long. */
     @JavascriptInterface
     public String getVibration() { return Vibe.chosen(activity.getApplicationContext()); }

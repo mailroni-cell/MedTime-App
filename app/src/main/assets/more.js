@@ -1,0 +1,196 @@
+// M-080: three settings tiles: 📒 "did I take it?" log, 💾 backup & restore, 📤 share MedTime.
+(function () {
+    'use strict';
+    const L5 = ['he', 'ar', 'ro', 'fr', 'en'];
+    const li = () => Math.max(0, L5.indexOf(typeof LANG === 'string' ? LANG : 'he'));
+    const N = window.MedTimeNative;
+    const has = f => !!(N && typeof N[f] === 'function');
+    const grid = document.querySelector('#settings-page .set-grid');
+    if (!grid) return;
+    const LINK = 'https://github.com/mailroni-cell/MedTime-App/releases/download/latest/MedTime-latest.apk';
+
+    const T = {
+        logT: ['📒 יומן תרופות', '📒 سجل الأدوية', '📒 Jurnal', '📒 Journal', '📒 Medicine log'],
+        logSub: ['השבוע: {a} מתוך {b} נלקחו', 'هذا الأسبوع: {a} من {b}', 'Săptămâna asta: {a} din {b}', 'Cette semaine : {a} sur {b}', 'This week: {a} of {b} taken'],
+        logEmpty: ['עוד אין רישומים. כשתגיע תזכורת ותלחצו "לקחתי" או "ביטלתי", זה יירשם כאן.', 'لا توجد سجلات بعد. عند وصول تذكير والضغط على "تناولته" أو "ألغيت" سيُسجَّل هنا.', 'Încă nimic. Când apăsați „Am luat” sau „Anulez” la un memento, apare aici.', 'Rien encore. Quand vous appuyez sur « Pris » ou « Annuler » à un rappel, cela s\'inscrit ici.', 'Nothing yet. When a reminder comes and you tap "Taken" or "Skip", it is written here.'],
+        week: ['7 הימים האחרונים', 'آخر 7 أيام', 'Ultimele 7 zile', '7 derniers jours', 'Last 7 days'],
+        taken: ['לקחתי', 'تناولته', 'Luat', 'Pris', 'Taken'],
+        skipped: ['ביטלתי', 'ألغيت', 'Anulat', 'Annulé', 'Skipped'],
+        missed: ['לא נענה', 'لم يُجب', 'Fără răspuns', 'Sans réponse', 'No answer'],
+        today: ['היום', 'اليوم', 'Azi', 'Aujourd\'hui', 'Today'],
+        yest: ['אתמול', 'أمس', 'Ieri', 'Hier', 'Yesterday'],
+        send: ['📤 שליחת הדוח לרופא או למשפחה', '📤 إرسال التقرير للطبيب أو للعائلة', '📤 Trimite raportul medicului sau familiei', '📤 Envoyer au médecin ou à la famille', '📤 Send the report to a doctor or family'],
+        repHead: ['דוח לקיחת תרופות מ-MedTime (30 יום אחרונים)', 'تقرير تناول الأدوية من MedTime (آخر 30 يومًا)', 'Raport MedTime (ultimele 30 de zile)', 'Rapport MedTime (30 derniers jours)', 'MedTime medicine report (last 30 days)'],
+        bakT: ['💾 גיבוי ושחזור', '💾 نسخ احتياطي واستعادة', '💾 Copie de rezervă', '💾 Sauvegarde', '💾 Backup & restore'],
+        bakSub: ['גיבוי אחרון: {d}', 'آخر نسخة: {d}', 'Ultima copie: {d}', 'Dernière : {d}', 'Last backup: {d}'],
+        never: ['עוד לא גובה', 'لم يُنسخ بعد', 'niciodată', 'jamais', 'never'],
+        bakX: ['התזכורות, התורים, היומן וההגדרות נשמרים רק בטלפון הזה. שמרו עותק ב-Google Drive, במייל או בוואטסאפ לעצמכם. בטלפון חדש לוחצים "שחזור" ובוחרים את הקובץ.', 'التذكيرات والمواعيد والسجل والإعدادات محفوظة في هذا الهاتف فقط. احفظ نسخة في Google Drive أو البريد أو واتساب. في هاتف جديد اضغط "استعادة" واختر الملف.', 'Mementourile, programările, jurnalul și setările sunt doar în acest telefon. Salvați o copie în Google Drive, e-mail sau WhatsApp. Pe un telefon nou apăsați „Restaurează” și alegeți fișierul.', 'Rappels, rendez-vous, journal et réglages ne sont que dans ce téléphone. Gardez une copie sur Google Drive, par e-mail ou WhatsApp. Sur un nouveau téléphone, « Restaurer » et choisissez le fichier.', 'Reminders, appointments, the log and settings live only on this phone. Keep a copy in Google Drive, mail or WhatsApp. On a new phone tap "Restore" and pick the file.'],
+        bakGo: ['💾 שמירת גיבוי עכשיו', '💾 احفظ نسخة الآن', '💾 Salvează copia acum', '💾 Sauvegarder maintenant', '💾 Save a backup now'],
+        resGo: ['📂 שחזור מקובץ גיבוי', '📂 استعادة من ملف', '📂 Restaurează din fișier', '📂 Restaurer depuis un fichier', '📂 Restore from a backup file'],
+        resQ: ['לשחזר את הגיבוי מ-{d}? הוא יחליף את התזכורות, התורים וההגדרות שיש עכשיו בטלפון.', 'استعادة النسخة من {d}؟ ستحل محل التذكيرات والمواعيد والإعدادات الحالية.', 'Restaurați copia din {d}? Înlocuiește mementourile, programările și setările actuale.', 'Restaurer la sauvegarde du {d} ? Elle remplace les rappels, rendez-vous et réglages actuels.', 'Restore the backup from {d}? It replaces the reminders, appointments and settings now on the phone.'],
+        resOk: ['שחזור', 'استعادة', 'Restaurează', 'Restaurer', 'Restore'],
+        resBad: ['זה לא קובץ גיבוי של MedTime. בחרו את הקובץ ששמרתם מ"שמירת גיבוי".', 'هذا ليس ملف نسخة MedTime. اختر الملف الذي حفظته.', 'Nu e o copie MedTime. Alegeți fișierul salvat.', 'Ce n\'est pas une sauvegarde MedTime. Choisissez le fichier enregistré.', 'This is not a MedTime backup. Pick the file you saved with "Save a backup".'],
+        resDone: ['✅ השחזור הצליח! האפליקציה נטענת מחדש.', '✅ تمت الاستعادة! يُعاد التحميل.', '✅ Restaurat! Se reîncarcă.', '✅ Restauré ! Rechargement.', '✅ Restored! Reloading the app.'],
+        shT: ['📤 שתפו את MedTime', '📤 شارك MedTime', '📤 Distribuie MedTime', '📤 Partager MedTime', '📤 Share MedTime'],
+        shSub: ['שלחו לחברים ולמשפחה', 'أرسل للأصدقاء والعائلة', 'Trimiteți prietenilor', 'Envoyer à vos proches', 'Send to friends and family'],
+        shX: ['ההודעה הזאת תישלח, עם קישור להורדה:', 'سيتم إرسال هذه الرسالة مع رابط التنزيل:', 'Se trimite acest mesaj cu link de descărcare:', 'Ce message sera envoyé avec le lien :', 'This message is sent, with a download link:'],
+        shGo: ['📤 שיתוף בוואטסאפ או בכל דרך', '📤 مشاركة عبر واتساب أو غيره', '📤 Distribuie pe WhatsApp sau altfel', '📤 Partager par WhatsApp ou autre', '📤 Share by WhatsApp or any way'],
+        shMsg: ['היי 😊 אני משתמש ב-MedTime, אפליקציה שמזכירה לקחת תרופות ולהגיע לתורים לרופא. מומלץ!\n\nלהתקנה לוחצים על הקישור, ואם הטלפון שואל, מאשרים התקנה. האפליקציה מסבירה לבד על מה ללחוץ:\n',
+            'مرحبًا 😊 أستخدم MedTime، تطبيق يذكّر بتناول الأدوية ومواعيد الطبيب. أنصح به!\n\nللتثبيت اضغط على الرابط، وإن سأل الهاتف وافق على التثبيت. التطبيق يشرح بنفسه:\n',
+            'Salut 😊 Folosesc MedTime, o aplicație care amintește de medicamente și programări. O recomand!\n\nPentru instalare apăsați linkul și, dacă telefonul întreabă, permiteți instalarea:\n',
+            'Salut 😊 J\'utilise MedTime, une appli qui rappelle les médicaments et les rendez-vous. Je recommande !\n\nPour l\'installer, ouvrez le lien et, si le téléphone demande, autorisez l\'installation :\n',
+            'Hi 😊 I use MedTime, an app that reminds you to take medicine and go to doctor appointments. Recommended!\n\nTo install, open the link and, if the phone asks, allow the install. The app explains the rest:\n']
+    };
+    const tx = k => (T[k] || [k])[li()];
+    const fill = (s, o) => s.replace(/\{(\w+)\}/g, (m, k) => (k in o ? o[k] : m));
+    const strip = s => s.replace(/^\S+\s/, '');
+    const vib = () => { if (navigator.vibrate) try { navigator.vibrate(12); } catch (e) { } };
+
+    const css = document.createElement('style');
+    css.textContent = `
+    .mo-btn{display:block;width:100%;border:0;border-radius:16px;padding:14px 12px;margin:10px 0 0;font-size:1.08rem;font-weight:700;color:#fff;
+      background:linear-gradient(135deg,#0ea5e9,#6366f1);box-shadow:inset 0 2px 1px rgba(255,255,255,.35),0 6px 16px rgba(0,0,0,.45)}
+    .mo-btn.alt{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.25)}
+    .mo-x{font-size:.98rem;line-height:1.5;opacity:.9;margin:4px 0 6px}
+    .mo-msg{white-space:pre-wrap;font-size:.92rem;line-height:1.45;background:rgba(255,255,255,.08);border-radius:14px;padding:10px 12px;margin:6px 0}
+    .lg-sum{display:flex;gap:8px;margin:6px 0 10px}
+    .lg-sum div{flex:1;text-align:center;border-radius:14px;padding:8px 4px;background:rgba(255,255,255,.07);font-size:.85rem}
+    .lg-sum b{display:block;font-size:1.5rem}
+    .lg-day{margin:12px 0 4px;font-weight:800;color:#67e8f9;font-size:1rem}
+    .lg-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.05);margin:4px 0;font-size:1rem}
+    .lg-row .tm{font-weight:800;min-width:3.2em;direction:ltr}
+    .lg-row .it{flex:1;line-height:1.3}
+    .lg-row .st{font-weight:700;white-space:nowrap}
+    .lg-row.taken .st{color:#4ade80}.lg-row.skipped .st{color:#fbbf24}.lg-row.missed .st{color:#f87171}
+    .lg-list{max-height:46vh;overflow:auto}`;
+    document.head.appendChild(css);
+
+    function tile(id, ico, grad, bodyHtml) {
+        const s = document.createElement('section');
+        s.className = 'set-tile x-tile'; s.id = id;
+        s.style.setProperty('--g', grad);
+        s.innerHTML = '<button type="button" class="set-tile-head" onclick="toggleTile(this)"><span class="set-ico">' + ico +
+            '</span><span class="set-txt"><span class="set-title"></span><span class="set-sub"></span></span><span class="set-chev">⌄</span></button>' +
+            '<div class="set-body"><div class="panel-head"><span class="grip"></span><span class="p-ico">' + ico +
+            '</span><span class="p-title"></span><button type="button" class="p-close" aria-label="close">✕</button></div>' + bodyHtml + '</div>';
+        s.querySelector('.p-close').onclick = () => closeTiles();
+        s.querySelector('.p-ico').style.setProperty('--g', grad);
+        grid.appendChild(s);
+        return s;
+    }
+    const heads = (el, k, sub) => {
+        el.querySelector('.set-title').textContent = strip(tx(k));
+        el.querySelector('.p-title').textContent = strip(tx(k));
+        el.querySelector('.set-sub').textContent = sub;
+    };
+
+    // ---------------- 📒 log ----------------
+    const logT = tile('tile-log', '📒', 'linear-gradient(135deg,#34d399,#0f766e)',
+        '<div class="lg-sum" id="lg-sum"></div><div class="lg-list" id="lg-list"></div><button type="button" class="mo-btn" id="lg-send"></button>');
+    const readLog = () => { try { return has('getLog') ? JSON.parse(N.getLog()) || [] : []; } catch (e) { return []; } };
+    const dayKey = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    function dayName(k) {
+        const now = new Date(), y = new Date(Date.now() - 864e5);
+        if (k === dayKey(now)) return tx('today');
+        if (k === dayKey(y)) return tx('yest');
+        const p = k.split('-'), d = new Date(+p[0], p[1] - 1, +p[2]);
+        try { return d.toLocaleDateString(L5[li()], { weekday: 'long', day: 'numeric', month: 'numeric' }); } catch (e) { return k; }
+    }
+    const ICON = { taken: '✅', skipped: '✖️', missed: '❌' };
+    function drawLog() {
+        const log = readLog();
+        const since = dayKey(new Date(Date.now() - 6 * 864e5));
+        const wk = log.filter(e => e.d >= since);
+        const c = s => wk.filter(e => e.s === s).length;
+        heads(logT, 'logT', wk.length ? fill(tx('logSub'), { a: c('taken'), b: wk.length }) : strip(tx('week')));
+        const sum = document.getElementById('lg-sum'), list = document.getElementById('lg-list'), send = document.getElementById('lg-send');
+        send.textContent = tx('send');
+        send.style.display = log.length && has('shareText') ? '' : 'none';
+        if (!log.length) { sum.innerHTML = ''; list.innerHTML = '<div class="mo-x"></div>'; list.firstChild.textContent = tx('logEmpty'); return; }
+        sum.innerHTML = '';
+        [['taken', '✅'], ['skipped', '✖️'], ['missed', '❌']].forEach(([s, i]) => {
+            const d = document.createElement('div'); d.innerHTML = '<b></b><span></span>';
+            d.querySelector('b').textContent = i + ' ' + c(s); d.querySelector('span').textContent = tx(s); sum.appendChild(d);
+        });
+        list.innerHTML = '';
+        let last = '';
+        log.slice().reverse().filter(e => e.d >= dayKey(new Date(Date.now() - 30 * 864e5))).forEach(e => {
+            if (e.d !== last) { last = e.d; const h = document.createElement('div'); h.className = 'lg-day'; h.textContent = dayName(e.d); list.appendChild(h); }
+            const r = document.createElement('div'); r.className = 'lg-row ' + e.s;
+            r.innerHTML = '<span class="tm"></span><span class="it"></span><span class="st"></span>';
+            r.querySelector('.tm').textContent = e.t;
+            r.querySelector('.it').textContent = (e.items || []).join(', ');
+            r.querySelector('.st').textContent = (ICON[e.s] || '') + ' ' + tx(e.s);
+            list.appendChild(r);
+        });
+    }
+    document.getElementById('lg-send').onclick = () => {
+        vib();
+        const log = readLog().filter(e => e.d >= dayKey(new Date(Date.now() - 30 * 864e5)));
+        let out = tx('repHead') + '\n', last = '';
+        log.forEach(e => {
+            if (e.d !== last) { last = e.d; out += '\n' + e.d + '\n'; }
+            out += (ICON[e.s] || '') + ' ' + e.t + '  ' + (e.items || []).join(', ') + ' (' + tx(e.s) + ')\n';
+        });
+        N.shareText(out);
+    };
+    logT.querySelector('.set-tile-head').addEventListener('click', drawLog);
+
+    // ---------------- 💾 backup ----------------
+    const BK = 'medtime_lastbackup';
+    const bak = tile('tile-bak', '💾', 'linear-gradient(135deg,#60a5fa,#1d4ed8)',
+        '<div class="mo-x" id="bk-x"></div><button type="button" class="mo-btn" id="bk-save"></button><button type="button" class="mo-btn alt" id="bk-load"></button>');
+    const fmtDate = ms => { try { return new Date(ms).toLocaleDateString(L5[li()], { day: 'numeric', month: 'numeric', year: 'numeric' }); } catch (e) { return ''; } };
+    function drawBak() {
+        let lastB = 0; try { lastB = +localStorage.getItem(BK) || 0; } catch (e) { }
+        heads(bak, 'bakT', fill(tx('bakSub'), { d: lastB ? fmtDate(lastB) : tx('never') }));
+        document.getElementById('bk-x').textContent = tx('bakX');
+        document.getElementById('bk-save').textContent = tx('bakGo');
+        document.getElementById('bk-load').textContent = tx('resGo');
+        document.getElementById('bk-save').style.display = has('exportBackup') ? '' : 'none';
+        document.getElementById('bk-load').style.display = has('pickBackup') ? '' : 'none';
+    }
+    document.getElementById('bk-save').onclick = () => {
+        vib();
+        const data = {};
+        for (let i = 0; i < localStorage.length; i++) {
+            const k = localStorage.key(i);
+            if (k && k.indexOf('medtime') === 0 && k !== BK) data[k] = localStorage.getItem(k);
+        }
+        const now = Date.now();
+        const file = { app: 'MedTime', v: 1, created: now, data: data, log: readLog() };
+        const name = 'MedTime-backup-' + dayKey(new Date(now)) + '.json';
+        if (N.exportBackup(name, JSON.stringify(file))) { try { localStorage.setItem(BK, String(now)); } catch (e) { } drawBak(); }
+    };
+    document.getElementById('bk-load').onclick = () => { vib(); N.pickBackup(); };
+    window.mtRestore = function (text) {
+        let f = null;
+        try { f = JSON.parse(text); } catch (e) { }
+        if (!f || f.app !== 'MedTime' || !f.data || typeof f.data !== 'object') { if (window.mtAlert) mtAlert(tx('resBad')); return; }
+        const go = window.mtDialog ? mtDialog({ icon: '📂', text: fill(tx('resQ'), { d: fmtDate(f.created) }), ok: tx('resOk') }) : Promise.resolve(true);
+        go.then(ok => {
+            if (!ok) return;
+            Object.keys(localStorage).filter(k => k.indexOf('medtime') === 0 && k !== BK && k !== 'medtime_setup').forEach(k => localStorage.removeItem(k));
+            Object.keys(f.data).forEach(k => { if (k.indexOf('medtime') === 0 && typeof f.data[k] === 'string') localStorage.setItem(k, f.data[k]); });
+            if (Array.isArray(f.log) && has('setLog')) N.setLog(JSON.stringify(f.log));
+            const done = window.mtAlert ? mtAlert(tx('resDone'), '✅') : Promise.resolve();
+            Promise.resolve(done).then(() => location.reload());
+        });
+    };
+
+    // ---------------- 📤 share ----------------
+    const sh = tile('tile-share', '📤', 'linear-gradient(135deg,#25d366,#128c7e)',
+        '<div class="mo-x" id="sh-x"></div><div class="mo-msg" id="sh-msg"></div><button type="button" class="mo-btn" id="sh-go"></button>');
+    const shareMsg = () => tx('shMsg') + LINK;
+    function drawShare() {
+        heads(sh, 'shT', tx('shSub'));
+        document.getElementById('sh-x').textContent = tx('shX');
+        document.getElementById('sh-msg').textContent = shareMsg();
+        document.getElementById('sh-go').textContent = tx('shGo');
+        document.getElementById('sh-go').style.display = has('shareText') ? '' : 'none';
+    }
+    document.getElementById('sh-go').onclick = () => { vib(); N.shareText(shareMsg()); };
+
+    window.moreRender = function () { drawLog(); drawBak(); drawShare(); };
+    moreRender();
+})();

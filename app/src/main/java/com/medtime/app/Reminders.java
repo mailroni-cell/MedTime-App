@@ -151,6 +151,25 @@ public class Reminders {
         schedule(ctx, id, items, time, at, false);
     }
 
+    // M-080: a reminder nobody answers (taken / snooze / skip) comes back every 5 minutes, up to 12 times (1 hour)
+    static final String EXTRA_NAG = "nag";
+    static final int NAG_MINUTES = 5;
+    static final int NAG_MAX = 12;
+
+    static void nag(Context ctx, Intent src, int count) {
+        int id = src.getIntExtra(EXTRA_ID, 0);
+        Intent i = new Intent(ctx, AlarmReceiver.class);
+        i.setAction("com.medtime.app.REMINDER_" + id + "_S"); // the one-time slot: snooze / skip / taken replace or cancel it
+        i.putExtra(EXTRA_ID, id);
+        i.putExtra(EXTRA_ITEMS, src.getStringExtra(EXTRA_ITEMS));
+        i.putExtra(EXTRA_TIME, src.getStringExtra(EXTRA_TIME));
+        i.putExtra(EXTRA_DAILY, false);
+        i.putExtra(EXTRA_NAG, count);
+        PendingIntent pi = PendingIntent.getBroadcast(ctx, id * 2 + 1, i,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        setAlarm(ctx, System.currentTimeMillis() + NAG_MINUTES * 60_000L, pi);
+    }
+
     static void cancel(Context ctx, int id, boolean daily) {
         AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
         if (am == null) return;

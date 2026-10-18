@@ -71,7 +71,14 @@ public class ReminderService extends Service {
 
         // M-011: chosen sound first, then the voice
         boolean hasSound = playSound();
-        Vibe.play(this, null); // M-079
+        // M-080: unanswered reminders come back; from the 3rd time the vibration is strong
+        int nag = appt ? 0 : intent.getIntExtra(Reminders.EXTRA_NAG, 0);
+        String vk = Vibe.chosen(this);
+        Vibe.play(this, nag >= 2 && !"off".equals(vk) ? "strong" : vk); // M-079
+        if (!appt) {
+            if (nag < Reminders.NAG_MAX) Reminders.nag(this, intent, nag + 1);
+            else MedLog.record(this, intent, "missed");
+        }
         if (Reminders.voiceOn(this)) {
             speak(appt ? Appointments.speechText(this, intent) : Reminders.speechText(this, items), hasSound ? SOUND_MS : 800);
         } else {
@@ -215,7 +222,10 @@ public class ReminderService extends Service {
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         // Notification has room for 3 buttons: taken, 10 min, 30 min (all 4 snooze choices are on the full screen)
         PendingIntent snooze10 = snoozeIntent(ctx, extras, id, 10, 3);
-        PendingIntent snooze30 = snoozeIntent(ctx, extras, id, 30, 4);
+        // M-080: third button is "skip" (the full screen still has all 4 snooze choices)
+        Intent skip = new Intent(ctx, ActionReceiver.class).setAction(ActionReceiver.ACTION_SKIP).putExtras(extras);
+        PendingIntent skipPi = PendingIntent.getBroadcast(ctx, id * 8 + 5, skip,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         String body = I18n.t(ctx, "body_prefix") + "\n" + String.join("\n", lines);
 
@@ -235,7 +245,7 @@ public class ReminderService extends Service {
                 .setOngoing(true)
                 .addAction(new Notification.Action.Builder(null, I18n.t(ctx, "taken"), takenPi).build())
                 .addAction(new Notification.Action.Builder(null, "⏰ " + I18n.t(ctx, "snooze_10"), snooze10).build())
-                .addAction(new Notification.Action.Builder(null, "⏰ " + I18n.t(ctx, "snooze_30"), snooze30).build());
+                .addAction(new Notification.Action.Builder(null, I18n.t(ctx, "skip"), skipPi).build());
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             b.setDefaults(Notification.DEFAULT_LIGHTS); // M-079: vibration comes from Vibe
         }

@@ -29,6 +29,7 @@ public class I18n {
         put("screen_one", "הגיע הזמן לקחת תרופה", "حان وقت تناول الدواء", "Este timpul pentru medicament", "C'est l'heure de votre médicament", "Time to take your medicine");
         put("screen_many", "הגיע הזמן לקחת תרופות", "حان وقت تناول الأدوية", "Este timpul pentru medicamente", "C'est l'heure de vos médicaments", "Time to take your medicines");
         put("taken", "✅ לקחתי", "✅ تناولته", "✅ Am luat", "✅ Pris", "✅ Taken");
+        put("skip", "✖️ ביטלתי (לא לוקח הפעם)", "✖️ ألغيت (لن آخذه هذه المرة)", "✖️ Anulez (nu iau acum)", "✖️ Annuler (pas cette fois)", "✖️ Skip (not this time)"); // M-080
         put("open_app", "📱 פתח את MedTime", "📱 افتح MedTime", "📱 Deschide MedTime", "📱 Ouvrir MedTime", "📱 Open MedTime");
         put("snooze_header", "⏰ להזכיר שוב בעוד:", "⏰ ذكّرني مرة أخرى بعد:", "⏰ Amintește-mi din nou peste:", "⏰ Me rappeler dans :", "⏰ Remind me again in:");
         put("snooze_10", "10 דקות", "10 دقائق", "10 minute", "10 min", "10 min");

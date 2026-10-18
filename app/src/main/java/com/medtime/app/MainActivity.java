@@ -95,6 +95,24 @@ public class MainActivity extends AppCompatActivity {
         if (webView != null) webView.evaluateJavascript("window.mtResumed && mtResumed()", null);
     }
 
+    // M-080: backup file chosen in the picker -> the page restores it
+    static final int REQ_RESTORE = 77;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, android.content.Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != REQ_RESTORE || resultCode != RESULT_OK || data == null || data.getData() == null) return;
+        try (java.io.InputStream in = getContentResolver().openInputStream(data.getData())) {
+            java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+            byte[] buf = new byte[16384]; int n; long total = 0;
+            while ((n = in.read(buf)) > 0) { out.write(buf, 0, n); total += n; if (total > 5_000_000) throw new Exception("big"); }
+            String text = out.toString("UTF-8");
+            webView.evaluateJavascript("window.mtRestore && mtRestore(" + org.json.JSONObject.quote(text) + ")", null);
+        } catch (Exception e) {
+            webView.evaluateJavascript("window.mtRestore && mtRestore(null)", null);
+        }
+    }
+
     // M-076: answered (or skipped by Android without showing anything): same as coming back
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

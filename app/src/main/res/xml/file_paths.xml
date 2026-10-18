@@ -2,4 +2,6 @@
 <!-- M-058: the downloaded update APK is shared with the Android installer from here -->
 <paths>
     <cache-path name="updates" path="updates/" />
+    <!-- M-080: backup file shared to Drive / WhatsApp / mail -->
+    <cache-path name="backup" path="backup/" />
 </paths>

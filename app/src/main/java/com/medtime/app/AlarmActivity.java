@@ -81,6 +81,11 @@ public class AlarmActivity extends Activity {
         taken.setOnClickListener(v -> answer(src, ActionReceiver.ACTION_TAKEN));
         root.addView(taken);
 
+        // M-080: "not taking it this time" stops the repeating too
+        Button skip = button(I18n.t(this, "skip"), "#7f1d1d");
+        skip.setOnClickListener(v -> answer(src, ActionReceiver.ACTION_SKIP));
+        root.addView(skip);
+
         // M-008: open the app; if the phone is locked, Android shows its unlock screen first
         Button open = button(I18n.t(this, "open_app"), "#334155");
         open.setOnClickListener(v -> unlockAndOpen(src));

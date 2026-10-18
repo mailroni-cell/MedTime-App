@@ -9,6 +9,7 @@ import android.content.Intent;
 public class ActionReceiver extends BroadcastReceiver {
     static final String ACTION_TAKEN = "com.medtime.app.TAKEN";
     static final String ACTION_SNOOZE = "com.medtime.app.SNOOZE";
+    static final String ACTION_SKIP = "com.medtime.app.SKIP"; // M-080: "not taking it this time"
 
     @Override
     public void onReceive(Context ctx, Intent intent) {
@@ -26,6 +27,12 @@ public class ActionReceiver extends BroadcastReceiver {
             if (nm != null) nm.cancel(Appointments.notificationId(id));
             AlarmActivity.closeIfShowing();
             return;
+        }
+        // M-080: an answer stops the repeating; taken / skip go into the log
+        String act = intent.getAction();
+        if (ACTION_TAKEN.equals(act) || ACTION_SKIP.equals(act)) {
+            Reminders.cancel(ctx, id, false);
+            MedLog.record(ctx, intent, ACTION_TAKEN.equals(act) ? "taken" : "skipped");
         }
         if (ACTION_SNOOZE.equals(intent.getAction())) {
             Reminders.snooze(ctx,
