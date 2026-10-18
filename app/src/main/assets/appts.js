@@ -49,6 +49,8 @@
         savedOk: ['✅ התור נשמר', '✅ تم حفظ الموعد', '✅ Programare salvată', '✅ Rendez-vous enregistré', '✅ Appointment saved'],
         save: ['💾 שמור תור', '💾 حفظ الموعد', '💾 Salvează', '💾 Enregistrer', '💾 Save appointment'],
         del: ['🗑️ מחק תור', '🗑️ حذف الموعد', '🗑️ Șterge', '🗑️ Supprimer', '🗑️ Delete'],
+        keep: ['↩️ השאר', '↩️ إبقاء', '↩️ Păstrează', '↩️ Garder', '↩️ Keep'],
+        deletedOk: ['🗑️ התור נמחק', '🗑️ تم حذف الموعد', '🗑️ Programare ștearsă', '🗑️ Rendez-vous supprimé', '🗑️ Appointment deleted'],
         confirmDel: ['למחוק את התור?', 'حذف الموعد؟', 'Ștergeți programarea?', 'Supprimer ce rendez-vous ?', 'Delete this appointment?'],
         needWhen: ['בחרו תאריך ושעה לתור', 'اختر التاريخ والساعة', 'Alegeți data și ora', "Choisissez la date et l'heure", 'Choose the date and time'],
         needWhat: ['כתבו שם רופא, סוג תור או מקום', 'اكتب اسم الطبيب أو النوع أو المكان', 'Scrieți medicul, tipul sau locul', 'Indiquez le médecin, le type ou le lieu', 'Enter a doctor, type or place'],
@@ -413,11 +415,11 @@
         form.date = isoDate(new Date(Date.now() + n * 864e5));
         vib(10); drawWhen();
     };
-    window.apptSave = function () {
+    window.apptSave = function (force) {
         readFields();
-        if (!form.date || !form.time) { alert(tt('needWhen')); step = 1; drawStep(); return; }
-        if (!form.doctor && !form.place && !form.type) { alert(tt('needWhat')); return; }
-        if (whenOf(form) < Date.now() && !confirm(tt('pastWarn') + '. OK?')) return;
+        if (!form.date || !form.time) { mtAlert(tt('needWhen'), '📅'); step = 1; drawStep(); return; }
+        if (!form.doctor && !form.place && !form.type) { mtAlert(tt('needWhat'), '🩺'); return; }
+        if (whenOf(form) < Date.now() && !force) { mtDialog({ icon: '⏰', text: tt('pastWarn'), ok: tt('save') }).then(ok => { if (ok) apptSave(true); }); return; }
         const list = load();
         if (!form.id) form.id = list.reduce((m, a) => Math.max(m, a.id || 0), 0) % 99000 + 1;
         if (editIdx >= 0) list[editIdx] = form; else list.push(form);
@@ -436,9 +438,17 @@
     }
     window.apptDelete = function (idx) {
         const i = typeof idx === 'number' ? idx : editIdx;
-        if (i < 0 || !confirm(tt('confirmDel'))) return;
-        const list = load(); list.splice(i, 1); save(list);
-        closeApptForm();
+        if (i < 0) return;
+        const a = load()[i] || {};
+        const ty = TYPES.find(x => x[0] === a.type);
+        const who = [ty ? ty[2][li()] : '', a.doctor].filter(Boolean).join(' · ');
+        const when = a.date ? new Date(whenOf(a)).toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long' }) + ' · ' + (a.time || '') : '';
+        mtDialog({ danger: true, title: tt('confirmDel'), text: [who, when].filter(Boolean).join('\n'), ok: tt('del'), cancel: tt('keep') }).then(ok => {
+            if (!ok) return;
+            const list = load(); list.splice(i, 1); save(list);
+            closeApptForm(); render();
+            toast(tt('deletedOk'));
+        });
     };
 
     // ---------- list screen ----------
@@ -512,7 +522,7 @@
         if (!N || !N.testAppointment) return;
         const now = new Date(Date.now() + 3600e3);
         N.testAppointment(JSON.stringify({ id: 99999, type: 'family', typeText: typeOf('family')[2][li()], doctor: tt('testDoc'), date: isoDate(now), time: pad2(now.getHours()) + ':' + pad2(now.getMinutes()), place: 'שערי צדק', city: 'ירושלים', street: '', house: '', phone: '*2700', before: 60, travel: 0, notes: '' }), 60);
-        alert(tt('testAlert'));
+        mtAlert(tt('testAlert'), '🔔');
     };
 
     // ---------- autocomplete wiring ----------

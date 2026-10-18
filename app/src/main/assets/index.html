@@ -2093,16 +2093,71 @@
         .af-days .af-chip { padding: 4px 2px !important; font-size: 0.95rem !important; line-height: 1.15 !important; min-height: 0 !important; }
         .af-days .af-chip b { font-size: 1.2rem !important; }
         .wiz .af-when .af-chip { padding-top: 10px; padding-bottom: 10px; }
+
+        /* ================= M-049: styled dialog ================= */
+        .mt-dlg-bg { position: fixed !important; inset: 0; z-index: 9500 !important; display: flex; align-items: center; justify-content: center; padding: 20px;
+            background: rgba(2, 6, 23, 0.72); backdrop-filter: blur(6px); animation: dlgBg 0.2s ease both; }
+        .mt-dlg-bg.out { opacity: 0; transition: opacity 0.2s; }
+        @keyframes dlgBg { from { opacity: 0; } }
+        .mt-dlg { width: 100%; max-width: 380px; border-radius: 28px; padding: 26px 20px 20px; text-align: center; color: #fff;
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.98), rgba(15, 23, 42, 0.98)); border: 2px solid rgba(103, 232, 249, 0.55);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06) inset, 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(34, 211, 238, 0.35);
+            animation: dlgIn 0.32s cubic-bezier(.2, 1.4, .4, 1) both; }
+        .mt-dlg.danger { border-color: rgba(248, 113, 113, 0.7); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(239, 68, 68, 0.4); }
+        @keyframes dlgIn { from { opacity: 0; transform: scale(0.7) translateY(30px); } }
+        .mt-dlg-ico { width: 74px; height: 74px; margin: -4px auto 12px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.3rem;
+            background: radial-gradient(circle at 35% 30%, rgba(103, 232, 249, 0.5), rgba(14, 116, 144, 0.5)); box-shadow: 0 0 24px rgba(34, 211, 238, 0.6); }
+        .mt-dlg.danger .mt-dlg-ico { background: radial-gradient(circle at 35% 30%, rgba(252, 165, 165, 0.55), rgba(153, 27, 27, 0.6)); box-shadow: 0 0 24px rgba(239, 68, 68, 0.7);
+            animation: dlgShake 0.5s 0.3s ease both; }
+        @keyframes dlgShake { 20%, 60% { transform: rotate(-10deg); } 40%, 80% { transform: rotate(10deg); } }
+        .mt-dlg-title { font-size: 1.5rem; font-weight: 900; margin-bottom: 6px; }
+        .mt-dlg-text { font-size: 1.25rem; font-weight: 700; color: #e2e8f0; line-height: 1.4; white-space: pre-line; }
+        .mt-dlg-btns { display: flex; gap: 10px; margin-top: 20px; }
+        .mt-dlg-btns button { flex: 1; border: none !important; border-radius: 999px; padding: 15px 10px; font-size: 1.25rem; font-weight: 900; color: #fff; }
+        .mt-dlg-no { background: rgba(71, 85, 105, 0.95) !important; }
+        .mt-dlg-yes { background: linear-gradient(180deg, #14b8a6, #0f766e) !important; box-shadow: 0 4px 0 #134e4a, 0 0 18px rgba(20, 184, 166, 0.6); }
+        .mt-dlg.danger .mt-dlg-yes { background: linear-gradient(180deg, #ef4444, #b91c1c) !important; box-shadow: 0 4px 0 #7f1d1d, 0 0 18px rgba(239, 68, 68, 0.6); }
+
+        /* ================= M-048: 3D opening + much bigger title ================= */
+        #splash #sp3d { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
+        #splash > *:not(#sp3d) { position: relative; z-index: 1; }
+        #splash .sp-credit { position: absolute !important; }
+        #splash .sp-star { position: absolute !important; }
+        #splash.sp-3d .sp-ring, #splash.sp-3d .sp-cap, #splash.sp-3d .sp-star { display: none; }
+        #splash .sp-title { font-size: clamp(3rem, 17vmin, 7rem) !important; perspective: 500px; }
+        #splash .sp-title span {
+            background: linear-gradient(180deg, #ffffff 0%, #ecfeff 30%, #67e8f9 60%, #06b6d4 78%, #8b5cf6 100%) !important;
+            -webkit-background-clip: text !important; background-clip: text !important; color: transparent !important;
+            filter: drop-shadow(0 1px 0 #0891b2) drop-shadow(0 2px 0 #0e7490) drop-shadow(0 3px 0 #155e75) drop-shadow(0 4px 0 #164e63)
+                drop-shadow(0 8px 12px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 18px rgba(34, 211, 238, 0.7)) !important;
+            animation-name: spLetter3d !important; animation-duration: 0.9s !important;
+        }
+        @keyframes spLetter3d { 0% { opacity: 0; transform: translateZ(-600px) rotateY(-90deg) scale(0.3); } 60% { opacity: 1; transform: translateZ(60px) rotateY(12deg) scale(1.15); } 100% { opacity: 1; transform: none; } }
+        #splash .sp-ecg { width: min(78vw, 420px); height: 34px; margin-top: 2px; overflow: visible; }
+        #splash .sp-ecg polyline { fill: none; stroke: #22d3ee; stroke-width: 3; stroke-linejoin: round; stroke-linecap: round;
+            filter: drop-shadow(0 0 6px #22d3ee); stroke-dasharray: 340; stroke-dashoffset: 340; animation: spEcg 1.3s ease-out 3.5s forwards; }
+        @keyframes spEcg { to { stroke-dashoffset: 0; } }
+        #splash .sp-tag { animation-delay: 4.3s !important; font-size: clamp(1.15rem, 5.5vmin, 1.8rem) !important; }
+        #splash .sp-credit { animation: spFade 0.9s ease 4.8s forwards, spShine 2.4s linear 4.8s infinite !important; }
+        h1.mt-logo { font-size: min(3.7rem, calc((100vw - 124px) / 4.55)) !important; }
+        html.fit3 h1.mt-logo { font-size: min(3.1rem, calc((100vw - 124px) / 4.55)) !important; }
+        h1.mt-logo .lg-back {
+            text-shadow: 0 1px 0 #0891b2, 0 2px 0 #0e7490, 0 3px 0 #0e7490, 0 4px 0 #155e75, 0 5px 0 #155e75, 0 6px 0 #164e63, 0 7px 0 #164e63,
+                0 8px 0 #083344, 0 9px 0 #083344, 0 10px 0 #042f2e, 0 12px 16px rgba(0, 0, 0, 0.7), 0 22px 34px rgba(0, 0, 0, 0.55), 0 0 34px rgba(34, 211, 238, 0.7) !important;
+        }
+        h1.mt-logo .lg-front { filter: drop-shadow(0 0 10px rgba(103, 232, 249, 0.45)); }
     </style>
 </head>
 <body>
     <!-- M-032: opening animation on every launch (tap to skip), then language choice on the first launch -->
     <div id="splash" onclick="window.endSplash && endSplash()">
         <div class="sp-stage"><div class="sp-ring"></div><div class="sp-ring r2"></div><div class="sp-ring r3"></div><div class="sp-cap"></div></div>
-        <div class="sp-title"><span style="animation-delay:.55s">M</span><span style="animation-delay:.65s">e</span><span style="animation-delay:.75s">d</span><span style="animation-delay:.85s">T</span><span style="animation-delay:.95s">i</span><span style="animation-delay:1.05s">m</span><span style="animation-delay:1.15s">e</span></div>
+        <div class="sp-title"><span style="animation-delay:2.50s">M</span><span style="animation-delay:2.62s">e</span><span style="animation-delay:2.74s">d</span><span style="animation-delay:2.86s">T</span><span style="animation-delay:2.98s">i</span><span style="animation-delay:3.10s">m</span><span style="animation-delay:3.22s">e</span></div>
+        <svg class="sp-ecg" viewBox="0 0 300 40" aria-hidden="true"><polyline points="0,22 105,22 120,22 130,4 142,38 152,22 166,22 176,13 186,22 300,22"/></svg>
         <div class="sp-tag" id="sp-tag"></div>
         <div class="sp-credit" id="sp-credit"></div>
     </div>
+    <script src="splash3d.js"></script>
     <div id="welcome">
         <div class="wl-globe">🌍</div>
         <div class="wl-title" id="wl-title">בחרו שפה</div>
@@ -2149,7 +2204,7 @@
                 setTimeout(function () { sp.remove(); }, 750);
                 if (!TX[stored]) showWelcome();
             };
-            setTimeout(window.endSplash, 3600);
+            setTimeout(window.endSplash, 6600); // M-048: 3 s longer, 3D
 
             function showWelcome() {
                 var w = document.getElementById('welcome'), title = document.getElementById('wl-title'),
@@ -2913,13 +2968,37 @@
             box.innerHTML = html;
         }
 
+        // M-049: styled dialog instead of the plain system alert / confirm. Returns a Promise<boolean>.
+        window.mtDialog = function (o) {
+            o = o || {};
+            return new Promise(function (res) {
+                const bg = document.createElement('div');
+                bg.className = 'mt-dlg-bg';
+                bg.innerHTML = '<div class="mt-dlg' + (o.danger ? ' danger' : '') + '" role="dialog" aria-modal="true">' +
+                    '<div class="mt-dlg-ico">' + (o.icon || (o.danger ? '🗑️' : 'ℹ️')) + '</div>' +
+                    (o.title ? '<div class="mt-dlg-title"></div>' : '') + (o.text ? '<div class="mt-dlg-text"></div>' : '') +
+                    '<div class="mt-dlg-btns">' + (o.cancel !== false ? '<button type="button" class="mt-dlg-no"></button>' : '') + '<button type="button" class="mt-dlg-yes"></button></div></div>';
+                if (o.title) bg.querySelector('.mt-dlg-title').textContent = o.title;
+                if (o.text) bg.querySelector('.mt-dlg-text').textContent = o.text;
+                const yes = bg.querySelector('.mt-dlg-yes'), no = bg.querySelector('.mt-dlg-no');
+                yes.textContent = o.ok || t('ok');
+                if (no) no.textContent = o.cancel || t('cancel');
+                const done = v => { bg.classList.add('out'); setTimeout(() => bg.remove(), 220); res(v); };
+                yes.onclick = () => done(true);
+                if (no) no.onclick = () => done(false);
+                bg.addEventListener('click', e => { if (e.target === bg) done(false); });
+                document.body.appendChild(bg);
+                if (navigator.vibrate) try { navigator.vibrate(o.danger ? [15, 40, 15] : 12); } catch (e) { }
+            });
+        };
+        window.mtAlert = function (text, icon) { return mtDialog({ text: text, icon: icon || '⚠️', cancel: false }); };
         function testReminder() {
             if (!Native) return;
             Native.testReminder(JSON.stringify([
                 { name: t('testName1'), dose: '1', type: 'pill' },
                 { name: t('testName2'), dose: t('testDose2'), type: 'injection' }
             ]), 60);
-            alert(t('testAlert'));
+            mtAlert(t('testAlert'), '🔔');
         }
 
         function escapeHtml(s) {
@@ -3331,7 +3410,7 @@
                 name: r.querySelector('.it-name').value.trim(),
                 dose: r.querySelector('.it-dose').value.trim()
             })).filter(it => it.name);
-            if (!items.length) { alert(t('needName')); return; }
+            if (!items.length) { mtAlert(t('needName'), '💊'); return; }
             if (!timeInput.value) { openTimePicker(); return; }
 
             const meds = loadMeds();
