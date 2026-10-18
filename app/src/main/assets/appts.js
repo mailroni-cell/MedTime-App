@@ -51,6 +51,7 @@
         del: ['🗑️ מחק תור', '🗑️ حذف الموعد', '🗑️ Șterge', '🗑️ Supprimer', '🗑️ Delete'],
         keep: ['↩️ השאר', '↩️ إبقاء', '↩️ Păstrează', '↩️ Garder', '↩️ Keep'],
         deletedOk: ['🗑️ התור נמחק', '🗑️ تم حذف الموعد', '🗑️ Programare ștearsă', '🗑️ Rendez-vous supprimé', '🗑️ Appointment deleted'],
+        done: ['סיום', 'إنهاء', 'Gata', 'Terminé', 'Done'],
         confirmDel: ['למחוק את התור?', 'حذف الموعد؟', 'Ștergeți programarea?', 'Supprimer ce rendez-vous ?', 'Delete this appointment?'],
         needWhen: ['בחרו תאריך ושעה לתור', 'اختر التاريخ والساعة', 'Alegeți data și ora', "Choisissez la date et l'heure", 'Choose the date and time'],
         needWhat: ['כתבו שם רופא, סוג תור או מקום', 'اكتب اسم الطبيب أو النوع أو المكان', 'Scrieți medicul, tipul sau locul', 'Indiquez le médecin, le type ou le lieu', 'Enter a doctor, type or place'],

@@ -2146,6 +2146,69 @@
                 0 8px 0 #083344, 0 9px 0 #083344, 0 10px 0 #042f2e, 0 12px 16px rgba(0, 0, 0, 0.7), 0 22px 34px rgba(0, 0, 0, 0.55), 0 0 34px rgba(34, 211, 238, 0.7) !important;
         }
         h1.mt-logo .lg-front { filter: drop-shadow(0 0 10px rgba(103, 232, 249, 0.45)); }
+
+        /* ================= M-050: clean home + medicine wizard ================= */
+        .home-card { display: flex; flex-direction: column; gap: 14px; }
+        .home-card .main-add { min-height: 74px !important; font-size: 1.55rem !important; }
+        .home-card .main-add .ba-cross { width: 48px; height: 48px; }
+        .home-card .main-add .ba-cross svg { width: 30px; height: 30px; }
+        .home-card .nav-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .home-card .nav-row > button { min-height: 72px; }
+        .home-card .nav-row .list-btn { grid-column: 1 / -1; }
+        .home-card .nav-row > .relax-btn { width: auto; flex-direction: row; gap: 8px; font-size: 1.15rem; }
+        .home-card .nav-row > .relax-btn .rb-ico { font-size: 1.8rem; }
+        html.med-open .sheet-bg { z-index: 70 !important; }
+        .med-wiz .card, .med-wiz #med-form { background: none !important; box-shadow: none !important; padding: 0 !important; }
+        .med-wiz #med-form { display: flex; flex-direction: column; gap: 12px; }
+        /* show only what the current step needs */
+        .med-wiz #mw-chips, .med-wiz .btn-add-item, .med-wiz .mw-time, .med-wiz .mw-days, .med-wiz .mw-summary, .med-wiz .mw-submit,
+        .med-wiz .mw-dose-note, .med-wiz .mw-more-note, .med-wiz .item-head, .med-wiz .item-row.collapsed { display: none !important; }
+        .med-wiz .item-row { background: none !important; border: none !important; box-shadow: none !important; padding: 0 !important; }
+        .med-wiz[data-s="0"] .item-row:not(.collapsed) > :not(.type-grid),
+        .med-wiz[data-s="1"] .item-row:not(.collapsed) > :not(.name-wrap),
+        .med-wiz[data-s="2"] .item-row:not(.collapsed) > :not(.dose-wrap) { display: none !important; }
+        .med-wiz[data-s="3"] #item-rows, .med-wiz[data-s="4"] #item-rows, .med-wiz[data-s="5"] #item-rows, .med-wiz[data-s="6"] #item-rows { display: none !important; }
+        .med-wiz[data-s="2"] .mw-dose-note, .med-wiz[data-s="3"] .mw-more-note { display: block !important; }
+        .med-wiz[data-s="3"] #mw-chips { display: flex !important; }
+        .med-wiz[data-s="3"] .btn-add-item { display: flex !important; }
+        .med-wiz[data-s="4"] .mw-time, .med-wiz[data-s="5"] .mw-days { display: flex !important; }
+        .med-wiz[data-s="6"] .mw-summary, .med-wiz[data-s="6"] .mw-submit { display: flex !important; }
+        .med-wiz[data-s="6"] .mw-summary { display: block !important; }
+        .med-wiz .type-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+        .med-wiz .type-btn { min-height: 92px; font-size: 1.25rem !important; padding: 12px 6px !important; border-radius: 22px !important; }
+        .med-wiz .type-btn .ico { font-size: 2.3rem !important; }
+        .med-wiz .it-name, .med-wiz .it-dose { font-size: 1.4rem !important; padding: 18px 16px !important; text-align: center; }
+        .med-wiz .suggest { position: static !important; margin-top: 8px; }
+        .mw-chips { flex-direction: column; gap: 10px; }
+        .mw-chip { border: 2px solid rgba(103, 232, 249, 0.5) !important; border-radius: 18px; padding: 14px 16px; font-size: 1.25rem; font-weight: 800; color: #fff;
+            background: rgba(15, 23, 42, 0.8) !important; text-align: start; }
+        .med-wiz .btn-add-item { justify-content: center; font-size: 1.25rem !important; min-height: 64px; }
+        .mw-time, .mw-days { flex-direction: column; gap: 12px; }
+        .mw-time-big { text-align: center; font-size: 3rem; font-weight: 900; color: #fff; text-shadow: 0 0 16px rgba(var(--gA), 0.8); }
+        .mw-time-big.empty { font-size: 1.5rem; color: #cbd5e1; text-shadow: none; }
+        .mw-quick { display: grid !important; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .mw-quick .af-chip { flex-direction: column; padding: 8px 2px; font-size: 0.95rem; line-height: 1.2; }
+        .mw-quick .af-chip b { font-size: 1.15rem; }
+        .mw-quick .af-chip { display: flex !important; flex-direction: column !important; align-items: center; justify-content: center; min-width: 0 !important; }
+        .mw-quick .af-chip > * { display: block; white-space: nowrap; }
+        .med-wiz .time-btn { min-height: 56px; }
+        .med-wiz #day-row { display: flex !important; flex-wrap: wrap; gap: 10px; justify-content: center; }
+        .med-wiz #day-row .day-lbl { display: none; }
+        .med-wiz #day-row .day-chip { min-width: 72px; padding: 14px 12px; font-size: 1.2rem; }
+        .med-wiz #day-row .day-chip.all { flex-basis: 100%; }
+        .med-wiz .mw-submit { width: 100%; margin-top: 14px; }
+        .wz-nav.one { grid-template-columns: 1fr; }
+
+        /* M-051: big "Done" button at the bottom of the appointments / reminders lists (instead of hunting for ✕ on top) */
+        .page-done-wrap { position: sticky; bottom: 0; width: 100%; max-width: 560px; margin-top: auto; padding: 14px 0 calc(14px + env(safe-area-inset-bottom)); z-index: 5;
+            background: linear-gradient(180deg, rgba(7, 11, 26, 0), rgba(7, 11, 26, 0.95) 35%); }
+        .page-done { width: 100%; min-height: 64px; border: none !important; border-radius: 999px; display: flex; align-items: center; justify-content: center; gap: 12px;
+            font-size: 1.45rem; font-weight: 900; color: #fff; background: linear-gradient(180deg, #14b8a6, #0f766e) !important;
+            box-shadow: 0 5px 0 #134e4a, 0 0 22px rgba(20, 184, 166, 0.6); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }
+        .page-done:active { transform: translateY(4px); box-shadow: 0 1px 0 #134e4a; }
+        .page-done .pd-ico { width: 38px; height: 38px; border-radius: 50%; background: #fff; color: #0f766e; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+        .appt-page, #list-page { display: none; flex-direction: column; align-items: center; }
+        .appt-page.open, #list-page.open { display: flex !important; }
     </style>
 </head>
 <body>
@@ -2253,19 +2316,43 @@
     <!-- M-013: room for the 3D hero capsule floating at the top -->
     <div class="hero-space"></div>
 
-    <div class="card">
-        <form id="med-form" class="form-group">
-            <div id="item-rows" class="form-group"></div>
-            <button type="button" class="btn-add-item" onclick="addMoreItem()"><span class="plus-orb">+</span><span data-i18n-strip="addMore"></span></button>
-            <input type="hidden" id="med-time">
-            <button type="button" id="time-btn" class="time-btn" onclick="openTimePicker()"></button>
-            <button type="submit" class="btn-add btn-med"><span class="ba-cross" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/></svg></span><span class="ba-txt" data-i18n="addReminder"></span><svg class="ba-ecg" viewBox="0 0 300 40" preserveAspectRatio="none" aria-hidden="true"><polyline points="0,22 110,22 122,22 130,8 140,34 148,22 160,22 168,15 176,22 300,22"/></svg></button>
-            <div class="nav-row">
-                <button type="button" id="list-btn" class="list-btn" onclick="openListPage()"></button>
-                <button type="button" id="appt-btn" class="appt-btn" onclick="openApptPage()"></button>
-                <button type="button" id="relax-btn" class="relax-btn" onclick="openRelax()"><span class="rb-ico">🌙</span><span class="rb-txt"></span></button>
-            </div>
-        </form>
+    <!-- M-050: clean home screen; the medicine form opens as a step-by-step wizard on its own screen -->
+    <div class="card home-card">
+        <button type="button" id="main-add" class="btn-add btn-med main-add" onclick="openMedPage()"><span class="ba-cross" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/></svg></span><span class="ba-txt" data-i18n="addReminder"></span><svg class="ba-ecg" viewBox="0 0 300 40" preserveAspectRatio="none" aria-hidden="true"><polyline points="0,22 110,22 122,22 130,8 140,34 148,22 160,22 168,15 176,22 300,22"/></svg></button>
+        <div class="nav-row">
+            <button type="button" id="list-btn" class="list-btn" onclick="openListPage()"></button>
+            <button type="button" id="appt-btn" class="appt-btn" onclick="openApptPage()"></button>
+            <button type="button" id="relax-btn" class="relax-btn" onclick="openRelax()"><span class="rb-ico">🌙</span><span class="rb-txt"></span></button>
+        </div>
+    </div>
+
+    <div id="med-page" class="settings-page list-page appt-form-page wiz med-wiz" data-s="0">
+        <div class="af-head">
+            <button type="button" class="close-3d" onclick="closeMedPage()" aria-label="close">✕</button>
+            <h2 id="mw-title"></h2>
+        </div>
+        <div class="wz-dots" id="mw-dots"></div>
+        <div class="wz-step-title" id="mw-step-title"></div>
+        <div class="wz-body">
+            <form id="med-form" class="form-group">
+                <div id="mw-chips" class="mw-chips"></div>
+                <div id="item-rows" class="form-group"></div>
+                <button type="button" class="btn-add-item" onclick="mwAddMore()"><span class="plus-orb">+</span><span data-i18n-strip="addMore"></span></button>
+                <input type="hidden" id="med-time">
+                <div class="mw-time">
+                    <div id="mw-time-big" class="mw-time-big"></div>
+                    <div id="mw-quick" class="af-chips mw-quick"></div>
+                    <button type="button" id="time-btn" class="time-btn" onclick="mwOtherTime()"></button>
+                </div>
+                <div class="mw-days"><div id="mw-days-slot"></div><div id="mw-days-text" class="af-when-text"></div></div>
+                <div id="mw-summary" class="mw-summary"></div>
+                <button type="submit" class="btn-add btn-med mw-submit"><span class="ba-cross" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/></svg></span><span class="ba-txt" data-i18n="addReminder"></span><svg class="ba-ecg" viewBox="0 0 300 40" preserveAspectRatio="none" aria-hidden="true"><polyline points="0,22 110,22 122,22 130,8 140,34 148,22 160,22 168,15 176,22 300,22"/></svg></button>
+            </form>
+        </div>
+        <div class="wz-nav">
+            <button type="button" id="mw-back" class="wz-back" onclick="mwGo(-1)"></button>
+            <button type="button" id="mw-next" class="wz-next" onclick="mwGo(1)"></button>
+        </div>
     </div>
 
     <!-- M-023: reminders list on its own screen, so the main screen never scrolls -->
@@ -2276,6 +2363,7 @@
             <h2 data-i18n="myReminders"></h2>
         </div>
         <ul id="med-list" class="med-list"></ul>
+        <div class="page-done-wrap"><button type="button" class="page-done" onclick="closeListPage()"><span class="pd-ico">✓</span><span class="pd-txt" id="list-done-txt"></span></button></div>
     </div>
 
     <!-- M-036: doctor appointments (stage 2) -->
@@ -2287,6 +2375,7 @@
         </div>
         <button type="button" class="appt-new" onclick="openApptForm()"><span class="plus-orb">+</span><span data-tx="apptNew"></span></button>
         <div id="appt-list" class="appt-list"></div>
+        <div class="page-done-wrap"><button type="button" class="page-done" onclick="closeApptPage()"><span class="pd-ico">✓</span><span class="pd-txt" data-tx="done"></span></button></div>
     </div>
     <div id="appt-form-page" class="settings-page list-page appt-form-page wiz">
         <!-- M-042: appointment form as 4 short steps, no scrolling, no wheel -->
@@ -3426,6 +3515,7 @@
             addItemRow();
             timeInput.value = '';
             resetTimeBtn();
+            if (window.mwSaved) mwSaved(); // M-050
         });
 
         // M-021: label sits inside the time button until a time is chosen
@@ -3448,6 +3538,7 @@
             renderSounds();
             if (window.apptRender) apptRender(); // M-036
             if (window.relaxRender) relaxRender(); // M-044
+            if (window.mwRender) mwRender(); // M-050
         });
 
         // M-013: reminder cards tilt in 3D under the finger
@@ -3689,7 +3780,7 @@
         window.addEventListener('resize', () => setTimeout(fitMain, 80));
         window.addEventListener('load', () => setTimeout(fitMain, 120));
         setTimeout(fitMain, 400); setTimeout(fitMain, 1500);
-        new MutationObserver(() => requestAnimationFrame(fitMain)).observe(document.getElementById('med-form'), { childList: true, subtree: true });
+        new MutationObserver(() => requestAnimationFrame(fitMain)).observe(document.querySelector('.home-card'), { childList: true, subtree: true });
         // M-031: close the app (reminders keep working, they are booked in Android)
         function exitApp() {
             amb.pause();
@@ -3807,6 +3898,7 @@
     </script>
     <script src="appts.js"></script>
     <script src="relax.js"></script>
+    <script src="medwiz.js"></script>
     <script src="meds.js"></script>
     <script src="themes.js"></script>
     <script src="worlds.js"></script>
