@@ -29,13 +29,16 @@ import java.util.Locale;
  */
 public class ReminderService extends Service {
 
-    static final String CHANNEL_ID = "medtime_reminders_v1";
+    // M-011: v2 channel is silent; the service plays the sound chosen in settings
+    static final String CHANNEL_ID = "medtime_reminders_v2";
+    static final long SOUND_MS = 4500;
     static final String PREFS_STATUS = "medtime_status";
     static final String KEY_TTS_STATE = "tts_state"; // ok / no_hebrew / error
 
     private TextToSpeech tts;
     private final Handler handler = new Handler(Looper.getMainLooper());
     private PowerManager.WakeLock wakeLock;
+    private android.media.Ringtone ringtone;
 
     static int notificationId(int reminderId) {
         return 5000 + (reminderId % 100000);
@@ -64,18 +67,32 @@ public class ReminderService extends Service {
             wakeLock.acquire(60_000L);
         }
 
+        // M-011: chosen sound first, then the voice
+        boolean hasSound = playSound();
         if (Reminders.voiceOn(this)) {
-            speak(Reminders.speechText(this, items));
+            speak(Reminders.speechText(this, items), hasSound ? SOUND_MS : 800);
         } else {
-            // Voice turned off in the app: sound + vibration from the notification only
-            handler.postDelayed(this::finishKeepNotification, 3000L);
+            handler.postDelayed(this::finishKeepNotification, hasSound ? SOUND_MS + 500 : 3000L);
         }
         // Safety net: never keep the service running longer than a minute
         handler.postDelayed(this::finishKeepNotification, 60_000L);
         return START_NOT_STICKY;
     }
 
-    private void speak(final String text) {
+    private boolean playSound() {
+        try {
+            if (ringtone != null) ringtone.stop();
+            ringtone = Sounds.ringtone(this, Sounds.chosen(this));
+            if (ringtone == null) return false;
+            ringtone.play();
+            handler.postDelayed(() -> { if (ringtone != null) ringtone.stop(); }, SOUND_MS);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private void speak(final String text, final long delayMs) {
         // A second reminder at the same moment replaces the first voice instead of talking over it
         if (tts != null) {
             tts.stop();
@@ -115,7 +132,7 @@ public class ReminderService extends Service {
                 }
             });
             // Let the notification sound finish first, then say it twice
-            tts.playSilentUtterance(2000, TextToSpeech.QUEUE_FLUSH, "pause1");
+            tts.playSilentUtterance(delayMs, TextToSpeech.QUEUE_FLUSH, "pause1");
             tts.speak(text, TextToSpeech.QUEUE_ADD, null, "first");
             tts.playSilentUtterance(1500, TextToSpeech.QUEUE_ADD, "pause2");
             tts.speak(text, TextToSpeech.QUEUE_ADD, null, "last");
@@ -144,6 +161,10 @@ public class ReminderService extends Service {
             tts.shutdown();
             tts = null;
         }
+        if (ringtone != null) {
+            ringtone.stop();
+            ringtone = null;
+        }
         if (wakeLock != null && wakeLock.isHeld()) wakeLock.release();
         super.onDestroy();
     }
@@ -158,15 +179,12 @@ public class ReminderService extends Service {
     static void ensureChannel(Context ctx) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return;
         NotificationManager nm = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-        if (nm == null || nm.getNotificationChannel(CHANNEL_ID) != null) return;
+        if (nm == null) return;
+        if (nm.getNotificationChannel("medtime_reminders_v1") != null) nm.deleteNotificationChannel("medtime_reminders_v1");
+        if (nm.getNotificationChannel(CHANNEL_ID) != null) return;
         NotificationChannel ch = new NotificationChannel(CHANNEL_ID, "תזכורות תרופות", NotificationManager.IMPORTANCE_HIGH);
         ch.setDescription("תזכורת בזמן לקחת תרופה, גם כשהאפליקציה סגורה");
-        Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        if (sound == null) sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        ch.setSound(sound, new AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_ALARM)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                .build());
+        ch.setSound(null, null);
         ch.enableVibration(true);
         ch.setVibrationPattern(new long[]{0, 600, 300, 600, 300, 900});
         ch.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);

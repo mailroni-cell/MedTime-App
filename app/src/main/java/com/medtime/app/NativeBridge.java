@@ -40,6 +40,26 @@ public class NativeBridge {
         I18n.setLang(activity.getApplicationContext(), lang);
     }
 
+    // ---------- M-011: settings screen ----------
+
+    @JavascriptInterface
+    public String getSounds() { return Sounds.list(activity.getApplicationContext()); }
+
+    @JavascriptInterface
+    public String getChosenSound() { return Sounds.chosen(activity.getApplicationContext()); }
+
+    @JavascriptInterface
+    public void setSound(String uri) { Sounds.choose(activity.getApplicationContext(), uri); }
+
+    @JavascriptInterface
+    public void previewSound(String uri) { Sounds.preview(activity.getApplicationContext(), uri); }
+
+    @JavascriptInterface
+    public void stopPreview() { Sounds.stopPreview(); }
+
+    @JavascriptInterface
+    public void setLowVision(boolean on) { Sounds.setLowVision(activity.getApplicationContext(), on); }
+
     /** Test reminder in N seconds (works with the app closed). */
     @JavascriptInterface
     public void testReminder(String itemsJson, int seconds) {

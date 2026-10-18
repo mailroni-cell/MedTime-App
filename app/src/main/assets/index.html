@@ -426,11 +426,160 @@
         }
 
         .lang-select {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+        }
+
+        /* M-011: gear button + settings screen */
+        .gear-btn {
             position: absolute;
-            top: 4px;
+            top: 0;
             inset-inline-start: 0;
-            padding: 6px 8px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.6rem;
+            padding: 2px 6px;
+        }
+
+        .gear-btn .badge {
+            position: absolute;
+            top: 2px;
+            inset-inline-end: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #f59e0b;
+            display: none;
+        }
+
+        .gear-btn.warn .badge {
+            display: block;
+        }
+
+        .settings-page {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            z-index: 40;
+            overflow-y: auto;
+            padding: 16px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .settings-page.open {
+            display: flex;
+        }
+
+        .settings-head {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .settings-head h2 {
+            color: #38bdf8;
+        }
+
+        .settings-head button {
+            background: #334155;
+            color: var(--text);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 1rem;
+        }
+
+        .settings-page .card h3 {
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+            color: #38bdf8;
+        }
+
+        .sound-group {
+            color: var(--text-muted);
             font-size: 0.85rem;
+            margin: 10px 0 4px;
+        }
+
+        .sound-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #334155;
+        }
+
+        .sound-row label {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sound-row input {
+            width: 20px;
+            height: 20px;
+            accent-color: #38bdf8;
+        }
+
+        .sound-row button {
+            background: transparent;
+            border: 1px solid #38bdf8;
+            color: #38bdf8;
+            border-radius: 6px;
+            padding: 4px 10px;
+            white-space: nowrap;
+        }
+
+        .sound-list {
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .main-warn {
+            width: 100%;
+            max-width: 480px;
+            margin-bottom: 16px;
+        }
+
+        /* M-011: low-vision display: bigger text, yellow on black */
+        html.lowvision {
+            font-size: 20px;
+        }
+
+        html.lowvision body,
+        html.lowvision .settings-page {
+            --bg: #000000;
+            --card: #000000;
+            --text: #ffffff;
+            --text-muted: #ffe500;
+            background: #000000;
+        }
+
+        html.lowvision .card,
+        html.lowvision .med-item,
+        html.lowvision .item-row {
+            border: 2px solid #ffe500;
+        }
+
+        html.lowvision input,
+        html.lowvision select,
+        html.lowvision .time-btn {
+            background: #000000;
+            border: 2px solid #ffffff;
+            color: #ffffff;
+        }
+
+        html.lowvision .med-info h3,
+        html.lowvision .med-info li {
+            color: #ffe500;
         }
 
         .btn-delete {
@@ -448,14 +597,10 @@
 
     <header>
         <h1>MedTime</h1>
-        <select id="lang-select" class="lang-select" aria-label="Language">
-            <option value="he">עברית</option>
-            <option value="ar">العربية</option>
-            <option value="ro">Română</option>
-            <option value="fr">Français</option>
-            <option value="en">English</option>
-        </select>
+        <button type="button" id="gear-btn" class="gear-btn" onclick="openSettingsPage()" aria-label="Settings">⚙️<span class="badge"></span></button>
     </header>
+
+    <div id="main-warn" class="main-warn"></div>
 
     <div id="canvas-container"></div>
 
@@ -470,16 +615,48 @@
         </form>
     </div>
 
-    <div id="status-box" class="status-box"></div>
-
-    <div class="card voice-card">
-        <h3 data-i18n="voiceTitle"></h3>
-        <label class="switch-row"><span data-i18n="voiceOn"></span><input type="checkbox" id="v-on"></label>
-        <label class="switch-row" id="row-names"><span data-i18n="voiceNames"></span><input type="checkbox" id="v-names"></label>
-        <label class="switch-row" id="row-dose"><span data-i18n="voiceDose"></span><input type="checkbox" id="v-dose"></label>
-    </div>
-
     <ul id="med-list" class="med-list"></ul>
+
+    <!-- M-011: settings screen (gear button) -->
+    <div id="settings-page" class="settings-page">
+        <div class="settings-head">
+            <h2>⚙️ <span data-i18n="settings"></span></h2>
+            <button type="button" onclick="closeSettingsPage()">✕ <span data-i18n="close"></span></button>
+        </div>
+
+        <div class="card">
+            <h3 data-i18n="langTitle"></h3>
+            <select id="lang-select" class="lang-select" aria-label="Language">
+                <option value="he">עברית</option>
+                <option value="ar">العربية</option>
+                <option value="ro">Română</option>
+                <option value="fr">Français</option>
+                <option value="en">English</option>
+            </select>
+        </div>
+
+        <div class="card voice-card">
+            <h3 data-i18n="voiceTitle"></h3>
+            <label class="switch-row"><span data-i18n="voiceOn"></span><input type="checkbox" id="v-on"></label>
+            <label class="switch-row" id="row-names"><span data-i18n="voiceNames"></span><input type="checkbox" id="v-names"></label>
+            <label class="switch-row" id="row-dose"><span data-i18n="voiceDose"></span><input type="checkbox" id="v-dose"></label>
+        </div>
+
+        <div class="card">
+            <h3 data-i18n="soundTitle"></h3>
+            <div id="sound-list" class="sound-list"></div>
+        </div>
+
+        <div class="card">
+            <h3 data-i18n="lowVisionTitle"></h3>
+            <label class="switch-row"><span data-i18n="lowVisionOn"></span><input type="checkbox" id="low-vision"></label>
+        </div>
+
+        <div class="card">
+            <h3 data-i18n="statusTitle"></h3>
+            <div id="status-box" class="status-box"></div>
+        </div>
+    </div>
 
     <!-- M-010: scroll wheel time picker -->
     <div id="time-sheet" class="sheet-bg" onclick="if (event.target === this) closeTimePicker()">
@@ -614,6 +791,20 @@
         // M-009: all texts in 5 languages
         const I18N = {
          "he": {
+          "settings": "הגדרות",
+          "close": "סגור",
+          "langTitle": "🌐 שפה",
+          "soundTitle": "🔔 צליל התזכורת",
+          "soundDefault": "צליל השעון המעורר של הטלפון",
+          "soundNone": "בלי צליל (רק רטט והקראה)",
+          "soundAlarm": "צלילי שעון מעורר",
+          "soundNotif": "צלילי התראה",
+          "preview": "▶ נסה",
+          "lowVisionTitle": "👓 תצוגה לכבדי ראייה",
+          "lowVisionOn": "טקסט גדול וניגודיות גבוהה",
+          "statusTitle": "✅ מצב התזכורות",
+          "problemMain": "⚠️ יש הגדרה שעלולה לעכב תזכורות",
+          "openSettings": "להגדרות",
           "item": "פריט",
           "typeLabel": "סוג",
           "nameLabel": "שם התרופה",
@@ -657,6 +848,20 @@
           "type_inhaler": "משאף"
          },
          "ar": {
+          "settings": "الإعدادات",
+          "close": "إغلاق",
+          "langTitle": "🌐 اللغة",
+          "soundTitle": "🔔 صوت التذكير",
+          "soundDefault": "صوت المنبه الافتراضي للهاتف",
+          "soundNone": "بدون صوت (اهتزاز وقراءة فقط)",
+          "soundAlarm": "أصوات المنبه",
+          "soundNotif": "أصوات الإشعارات",
+          "preview": "▶ تجربة",
+          "lowVisionTitle": "👓 عرض لضعاف البصر",
+          "lowVisionOn": "نص كبير وتباين عالٍ",
+          "statusTitle": "✅ حالة التذكيرات",
+          "problemMain": "⚠️ هناك إعداد قد يؤخر التذكيرات",
+          "openSettings": "الإعدادات",
           "item": "عنصر",
           "typeLabel": "النوع",
           "nameLabel": "اسم الدواء",
@@ -700,6 +905,20 @@
           "type_inhaler": "بخاخ"
          },
          "ro": {
+          "settings": "Setări",
+          "close": "Închide",
+          "langTitle": "🌐 Limbă",
+          "soundTitle": "🔔 Sunetul mementoului",
+          "soundDefault": "Sunetul de alarmă al telefonului",
+          "soundNone": "Fără sunet (doar vibrație și voce)",
+          "soundAlarm": "Sunete de alarmă",
+          "soundNotif": "Sunete de notificare",
+          "preview": "▶ Ascultă",
+          "lowVisionTitle": "👓 Afișare pentru vedere slabă",
+          "lowVisionOn": "Text mare și contrast ridicat",
+          "statusTitle": "✅ Starea mementourilor",
+          "problemMain": "⚠️ O setare poate întârzia mementourile",
+          "openSettings": "Setări",
           "item": "Element",
           "typeLabel": "Tip",
           "nameLabel": "Numele medicamentului",
@@ -743,6 +962,20 @@
           "type_inhaler": "Inhalator"
          },
          "fr": {
+          "settings": "Réglages",
+          "close": "Fermer",
+          "langTitle": "🌐 Langue",
+          "soundTitle": "🔔 Son du rappel",
+          "soundDefault": "Sonnerie d'alarme du téléphone",
+          "soundNone": "Sans son (vibration et voix seulement)",
+          "soundAlarm": "Sons d'alarme",
+          "soundNotif": "Sons de notification",
+          "preview": "▶ Écouter",
+          "lowVisionTitle": "👓 Affichage malvoyants",
+          "lowVisionOn": "Grand texte et contraste élevé",
+          "statusTitle": "✅ État des rappels",
+          "problemMain": "⚠️ Un réglage peut retarder les rappels",
+          "openSettings": "Réglages",
           "item": "Élément",
           "typeLabel": "Type",
           "nameLabel": "Nom du médicament",
@@ -786,6 +1019,20 @@
           "type_inhaler": "Inhalateur"
          },
          "en": {
+          "settings": "Settings",
+          "close": "Close",
+          "langTitle": "🌐 Language",
+          "soundTitle": "🔔 Reminder sound",
+          "soundDefault": "Phone's default alarm sound",
+          "soundNone": "No sound (vibration and voice only)",
+          "soundAlarm": "Alarm sounds",
+          "soundNotif": "Notification sounds",
+          "preview": "▶ Play",
+          "lowVisionTitle": "👓 Low-vision display",
+          "lowVisionOn": "Large text and high contrast",
+          "statusTitle": "✅ Reminder status",
+          "problemMain": "⚠️ A setting may delay reminders",
+          "openSettings": "Settings",
           "item": "Item",
           "typeLabel": "Type",
           "nameLabel": "Medicine name",
@@ -865,6 +1112,12 @@
                 html += `<div class="status-line"><span>⚠️ ${t('noVoice')}</span>` +
                     `<button onclick="MedTimeNative.openSettings('tts')">${t('voiceSettings')}</button></div>`;
             }
+            const problem = !!html;
+            // Main screen: only a short line when something needs fixing; details live in settings
+            document.getElementById('main-warn').innerHTML = problem
+                ? `<div class="status-line"><span>${t('problemMain')}</span><button onclick="openSettingsPage()">${t('openSettings')}</button></div>`
+                : '';
+            document.getElementById('gear-btn').classList.toggle('warn', problem);
             if (!html) html = `<div class="status-line ok"><span>${t('allOk')}</span></div>`;
             html += `<button class="btn-test" onclick="testReminder()">${t('test')}</button>`;
             box.innerHTML = html;
@@ -1040,7 +1293,61 @@
             document.querySelectorAll('[data-i18n-title]').forEach(el => { el.title = t(el.dataset.i18nTitle); });
             renderMeds();
             renderStatus();
+            renderSounds();
         });
+
+        // ---------- M-011: settings screen ----------
+        function openSettingsPage() {
+            document.getElementById('settings-page').classList.add('open');
+            renderSounds();
+            renderStatus();
+        }
+
+        function closeSettingsPage() {
+            document.getElementById('settings-page').classList.remove('open');
+            if (Native && Native.stopPreview) { try { Native.stopPreview(); } catch (e) { } }
+        }
+
+        function renderSounds() {
+            const box = document.getElementById('sound-list');
+            let list = [], chosen = '';
+            if (Native && Native.getSounds) {
+                try { list = JSON.parse(Native.getSounds()); chosen = Native.getChosenSound() || ''; } catch (e) { }
+            }
+            const row = (uri, title) =>
+                `<div class="sound-row"><label><input type="radio" name="snd" value="${escapeHtml(uri)}"${uri === chosen ? ' checked' : ''}>` +
+                `<span>${escapeHtml(title)}</span></label>` +
+                (uri === 'none' ? '' : `<button type="button" data-uri="${escapeHtml(uri)}">${t('preview')}</button>`) + `</div>`;
+            let html = row('', t('soundDefault')) + row('none', t('soundNone'));
+            let lastKind = '';
+            list.forEach(sd => {
+                if (sd.kind !== lastKind) {
+                    lastKind = sd.kind;
+                    html += `<div class="sound-group">${t(sd.kind === 'alarm' ? 'soundAlarm' : 'soundNotif')}</div>`;
+                }
+                html += row(sd.uri, sd.title);
+            });
+            box.innerHTML = html;
+            box.querySelectorAll('input[name=snd]').forEach(r => r.addEventListener('change', () => {
+                if (Native && Native.setSound) Native.setSound(r.value);
+                if (Native && Native.previewSound && r.value !== 'none') Native.previewSound(r.value);
+            }));
+            box.querySelectorAll('button[data-uri]').forEach(b => b.addEventListener('click', () => {
+                if (Native && Native.previewSound) Native.previewSound(b.dataset.uri);
+            }));
+        }
+
+        function applyLowVision(on) {
+            document.documentElement.classList.toggle('lowvision', on);
+            document.getElementById('low-vision').checked = on;
+            if (Native && Native.setLowVision) { try { Native.setLowVision(on); } catch (e) { } }
+        }
+
+        document.getElementById('low-vision').addEventListener('change', e => {
+            try { localStorage.setItem('medtime_lowvision', e.target.checked ? '1' : '0'); } catch (err) { }
+            applyLowVision(e.target.checked);
+        });
+        applyLowVision((() => { try { return localStorage.getItem('medtime_lowvision') === '1'; } catch (e) { return false; } })());
 
         // M-007: voice options, saved here and in Android
         function loadVoice() {

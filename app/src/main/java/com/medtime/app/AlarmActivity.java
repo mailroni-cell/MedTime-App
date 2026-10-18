@@ -68,10 +68,13 @@ public class AlarmActivity extends Activity {
         int pad = dp(28);
         root.setPadding(pad, pad, pad, pad);
 
+        // M-011: low-vision mode = bigger text, yellow on black
+        lowVision = Sounds.lowVision(this);
+        if (lowVision) root.setBackgroundColor(Color.BLACK);
         root.addView(text("💊", 72, "#38bdf8"));
         root.addView(text(I18n.t(this, lines.length > 1 ? "screen_many" : "screen_one"), 22, "#94a3b8"));
         int size = lines.length > 3 ? 22 : (lines.length > 1 ? 28 : 34);
-        for (String l : lines) root.addView(text(l, size, "#f8fafc"));
+        for (String l : lines) root.addView(text(l, size, lowVision ? "#FFE500" : "#f8fafc"));
 
         Button taken = button(I18n.t(this, "taken"), "#10b981");
         taken.setOnClickListener(v -> answer(src, ActionReceiver.ACTION_TAKEN));
@@ -146,7 +149,10 @@ public class AlarmActivity extends Activity {
         finish();
     }
 
+    private boolean lowVision;
+
     private TextView text(String s, int sp, String color) {
+        if (lowVision) sp = Math.round(sp * 1.3f);
         TextView t = new TextView(this);
         t.setText(s);
         t.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);

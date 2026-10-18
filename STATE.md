@@ -6,8 +6,8 @@
 - Automation set up: GitHub build -> APK to PC folder -> watcher installs + launches on the phone.
 
 ## Now
-- Stage 1 (M-005 reminders when app is closed + voice, M-006 several medicines / injections per reminder, M-007 snooze choices + voice options, M-008 unlock when needed, M-009 5 languages, M-010 scroll time picker + readable medicine cards)
-- Owner: the green status line and the test button move to the settings screen in stage 5. built and sent to the phone, waiting for owner test. M-004 also still waiting for test.
+- Stage 1 (M-005 reminders when app is closed + voice, M-006 several medicines / injections per reminder, M-007 snooze choices + voice options, M-008 unlock when needed, M-009 5 languages, M-010 scroll time picker + readable medicine cards, M-011 settings screen under a gear: language, voice, sounds, low-vision, status/test).
+- Stage 5 (settings) is partly done by M-011; still open from the old app: themes/backgrounds picker (stage 4), volume slider. built and sent to the phone, waiting for owner test. M-004 also still waiting for test.
 - Old app source: the whole Flutter app (main.dart) is embedded in pill-reminder/.github/workflows/build.yml, no Drive needed.
 
 ## Done and verified
