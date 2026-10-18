@@ -1,0 +1,30 @@
+name: Fetch real nature sounds (Wikimedia Commons)
+
+# M-072: runs when tools/fetch_sounds.py or tools/sounds_pick.json changes; commits candidates, sounds and credits.
+on:
+  push:
+    branches: [main]
+    paths: ['tools/fetch_sounds.py', 'tools/sounds_pick.json']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - name: Fetch
+        run: python3 tools/fetch_sounds.py
+      - name: Commit results
+        run: |
+          git config user.name "medtime-bot"
+          git config user.email "medtime-bot@users.noreply.github.com"
+          rm -rf sound-cache/raw
+          git add sound-cache app/src/main/assets/ambient || true
+          git commit -m "sounds: fetched real nature recordings" || echo "nothing to commit"
+          git pull --rebase || true
+          git push || true
