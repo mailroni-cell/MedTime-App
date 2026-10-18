@@ -1,1 +1,44 @@
-[]
+[
+ {
+  "sound": "rain",
+  "file": "File:Calm rain.wav",
+  "url": "https://commons.wikimedia.org/wiki/File%3ACalm_rain.wav",
+  "license": "CC BY-SA 4.0",
+  "artist": "Zuvji"
+ },
+ {
+  "sound": "ocean",
+  "file": "File:Oceanwavescrushing.ogg",
+  "url": "https://commons.wikimedia.org/wiki/File%3AOceanwavescrushing.ogg",
+  "license": "CC BY 3.0",
+  "artist": "Luftrum"
+ },
+ {
+  "sound": "forest",
+  "file": "File:Birdsong morning 01.ogg",
+  "url": "https://commons.wikimedia.org/wiki/File%3ABirdsong_morning_01.ogg",
+  "license": "CC BY-SA 4.0",
+  "artist": "Matutinho"
+ },
+ {
+  "sound": "night",
+  "file": "File:Nature sounds ambience in a Dordogne pond.ogg",
+  "url": "https://commons.wikimedia.org/wiki/File%3ANature_sounds_ambience_in_a_Dordogne_pond.ogg",
+  "license": "CC BY 3.0",
+  "artist": "Glaneur de sons."
+ },
+ {
+  "sound": "storm",
+  "file": "File:Regen en onweer - SoundCloud - Beeld en Geluid.ogg",
+  "url": "https://commons.wikimedia.org/wiki/File%3ARegen_en_onweer_-_SoundCloud_-_Beeld_en_Geluid.ogg",
+  "license": "CC BY-SA 3.0",
+  "artist": "Beeld en Geluid"
+ },
+ {
+  "sound": "zen",
+  "file": "File:Snowmelt flowing into lake at Okanagan Mountain Provincial Park.flac",
+  "url": "https://commons.wikimedia.org/wiki/File%3ASnowmelt_flowing_into_lake_at_Okanagan_Mountain_Provincial_Park.flac",
+  "license": "CC0",
+  "artist": "Extemporalist"
+ }
+]
