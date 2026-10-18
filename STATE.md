@@ -5,6 +5,13 @@
 - App today: dark Hebrew screen, small Three.js animation on top, add reminder / delete reminder. Basic.
 - Automation set up: GitHub build -> APK to PC folder -> watcher installs + launches on the phone.
 
+## HANDOFF (2026-10-18 night, end of session) - read this first
+- Latest: build 78 (run 78) = M-067..M-074, all ⏳ waiting for owner test. Last installed on the phone: build 77; build 78 copied to PC.
+- Recent: 👓 low-vision button on main screen (neon + halo when on), low-vision note fits screen, handwritten credit "פיתוח ועיצוב: רוני שניידר" / "Designed & developed by Roni Schneider" (SVG paths, scratchpad shaping with uharfbuzz), calm mode: 10 3D worlds, light bottom bar (Display/Sound/Timer/↺ Last mode/🔓 Lock), opens quiet with nothing pre-chosen, real nature recordings (M-072, from Wikimedia Commons by workflow fetch-sounds.yml + tools/sounds_pick.json; credits in Help "🎧"), seamless cross-fading sound player (ambPlayer in relax.js).
+- Owner said "perfect" on real sounds. Fire / underwater / space / synth still synthesized (no good free recording found).
+- Delivery loop: push main -> wait release latest build-info.txt has the SHA -> curl APK to /mnt/project-files/medtime-builds/ -> device_commit_files to C:\Users\Roni\Downloads\MedTime\MedTime-latest.apk (force) -> check size with device_list_dir (first copy is often the OLD file, recommit) -> stage install_log.txt, hash must match md5.
+- Parked (needs owner's word): separate calm app "הפרות של אורלי" - start only on "מתחילים את הפרות של אורלי".
+
 ## Now
 - 2026-10-18 evening (later): builds 58-60 = M-061..M-064 (settings labels fit, help tile 📖, glint on icons, full-width title with settings/exit at bottom corners, no panel behind main menu, stacked main buttons, low-vision fits, floor fades). Build 60 installed 19:03. HANDOFF: next session reads CLAUDE.md, STATE.md, CHANGES.md (last rows M-057..M-064 all ⏳ waiting for owner test), continues build->deliver->install loop.
 - 2026-10-18 evening: builds 49-52 installed (M-046..M-051): appointment wizard 7 steps, styled dialogs, 3D opening 6.6 s + big title, clean home + 7-step medicine wizard (medwiz.js), Done buttons. Owner idea for later (not started, needs his go): separate calm app "הפרות של אורלי" (only calm mode: many 3D backgrounds, sounds, nature, recommendations).
