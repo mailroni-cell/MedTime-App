@@ -360,9 +360,10 @@
         const isT = form.date === isoDate(t0), isM = form.date === isoDate(t1);
         $('af-today').classList.toggle('sel', isT);
         $('af-tomorrow').classList.toggle('sel', isM);
+        const inGrid = !!form.date && Array.from({ length: 12 }, (_, k) => isoDate(new Date(Date.now() + (k + 2) * 864e5))).includes(form.date);
         const other = $('af-other');
-        other.classList.toggle('sel', !!form.date && !isT && !isM);
-        other.querySelector('span').textContent = (!!form.date && !isT && !isM)
+        other.classList.toggle('sel', !!form.date && !isT && !isM && !inGrid);
+        other.querySelector('span').textContent = (!!form.date && !isT && !isM && !inGrid)
             ? '📅 ' + new Date(whenOf({ date: form.date, time: '12:00' })).toLocaleDateString(locale(), { weekday: 'short', day: 'numeric', month: 'short' })
             : tt('otherDate');
         const [h, m] = curHM();

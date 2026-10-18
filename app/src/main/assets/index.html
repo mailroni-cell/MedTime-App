@@ -2086,6 +2086,13 @@
         .af-sum { background: rgba(15, 23, 42, 0.75); border: 2px solid rgba(253, 230, 138, 0.55); border-radius: 18px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
         .af-sum div { font-size: 1.15rem; font-weight: 700; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .af-sum .s-when { color: #fde68a; font-size: 1.25rem; font-weight: 900; }
+
+        /* M-047: day step fits above Next on small screens; chosen date shown on top */
+        .af-day-text { margin: 0 0 2px !important; font-size: 1.3rem !important; }
+        .af-days { gap: 6px !important; }
+        .af-days .af-chip { padding: 4px 2px !important; font-size: 0.95rem !important; line-height: 1.15 !important; min-height: 0 !important; }
+        .af-days .af-chip b { font-size: 1.2rem !important; }
+        .wiz .af-when .af-chip { padding-top: 10px; padding-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -2241,13 +2248,13 @@
                 <div class="af-wrap"><input type="text" id="af-doctor" class="af-in" data-txph="phDoctor" autocomplete="off" enterkeyhint="next"></div>
             </section>
             <section class="wz-step" data-step="1">
+                <div class="af-when-text af-day-text" id="af-day-text"></div>
                 <div class="af-chips af-when">
                     <button type="button" id="af-today" class="af-chip" onclick="apptSetDay(0)" data-tx="today"></button>
                     <button type="button" id="af-tomorrow" class="af-chip" onclick="apptSetDay(1)" data-tx="tomorrow"></button>
                     <button type="button" id="af-other" class="af-chip af-other"><span></span><input type="date" id="af-date" tabindex="-1"></button>
                 </div>
                 <div class="af-chips af-days" id="af-days"></div>
-                <div class="af-when-text af-day-text" id="af-day-text"></div>
             </section>
             <section class="wz-step" data-step="2">
                 <div class="tp">
