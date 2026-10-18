@@ -65,6 +65,19 @@ public class NativeBridge {
         } catch (Exception e) { openSettings(""); }
     }
 
+    /** M-082: reading voice choice: list comes back as window.mtVoices({...}). */
+    @JavascriptInterface
+    public void listVoices() { if (web != null) Voices.list(activity, web); }
+
+    @JavascriptInterface
+    public void setVoice(String name) { Voices.choose(activity.getApplicationContext(), name); }
+
+    @JavascriptInterface
+    public void previewVoice(String name, String text) { Voices.preview(activity, name, text); }
+
+    @JavascriptInterface
+    public void installVoices() { Voices.install(activity); }
+
     /** M-080: "did I take it?" log (JSON array) and restoring it from a backup. */
     @JavascriptInterface
     public String getLog() { return MedLog.get(activity.getApplicationContext()); }

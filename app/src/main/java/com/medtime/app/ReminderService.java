@@ -126,6 +126,7 @@ public class ReminderService extends Service {
                 return;
             }
             saveTtsState("ok");
+            Voices.apply(ReminderService.this, tts); // M-082: the voice chosen in settings
             // Play on the alarm volume, so it is heard even when media volume is low
             tts.setAudioAttributes(new AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_ALARM)
