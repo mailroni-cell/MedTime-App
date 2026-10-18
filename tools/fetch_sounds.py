@@ -103,15 +103,19 @@ def make(key, items):
         src = parts[0]
     dur = float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', src],
                                capture_output=True, text=True).stdout or 0)
-    L = min(90.0, dur - 4)
-    X = 4.0  # seconds of overlap so the end flows into the start
+    # cut a 90 s loop whose end blends into its start (equal-power cross-fade), so it repeats with no seam
+    import numpy as np
+    SR = 44100
+    pcm = subprocess.run(['ffmpeg', '-v', 'error', '-i', src, '-f', 'f32le', '-ac', '2', '-ar', str(SR), '-'], capture_output=True, check=True).stdout
+    a = np.frombuffer(pcm, dtype=np.float32).reshape(-1, 2)
+    X = int(4 * SR)
+    L = min(int(90 * SR), len(a) - X - SR)
+    body, head = a[X:X + L].copy(), a[:X]
+    w = np.linspace(0, 1, X, dtype=np.float32)[:, None]
+    body[L - X:] = body[L - X:] * np.cos(w * np.pi / 2) + head * np.sin(w * np.pi / 2)
     out = 'app/src/main/assets/ambient/%s.ogg' % key
-    # body = [X, L+X), its last X seconds are cross-faded with the first X seconds [0, X)
-    subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', src, '-filter_complex',
-                    '[0]atrim=%f:%f,asetpts=N/SR/TB[body];[0]atrim=0:%f,asetpts=N/SR/TB[head];'
-                    '[body]atrim=0:%f,asetpts=N/SR/TB[b1];[body]atrim=%f,asetpts=N/SR/TB[b2];'
-                    '[b2][head]acrossfade=d=%f:c1=qsin:c2=qsin[tail];[b1][tail]concat=n=2:v=0:a=1[o]' % (X, L + X, X, L - X, L - X, X),
-                    '-map', '[o]', '-c:a', 'libvorbis', '-q:a', '2', out], check=True)
+    subprocess.run(['ffmpeg', '-y', '-v', 'error', '-f', 'f32le', '-ac', '2', '-ar', str(SR), '-i', '-', '-c:a', 'libvorbis', '-q:a', '2', out],
+                   input=body.astype(np.float32).tobytes(), check=True)
     log('made', out, os.path.getsize(out))
 
 CRED = []

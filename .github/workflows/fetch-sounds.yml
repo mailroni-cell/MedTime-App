@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install ffmpeg
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg && pip3 install -q numpy || sudo apt-get install -y -qq python3-numpy
       - name: Fetch
         run: python3 tools/fetch_sounds.py
       - name: Commit results
