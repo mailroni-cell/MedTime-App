@@ -464,7 +464,7 @@
         setDim(on) { canvas.style.opacity = on ? '0.35' : '1'; },
         setTheme(i) { applyTheme((window.MED_THEMES || [])[i]); }
     };
-    try { const ti = parseInt(localStorage.getItem('medtime_theme') || '0', 10); if (ti > 0) applyTheme((window.MED_THEMES || [])[ti]); } catch (e) { }
+    try { const ti = window.medEffectiveTheme ? window.medEffectiveTheme() : parseInt(localStorage.getItem('medtime_theme') || '0', 10) || 0; if (ti > 0) applyTheme((window.MED_THEMES || [])[ti]); } catch (e) { }
 
     if (document.documentElement.classList.contains('lowvision')) window.MedTime3D.setDim(true);
 

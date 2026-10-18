@@ -1568,6 +1568,24 @@
         .theme-sw .tw-dot { position: absolute; top: 10px; width: 22px; height: 22px; border-radius: 50%; }
         .theme-sw.sel { box-shadow: 0 0 0 3px #fff, 0 0 22px 6px rgba(var(--gA), 0.9) !important; }
         .theme-sw.sel::after { content: '✓'; position: absolute; top: 6px; inset-inline-end: 8px; font-weight: 900; font-size: 1.2rem; text-shadow: 0 0 6px #000; }
+
+        /* ================= M-029: theme preview + auto theme ================= */
+        .theme-auto { background: linear-gradient(135deg, #f97316 0%, #facc15 25%, #60a5fa 50%, #7c3aed 75%, #0f172a 100%) !important; }
+        .theme-auto .ta-ico { position: absolute; top: 18%; font-size: 1.6rem; }
+        .theme-bar {
+            position: fixed; left: 12px; right: 12px; bottom: calc(14px + env(safe-area-inset-bottom)); z-index: 60;
+            display: none; flex-direction: column; gap: 10px; padding: 14px; border-radius: 26px;
+            background: rgba(8, 10, 30, 0.82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 0 0 1.5px rgba(var(--gA), 0.6), 0 0 24px 4px rgba(var(--gA), 0.5), 0 18px 40px rgba(0, 0, 0, 0.6);
+            animation: chipIn 0.3s cubic-bezier(.2, .8, .2, 1);
+        }
+        body.theme-preview .theme-bar { display: flex; }
+        body.theme-preview #settings-page { opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+        .tb-name { text-align: center; color: #fff; font-size: 1.3rem; font-weight: 800; text-shadow: 0 0 12px rgba(var(--gA), 0.9); }
+        .tb-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .tb-btns button { border: none !important; border-radius: 999px; padding: 14px; font-size: 1.15rem; font-weight: 800; color: #fff; }
+        .tb-back { background: rgba(255, 255, 255, 0.14) !important; }
+        .tb-ok { background: linear-gradient(180deg, rgba(var(--gA), 1), rgba(var(--gB), 1)) !important; box-shadow: 0 0 18px 4px rgba(var(--gA), 0.7); }
     </style>
 </head>
 <body>
@@ -1709,6 +1727,15 @@
         </div>
     </div>
 
+    <!-- M-029: theme preview bar -->
+    <div id="theme-bar" class="theme-bar">
+        <div class="tb-name"></div>
+        <div class="tb-btns">
+            <button type="button" class="tb-back" onclick="endThemePreview(false)" data-i18n="themeBack"></button>
+            <button type="button" class="tb-ok" onclick="endThemePreview(true)" data-i18n="themeChoose"></button>
+        </div>
+    </div>
+
     <!-- M-026: dose picker: unit chips + quantity with - / + , then OK -->
     <div id="dose-sheet" class="sheet-bg" onclick="if (event.target === this) closeDosePicker()">
         <div class="sheet dose-sheet">
@@ -1832,6 +1859,7 @@
           "typeManually": "⌨ הקלדה חופשית", "qMorning": "בוקר", "qNoon": "צהריים", "qEvening": "ערב", "qNight": "לילה",
           "soundMedTime": "✨ צלילים מיוחדים של MedTime",
           "themeTitle": "🎨 תצוגה",
+          "themeAuto": "🕒 אוטומטי לפי שעה", "themeChoose": "✓ בחר", "themeBack": "↩ חזור",
           "addReminder": "הוסף תזכורת",
           "voiceTitle": "🔊 הקראה קולית בתזכורת",
           "voiceOn": "להקריא בקול",
@@ -1900,6 +1928,7 @@
           "typeManually": "⌨ كتابة يدوية", "qMorning": "صباح", "qNoon": "ظهر", "qEvening": "مساء", "qNight": "ليل",
           "soundMedTime": "✨ أصوات MedTime الخاصة",
           "themeTitle": "🎨 المظهر",
+          "themeAuto": "🕒 تلقائي حسب الوقت", "themeChoose": "✓ اختيار", "themeBack": "↩ رجوع",
           "addReminder": "أضف تذكيرًا",
           "voiceTitle": "🔊 القراءة الصوتية في التذكير",
           "voiceOn": "القراءة بصوت عالٍ",
@@ -1968,6 +1997,7 @@
           "typeManually": "⌨ Scriere liberă", "qMorning": "Dimineața", "qNoon": "Prânz", "qEvening": "Seara", "qNight": "Noaptea",
           "soundMedTime": "✨ Sunete speciale MedTime",
           "themeTitle": "🎨 Aspect",
+          "themeAuto": "🕒 Automat după oră", "themeChoose": "✓ Alege", "themeBack": "↩ Înapoi",
           "addReminder": "Adaugă memento",
           "voiceTitle": "🔊 Citire vocală la memento",
           "voiceOn": "Citește cu voce tare",
@@ -2036,6 +2066,7 @@
           "typeManually": "⌨ Saisie libre", "qMorning": "Matin", "qNoon": "Midi", "qEvening": "Soir", "qNight": "Nuit",
           "soundMedTime": "✨ Sons spéciaux MedTime",
           "themeTitle": "🎨 Apparence",
+          "themeAuto": "🕒 Auto selon l’heure", "themeChoose": "✓ Choisir", "themeBack": "↩ Retour",
           "addReminder": "Ajouter un rappel",
           "voiceTitle": "🔊 Lecture vocale du rappel",
           "voiceOn": "Lire à voix haute",
@@ -2104,6 +2135,7 @@
           "typeManually": "⌨ Type it", "qMorning": "Morning", "qNoon": "Noon", "qEvening": "Evening", "qNight": "Night",
           "soundMedTime": "✨ MedTime special sounds",
           "themeTitle": "🎨 Display",
+          "themeAuto": "🕒 Auto by time of day", "themeChoose": "✓ Choose", "themeBack": "↩ Back",
           "addReminder": "Add reminder",
           "voiceTitle": "🔊 Voice readout",
           "voiceOn": "Read aloud",
@@ -2664,7 +2696,20 @@
 
         // ---------- M-028: 30 display themes ----------
         function hexRgb(h) { const n = parseInt(h.slice(1), 16); return ((n >> 16) & 255) + ', ' + ((n >> 8) & 255) + ', ' + (n & 255); }
-        function curTheme() { try { return parseInt(localStorage.getItem('medtime_theme') || '0', 10) || 0; } catch (e) { return 0; } }
+        // stored choice: a theme number, or 'auto' (M-029: changes with the time of day)
+        function storedTheme() { try { const v = localStorage.getItem('medtime_theme') || '0'; return v === 'auto' ? 'auto' : (parseInt(v, 10) || 0); } catch (e) { return 0; } }
+        function themeForNow() {
+            const h = new Date().getHours();
+            return h >= 5 && h < 10 ? 13 : h >= 10 && h < 16 ? 6 : h >= 16 && h < 19 ? 2 : h >= 19 && h < 22 ? 16 : 26;
+        }
+        function curTheme() { const v = storedTheme(); return v === 'auto' ? themeForNow() : v; }
+        window.medEffectiveTheme = curTheme;
+        let autoShown = -1;
+        setInterval(() => {
+            if (storedTheme() !== 'auto' || document.body.classList.contains('theme-preview')) return;
+            const i = themeForNow();
+            if (i !== autoShown) { autoShown = i; if (window.MedTime3D) MedTime3D.setTheme(i); applyThemeUI(i); }
+        }, 60000);
         function themeName(th) { return th.n[LANG_IDX[LANG] - 1] || th.n[4]; }
         function applyThemeUI(i) {
             const th = (window.MED_THEMES || [])[i]; if (!th) return;
@@ -2672,24 +2717,47 @@
             document.documentElement.style.setProperty('--gB', hexRgb(th.gb));
             document.querySelector('meta[name=theme-color]') && document.querySelector('meta[name=theme-color]').setAttribute('content', th.sky[0]);
         }
+        // M-029: tapping a theme shows a full-screen preview with Choose / Back
+        let prevChoice = null;
+        function showThemePreview(choice, label) {
+            if (prevChoice === null) prevChoice = storedTheme();
+            const i = choice === 'auto' ? themeForNow() : choice;
+            if (window.MedTime3D) MedTime3D.setTheme(i);
+            applyThemeUI(i);
+            document.body.classList.add('theme-preview');
+            const bar = document.getElementById('theme-bar');
+            bar.dataset.choice = String(choice);
+            bar.querySelector('.tb-name').textContent = label;
+            if (navigator.vibrate) navigator.vibrate(12);
+        }
+        function endThemePreview(keep) {
+            const bar = document.getElementById('theme-bar');
+            const choice = keep ? bar.dataset.choice : String(prevChoice);
+            try { localStorage.setItem('medtime_theme', choice); } catch (e) { }
+            prevChoice = null;
+            const i = curTheme(); autoShown = i;
+            if (window.MedTime3D) MedTime3D.setTheme(i);
+            applyThemeUI(i);
+            document.body.classList.remove('theme-preview');
+            renderThemes(); updateSettingsSummary();
+        }
         function renderThemes() {
             const box = document.getElementById('theme-grid'); if (!box || !window.MED_THEMES) return;
-            const cur = curTheme();
+            const stored = storedTheme(), cur = stored;
             box.innerHTML = '';
+            const ab = document.createElement('button');
+            ab.type = 'button'; ab.className = 'theme-sw theme-auto' + (stored === 'auto' ? ' sel' : '');
+            ab.innerHTML = '<span class="ta-ico">🌅🌙</span><span class="tw-name"></span>';
+            ab.querySelector('.tw-name').textContent = t('themeAuto');
+            ab.onclick = () => showThemePreview('auto', t('themeAuto'));
+            box.appendChild(ab);
             MED_THEMES.forEach((th, i) => {
                 const b = document.createElement('button');
                 b.type = 'button'; b.className = 'theme-sw' + (i === cur ? ' sel' : '');
                 b.style.background = `radial-gradient(circle at 30% 25%, ${th.neb[0]}cc, transparent 55%), radial-gradient(circle at 75% 45%, ${th.neb[1]}aa, transparent 50%), radial-gradient(circle at 50% 85%, ${th.neb[2]}88, transparent 55%), linear-gradient(180deg, ${th.sky[2]}, ${th.sky[1]} 60%, ${th.sky[0]})`;
                 b.innerHTML = `<span class="tw-dot" style="background:linear-gradient(135deg,${th.hero[0]} 50%,${th.hero[1]} 50%);box-shadow:0 0 12px ${th.ga}"></span><span class="tw-name"></span>`;
                 b.querySelector('.tw-name').textContent = themeName(th);
-                b.onclick = () => {
-                    try { localStorage.setItem('medtime_theme', String(i)); } catch (e) { }
-                    if (window.MedTime3D && MedTime3D.setTheme) MedTime3D.setTheme(i);
-                    applyThemeUI(i);
-                    box.querySelectorAll('.theme-sw').forEach(x => x.classList.toggle('sel', x === b));
-                    updateSettingsSummary();
-                    if (navigator.vibrate) navigator.vibrate(12);
-                };
+                b.onclick = () => showThemePreview(i, themeName(th));
                 box.appendChild(b);
             });
         }
@@ -2705,7 +2773,7 @@
             const chosen = document.querySelector('#sound-list input[name=snd]:checked');
             set('soundTitle', chosen ? chosen.parentElement.textContent.trim() : t('tapToChange'));
             set('lowVisionTitle', document.getElementById('low-vision').checked ? t('on') : t('off'));
-            if (window.MED_THEMES) set('themeTitle', themeName(MED_THEMES[curTheme()] || MED_THEMES[0]));
+            if (window.MED_THEMES) set('themeTitle', storedTheme() === 'auto' ? t('themeAuto') : themeName(MED_THEMES[curTheme()] || MED_THEMES[0]));
             set('statusTitle', lastStatusProblem ? t('statusProblem') : t('statusOk'));
         }
 
