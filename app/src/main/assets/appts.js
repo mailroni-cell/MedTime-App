@@ -31,6 +31,16 @@
         lBefore: ['🔔 להזכיר לפני התור', '🔔 التذكير قبل الموعد', '🔔 Amintește-mi înainte cu', '🔔 Me rappeler avant', '🔔 Remind me before'],
         lTravel: ['🚗 זמן נסיעה: תזכורת "הגיע הזמן לצאת"', '🚗 مدة الطريق: تذكير "حان وقت الخروج"', '🚗 Timp de drum: memento „e timpul să pleci”', '🚗 Temps de trajet : rappel « il est temps de partir »', '🚗 Travel time: "time to leave" reminder'],
         phNotes: ['📝 הערות (לדוגמה: לבוא בצום)', '📝 ملاحظات (مثال: الحضور صائمًا)', '📝 Note (ex.: pe nemâncate)', '📝 Notes (ex. : venir à jeun)', '📝 Notes (e.g. come fasting)'],
+        stWhat: ['1. איזה תור?', '1. أي موعد؟', '1. Ce programare?', '1. Quel rendez-vous ?', '1. What appointment?'],
+        stWhen: ['2. מתי?', '2. متى؟', '2. Când?', '2. Quand ?', '2. When?'],
+        stWhere: ['3. איפה?', '3. أين؟', '3. Unde?', '3. Où ?', '3. Where?'],
+        stRemind: ['4. תזכורות וסיכום', '4. التذكيرات والملخص', '4. Mementouri și rezumat', '4. Rappels et résumé', '4. Reminders and summary'],
+        next: ['הבא ⬅', 'التالي ⬅', 'Înainte ➡', 'Suivant ➡', 'Next ➡'],
+        back: ['➡ הקודם', '➡ السابق', '⬅ Înapoi', '⬅ Retour', '⬅ Back'],
+        hourL: ['שעה', 'ساعة', 'oră', 'heure', 'hour'], minL: ['דקות', 'دقائق', 'minute', 'minutes', 'minutes'],
+        pickDay: ['בחרו יום', 'اختر اليوم', 'Alegeți ziua', 'Choisissez le jour', 'Choose the day'],
+        navCheck: ['🚗 בדיקה ב-Waze', '🚗 فحص في Waze', '🚗 Verifică în Waze', '🚗 Vérifier dans Waze', '🚗 Check in Waze'],
+        navNeed: ['🚗 כתבו מקום או כתובת לניווט', '🚗 اكتب مكانًا أو عنوانًا للملاحة', '🚗 Scrieți locul sau adresa', '🚗 Indiquez le lieu ou l’adresse', '🚗 Enter a place or address to navigate'],
         savedOk: ['✅ התור נשמר', '✅ تم حفظ الموعد', '✅ Programare salvată', '✅ Rendez-vous enregistré', '✅ Appointment saved'],
         save: ['💾 שמור תור', '💾 حفظ الموعد', '💾 Salvează', '💾 Enregistrer', '💾 Save appointment'],
         del: ['🗑️ מחק תור', '🗑️ حذف الموعد', '🗑️ Șterge', '🗑️ Supprimer', '🗑️ Delete'],
@@ -241,25 +251,102 @@
             box.appendChild(b);
         });
     }
+    // M-042: the form is 4 short steps: what / when / where / reminders + summary
+    let step = 0;
+    const STEP_TITLES = ['stWhat', 'stWhen', 'stWhere', 'stRemind'];
     function drawForm() {
         $('af-title').textContent = tt(editIdx >= 0 ? 'apptEdit' : 'apptNew');
         document.querySelectorAll('#appt-form-page [data-tx]').forEach(el => { el.textContent = tt(el.dataset.tx); });
         document.querySelectorAll('#appt-form-page [data-txph]').forEach(el => { el.placeholder = tt(el.dataset.txph); });
         chipRow('af-types', TYPES.map(x => [x[0], `<span class="big">${x[1]}</span><span>${esc(x[2][li()])}</span>`, 'type']), form.type, v => { form.type = v; });
         chipRow('af-funds', [['', esc(tt('none'))]].concat(FUNDS.map(f => [f[0], esc(f[1][li()])])), form.fund || '', v => { form.fund = v; drawFundCall(); });
-        chipRow('af-before', BEFORE.map(m => [m, esc(minsText(m))]), form.before, v => { form.before = +v; });
-        chipRow('af-travel', TRAVEL.map(m => [m, esc(m ? minsText(m) : tt('none'))]), form.travel, v => { form.travel = +v; drawWhen(); });
+        chipRow('af-before', BEFORE.map(m => [m, esc(minsText(m))]), form.before, v => { form.before = +v; drawSummary(); });
+        chipRow('af-travel', TRAVEL.map(m => [m, esc(m ? minsText(m) : tt('none'))]), form.travel, v => { form.travel = +v; drawSummary(); });
+        chipRow('tp-quick', ['08:00', '09:00', '10:00', '11:00', '13:00', '15:00', '17:00', '19:00'].map(v => [v, v]), form.time, v => { form.time = v; drawWhen(); });
         ['doctor', 'place', 'city', 'street', 'house', 'phone', 'notes'].forEach(k => { $('af-' + k).value = form[k] || ''; });
-        drawWhen(); drawFundCall();
+        drawWhen(); drawFundCall(); drawNavTest(); drawStep();
     }
+    function drawStep() {
+        document.querySelectorAll('#appt-form-page .wz-step').forEach(el => el.classList.toggle('on', +el.dataset.step === step));
+        $('wz-step-title').textContent = tt(STEP_TITLES[step]);
+        const dots = $('wz-dots'); dots.innerHTML = '';
+        for (let i = 0; i < 4; i++) {
+            const d = document.createElement('button');
+            d.type = 'button'; d.textContent = i + 1;
+            d.className = i === step ? 'cur' : (i < step ? 'done' : '');
+            d.onclick = () => { readFields(); step = i; drawStep(); };
+            dots.appendChild(d);
+        }
+        $('wz-back').disabled = step === 0;
+        $('wz-back').textContent = tt('back');
+        const nx = $('wz-next');
+        nx.textContent = step === 3 ? tt('save') : tt('next');
+        nx.classList.toggle('save', step === 3);
+        if (step === 3) drawSummary();
+        if (step === 2) drawNavTest();
+    }
+    window.wzGo = function (d) {
+        readFields();
+        if (d > 0 && step === 1 && (!form.date || !form.time)) {
+            if (!form.date) { form.date = isoDate(new Date()); }
+            if (!form.time) { form.time = '09:00'; }
+            drawWhen();
+        }
+        if (d > 0 && step === 3) { apptSave(); return; }
+        step = Math.max(0, Math.min(3, step + d));
+        vib(10);
+        if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+        drawStep();
+    };
     function drawFundCall() {
         const f = fundOf(form.fund), b = $('af-fundcall');
         if (!f) { b.style.display = 'none'; return; }
         b.style.display = '';
-        b.textContent = tt('callFund') + ' ' + f[1][li()] + ' ' + f[2];
+        b.textContent = '📞 ' + f[2];
         b.onclick = () => { $('af-phone').value = f[2]; form.phone = f[2]; vib(10); };
     }
+    function drawNavTest() {
+        readFields();
+        const q = navQuery(form), b = $('af-navtest');
+        b.disabled = !q;
+        b.textContent = q ? tt('navCheck') + ': ' + q : tt('navNeed');
+        b.onclick = () => { if (!q) return; vib(15); if (N && N.openWaze) N.openWaze(q); else window.open('https://waze.com/ul?navigate=yes&q=' + encodeURIComponent(q)); };
+    }
+    function drawSummary() {
+        readFields();
+        const box = $('af-summary');
+        if (!box) return;
+        if (!form.date || !form.time) { box.innerHTML = ''; return; }
+        box.innerHTML = cardHtml(form, -1, false, true);
+        const q = navQuery(form);
+        if (q) {
+            const b = document.createElement('button');
+            b.type = 'button'; b.className = 'af-chip af-navtest'; b.textContent = tt('navCheck') + ': ' + q;
+            b.onclick = () => { vib(15); if (N && N.openWaze) N.openWaze(q); else window.open('https://waze.com/ul?navigate=yes&q=' + encodeURIComponent(q)); };
+            box.appendChild(b);
+        }
+    }
+    // inline time: ▲ / ▼ for hour and minutes (tap = 1 step, hold = repeat)
+    function curHM() { const [h, m] = (form.time || '09:00').split(':').map(Number); return [h, m]; }
+    function stepTime(code) {
+        let [h, m] = curHM();
+        const n = parseInt(code.slice(1), 10);
+        if (code[0] === 'h') h = (h + n + 24) % 24;
+        else { m = Math.round(m / 5) * 5 + n; if (m >= 60) { m = 0; h = (h + 1) % 24; } if (m < 0) { m = 55; h = (h + 23) % 24; } }
+        form.time = pad2(h) + ':' + pad2(m);
+        vib(8); drawWhen();
+    }
+    document.querySelectorAll('.tp-btn').forEach(b => {
+        let tm = null, iv = null;
+        const stop = () => { clearTimeout(tm); clearInterval(iv); };
+        b.addEventListener('pointerdown', e => {
+            e.preventDefault(); stepTime(b.dataset.tp);
+            tm = setTimeout(() => { iv = setInterval(() => stepTime(b.dataset.tp), 130); }, 450);
+        });
+        ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => b.addEventListener(ev, stop));
+    });
     function drawWhen() {
+        if (!form.time) form.time = '09:00';
         const t0 = new Date(), t1 = new Date(Date.now() + 864e5);
         const isT = form.date === isoDate(t0), isM = form.date === isoDate(t1);
         $('af-today').classList.toggle('sel', isT);
@@ -269,13 +356,12 @@
         other.querySelector('span').textContent = (!!form.date && !isT && !isM)
             ? '📅 ' + new Date(whenOf({ date: form.date, time: '12:00' })).toLocaleDateString(locale(), { weekday: 'short', day: 'numeric', month: 'short' })
             : tt('otherDate');
-        $('af-time').textContent = form.time ? '⏰ ' + form.time : tt('pickTime');
-        $('af-time').classList.toggle('sel', !!form.time);
-        const hint = $('af-when-hint');
-        if (form.date && form.time && form.travel) {
-            const d = new Date(whenOf(form) - form.travel * 60000);
-            hint.textContent = tt('leaveAt').replace('%t', pad2(d.getHours()) + ':' + pad2(d.getMinutes()));
-        } else hint.textContent = '';
+        const [h, m] = curHM();
+        $('tp-h').textContent = pad2(h); $('tp-m').textContent = pad2(m);
+        $('tp-quick').querySelectorAll('.af-chip').forEach(x => x.classList.toggle('sel', x.dataset.v === form.time));
+        $('af-when-text').textContent = form.date
+            ? '📅 ' + new Date(whenOf(form)).toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long' }) + ' · ⏰ ' + form.time
+            : tt('pickDay');
     }
     function readFields() {
         ['doctor', 'place', 'city', 'street', 'house', 'phone', 'notes'].forEach(k => { form[k] = $('af-' + k).value.trim(); });
@@ -283,25 +369,21 @@
     window.openApptForm = function (idx) {
         editIdx = typeof idx === 'number' ? idx : -1;
         form = editIdx >= 0 ? Object.assign(blank(), load()[editIdx]) : blank();
+        if (!form.time) form.time = '09:00';
+        step = 0;
         drawForm();
         $('af-delete').style.display = editIdx >= 0 ? '' : 'none';
         $('appt-form-page').classList.add('open');
-        $('appt-form-page').scrollTop = 0;
         loadGeo();
     };
     window.closeApptForm = function () { $('appt-form-page').classList.remove('open'); };
-    window.apptSetDay = function (which) {
-        form.date = isoDate(new Date(Date.now() + (which === 'tomorrow' ? 864e5 : 0)));
+    window.apptSetDay = function (n) {
+        form.date = isoDate(new Date(Date.now() + n * 864e5));
         vib(10); drawWhen();
-        if (!form.time) apptPickTime();
-    };
-    window.apptPickTime = function () {
-        if (typeof openTimePicker !== 'function') return;
-        openTimePicker(form.time || '09:00', v => { form.time = v; drawWhen(); }, true);
     };
     window.apptSave = function () {
         readFields();
-        if (!form.date || !form.time) { alert(tt('needWhen')); if (!form.time) apptPickTime(); return; }
+        if (!form.date || !form.time) { alert(tt('needWhen')); step = 1; drawStep(); return; }
         if (!form.doctor && !form.place && !form.type) { alert(tt('needWhat')); return; }
         if (whenOf(form) < Date.now() && !confirm(tt('pastWarn') + '. OK?')) return;
         const list = load();
@@ -338,7 +420,8 @@
         if (days === 1) return ['soon', tt('tomorrow')];
         return [days <= 7 ? 'week' : '', tt('inDays').replace('%n', days)];
     }
-    function card(a, i, past) {
+    function card(a, i, past) { return cardHtml(a, i, past, false); }
+    function cardHtml(a, i, past, preview) {
         const w = new Date(whenOf(a)), loc = locale();
         const [cls, cd] = past ? ['', ''] : countdown(a);
         const ty = typeOf(a.type);
@@ -358,12 +441,12 @@
                 ${a.notes ? `<div class="ap-line">📝 ${esc(a.notes)}</div>` : ''}
                 ${leave ? `<div class="ap-line ap-leave">${esc(leave)}</div>` : ''}
                 ${!past && a.before ? `<div class="ap-line ap-rem">${esc(tt('remindAt').replace('%s', minsText(a.before)))}</div>` : ''}
-                <div class="ap-acts">
+                ${preview ? '' : `<div class="ap-acts">
                     ${q && !past ? `<button type="button" class="ap-act waze" onclick="apptNav(${i},'waze')">🚗 ${esc(tt('waze'))}</button><button type="button" class="ap-act" onclick="apptNav(${i},'maps')">🗺️ ${esc(tt('maps'))}</button>` : ''}
                     ${a.phone ? `<button type="button" class="ap-act call" onclick="apptCall(${i})">📞 ${esc(tt('call'))}</button>` : ''}
                     <button type="button" class="ap-act" onclick="openApptForm(${i})">✏️ ${esc(tt('edit'))}</button>
                     <button type="button" class="ap-act del" onclick="apptDelete(${i})" aria-label="delete">🗑️</button>
-                </div>
+                </div>`}
             </div>
         </div>`;
     }
@@ -453,7 +536,7 @@
             }));
         });
         // other date: native date picker hidden under the chip
-        $('af-date').addEventListener('change', e => { if (e.target.value) { form.date = e.target.value; drawWhen(); if (!form.time) apptPickTime(); } });
+        $('af-date').addEventListener('change', e => { if (e.target.value) { form.date = e.target.value; drawWhen(); } });
         $('af-other').addEventListener('click', () => {
             const d = $('af-date');
             d.value = form.date || isoDate(new Date());

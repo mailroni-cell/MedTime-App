@@ -1897,6 +1897,67 @@
             box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.55), 0 4px 0 #450a0a, 0 0 16px rgba(239, 68, 68, 0.75) !important;
         }
         .gear-btn { width: 48px; height: 48px; display: flex !important; align-items: center; justify-content: center; font-size: 1.9rem !important; padding: 0 !important; }
+
+        /* ================= M-042: appointment wizard ================= */
+        .appt-form-page.wiz { overflow: hidden !important; display: none; flex-direction: column; align-items: center; padding: 10px 14px calc(10px + env(safe-area-inset-bottom)) !important; }
+        .appt-form-page.wiz.open { display: flex; }
+        html.kb-open .appt-form-page.wiz { overflow-y: auto !important; padding-bottom: calc(24px + var(--kb, 0px)) !important; }
+        .wiz .af-head { min-height: 52px; margin-bottom: 2px; }
+        .wz-dots { display: flex; gap: 10px; justify-content: center; margin: 2px 0 6px; direction: ltr; }
+        .wz-dots button { width: 38px; height: 38px; border-radius: 50%; border: none !important; font-size: 1.1rem; font-weight: 900; color: #fff; background: rgba(51, 65, 85, 0.95); }
+        .wz-dots button.done { background: #047857; }
+        .wz-dots button.cur { background: linear-gradient(180deg, #06b6d4, #0e7490); box-shadow: 0 0 0 2px #a5f3fc, 0 0 14px rgba(34, 211, 238, 0.8); }
+        .wz-step-title { font-size: 1.6rem; font-weight: 900; color: #fff; text-align: center; margin-bottom: 8px; text-shadow: 0 1px 2px #000; }
+        .wz-body { flex: 1; width: 100%; max-width: 560px; min-height: 0; display: flex; flex-direction: column; }
+        .wz-step { display: none; flex-direction: column; gap: 10px; animation: wzIn 0.28s ease both; }
+        .wz-step.on { display: flex; }
+        @keyframes wzIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+        .wiz .af-types { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+        .wiz .af-chip.type { flex-direction: row; justify-content: flex-start; gap: 10px; padding: 10px 12px; font-size: 1.15rem; }
+        .wiz .af-chip.type .big { font-size: 1.9rem; }
+        .tp { display: flex; align-items: center; justify-content: center; gap: 14px; direction: ltr; margin: 4px 0; }
+        .tp-col { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .tp-col small { font-size: 1rem; font-weight: 700; color: #cbd5e1; }
+        .tp-btn { width: 92px; height: 56px; border: none !important; border-radius: 18px; font-size: 1.5rem; color: #fff;
+            background: linear-gradient(180deg, rgba(var(--gA), 0.55), rgba(124, 58, 237, 0.55)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 12px rgba(var(--gA), 0.5); }
+        .tp-btn:active { transform: scale(0.94); }
+        .tp-val { font-size: 3.6rem; font-weight: 900; color: #fff; line-height: 1; min-width: 92px; text-align: center; text-shadow: 0 0 16px rgba(var(--gA), 0.8); }
+        .tp-sep { font-size: 3.2rem; font-weight: 900; color: #fff; padding-bottom: 26px; }
+        .tp-quick { justify-content: center; }
+        .af-when-text { text-align: center; font-size: 1.25rem; font-weight: 800; color: #fde68a; min-height: 1.4em; }
+        .af-navtest { align-self: stretch; text-align: center; background: linear-gradient(180deg, #22d3ee, #0891b2) !important; color: #062a33 !important; font-size: 1.2rem; }
+        .af-navtest[disabled] { opacity: 0.45; }
+        .wiz .af-fundcall { align-self: auto; white-space: nowrap; }
+        .af-summary { margin-top: 6px; }
+        .af-summary .ap-card { box-shadow: 0 0 0 2px rgba(253, 230, 138, 0.6), 0 0 22px rgba(253, 230, 138, 0.25); }
+        .wz-nav { width: 100%; max-width: 560px; display: grid; grid-template-columns: 1fr 1.6fr; gap: 10px; padding-top: 10px; }
+        .wz-nav button { border: none !important; border-radius: 999px; padding: 16px 10px; font-size: 1.3rem; font-weight: 900; color: #fff; }
+        .wz-back { background: rgba(51, 65, 85, 0.95); }
+        .wz-back[disabled] { visibility: hidden; }
+        .wz-next { background: linear-gradient(180deg, #3b82f6, #1d4ed8); box-shadow: 0 5px 0 #1e3a8a, 0 0 20px rgba(59, 130, 246, 0.8); }
+        .wz-next.save { background: linear-gradient(180deg, #10b981, #047857); box-shadow: 0 5px 0 #064e3b, 0 0 24px rgba(16, 185, 129, 0.9); }
+        .wiz .af-sug { top: calc(100% + 6px); bottom: auto; flex-direction: column; max-height: 40vh; }
+        .af-summary .af-navtest { width: 100%; margin-top: 10px; }
+        .wiz .af-del { margin-top: 8px; padding: 8px 18px; font-size: 1rem; }
+
+        /* ================= M-043: medical title font + heartbeat line, clean power icon exit ================= */
+        @font-face { font-family: 'MTLogo2'; src: url('fonts/audiowide-latin-400-normal.woff2') format('woff2'); font-display: block; }
+        h1.mt-logo, #splash .sp-title { font-family: 'MTLogo2', 'MTLogo', 'Segoe UI', sans-serif !important; font-weight: 400 !important; }
+        h1.mt-logo { font-size: 2.45rem; letter-spacing: 0.01em; }
+        html.fit3 h1.mt-logo { font-size: 1.95rem !important; }
+        h1.mt-logo .lg-ecg { display: block; width: 86%; height: 0.42em; margin: 3px auto 0; overflow: visible; }
+        h1.mt-logo .lg-ecg polyline {
+            fill: none; stroke: #22d3ee; stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round;
+            filter: drop-shadow(0 0 4px #22d3ee); stroke-dasharray: 260; animation: ecgRun 2.6s linear infinite;
+        }
+        @keyframes ecgRun { 0% { stroke-dashoffset: 260; } 70%, 100% { stroke-dashoffset: 0; } }
+        .exit-btn {
+            background: transparent !important; box-shadow: none !important; border-radius: 50% !important;
+            filter: drop-shadow(0 0 7px rgba(248, 113, 113, 0.95)) !important;
+        }
+        .exit-btn svg { width: 36px; height: 36px; overflow: visible; }
+        .exit-btn svg path, .exit-btn svg line { fill: none; stroke: #f87171; stroke-width: 2.8; stroke-linecap: round; }
+        .exit-btn:active svg path, .exit-btn:active svg line { stroke: #fff; }
     </style>
 </head>
 <body>
@@ -1992,9 +2053,9 @@
     <canvas id="bg3d"></canvas>
 
     <header>
-        <h1 class="mt-logo" aria-label="MedTime"><span class="lg-back" aria-hidden="true">MedTime</span><span class="lg-front">MedTime</span></h1>
+        <h1 class="mt-logo" aria-label="MedTime"><span class="lg-back" aria-hidden="true">MedTime</span><span class="lg-front">MedTime</span><svg class="lg-ecg" viewBox="0 0 220 20" aria-hidden="true"><polyline points="0,12 70,12 80,12 86,3 94,19 100,12 110,12 116,6 122,12 220,12"/></svg></h1>
         <button type="button" id="gear-btn" class="gear-btn" onclick="openSettingsPage()" aria-label="Settings">⚙️<span class="badge"></span></button>
-        <button type="button" id="exit-btn" class="exit-btn" onclick="exitApp()" data-i18n-title="closeApp" aria-label="close">⏻</button>
+        <button type="button" id="exit-btn" class="exit-btn" onclick="exitApp()" data-i18n-title="closeApp" aria-label="close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.1 6.2a8 8 0 1 0 9.8 0"/><line x1="12" y1="2.6" x2="12" y2="11.2"/></svg></button>
     </header>
 
     <div id="main-warn" class="main-warn"></div>
@@ -2037,38 +2098,62 @@
         <div id="appt-list" class="appt-list"></div>
         <button type="button" class="btn-test appt-test" onclick="apptTest()" data-tx="testAppt"></button>
     </div>
-    <div id="appt-form-page" class="settings-page list-page appt-form-page">
+    <div id="appt-form-page" class="settings-page list-page appt-form-page wiz">
+        <!-- M-042: appointment form as 4 short steps, no scrolling, no wheel -->
         <div class="af-head">
             <button type="button" class="close-3d" onclick="closeApptForm()" aria-label="close">✕</button>
             <h2 id="af-title"></h2>
         </div>
-        <div class="af-sec"><div class="af-lbl" data-tx="lType"></div><div id="af-types" class="af-chips af-types"></div></div>
-        <div class="af-sec"><div class="af-lbl" data-tx="lDoctor"></div>
-            <div class="af-wrap"><input type="text" id="af-doctor" class="af-in" data-txph="phDoctor" autocomplete="off"></div></div>
-        <div class="af-sec"><div class="af-lbl" data-tx="lWhen"></div>
-            <div class="af-chips af-when">
-                <button type="button" id="af-today" class="af-chip" onclick="apptSetDay('today')" data-tx="today"></button>
-                <button type="button" id="af-tomorrow" class="af-chip" onclick="apptSetDay('tomorrow')" data-tx="tomorrow"></button>
-                <button type="button" id="af-other" class="af-chip af-other"><span></span><input type="date" id="af-date" tabindex="-1"></button>
-            </div>
-            <button type="button" id="af-time" class="af-chip af-time" onclick="apptPickTime()"></button>
-            <div id="af-when-hint" class="af-hint"></div>
+        <div class="wz-dots" id="wz-dots"></div>
+        <div class="wz-step-title" id="wz-step-title"></div>
+        <div class="wz-body">
+            <section class="wz-step" data-step="0">
+                <div id="af-types" class="af-chips af-types"></div>
+                <div class="af-lbl" data-tx="lDoctor"></div>
+                <div class="af-wrap"><input type="text" id="af-doctor" class="af-in" data-txph="phDoctor" autocomplete="off"></div>
+            </section>
+            <section class="wz-step" data-step="1">
+                <div class="af-chips af-when">
+                    <button type="button" id="af-today" class="af-chip" onclick="apptSetDay(0)" data-tx="today"></button>
+                    <button type="button" id="af-tomorrow" class="af-chip" onclick="apptSetDay(1)" data-tx="tomorrow"></button>
+                    <button type="button" id="af-other" class="af-chip af-other"><span></span><input type="date" id="af-date" tabindex="-1"></button>
+                </div>
+                <div class="tp">
+                    <div class="tp-col"><button type="button" class="tp-btn" data-tp="h+1">▲</button><div class="tp-val" id="tp-h">09</div><button type="button" class="tp-btn" data-tp="h-1">▼</button><small data-tx="hourL"></small></div>
+                    <div class="tp-sep">:</div>
+                    <div class="tp-col"><button type="button" class="tp-btn" data-tp="m+5">▲</button><div class="tp-val" id="tp-m">00</div><button type="button" class="tp-btn" data-tp="m-5">▼</button><small data-tx="minL"></small></div>
+                </div>
+                <div class="af-chips tp-quick" id="tp-quick"></div>
+                <div id="af-when-text" class="af-when-text"></div>
+            </section>
+            <section class="wz-step" data-step="2">
+                <div class="af-wrap"><input type="text" id="af-place" class="af-in" data-txph="phPlace" autocomplete="off"></div>
+                <div class="af-wrap"><input type="text" id="af-city" class="af-in" data-txph="phCity" autocomplete="off"></div>
+                <div class="af-row">
+                    <div class="af-wrap af-grow"><input type="text" id="af-street" class="af-in" data-txph="phStreet" autocomplete="off"></div>
+                    <div class="af-wrap af-house"><input type="text" id="af-house" class="af-in" data-txph="phHouse" inputmode="numeric" autocomplete="off"></div>
+                </div>
+                <button type="button" id="af-navtest" class="af-chip af-navtest"></button>
+                <div class="af-lbl" data-tx="lFund"></div>
+                <div id="af-funds" class="af-chips"></div>
+                <div class="af-row">
+                    <div class="af-wrap af-grow"><input type="tel" id="af-phone" class="af-in" data-txph="phPhone" autocomplete="off"></div>
+                    <button type="button" id="af-fundcall" class="af-chip af-fundcall"></button>
+                </div>
+            </section>
+            <section class="wz-step" data-step="3">
+                <div class="af-lbl" data-tx="lBefore"></div>
+                <div id="af-before" class="af-chips"></div>
+                <div class="af-lbl" data-tx="lTravel"></div>
+                <div id="af-travel" class="af-chips"></div>
+                <div class="af-wrap"><input type="text" id="af-notes" class="af-in" data-txph="phNotes" autocomplete="off"></div>
+                <div id="af-summary" class="af-summary"></div>
+            </section>
         </div>
-        <div class="af-sec"><div class="af-lbl" data-tx="lWhere"></div>
-            <div class="af-wrap"><input type="text" id="af-place" class="af-in" data-txph="phPlace" autocomplete="off"></div>
-            <div class="af-wrap"><input type="text" id="af-city" class="af-in" data-txph="phCity" autocomplete="off"></div>
-            <div class="af-row">
-                <div class="af-wrap af-grow"><input type="text" id="af-street" class="af-in" data-txph="phStreet" autocomplete="off"></div>
-                <div class="af-wrap af-house"><input type="text" id="af-house" class="af-in" data-txph="phHouse" inputmode="numeric" autocomplete="off"></div>
-            </div>
+        <div class="wz-nav">
+            <button type="button" id="wz-back" class="wz-back" onclick="wzGo(-1)"></button>
+            <button type="button" id="wz-next" class="wz-next" onclick="wzGo(1)"></button>
         </div>
-        <div class="af-sec"><div class="af-lbl" data-tx="lFund"></div><div id="af-funds" class="af-chips"></div>
-            <button type="button" id="af-fundcall" class="af-chip af-fundcall"></button>
-            <div class="af-wrap"><input type="tel" id="af-phone" class="af-in" data-txph="phPhone" autocomplete="off"></div></div>
-        <div class="af-sec"><div class="af-lbl" data-tx="lBefore"></div><div id="af-before" class="af-chips"></div></div>
-        <div class="af-sec"><div class="af-lbl" data-tx="lTravel"></div><div id="af-travel" class="af-chips"></div></div>
-        <div class="af-sec"><div class="af-wrap"><input type="text" id="af-notes" class="af-in" data-txph="phNotes" autocomplete="off"></div></div>
-        <div class="af-foot"><button type="button" class="btn-add af-save" onclick="apptSave()" data-tx="save"></button></div>
         <button type="button" id="af-delete" class="af-del" onclick="apptDelete()" data-tx="del"></button>
     </div>
 
@@ -3322,7 +3407,7 @@
                     setTimeout(() => {
                         const visible = window.innerHeight - kb;
                         const r = el.getBoundingClientRect();
-                        const at = el.closest('.af-wrap') ? Math.max(90, visible * 0.58 - r.height) : 90;
+                        const at = el.closest('.af-wrap') && !el.closest('.wiz') ? Math.max(90, visible * 0.58 - r.height) : 70;
                         page.scrollTo({ top: page.scrollTop + r.top - at, behavior: 'smooth' });
                     }, 60);
                 } else if (el && el.matches && el.matches('input, textarea')) {
