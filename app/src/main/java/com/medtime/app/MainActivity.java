@@ -60,7 +60,25 @@ public class MainActivity extends AppCompatActivity {
         webView.addJavascriptInterface(new NativeBridge(this), "MedTimeNative");
 
         webView.loadUrl("file:///android_asset/index.html");
+
+        // M-034: in full screen Android does not shrink the page for the keyboard, so the keyboard
+        // covered the rest of the form. Measure the keyboard and tell the page, which makes room and scrolls.
+        webView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            android.graphics.Rect r = new android.graphics.Rect();
+            webView.getWindowVisibleDisplayFrame(r);
+            int[] loc = new int[2];
+            webView.getLocationOnScreen(loc);
+            int covered = loc[1] + webView.getHeight() - r.bottom;
+            float d = getResources().getDisplayMetrics().density;
+            int kb = covered > 120 * d ? Math.round(covered / d) : 0;
+            if (kb != lastKb) {
+                lastKb = kb;
+                webView.evaluateJavascript("window.mtKeyboard && mtKeyboard(" + kb + ")", null);
+            }
+        });
     }
+
+    private int lastKb = -1;
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {

@@ -1687,6 +1687,28 @@
             background: linear-gradient(180deg, #6ee7b7, #10b981); box-shadow: 0 5px 0 #065f46, 0 0 30px rgba(16, 185, 129, 0.9);
             visibility: hidden; }
         #welcome .wl-go.on { visibility: visible; animation: spFade 0.4s ease both; }
+
+        /* ================= M-035: sharp, readable text (older eyes) ================= */
+        /* glow behind letters made them look blurred: keep the glow on the button, letters get only a thin dark outline */
+        html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+        body { font-weight: 600; }
+        .field-label, .item-head, button.btn-add-item, .time-btn, .type-btn, .set-title, .set-sub, .p-title,
+        .toggle-row, .sound-row, .lang-btn, .lb-label, .it-chip, .med-item, .tb-name, .tb-empty, .vol-head, header h1 {
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 1px rgba(0, 0, 0, 0.9) !important;
+            color: #ffffff !important;
+        }
+        .set-sub, .vol-val { color: #a5f3fc !important; }
+        .set-title { font-size: 1.3rem !important; font-weight: 800 !important; }
+        .set-sub { font-size: 1.05rem !important; font-weight: 700 !important; }
+        .type-btn { font-size: 1.08rem !important; font-weight: 800 !important; }
+        .time-btn, button.btn-add-item, .tb-empty { font-size: 1.3rem !important; font-weight: 800 !important; }
+        #med-form input[type=text] { font-size: 1.3rem !important; font-weight: 700 !important; }
+        #med-form input[type=text]::placeholder { color: rgba(255, 255, 255, 0.92) !important; font-weight: 700; }
+        .toggle-row, .sound-row { font-size: 1.2rem !important; }
+        /* brightness filter animation re-drew the text soft on the phone: glow stays, without the filter */
+        #med-form input[type=text], .type-btn, .time-btn, button.btn-add-item { animation: none !important; filter: none !important; }
+        /* 3D tilt of the reminder cards blurred their text */
+        .med-item { transform: none !important; }
     </style>
 </head>
 <body>
@@ -1714,11 +1736,11 @@
         (function () {
             // Texts here are needed before the main script runs and in all languages at once
             var TX = {
-                he: { tag: 'התרופות שלך, בזמן', credit: '✨ פותח ועוצב על ידי רוני ✨', pick: 'בחרו שפה', note: 'אפשר לשנות את השפה בכל עת בהגדרות ⚙️', go: 'המשך ✓', dir: 'rtl' },
-                ar: { tag: 'أدويتك في وقتها', credit: '✨ تطوير وتصميم روني ✨', pick: 'اختر اللغة', note: 'يمكن تغيير اللغة في أي وقت من الإعدادات ⚙️', go: 'متابعة ✓', dir: 'rtl' },
-                ro: { tag: 'Medicamentele tale, la timp', credit: '✨ Creat și proiectat de Roni ✨', pick: 'Alegeți limba', note: 'Puteți schimba limba oricând din Setări ⚙️', go: 'Continuă ✓', dir: 'ltr' },
-                fr: { tag: 'Vos médicaments, à l’heure', credit: '✨ Conçu et créé par Roni ✨', pick: 'Choisissez la langue', note: 'Vous pouvez changer la langue à tout moment dans les Réglages ⚙️', go: 'Continuer ✓', dir: 'ltr' },
-                en: { tag: 'Your medicines, on time', credit: '✨ Designed and built by Roni ✨', pick: 'Choose your language', note: 'You can change the language any time in Settings ⚙️', go: 'Continue ✓', dir: 'ltr' }
+                he: { tag: 'התרופות שלך, בזמן', credit: '© רוני 2026', pick: 'בחרו שפה', note: 'אפשר לשנות את השפה בכל עת בהגדרות ⚙️', go: 'המשך ✓', dir: 'rtl' },
+                ar: { tag: 'أدويتك في وقتها', credit: '© روني 2026', pick: 'اختر اللغة', note: 'يمكن تغيير اللغة في أي وقت من الإعدادات ⚙️', go: 'متابعة ✓', dir: 'rtl' },
+                ro: { tag: 'Medicamentele tale, la timp', credit: '© Roni 2026', pick: 'Alegeți limba', note: 'Puteți schimba limba oricând din Setări ⚙️', go: 'Continuă ✓', dir: 'ltr' },
+                fr: { tag: 'Vos médicaments, à l’heure', credit: '© Roni 2026', pick: 'Choisissez la langue', note: 'Vous pouvez changer la langue à tout moment dans les Réglages ⚙️', go: 'Continuer ✓', dir: 'ltr' },
+                en: { tag: 'Your medicines, on time', credit: '© Roni 2026', pick: 'Choose your language', note: 'You can change the language any time in Settings ⚙️', go: 'Continue ✓', dir: 'ltr' }
             };
             var stored = null;
             try { stored = localStorage.getItem('medtime_lang'); } catch (e) { }
@@ -3008,6 +3030,35 @@
                 }
             });
         })();
+
+        // ---------- M-034: phone keyboard must not hide the rest of the form ----------
+        // Android tells the page the keyboard height (px); the page adds that much room at the bottom
+        // and scrolls so the field being typed in sits near the top, with what follows visible under it.
+        window.mtKeyboard = function (kb) {
+            document.documentElement.classList.toggle('kb-open', kb > 0);
+            document.body.style.paddingBottom = kb > 0 ? (kb + 24) + 'px' : '';
+            if (kb > 0) {
+                const el = document.activeElement;
+                if (el && el.matches && el.matches('input, textarea')) {
+                    setTimeout(() => {
+                        // name field: leave room above it for the name suggestions (M-024)
+                        const visible = window.innerHeight - kb;
+                        const at = el.classList.contains('it-name') ? Math.max(90, visible * 0.55 - el.offsetHeight) : 90;
+                        const top = el.getBoundingClientRect().top + window.scrollY - at;
+                        window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+                    }, 60);
+                }
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        };
+        // "Done" on the keyboard closes it
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && e.target.matches && e.target.matches('#med-form input[type=text]')) { e.preventDefault(); e.target.blur(); }
+        });
+        document.addEventListener('focusin', e => {
+            if (e.target.matches && e.target.matches('#med-form input[type=text]')) e.target.setAttribute('enterkeyhint', 'done');
+        });
         // M-031: close the app (reminders keep working, they are booked in Android)
         function exitApp() {
             amb.pause();
