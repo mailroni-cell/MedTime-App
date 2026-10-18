@@ -29,8 +29,9 @@ import java.util.Locale;
  */
 public class ReminderService extends Service {
 
-    // M-011: v2 channel is silent; the service plays the sound chosen in settings
-    static final String CHANNEL_ID = "medtime_reminders_v2";
+    // M-011: the channel is silent; the service plays the sound chosen in settings.
+    // M-079: v3 does not vibrate either; the service plays the vibration chosen in settings (Vibe).
+    static final String CHANNEL_ID = "medtime_reminders_v3";
     static final long SOUND_MS = 4500;
     static final String PREFS_STATUS = "medtime_status";
     static final String KEY_TTS_STATE = "tts_state"; // ok / no_hebrew / error
@@ -70,6 +71,7 @@ public class ReminderService extends Service {
 
         // M-011: chosen sound first, then the voice
         boolean hasSound = playSound();
+        Vibe.play(this, null); // M-079
         if (Reminders.voiceOn(this)) {
             speak(appt ? Appointments.speechText(this, intent) : Reminders.speechText(this, items), hasSound ? SOUND_MS : 800);
         } else {
@@ -185,12 +187,12 @@ public class ReminderService extends Service {
         NotificationManager nm = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
         if (nm == null) return;
         if (nm.getNotificationChannel("medtime_reminders_v1") != null) nm.deleteNotificationChannel("medtime_reminders_v1");
+        if (nm.getNotificationChannel("medtime_reminders_v2") != null) nm.deleteNotificationChannel("medtime_reminders_v2");
         if (nm.getNotificationChannel(CHANNEL_ID) != null) return;
         NotificationChannel ch = new NotificationChannel(CHANNEL_ID, "תזכורות תרופות", NotificationManager.IMPORTANCE_HIGH);
         ch.setDescription("תזכורת בזמן לקחת תרופה, גם כשהאפליקציה סגורה");
         ch.setSound(null, null);
-        ch.enableVibration(true);
-        ch.setVibrationPattern(new long[]{0, 600, 300, 600, 300, 900});
+        ch.enableVibration(false);
         ch.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
         ch.setBypassDnd(true);
         nm.createNotificationChannel(ch);
@@ -235,7 +237,7 @@ public class ReminderService extends Service {
                 .addAction(new Notification.Action.Builder(null, "⏰ " + I18n.t(ctx, "snooze_10"), snooze10).build())
                 .addAction(new Notification.Action.Builder(null, "⏰ " + I18n.t(ctx, "snooze_30"), snooze30).build());
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            b.setDefaults(Notification.DEFAULT_ALL);
+            b.setDefaults(Notification.DEFAULT_LIGHTS); // M-079: vibration comes from Vibe
         }
         return b.build();
     }

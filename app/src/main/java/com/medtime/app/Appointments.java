@@ -249,7 +249,7 @@ public class Appointments {
         Intent ok = new Intent(ctx, ActionReceiver.class).setAction(ActionReceiver.ACTION_TAKEN).putExtras(extras);
         PendingIntent okPi = PendingIntent.getBroadcast(ctx, base + 3, ok, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         b.addAction(new Notification.Action.Builder(null, I18n.t(ctx, "appt_ok"), okPi).build());
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) b.setDefaults(Notification.DEFAULT_ALL);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) b.setDefaults(Notification.DEFAULT_LIGHTS); // M-079: vibration comes from Vibe
         return b.build();
     }
 

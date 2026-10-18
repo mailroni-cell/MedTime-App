@@ -65,6 +65,16 @@ public class NativeBridge {
         } catch (Exception e) { openSettings(""); }
     }
 
+    /** M-079: vibration choice for reminders: off / soft / normal / strong / heart / long. */
+    @JavascriptInterface
+    public String getVibration() { return Vibe.chosen(activity.getApplicationContext()); }
+
+    @JavascriptInterface
+    public void setVibration(String k) { Vibe.choose(activity.getApplicationContext(), k); }
+
+    @JavascriptInterface
+    public void previewVibration(String k) { Vibe.play(activity.getApplicationContext(), k); }
+
     /** M-031: close the app (alarms are booked in Android, so reminders still come). */
     @JavascriptInterface
     public void exitApp() {
