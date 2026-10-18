@@ -1,0 +1,8 @@
+{
+ "rain": [{"title": "File:Calm rain.wav", "start": 30}],
+ "ocean": [{"title": "File:Oceanwavescrushing.ogg"}],
+ "forest": [{"title": "File:Birdsong morning 01.ogg", "start": 60}],
+ "night": [{"title": "File:Nature sounds ambience in a Dordogne pond.ogg"}],
+ "storm": [{"title": "File:Regen en onweer - SoundCloud - Beeld en Geluid.ogg", "start": 20}],
+ "zen": [{"title": "File:Snowmelt flowing into lake at Okanagan Mountain Provincial Park.flac", "start": 120}]
+}
