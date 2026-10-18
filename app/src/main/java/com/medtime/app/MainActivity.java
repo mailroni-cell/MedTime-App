@@ -52,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
         settings.setAllowFileAccess(true);
         settings.setAllowContentAccess(true);
         settings.setMediaPlaybackRequiresUserGesture(false);
+        // M-066: the phone's system font size made the page text bigger than the layout expects and pushed buttons off the screen;
+        // the app has its own text size setting (A / A / A) and low-vision mode instead.
+        settings.setTextZoom(100);
 
         webView.setWebViewClient(new WebViewClient());
         webView.setWebChromeClient(new WebChromeClient());
