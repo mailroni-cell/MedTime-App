@@ -34,6 +34,42 @@ public class NativeBridge {
         Reminders.sync(activity.getApplicationContext(), json);
     }
 
+    // ---------- M-036: doctor appointments ----------
+
+    /** Save the appointment list ([{id,date,time,typeText,doctor,place,city,street,house,phone,notes,before,travel}]) and book alarms. */
+    @JavascriptInterface
+    public void syncAppointments(String json) {
+        Appointments.sync(activity.getApplicationContext(), json);
+    }
+
+    @JavascriptInterface
+    public void openWaze(String query) {
+        if (query == null || query.trim().isEmpty()) return;
+        Appointments.open(activity, new Intent(Intent.ACTION_VIEW,
+                Uri.parse("https://waze.com/ul?navigate=yes&q=" + Uri.encode(query.trim()))));
+    }
+
+    @JavascriptInterface
+    public void openMaps(String query) {
+        if (query == null || query.trim().isEmpty()) return;
+        Appointments.open(activity, Appointments.mapsIntent(query.trim()));
+    }
+
+    @JavascriptInterface
+    public void dial(String phone) {
+        if (phone == null || phone.trim().isEmpty()) return;
+        Appointments.open(activity, Appointments.dialIntent(phone));
+    }
+
+    /** Test: an appointment reminder in N seconds. */
+    @JavascriptInterface
+    public void testAppointment(String json, int seconds) {
+        try {
+            org.json.JSONObject a = new org.json.JSONObject(json);
+            Appointments.schedule(activity.getApplicationContext(), a, 2, System.currentTimeMillis() + Math.max(5, seconds) * 1000L);
+        } catch (Exception ignored) { }
+    }
+
     /** M-007: voice on/off, say medicine names, say dose. */
     @JavascriptInterface
     public void setVoiceOptions(boolean on, boolean names, boolean dose) {

@@ -53,8 +53,9 @@ public class ReminderService extends Service {
         int id = intent.getIntExtra(Reminders.EXTRA_ID, 0);
         String items = intent.getStringExtra(Reminders.EXTRA_ITEMS);
 
-        Notification n = buildNotification(this, intent);
-        int nid = notificationId(id);
+        boolean appt = Appointments.isAppt(intent); // M-036
+        Notification n = appt ? Appointments.buildNotification(this, intent) : buildNotification(this, intent);
+        int nid = appt ? Appointments.notificationId(id) : notificationId(id);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             startForeground(nid, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK);
         } else {
@@ -70,7 +71,7 @@ public class ReminderService extends Service {
         // M-011: chosen sound first, then the voice
         boolean hasSound = playSound();
         if (Reminders.voiceOn(this)) {
-            speak(Reminders.speechText(this, items), hasSound ? SOUND_MS : 800);
+            speak(appt ? Appointments.speechText(this, intent) : Reminders.speechText(this, items), hasSound ? SOUND_MS : 800);
         } else {
             handler.postDelayed(this::finishKeepNotification, hasSound ? SOUND_MS + 500 : 3000L);
         }
@@ -249,6 +250,9 @@ public class ReminderService extends Service {
     /** Fallback when the service may not start: show the notification without voice. */
     static void showWithoutVoice(Context ctx, Intent src) {
         NotificationManager nm = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-        if (nm != null) nm.notify(notificationId(src.getIntExtra(Reminders.EXTRA_ID, 0)), buildNotification(ctx, src));
+        if (nm == null) return;
+        int id = src.getIntExtra(Reminders.EXTRA_ID, 0);
+        if (Appointments.isAppt(src)) nm.notify(Appointments.notificationId(id), Appointments.buildNotification(ctx, src));
+        else nm.notify(notificationId(id), buildNotification(ctx, src));
     }
 }

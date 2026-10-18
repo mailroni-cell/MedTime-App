@@ -14,8 +14,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         String time = intent.getStringExtra(Reminders.EXTRA_TIME);
         boolean daily = intent.getBooleanExtra(Reminders.EXTRA_DAILY, false);
 
-        // Daily reminder: book tomorrow's alarm right away
-        if (daily && time != null) {
+        // Daily reminder: book tomorrow's alarm right away (M-036: appointments are one-time)
+        if (daily && time != null && !Appointments.isAppt(intent)) {
             long next = Reminders.nextOccurrence(time);
             if (next > 0) Reminders.schedule(ctx, id, items, time, next, true);
         }

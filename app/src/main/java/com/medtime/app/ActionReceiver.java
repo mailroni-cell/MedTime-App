@@ -17,6 +17,16 @@ public class ActionReceiver extends BroadcastReceiver {
 
     static void handle(Context ctx, Intent intent) {
         int id = intent.getIntExtra(Reminders.EXTRA_ID, 0);
+        if (Appointments.isAppt(intent)) { // M-036
+            if (ACTION_SNOOZE.equals(intent.getAction())) {
+                Appointments.snooze(ctx, intent, intent.getIntExtra(Reminders.EXTRA_SNOOZE_MIN, Reminders.SNOOZE_MINUTES));
+            }
+            ctx.stopService(new Intent(ctx, ReminderService.class));
+            NotificationManager nm = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+            if (nm != null) nm.cancel(Appointments.notificationId(id));
+            AlarmActivity.closeIfShowing();
+            return;
+        }
         if (ACTION_SNOOZE.equals(intent.getAction())) {
             Reminders.snooze(ctx,
                     id,

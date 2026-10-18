@@ -40,6 +40,19 @@ public class I18n {
         put("speech_many", "תזכורת. הגיע הזמן לקחת את התרופות:", "تذكير. حان وقت تناول الأدوية:", "Memento. Este timpul să iei medicamentele:", "Rappel. Il est temps de prendre vos médicaments :", "Reminder. It is time to take your medicines:");
         put("speech_generic_one", "תזכורת. הגיע הזמן לקחת את התרופה.", "تذكير. حان وقت تناول الدواء.", "Memento. Este timpul să iei medicamentul.", "Rappel. Il est temps de prendre votre médicament.", "Reminder. It is time to take your medicine.");
         put("speech_generic_many", "תזכורת. הגיע הזמן לקחת את התרופות.", "تذكير. حان وقت تناول الأدوية.", "Memento. Este timpul să iei medicamentele.", "Rappel. Il est temps de prendre vos médicaments.", "Reminder. It is time to take your medicines.");
+        // M-036: doctor appointments
+        put("appt_header", "🩺 תזכורת לתור", "🩺 تذكير بموعد", "🩺 Memento programare", "🩺 Rappel de rendez-vous", "🩺 Appointment reminder");
+        put("appt_leave", "🚗 הגיע הזמן לצאת לתור", "🚗 حان وقت الخروج إلى الموعد", "🚗 Este timpul să pleci la programare", "🚗 Il est temps de partir au rendez-vous", "🚗 Time to leave for your appointment");
+        put("appt_today", "היום בשעה %t", "اليوم الساعة %t", "azi la ora %t", "aujourd'hui à %t", "today at %t");
+        put("appt_tomorrow", "מחר בשעה %t", "غدا الساعة %t", "mâine la ora %t", "demain à %t", "tomorrow at %t");
+        put("appt_on", "ב-%d בשעה %t", "يوم %d الساعة %t", "pe %d la ora %t", "le %d à %t", "on %d at %t");
+        put("appt_speech", "תזכורת. יש לך תור %w %d.", "تذكير. لديك موعد %w %d.", "Memento. Ai o programare %w %d.", "Rappel. Vous avez un rendez-vous %w %d.", "Reminder. You have an appointment %w %d.");
+        put("appt_speech_leave", "הגיע הזמן לצאת. יש לך תור %w %d.", "حان وقت الخروج. لديك موعد %w %d.", "Este timpul să pleci. Ai o programare %w %d.", "Il est temps de partir. Vous avez un rendez-vous %w %d.", "Time to leave. You have an appointment %w %d.");
+        put("appt_speech_at", "הכתובת: %a.", "العنوان: %a.", "Adresa: %a.", "Adresse : %a.", "Address: %a.");
+        put("appt_waze", "🚗 נווט ב-Waze", "🚗 تنقّل بـ Waze", "🚗 Navighează cu Waze", "🚗 Naviguer avec Waze", "🚗 Navigate with Waze");
+        put("appt_call", "📞 התקשר", "📞 اتصل", "📞 Sună", "📞 Appeler", "📞 Call");
+        put("appt_ok", "👍 הבנתי", "👍 فهمت", "👍 Am înțeles", "👍 Compris", "👍 Got it");
+        put("appt_maps", "🗺️ מפות", "🗺️ خرائط", "🗺️ Hărți", "🗺️ Cartes", "🗺️ Maps");
         put("type_pill", "כדור", "حبة", "pastilă", "comprimé", "pill");
         put("type_injection", "זריקה", "حقنة", "injecție", "injection", "injection");
         put("type_drops", "טיפות", "قطرات", "picături", "gouttes", "drops");

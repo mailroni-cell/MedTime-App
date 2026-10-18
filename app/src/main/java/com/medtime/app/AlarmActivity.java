@@ -58,6 +58,7 @@ public class AlarmActivity extends Activity {
     }
 
     private void buildScreen(final Intent src) {
+        if (Appointments.isAppt(src)) { buildApptScreen(src); return; } // M-036
         String[] lines = Reminders.lines(this, src.getStringExtra(Reminders.EXTRA_ITEMS));
 
         LinearLayout root = new LinearLayout(this);
@@ -119,6 +120,79 @@ public class AlarmActivity extends Activity {
                 android.widget.ScrollView.LayoutParams.MATCH_PARENT));
         setContentView(scroll);
         FullScreen.apply(this); // M-012
+    }
+
+    /** M-036: appointment reminder: details, Waze / maps / call, OK, snooze. */
+    private void buildApptScreen(final Intent src) {
+        final org.json.JSONObject a = Appointments.of(src);
+        LinearLayout root = new LinearLayout(this);
+        root.setOrientation(LinearLayout.VERTICAL);
+        root.setGravity(Gravity.CENTER);
+        root.setLayoutDirection(I18n.rtl(this) ? LinearLayout.LAYOUT_DIRECTION_RTL : LinearLayout.LAYOUT_DIRECTION_LTR);
+        int pad = dp(24);
+        root.setPadding(pad, pad, pad, pad);
+        lowVision = Sounds.lowVision(this);
+        boolean leave = src.getIntExtra(Appointments.EXTRA_SLOT, 0) == 1;
+        root.addView(text(leave ? "🚗" : "🩺", 68, "#38bdf8"));
+        root.addView(text(Appointments.header(this, src), 26, lowVision ? "#FFE500" : "#f8fafc"));
+        for (String l : Appointments.lines(this, src)) root.addView(text(l, 24, lowVision ? "#FFE500" : "#e2e8f0"));
+
+        final String q = Appointments.navQuery(a);
+        if (!q.isEmpty()) {
+            Button waze = button(I18n.t(this, "appt_waze"), "#0891b2");
+            waze.setOnClickListener(v -> unlockThen(() -> { Appointments.open(this, Appointments.wazeIntent(a)); answer(src, ActionReceiver.ACTION_TAKEN); }));
+            root.addView(waze);
+            Button maps = button(I18n.t(this, "appt_maps"), "#334155");
+            maps.setOnClickListener(v -> unlockThen(() -> { Appointments.open(this, Appointments.mapsIntent(q)); answer(src, ActionReceiver.ACTION_TAKEN); }));
+            root.addView(maps);
+        }
+        final String ph = a.optString("phone", "").trim();
+        if (!ph.isEmpty()) {
+            Button call = button(I18n.t(this, "appt_call") + "  " + ph, "#7c3aed");
+            call.setOnClickListener(v -> unlockThen(() -> { Appointments.open(this, Appointments.dialIntent(ph)); answer(src, ActionReceiver.ACTION_TAKEN); }));
+            root.addView(call);
+        }
+        Button ok = button(I18n.t(this, "appt_ok"), "#10b981");
+        ok.setOnClickListener(v -> answer(src, ActionReceiver.ACTION_TAKEN));
+        root.addView(ok);
+
+        root.addView(text(I18n.t(this, "snooze_header"), 18, "#94a3b8"));
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        root.addView(row, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        for (final int min : new int[]{10, 30, 60}) {
+            Button b = button(I18n.t(this, "snooze_" + min), "#2563eb");
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, dp(60), 1f);
+            lp.topMargin = dp(10); lp.leftMargin = dp(4); lp.rightMargin = dp(4);
+            b.setLayoutParams(lp);
+            b.setOnClickListener(v -> {
+                Intent i = new Intent(src);
+                i.putExtra(Reminders.EXTRA_SNOOZE_MIN, min);
+                answer(i, ActionReceiver.ACTION_SNOOZE);
+            });
+            row.addView(b);
+        }
+
+        android.widget.ScrollView scroll = new android.widget.ScrollView(this);
+        scroll.setFillViewport(true);
+        scroll.setBackgroundColor(lowVision ? Color.BLACK : Color.parseColor("#0f172a"));
+        scroll.addView(root, new android.widget.ScrollView.LayoutParams(
+                android.widget.ScrollView.LayoutParams.MATCH_PARENT, android.widget.ScrollView.LayoutParams.MATCH_PARENT));
+        setContentView(scroll);
+        FullScreen.apply(this);
+    }
+
+    /** Waze / call need the phone unlocked: Android shows its unlock screen first (not bypassed). */
+    private void unlockThen(final Runnable r) {
+        KeyguardManager km = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+        if (km != null && km.isKeyguardLocked() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            km.requestDismissKeyguard(this, new KeyguardManager.KeyguardDismissCallback() {
+                @Override
+                public void onDismissSucceeded() { r.run(); }
+            });
+        } else {
+            r.run();
+        }
     }
 
     private void unlockAndOpen(final Intent src) {

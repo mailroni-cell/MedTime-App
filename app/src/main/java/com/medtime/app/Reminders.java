@@ -80,9 +80,13 @@ public class Reminders {
 
     /** Daily alarms use request code id*2, one-time alarms (snooze / test) use id*2+1. */
     static void schedule(Context ctx, int id, String items, String time, long at, boolean daily) {
+        setAlarm(ctx, at, alarmIntent(ctx, id, items, time, daily));
+    }
+
+    /** M-036: shared by medicine and appointment alarms. */
+    static void setAlarm(Context ctx, long at, PendingIntent pi) {
         AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
         if (am == null) return;
-        PendingIntent pi = alarmIntent(ctx, id, items, time, daily);
 
         boolean exactAllowed = Build.VERSION.SDK_INT < Build.VERSION_CODES.S || am.canScheduleExactAlarms();
         if (exactAllowed) {

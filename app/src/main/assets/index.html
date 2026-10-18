@@ -1709,6 +1709,121 @@
         #med-form input[type=text], .type-btn, .time-btn, button.btn-add-item { animation: none !important; filter: none !important; }
         /* 3D tilt of the reminder cards blurred their text */
         .med-item { transform: none !important; }
+
+        /* ================= M-036: doctor appointments ================= */
+        .nav-row { display: flex; gap: 10px; width: 100%; }
+        .nav-row > button { flex: 1 1 0; min-width: 0; }
+        .nav-row .list-btn { flex-wrap: wrap; row-gap: 2px; padding: 8px 10px; }
+        .nav-row .list-btn .lb-next { flex-basis: 100%; text-align: center; font-size: 0.95rem; }
+        .appt-btn {
+            display: flex; align-items: center; justify-content: center; gap: 8px; border: none !important; border-radius: 999px;
+            padding: 8px 10px; color: #fff; font-weight: 800;
+            background: linear-gradient(180deg, rgba(16, 185, 129, 0.6), rgba(4, 120, 87, 0.65));
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 16px 3px rgba(16, 185, 129, 0.65), 0 0 34px 8px rgba(var(--gA), 0.2);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95);
+        }
+        .appt-btn .ab-ico { font-size: 1.7rem; }
+        .appt-btn .ab-txt { display: flex; flex-direction: column; align-items: center; line-height: 1.2; min-width: 0; }
+        .appt-btn .ab-title { font-size: 1.05rem; }
+        .appt-btn .ab-sub { font-size: 0.92rem; font-weight: 700; color: #d1fae5; }
+        .appt-btn .ab-count { color: #047857; }
+        .appt-page, .appt-form-page { z-index: 46 !important; }
+        .appt-form-page { z-index: 50 !important; padding-bottom: calc(24px + var(--kb, 0px)) !important; }
+        .appt-page { justify-content: flex-start; }
+        .appt-new {
+            display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; max-width: 560px; margin: 4px 0 14px;
+            padding: 14px; border: none !important; border-radius: 999px; color: #fff; font-size: 1.35rem; font-weight: 800;
+            background: linear-gradient(180deg, #10b981, #047857);
+            box-shadow: 0 5px 0 #064e3b, 0 0 26px 4px rgba(16, 185, 129, 0.8);
+        }
+        .appt-list { width: 100%; max-width: 560px; display: flex; flex-direction: column; gap: 14px; }
+        .ap-card {
+            display: flex; gap: 12px; align-items: stretch; padding: 14px; border-radius: 22px; color: #fff;
+            background: linear-gradient(160deg, rgba(30, 41, 59, 0.92), rgba(15, 23, 42, 0.94));
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 0 0 1.5px rgba(16, 185, 129, 0.45), 0 0 22px rgba(16, 185, 129, 0.3), 0 12px 26px rgba(0, 0, 0, 0.55);
+        }
+        .ap-card.past { opacity: 0.55; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1); }
+        .ap-date {
+            flex: 0 0 74px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 18px; padding: 8px 4px;
+            background: linear-gradient(180deg, #10b981, #0e7490); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 0 14px rgba(16, 185, 129, 0.6);
+        }
+        .ap-date .wd { font-size: 1rem; font-weight: 800; }
+        .ap-date .dn { font-size: 2.2rem; font-weight: 900; line-height: 1; }
+        .ap-date .mo { font-size: 1rem; font-weight: 800; }
+        .ap-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+        .ap-time { font-size: 1.5rem; font-weight: 900; }
+        .ap-what { font-size: 1.25rem; font-weight: 800; }
+        .ap-line { font-size: 1.1rem; font-weight: 600; color: #e2e8f0; overflow-wrap: anywhere; }
+        .ap-leave { color: #fde68a; font-weight: 800; }
+        .ap-rem { color: #a5f3fc; }
+        .ap-cd { align-self: flex-start; font-size: 0.95rem; font-weight: 900; padding: 3px 12px; border-radius: 999px; background: rgba(148, 163, 184, 0.3); }
+        .ap-cd.week { background: rgba(14, 165, 233, 0.45); }
+        .ap-cd.soon { background: rgba(245, 158, 11, 0.7); color: #111; }
+        .ap-cd.now { background: #ef4444; animation: orbPulse 1.6s ease-in-out infinite; }
+        .ap-acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+        .ap-act {
+            border: none !important; border-radius: 999px; padding: 10px 14px; font-size: 1.05rem; font-weight: 800; color: #fff;
+            background: rgba(51, 65, 85, 0.95); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        }
+        .ap-act.waze { background: linear-gradient(180deg, #22d3ee, #0891b2); color: #062a33; box-shadow: 0 0 14px rgba(34, 211, 238, 0.7); }
+        .ap-act.call { background: linear-gradient(180deg, #a78bfa, #7c3aed); }
+        .ap-act.del { background: rgba(127, 29, 29, 0.85); }
+        .ap-empty { text-align: center; font-size: 1.2rem; font-weight: 700; padding: 24px 10px; color: #e2e8f0; }
+        .ap-sep { margin-top: 10px; font-size: 1.1rem; font-weight: 800; color: #94a3b8; text-align: center; }
+        .appt-test { margin-top: 18px; }
+        .af-head { width: 100%; max-width: 560px; display: flex; align-items: center; justify-content: center; position: relative; min-height: 64px; margin-bottom: 6px; }
+        .af-head h2 { margin: 0; font-size: 1.6rem; font-weight: 900; color: #fff; }
+        .af-head .close-3d { position: absolute; inset-inline-end: 0; top: 4px; }
+        .af-sec { width: 100%; max-width: 560px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 8px; }
+        .af-lbl { font-size: 1.15rem; font-weight: 800; color: #fff; text-shadow: 0 1px 2px #000; }
+        .af-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+        .af-chip {
+            position: relative; border: none !important; border-radius: 16px; padding: 11px 14px; font-size: 1.1rem; font-weight: 800; color: #fff;
+            background: rgba(30, 41, 59, 0.95); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 0 1.5px rgba(148, 163, 184, 0.35);
+        }
+        .af-chip.sel { background: linear-gradient(180deg, #06b6d4, #0e7490); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 0 0 2px #a5f3fc, 0 0 18px rgba(34, 211, 238, 0.8); }
+        .af-types { display: grid; grid-template-columns: repeat(4, 1fr); }
+        .af-chip.type { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; font-size: 0.92rem; }
+        .af-chip.type .big { font-size: 1.8rem; }
+        .af-when .af-chip { flex: 1 1 0; }
+        .af-other { overflow: hidden; }
+        .af-other input[type=date] { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; pointer-events: none; }
+        .af-time { width: 100%; font-size: 1.35rem; padding: 14px; }
+        .af-hint { font-size: 1.05rem; font-weight: 800; color: #fde68a; min-height: 0; }
+        .af-wrap { position: relative; width: 100%; }
+        .af-row { display: flex; gap: 8px; }
+        .af-grow { flex: 1; }
+        .af-house { flex: 0 0 92px; }
+        .af-in {
+            width: 100%; box-sizing: border-box; padding: 14px 16px; border-radius: 16px; font-size: 1.25rem; font-weight: 700; color: #fff;
+            background: rgba(15, 23, 42, 0.95) !important; border: 2px solid rgba(103, 232, 249, 0.45) !important; outline: none;
+        }
+        .af-in:focus { border-color: #67e8f9 !important; box-shadow: 0 0 16px rgba(34, 211, 238, 0.6); }
+        .af-in::placeholder { color: rgba(226, 232, 240, 0.85); font-weight: 600; }
+        .af-fundcall { align-self: flex-start; background: linear-gradient(180deg, #8b5cf6, #6d28d9); }
+        .af-sug {
+            display: none; position: absolute; left: 0; right: 0; bottom: calc(100% + 6px); z-index: 60; flex-direction: column-reverse; gap: 4px;
+            padding: 6px; border-radius: 18px; background: rgba(8, 12, 32, 0.98); box-shadow: 0 0 0 1.5px rgba(103, 232, 249, 0.5), 0 14px 30px rgba(0, 0, 0, 0.7);
+            max-height: 52vh; overflow-y: auto;
+        }
+        .af-sug.open { display: flex; }
+        .af-sug button {
+            display: flex; align-items: center; gap: 10px; flex-wrap: wrap; text-align: start; border: none !important; border-radius: 12px;
+            padding: 11px 12px; background: rgba(30, 41, 59, 0.9); color: #fff; font-size: 1.15rem;
+        }
+        .af-sug button b { font-weight: 800; }
+        .af-sug button small { flex-basis: 100%; padding-inline-start: 36px; font-size: 0.95rem; color: #a5f3fc; font-weight: 600; }
+        .af-sug .ic { font-size: 1.3rem; }
+        .af-save { width: 100%; max-width: 560px; font-size: 1.4rem !important; padding: 16px !important; margin-top: 4px; }
+        .af-del { margin-top: 14px; border: none !important; border-radius: 999px; padding: 12px 22px; font-size: 1.1rem; font-weight: 800; color: #fff; background: rgba(127, 29, 29, 0.9); }
+        html.lowvision .ap-card, html.lowvision .af-in { background: #000 !important; border: 2px solid #ffe500 !important; }
+
+        /* ================= M-037: text size ================= */
+        .ts-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 0; }
+        .ts-lbl { font-size: 1.2rem; font-weight: 700; color: #fff; }
+        .ts-btns { display: flex; gap: 8px; }
+        .ts-btns button { width: 56px; height: 56px; border: none !important; border-radius: 16px; font-weight: 900; color: #fff; background: rgba(51, 65, 85, 0.95); }
+        .ts-btns button.sel { background: linear-gradient(180deg, #06b6d4, #0e7490); box-shadow: 0 0 0 2px #a5f3fc, 0 0 16px rgba(34, 211, 238, 0.8); }
     </style>
 </head>
 <body>
@@ -1821,7 +1936,10 @@
             <input type="hidden" id="med-time">
             <button type="button" id="time-btn" class="time-btn" onclick="openTimePicker()"></button>
             <button type="submit" class="btn-add" data-i18n="addReminder"></button>
-            <button type="button" id="list-btn" class="list-btn" onclick="openListPage()"></button>
+            <div class="nav-row">
+                <button type="button" id="list-btn" class="list-btn" onclick="openListPage()"></button>
+                <button type="button" id="appt-btn" class="appt-btn" onclick="openApptPage()"></button>
+            </div>
         </form>
     </div>
 
@@ -1833,6 +1951,52 @@
             <h2 data-i18n="myReminders"></h2>
         </div>
         <ul id="med-list" class="med-list"></ul>
+    </div>
+
+    <!-- M-036: doctor appointments (stage 2) -->
+    <div id="appt-page" class="settings-page list-page appt-page">
+        <div class="settings-hero">
+            <button type="button" class="close-3d" onclick="closeApptPage()" aria-label="close">✕</button>
+            <div class="hero-gear">🩺</div>
+            <h2 data-tx="apptTitle"></h2>
+        </div>
+        <button type="button" class="appt-new" onclick="openApptForm()"><span class="plus-orb">+</span><span data-tx="apptNew"></span></button>
+        <div id="appt-list" class="appt-list"></div>
+        <button type="button" class="btn-test appt-test" onclick="apptTest()" data-tx="testAppt"></button>
+    </div>
+    <div id="appt-form-page" class="settings-page list-page appt-form-page">
+        <div class="af-head">
+            <button type="button" class="close-3d" onclick="closeApptForm()" aria-label="close">✕</button>
+            <h2 id="af-title"></h2>
+        </div>
+        <div class="af-sec"><div class="af-lbl" data-tx="lType"></div><div id="af-types" class="af-chips af-types"></div></div>
+        <div class="af-sec"><div class="af-lbl" data-tx="lDoctor"></div>
+            <div class="af-wrap"><input type="text" id="af-doctor" class="af-in" data-txph="phDoctor" autocomplete="off"></div></div>
+        <div class="af-sec"><div class="af-lbl" data-tx="lWhen"></div>
+            <div class="af-chips af-when">
+                <button type="button" id="af-today" class="af-chip" onclick="apptSetDay('today')" data-tx="today"></button>
+                <button type="button" id="af-tomorrow" class="af-chip" onclick="apptSetDay('tomorrow')" data-tx="tomorrow"></button>
+                <button type="button" id="af-other" class="af-chip af-other"><span></span><input type="date" id="af-date" tabindex="-1"></button>
+            </div>
+            <button type="button" id="af-time" class="af-chip af-time" onclick="apptPickTime()"></button>
+            <div id="af-when-hint" class="af-hint"></div>
+        </div>
+        <div class="af-sec"><div class="af-lbl" data-tx="lWhere"></div>
+            <div class="af-wrap"><input type="text" id="af-place" class="af-in" data-txph="phPlace" autocomplete="off"></div>
+            <div class="af-wrap"><input type="text" id="af-city" class="af-in" data-txph="phCity" autocomplete="off"></div>
+            <div class="af-row">
+                <div class="af-wrap af-grow"><input type="text" id="af-street" class="af-in" data-txph="phStreet" autocomplete="off"></div>
+                <div class="af-wrap af-house"><input type="text" id="af-house" class="af-in" data-txph="phHouse" inputmode="numeric" autocomplete="off"></div>
+            </div>
+        </div>
+        <div class="af-sec"><div class="af-lbl" data-tx="lFund"></div><div id="af-funds" class="af-chips"></div>
+            <button type="button" id="af-fundcall" class="af-chip af-fundcall"></button>
+            <div class="af-wrap"><input type="tel" id="af-phone" class="af-in" data-txph="phPhone" autocomplete="off"></div></div>
+        <div class="af-sec"><div class="af-lbl" data-tx="lBefore"></div><div id="af-before" class="af-chips"></div></div>
+        <div class="af-sec"><div class="af-lbl" data-tx="lTravel"></div><div id="af-travel" class="af-chips"></div></div>
+        <div class="af-sec"><div class="af-wrap"><input type="text" id="af-notes" class="af-in" data-txph="phNotes" autocomplete="off"></div></div>
+        <button type="button" class="btn-add af-save" onclick="apptSave()" data-tx="save"></button>
+        <button type="button" id="af-delete" class="af-del" onclick="apptDelete()" data-tx="del"></button>
     </div>
 
     <!-- M-011: settings screen (gear button) -->
@@ -1907,6 +2071,8 @@
             </button>
             <div class="set-body">
                 <label class="toggle-row"><span data-i18n="lowVisionOn"></span><input type="checkbox" id="low-vision" class="toggle"></label>
+                <div class="ts-row"><div class="ts-lbl" data-i18n="textSize"></div>
+                    <div class="ts-btns"><button type="button" data-ts="1" style="font-size:1rem">A</button><button type="button" data-ts="2" style="font-size:1.3rem">A</button><button type="button" data-ts="3" style="font-size:1.65rem">A</button></div></div>
             </div>
         </section>
         <section class="set-tile" style="--g:linear-gradient(135deg,#10b981,#047857)">
@@ -2078,7 +2244,7 @@
           "soundMedTime": "✨ צלילים מיוחדים של MedTime",
           "themeTitle": "🎨 תצוגה",
           "themeAuto": "🕒 אוטומטי לפי שעה", "themeChoose": "✓ בחר", "themeBack": "↩ חזור",
-          "closeApp": "סגירת האפליקציה", "volAlert": "🔔 עוצמת צליל התזכורת", "volVoice": "🗣️ עוצמת הקול המקריא", "volAmbient": "🔊 עוצמת צליל הרקע", "volNote": "ביחס לעוצמת השעון המעורר בטלפון", "ambientOn": "🎵 צליל רקע לתצוגה",
+          "closeApp": "סגירת האפליקציה", "textSize": "🔠 גודל הטקסט", "volAlert": "🔔 עוצמת צליל התזכורת", "volVoice": "🗣️ עוצמת הקול המקריא", "volAmbient": "🔊 עוצמת צליל הרקע", "volNote": "ביחס לעוצמת השעון המעורר בטלפון", "ambientOn": "🎵 צליל רקע לתצוגה",
           "addReminder": "הוסף תזכורת",
           "voiceTitle": "🔊 הקראה קולית בתזכורת",
           "voiceOn": "להקריא בקול",
@@ -2148,7 +2314,7 @@
           "soundMedTime": "✨ أصوات MedTime الخاصة",
           "themeTitle": "🎨 المظهر",
           "themeAuto": "🕒 تلقائي حسب الوقت", "themeChoose": "✓ اختيار", "themeBack": "↩ رجوع",
-          "closeApp": "إغلاق التطبيق", "volAlert": "🔔 مستوى صوت التنبيه", "volVoice": "🗣️ مستوى صوت القراءة", "volAmbient": "🔊 مستوى صوت الخلفية", "volNote": "نسبةً إلى مستوى صوت المنبّه في الهاتف", "ambientOn": "🎵 صوت خلفية للمظهر",
+          "closeApp": "إغلاق التطبيق", "textSize": "🔠 حجم النص", "volAlert": "🔔 مستوى صوت التنبيه", "volVoice": "🗣️ مستوى صوت القراءة", "volAmbient": "🔊 مستوى صوت الخلفية", "volNote": "نسبةً إلى مستوى صوت المنبّه في الهاتف", "ambientOn": "🎵 صوت خلفية للمظهر",
           "addReminder": "أضف تذكيرًا",
           "voiceTitle": "🔊 القراءة الصوتية في التذكير",
           "voiceOn": "القراءة بصوت عالٍ",
@@ -2218,7 +2384,7 @@
           "soundMedTime": "✨ Sunete speciale MedTime",
           "themeTitle": "🎨 Aspect",
           "themeAuto": "🕒 Automat după oră", "themeChoose": "✓ Alege", "themeBack": "↩ Înapoi",
-          "closeApp": "Închide aplicația", "volAlert": "🔔 Volumul alertei", "volVoice": "🗣️ Volumul vocii", "volAmbient": "🔊 Volumul sunetului de fundal", "volNote": "Față de volumul alarmei telefonului", "ambientOn": "🎵 Sunet de fundal",
+          "closeApp": "Închide aplicația", "textSize": "🔠 Mărimea textului", "volAlert": "🔔 Volumul alertei", "volVoice": "🗣️ Volumul vocii", "volAmbient": "🔊 Volumul sunetului de fundal", "volNote": "Față de volumul alarmei telefonului", "ambientOn": "🎵 Sunet de fundal",
           "addReminder": "Adaugă memento",
           "voiceTitle": "🔊 Citire vocală la memento",
           "voiceOn": "Citește cu voce tare",
@@ -2288,7 +2454,7 @@
           "soundMedTime": "✨ Sons spéciaux MedTime",
           "themeTitle": "🎨 Apparence",
           "themeAuto": "🕒 Auto selon l’heure", "themeChoose": "✓ Choisir", "themeBack": "↩ Retour",
-          "closeApp": "Fermer l’application", "volAlert": "🔔 Volume de l’alerte", "volVoice": "🗣️ Volume de la voix", "volAmbient": "🔊 Volume de l’ambiance", "volNote": "Par rapport au volume d’alarme du téléphone", "ambientOn": "🎵 Son d’ambiance",
+          "closeApp": "Fermer l’application", "textSize": "🔠 Taille du texte", "volAlert": "🔔 Volume de l’alerte", "volVoice": "🗣️ Volume de la voix", "volAmbient": "🔊 Volume de l’ambiance", "volNote": "Par rapport au volume d’alarme du téléphone", "ambientOn": "🎵 Son d’ambiance",
           "addReminder": "Ajouter un rappel",
           "voiceTitle": "🔊 Lecture vocale du rappel",
           "voiceOn": "Lire à voix haute",
@@ -2358,7 +2524,7 @@
           "soundMedTime": "✨ MedTime special sounds",
           "themeTitle": "🎨 Display",
           "themeAuto": "🕒 Auto by time of day", "themeChoose": "✓ Choose", "themeBack": "↩ Back",
-          "closeApp": "Close the app", "volAlert": "🔔 Alert sound volume", "volVoice": "🗣️ Voice volume", "volAmbient": "🔊 Background sound volume", "volNote": "Relative to the phone's alarm volume", "ambientOn": "🎵 Background sound",
+          "closeApp": "Close the app", "textSize": "🔠 Text size", "volAlert": "🔔 Alert sound volume", "volVoice": "🗣️ Voice volume", "volAmbient": "🔊 Background sound volume", "volNote": "Relative to the phone's alarm volume", "ambientOn": "🎵 Background sound",
           "addReminder": "Add reminder",
           "voiceTitle": "🔊 Voice readout",
           "voiceOn": "Read aloud",
@@ -2796,8 +2962,12 @@
         buildWheel(wheelH, 24);
         buildWheel(wheelM, 60);
 
-        function openTimePicker() {
-            const cur = document.getElementById('med-time').value;
+        // M-036: also used by the appointment form (initial value + callback, sheet above the pages)
+        let timePickCb = null;
+        function openTimePicker(initial, cb, raise) {
+            timePickCb = typeof cb === 'function' ? cb : null;
+            document.getElementById('time-sheet').style.zIndex = raise ? '70' : '';
+            const cur = typeof initial === 'string' ? initial : document.getElementById('med-time').value;
             let h, m;
             if (cur) { [h, m] = cur.split(':').map(Number); }
             else { const d = new Date(); h = d.getHours(); m = d.getMinutes(); }
@@ -2812,6 +2982,7 @@
 
         function confirmTimePicker() {
             const v = String(wheelIndex(wheelH, 24)).padStart(2, '0') + ':' + String(wheelIndex(wheelM, 60)).padStart(2, '0');
+            if (timePickCb) { const cb = timePickCb; timePickCb = null; closeTimePicker(); cb(v); return; }
             document.getElementById('med-time').value = v;
             document.getElementById('time-btn').textContent = '⏰ ' + v;
             closeTimePicker();
@@ -2860,6 +3031,7 @@
             renderMeds();
             renderStatus();
             renderSounds();
+            if (window.apptRender) apptRender(); // M-036
         });
 
         // M-013: reminder cards tilt in 3D under the finger
@@ -3037,9 +3209,18 @@
         window.mtKeyboard = function (kb) {
             document.documentElement.classList.toggle('kb-open', kb > 0);
             document.body.style.paddingBottom = kb > 0 ? (kb + 24) + 'px' : '';
+            document.documentElement.style.setProperty('--kb', kb + 'px');
             if (kb > 0) {
                 const el = document.activeElement;
-                if (el && el.matches && el.matches('input, textarea')) {
+                const page = el && el.closest ? el.closest('.settings-page') : null;
+                if (page) { // M-036: field inside a full-screen page (appointment form): scroll the page
+                    setTimeout(() => {
+                        const visible = window.innerHeight - kb;
+                        const r = el.getBoundingClientRect();
+                        const at = el.closest('.af-wrap') ? Math.max(90, visible * 0.58 - r.height) : 90;
+                        page.scrollTo({ top: page.scrollTop + r.top - at, behavior: 'smooth' });
+                    }, 60);
+                } else if (el && el.matches && el.matches('input, textarea')) {
                     setTimeout(() => {
                         // name field: leave room above it for the name suggestions (M-024)
                         const visible = window.innerHeight - kb;
@@ -3059,6 +3240,21 @@
         document.addEventListener('focusin', e => {
             if (e.target.matches && e.target.matches('#med-form input[type=text]')) e.target.setAttribute('enterkeyhint', 'done');
         });
+
+        // ---------- M-037: text size (normal / large / extra large) ----------
+        function applyTextSize(n) {
+            document.documentElement.style.fontSize = ({ 1: '', 2: '112%', 3: '125%' })[n] || '';
+            document.querySelectorAll('.ts-btns button').forEach(b => b.classList.toggle('sel', +b.dataset.ts === n));
+        }
+        (function () {
+            let n = 1; try { n = parseInt(localStorage.getItem('medtime_ts'), 10) || 1; } catch (e) { }
+            applyTextSize(n);
+            document.querySelectorAll('.ts-btns button').forEach(b => b.addEventListener('click', () => {
+                const v = +b.dataset.ts; applyTextSize(v);
+                try { localStorage.setItem('medtime_ts', v); } catch (e) { }
+                if (navigator.vibrate) navigator.vibrate(10);
+            }));
+        })();
         // M-031: close the app (reminders keep working, they are booked in Android)
         function exitApp() {
             amb.pause();
@@ -3174,6 +3370,7 @@
         syncNative(loadMeds());
         renderStatus();
     </script>
+    <script src="appts.js"></script>
     <script src="meds.js"></script>
     <script src="themes.js"></script>
     <script src="worlds.js"></script>
