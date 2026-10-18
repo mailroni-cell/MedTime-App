@@ -9,7 +9,7 @@
     const has = f => !!(N && typeof N[f] === 'function');
     const TX = {
         updTitle: ['🔄 עדכונים', '🔄 التحديثات', '🔄 Actualizări', '🔄 Mises à jour', '🔄 Updates'],
-        helpTitle: ['❓ עזרה', '❓ مساعدة', '❓ Ajutor', '❓ Aide', '❓ Help'],
+        helpTitle: ['📖 עזרה', '📖 مساعدة', '📖 Ajutor', '📖 Aide', '📖 Help'],
         helpSub: ['הסבר על כל דבר', 'شرح لكل شيء', 'Explicații pentru tot', 'Tout est expliqué', 'Everything explained'],
         version: ['גרסה', 'الإصدار', 'Versiunea', 'Version', 'Version'],
         check: ['🔍 בדוק עדכונים עכשיו', '🔍 ابحث عن تحديث الآن', '🔍 Verifică acum', '🔍 Vérifier maintenant', '🔍 Check now'],
@@ -129,12 +129,12 @@
         grid.appendChild(s);
         return s;
     }
-    const upd = tile('tile-upd', '🔄', 'linear-gradient(135deg,#38bdf8,#4f46e5)',
+    const upd = tile('tile-upd', '🔄', 'linear-gradient(135deg,#2dd4bf,#0e7490)',
         '<div class="upd-ver" id="upd-ver"></div><button type="button" class="upd-btn" id="upd-btn"></button>' +
         '<div class="upd-bar" id="upd-bar"><i></i></div><div class="upd-msg" id="upd-msg"></div>' +
         '<label class="toggle-row"><span id="upd-auto-txt"></span><input type="checkbox" id="upd-auto" class="toggle"></label>' +
         '<div class="vol-note" id="upd-note"></div>');
-    const help = tile('tile-help', '❓', 'linear-gradient(135deg,#f472b6,#e11d48)', '<div class="help-list" id="help-list"></div>');
+    const help = tile('tile-help', '📖', 'linear-gradient(135deg,#7dd3fc,#818cf8)', '<div class="help-list" id="help-list"></div>');
 
     // ---------------- updates ----------------
     const KEY = 'medtime_upd';
@@ -240,7 +240,7 @@
     xRender();
 
     // ---------------- M-059: a light runs around a random menu frame now and then ----------------
-    const SEL = '.set-tile, .ap-card, .med-item, .list-btn, .appt-btn, .relax-btn, .btn-med, .home-card, .wz-nav button, .page-done, .appt-new, .af-chip, .type-btn, .help-item';
+    const SEL = '.set-tile:not(.open) .set-ico, .ap-card, .med-item, .list-btn, .appt-btn, .relax-btn, .btn-med, .wz-nav button, .page-done, .appt-new, .af-chip, .type-btn, .help-item';
     function visible(el) {
         const r = el.getBoundingClientRect();
         if (r.width < 40 || r.height < 24 || r.bottom < 0 || r.top > innerHeight || r.right < 0 || r.left > innerWidth) return false;
