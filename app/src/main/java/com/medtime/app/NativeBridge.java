@@ -22,6 +22,12 @@ public class NativeBridge {
         this.activity = activity;
     }
 
+    /** M-031: close the app (alarms are booked in Android, so reminders still come). */
+    @JavascriptInterface
+    public void exitApp() {
+        activity.runOnUiThread(activity::finishAndRemoveTask);
+    }
+
     /** Save the full reminder list ([{id,time,items:[{name,dose,type}]}]) and book all alarms. */
     @JavascriptInterface
     public void syncReminders(String json) {

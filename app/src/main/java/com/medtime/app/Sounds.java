@@ -23,7 +23,7 @@ public class Sounds {
     private static final Handler handler = new Handler(Looper.getMainLooper());
 
     /** M-027: MedTime's own sounds in res/raw (mt_*.ogg), made for the app. Title is translated on the page. */
-    static final String[] APP_SOUNDS = {"arcade", "bird_chirp", "bubbles", "crystal_bells", "cuckoo", "digital", "fairy", "fanfare", "glass", "gong", "harp", "heartbeat", "kalimba", "marimba", "morning_birds", "music_box", "nebula", "nightingale", "ocean", "orbit", "owl", "piano_rise", "rain", "sonar", "space_ping", "starfall", "sunrise", "tibetan_bowl", "warp", "water_drops", "wind_chimes", "zen"};
+    static final String[] APP_SOUNDS = {"alien", "arcade", "bird_chirp", "black_hole", "bubbles", "celesta", "chime_up", "church_bells", "comet", "crickets", "crystal_bells", "cuckoo", "digital", "dolphin", "doorbell", "fairy", "fanfare", "flute", "frog", "glass", "gong", "handpan", "harp", "heartbeat", "kalimba", "laser", "magic_wand", "marimba", "meditation", "morning_birds", "music_box", "nebula", "nightingale", "ocean", "orbit", "orchestra", "owl", "piano_rise", "pizzicato", "pulsar", "rain", "retro_phone", "robot", "rooster", "scanner", "seagulls", "sonar", "space_ping", "starfall", "steel_drum", "sunrise", "synth_pluck", "tabla", "tibetan_bowl", "ukulele", "warp", "water_drops", "whale", "wind_chimes", "wood_block", "xylophone", "zen"};
 
     /** [{title, uri, kind}] MedTime sounds, then the phone's alarm sounds, then notification sounds. */
     static String list(Context ctx) {

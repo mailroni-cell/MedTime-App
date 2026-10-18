@@ -402,6 +402,9 @@
         ringBase = new THREE.Color(th.ga).getHSL({});
         if (bloom) bloom.strength = th.bloom;
         motion = th.motion;
+        if (worlds) worlds.set(th.world || 'meds', th);
+        // fewer medicines when the theme has its own world
+        floaters.forEach((o, i) => { o.visible = !th.world || th.world === 'meds' || i % 2 === 0; });
         for (let i = 0; i < pos.length; i++) pos[i] = basePos[i];
         pGeo.attributes.position.needsUpdate = true;
         particles.rotation.set(0, 0, 0);
@@ -409,6 +412,10 @@
         particles.position.set(0, 0, 0);
     }
     let ringBase = { h: 0.53, s: 0.9, l: 0.6 };
+    // M-030: animated world per theme
+    const worlds = window.MedWorlds ? window.MedWorlds(THREE, { scene, dot }) : null;
+    let flashLevel = 0;
+    if (worlds) worlds.onFlash(v => { flashLevel = v; });
 
     // ---- bloom ----
     let composer = null, bloom = null;
@@ -464,7 +471,7 @@
         setDim(on) { canvas.style.opacity = on ? '0.35' : '1'; },
         setTheme(i) { applyTheme((window.MED_THEMES || [])[i]); }
     };
-    try { const ti = window.medEffectiveTheme ? window.medEffectiveTheme() : parseInt(localStorage.getItem('medtime_theme') || '0', 10) || 0; if (ti > 0) applyTheme((window.MED_THEMES || [])[ti]); } catch (e) { }
+    try { const ti = window.medEffectiveTheme ? window.medEffectiveTheme() : parseInt(localStorage.getItem('medtime_theme') || '0', 10) || 0; applyTheme((window.MED_THEMES || [])[ti]); } catch (e) { }
 
     if (document.documentElement.classList.contains('lowvision')) window.MedTime3D.setDim(true);
 
@@ -497,6 +504,8 @@
         }
 
         dome.material.uniforms.uTime.value = t;
+        if (worlds) worlds.update(dt, t);
+        renderer.toneMappingExposure = 0.95 + flashLevel * 1.6;
 
         // camera parallax + depth with scroll
         camera.position.x += (target.x * 1.2 - camera.position.x) * 0.04;

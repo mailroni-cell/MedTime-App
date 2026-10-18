@@ -1586,6 +1586,14 @@
         .tb-btns button { border: none !important; border-radius: 999px; padding: 14px; font-size: 1.15rem; font-weight: 800; color: #fff; }
         .tb-back { background: rgba(255, 255, 255, 0.14) !important; }
         .tb-ok { background: linear-gradient(180deg, rgba(var(--gA), 1), rgba(var(--gB), 1)) !important; box-shadow: 0 0 18px 4px rgba(var(--gA), 0.7); }
+
+        /* ================= M-031: close button ================= */
+        .exit-btn {
+            position: absolute; top: 0; inset-inline-end: 0; border: none; background: transparent;
+            font-size: 1.5rem; color: #fca5a5; padding: 2px 8px; font-weight: 900;
+            filter: drop-shadow(0 0 8px rgba(248, 113, 113, 0.8));
+        }
+        .exit-btn:active { transform: scale(0.9); }
     </style>
 </head>
 <body>
@@ -1594,6 +1602,7 @@
     <header>
         <h1>MedTime</h1>
         <button type="button" id="gear-btn" class="gear-btn" onclick="openSettingsPage()" aria-label="Settings">⚙️<span class="badge"></span></button>
+        <button type="button" id="exit-btn" class="exit-btn" onclick="exitApp()" data-i18n-title="closeApp" aria-label="close">⏻</button>
     </header>
 
     <div id="main-warn" class="main-warn"></div>
@@ -1678,6 +1687,7 @@
                 <span class="set-chev">⌄</span>
             </button>
             <div class="set-body">
+                <label class="toggle-row"><span data-i18n="ambientOn"></span><input type="checkbox" id="amb-on" class="toggle"></label>
                 <div id="theme-grid" class="theme-grid"></div>
             </div>
         </section>
@@ -1860,6 +1870,7 @@
           "soundMedTime": "✨ צלילים מיוחדים של MedTime",
           "themeTitle": "🎨 תצוגה",
           "themeAuto": "🕒 אוטומטי לפי שעה", "themeChoose": "✓ בחר", "themeBack": "↩ חזור",
+          "closeApp": "סגירת האפליקציה", "ambientOn": "🎵 צליל רקע לתצוגה",
           "addReminder": "הוסף תזכורת",
           "voiceTitle": "🔊 הקראה קולית בתזכורת",
           "voiceOn": "להקריא בקול",
@@ -1929,6 +1940,7 @@
           "soundMedTime": "✨ أصوات MedTime الخاصة",
           "themeTitle": "🎨 المظهر",
           "themeAuto": "🕒 تلقائي حسب الوقت", "themeChoose": "✓ اختيار", "themeBack": "↩ رجوع",
+          "closeApp": "إغلاق التطبيق", "ambientOn": "🎵 صوت خلفية للمظهر",
           "addReminder": "أضف تذكيرًا",
           "voiceTitle": "🔊 القراءة الصوتية في التذكير",
           "voiceOn": "القراءة بصوت عالٍ",
@@ -1998,6 +2010,7 @@
           "soundMedTime": "✨ Sunete speciale MedTime",
           "themeTitle": "🎨 Aspect",
           "themeAuto": "🕒 Automat după oră", "themeChoose": "✓ Alege", "themeBack": "↩ Înapoi",
+          "closeApp": "Închide aplicația", "ambientOn": "🎵 Sunet de fundal",
           "addReminder": "Adaugă memento",
           "voiceTitle": "🔊 Citire vocală la memento",
           "voiceOn": "Citește cu voce tare",
@@ -2067,6 +2080,7 @@
           "soundMedTime": "✨ Sons spéciaux MedTime",
           "themeTitle": "🎨 Apparence",
           "themeAuto": "🕒 Auto selon l’heure", "themeChoose": "✓ Choisir", "themeBack": "↩ Retour",
+          "closeApp": "Fermer l’application", "ambientOn": "🎵 Son d’ambiance",
           "addReminder": "Ajouter un rappel",
           "voiceTitle": "🔊 Lecture vocale du rappel",
           "voiceOn": "Lire à voix haute",
@@ -2136,6 +2150,7 @@
           "soundMedTime": "✨ MedTime special sounds",
           "themeTitle": "🎨 Display",
           "themeAuto": "🕒 Auto by time of day", "themeChoose": "✓ Choose", "themeBack": "↩ Back",
+          "closeApp": "Close the app", "ambientOn": "🎵 Background sound",
           "addReminder": "Add reminder",
           "voiceTitle": "🔊 Voice readout",
           "voiceOn": "Read aloud",
@@ -2716,6 +2731,7 @@
             document.documentElement.style.setProperty('--gA', hexRgb(th.ga));
             document.documentElement.style.setProperty('--gB', hexRgb(th.gb));
             document.querySelector('meta[name=theme-color]') && document.querySelector('meta[name=theme-color]').setAttribute('content', th.sky[0]);
+            if (typeof updateAmbient === 'function' && typeof amb !== 'undefined') updateAmbient(i);
         }
         // M-029: tapping a theme shows a full-screen preview with Choose / Back
         let prevChoice = null;
@@ -2763,6 +2779,29 @@
         }
         applyThemeUI(curTheme());
 
+        // ---------- M-030: ambient sound of the theme (loops, quiet, starts after the first touch) ----------
+        var amb = new Audio(); amb.loop = true; amb.volume = 0.35;
+        var ambUnlocked = false;
+        function ambOn() { try { return localStorage.getItem('medtime_amb') !== '0'; } catch (e) { return true; } }
+        function updateAmbient(i) {
+            const th = (window.MED_THEMES || [])[i == null ? curTheme() : i];
+            if (!th || !ambOn() || !ambUnlocked || document.hidden) { amb.pause(); return; }
+            const src = 'ambient/' + th.amb + '.ogg';
+            if (!amb.src.endsWith(src)) amb.src = src;
+            amb.play().catch(() => { });
+        }
+        document.addEventListener('pointerdown', () => { if (!ambUnlocked) { ambUnlocked = true; updateAmbient(); } }, { once: false, passive: true });
+        document.addEventListener('visibilitychange', () => updateAmbient());
+        const ambBox = document.getElementById('amb-on');
+        ambBox.checked = ambOn();
+        ambBox.addEventListener('change', () => { try { localStorage.setItem('medtime_amb', ambBox.checked ? '1' : '0'); } catch (e) { } updateAmbient(); });
+
+        // M-031: close the app (reminders keep working, they are booked in Android)
+        function exitApp() {
+            amb.pause();
+            if (Native && Native.exitApp) Native.exitApp(); else window.close();
+        }
+
         var lastStatusProblem = false;
         function updateSettingsSummary() {
             const set = (k, v) => { const el = document.getElementById('sub-' + k); if (el) el.textContent = v; };
@@ -2790,7 +2829,7 @@
         }
 
         // M-027: names of MedTime's own sounds [icon, he, ar, ro, fr, en]
-        const SOUND_NAMES = {"space_ping": ["🛰️", "פינג חללי", "رنين فضائي", "Ping spațial", "Ping spatial", "Space ping"], "nebula": ["🌌", "ערפילית", "سديم", "Nebuloasă", "Nébuleuse", "Nebula"], "orbit": ["🪐", "מסלול", "مدار", "Orbită", "Orbite", "Orbit"], "starfall": ["🌠", "מטר כוכבים", "شهب", "Ploaie de stele", "Pluie d’étoiles", "Starfall"], "warp": ["🚀", "קפיצת חלל", "قفزة فضائية", "Salt warp", "Saut spatial", "Warp jump"], "sonar": ["📡", "סונאר", "سونار", "Sonar", "Sonar", "Sonar"], "bird_chirp": ["🐦", "ציוץ ציפור", "زقزقة عصفور", "Ciripit", "Gazouillis", "Bird chirp"], "morning_birds": ["🌅", "ציפורי בוקר", "طيور الصباح", "Păsări de dimineață", "Oiseaux du matin", "Morning birds"], "nightingale": ["🎶", "זמיר", "عندليب", "Privighetoare", "Rossignol", "Nightingale"], "cuckoo": ["🕰️", "קוקייה", "وقواق", "Cuc", "Coucou", "Cuckoo"], "owl": ["🦉", "ינשוף", "بومة", "Bufniță", "Hibou", "Owl"], "crystal_bells": ["💎", "פעמוני קריסטל", "أجراس كريستال", "Clopoței de cristal", "Cloches de cristal", "Crystal bells"], "wind_chimes": ["🎐", "פעמוני רוח", "أجراس الرياح", "Clopoței de vânt", "Carillon à vent", "Wind chimes"], "tibetan_bowl": ["🥣", "קערה טיבטית", "وعاء تبتي", "Bol tibetan", "Bol tibétain", "Tibetan bowl"], "marimba": ["🪘", "מרימבה", "ماريمبا", "Marimbă", "Marimba", "Marimba"], "harp": ["🪕", "נבל", "قيثارة", "Harpă", "Harpe", "Harp"], "music_box": ["🎁", "תיבת נגינה", "صندوق موسيقى", "Cutie muzicală", "Boîte à musique", "Music box"], "piano_rise": ["🎹", "פסנתר עולה", "بيانو صاعد", "Pian ascendent", "Piano montant", "Rising piano"], "kalimba": ["🎵", "קלימבה", "كاليمبا", "Kalimba", "Kalimba", "Kalimba"], "glass": ["🥂", "כוס זכוכית", "كأس زجاج", "Pahar de cristal", "Verre", "Glass"], "water_drops": ["💧", "טיפות מים", "قطرات ماء", "Picături de apă", "Gouttes d’eau", "Water drops"], "bubbles": ["🫧", "בועות", "فقاعات", "Bule", "Bulles", "Bubbles"], "ocean": ["🌊", "גלי ים", "أمواج البحر", "Valuri", "Vagues", "Ocean waves"], "rain": ["🌧️", "גשם קל", "مطر خفيف", "Ploaie ușoară", "Pluie légère", "Light rain"], "gong": ["🔔", "גונג", "غونغ", "Gong", "Gong", "Gong"], "sunrise": ["☀️", "זריחה", "شروق", "Răsărit", "Lever du soleil", "Sunrise"], "fairy": ["🧚", "אבק פיות", "غبار الجنيات", "Praf de zâne", "Poussière de fée", "Fairy dust"], "arcade": ["👾", "ארקייד", "أركيد", "Arcade", "Arcade", "Arcade"], "digital": ["⌚", "דיגיטלי", "رقمي", "Digital", "Numérique", "Digital"], "heartbeat": ["💓", "פעימות לב", "نبضات القلب", "Bătăi de inimă", "Battements de cœur", "Heartbeat"], "fanfare": ["🎺", "תרועה", "فانفار", "Fanfară", "Fanfare", "Fanfare"], "zen": ["🧘", "זן", "زن", "Zen", "Zen", "Zen"]};
+        const SOUND_NAMES = {"space_ping": ["🛰️", "פינג חללי", "رنين فضائي", "Ping spațial", "Ping spatial", "Space ping"], "nebula": ["🌌", "ערפילית", "سديم", "Nebuloasă", "Nébuleuse", "Nebula"], "orbit": ["🪐", "מסלול", "مدار", "Orbită", "Orbite", "Orbit"], "starfall": ["🌠", "מטר כוכבים", "شهب", "Ploaie de stele", "Pluie d’étoiles", "Starfall"], "warp": ["🚀", "קפיצת חלל", "قفزة فضائية", "Salt warp", "Saut spatial", "Warp jump"], "sonar": ["📡", "סונאר", "سونار", "Sonar", "Sonar", "Sonar"], "bird_chirp": ["🐦", "ציוץ ציפור", "زقزقة عصفور", "Ciripit", "Gazouillis", "Bird chirp"], "morning_birds": ["🌅", "ציפורי בוקר", "طيور الصباح", "Păsări de dimineață", "Oiseaux du matin", "Morning birds"], "nightingale": ["🎶", "זמיר", "عندليب", "Privighetoare", "Rossignol", "Nightingale"], "cuckoo": ["🕰️", "קוקייה", "وقواق", "Cuc", "Coucou", "Cuckoo"], "owl": ["🦉", "ינשוף", "بومة", "Bufniță", "Hibou", "Owl"], "crystal_bells": ["💎", "פעמוני קריסטל", "أجراس كريستال", "Clopoței de cristal", "Cloches de cristal", "Crystal bells"], "wind_chimes": ["🎐", "פעמוני רוח", "أجراس الرياح", "Clopoței de vânt", "Carillon à vent", "Wind chimes"], "tibetan_bowl": ["🥣", "קערה טיבטית", "وعاء تبتي", "Bol tibetan", "Bol tibétain", "Tibetan bowl"], "marimba": ["🪘", "מרימבה", "ماريمبا", "Marimbă", "Marimba", "Marimba"], "harp": ["🪕", "נבל", "قيثارة", "Harpă", "Harpe", "Harp"], "music_box": ["🎁", "תיבת נגינה", "صندوق موسيقى", "Cutie muzicală", "Boîte à musique", "Music box"], "piano_rise": ["🎹", "פסנתר עולה", "بيانو صاعد", "Pian ascendent", "Piano montant", "Rising piano"], "kalimba": ["🎵", "קלימבה", "كاليمبا", "Kalimba", "Kalimba", "Kalimba"], "glass": ["🥂", "כוס זכוכית", "كأس زجاج", "Pahar de cristal", "Verre", "Glass"], "water_drops": ["💧", "טיפות מים", "قطرات ماء", "Picături de apă", "Gouttes d’eau", "Water drops"], "bubbles": ["🫧", "בועות", "فقاعات", "Bule", "Bulles", "Bubbles"], "ocean": ["🌊", "גלי ים", "أمواج البحر", "Valuri", "Vagues", "Ocean waves"], "rain": ["🌧️", "גשם קל", "مطر خفيف", "Ploaie ușoară", "Pluie légère", "Light rain"], "gong": ["🔔", "גונג", "غونغ", "Gong", "Gong", "Gong"], "sunrise": ["☀️", "זריחה", "شروق", "Răsărit", "Lever du soleil", "Sunrise"], "fairy": ["🧚", "אבק פיות", "غبار الجنيات", "Praf de zâne", "Poussière de fée", "Fairy dust"], "arcade": ["👾", "ארקייד", "أركيد", "Arcade", "Arcade", "Arcade"], "digital": ["⌚", "דיגיטלי", "رقمي", "Digital", "Numérique", "Digital"], "heartbeat": ["💓", "פעימות לב", "نبضات القلب", "Bătăi de inimă", "Battements de cœur", "Heartbeat"], "fanfare": ["🎺", "תרועה", "فانفار", "Fanfară", "Fanfare", "Fanfare"], "zen": ["🧘", "זן", "زن", "Zen", "Zen", "Zen"], "magic_wand": ["🪄", "שרביט קסמים", "عصا سحرية", "Baghetă magică", "Baguette magique", "Magic wand"], "scanner": ["🔦", "סורק חללי", "ماسح فضائي", "Scaner", "Scanner", "Scanner"], "robot": ["🤖", "רובוט", "روبوت", "Robot", "Robot", "Robot"], "dolphin": ["🐬", "דולפין", "دلفين", "Delfin", "Dauphin", "Dolphin"], "frog": ["🐸", "צפרדע", "ضفدع", "Broască", "Grenouille", "Frog"], "crickets": ["🦗", "צרצרים", "صراصير الليل", "Greieri", "Grillons", "Crickets"], "church_bells": ["⛪", "פעמוני מגדל", "أجراس البرج", "Clopote", "Cloches", "Tower bells"], "xylophone": ["🎼", "קסילופון", "إكسيليفون", "Xilofon", "Xylophone", "Xylophone"], "steel_drum": ["🥁", "תוף פלדה", "طبل فولاذي", "Tobă de oțel", "Steel drum", "Steel drum"], "flute": ["🪈", "חליל", "ناي", "Flaut", "Flûte", "Flute"], "ukulele": ["🎸", "יוקלילי", "يوكوليلي", "Ukulele", "Ukulélé", "Ukulele"], "synth_pluck": ["🎛️", "סינתי", "سينث", "Synth", "Synthé", "Synth pluck"], "retro_phone": ["☎️", "טלפון ישן", "هاتف قديم", "Telefon retro", "Téléphone rétro", "Retro phone"], "doorbell": ["🚪", "פעמון דלת", "جرس الباب", "Sonerie", "Sonnette", "Doorbell"], "celesta": ["✨", "צ׳לסטה", "سيليستا", "Celestă", "Célesta", "Celesta"], "handpan": ["🛸", "הנדפאן", "هاندبان", "Handpan", "Handpan", "Handpan"], "pizzicato": ["🎻", "פיציקטו", "بيتزيكاتو", "Pizzicato", "Pizzicato", "Pizzicato"], "laser": ["🔫", "לייזר", "ليزر", "Laser", "Laser", "Laser"], "comet": ["☄️", "שביט", "مذنب", "Cometă", "Comète", "Comet"], "pulsar": ["💫", "פולסר", "نجم نابض", "Pulsar", "Pulsar", "Pulsar"], "alien": ["👽", "חייזר", "كائن فضائي", "Extraterestru", "Extraterrestre", "Alien"], "whale": ["🐋", "לוויתן", "حوت", "Balenă", "Baleine", "Whale"], "seagulls": ["🕊️", "שחפים", "نوارس", "Pescăruși", "Mouettes", "Seagulls"], "wood_block": ["🪵", "קוביית עץ", "قطعة خشب", "Bloc de lemn", "Bloc de bois", "Wood block"], "tabla": ["🪇", "טבלה", "طبلة", "Tabla", "Tabla", "Tabla"], "orchestra": ["🎭", "תזמורת", "أوركسترا", "Orchestră", "Orchestre", "Orchestra"], "meditation": ["🕉️", "מדיטציה", "تأمل", "Meditație", "Méditation", "Meditation"], "chime_up": ["🔆", "צלצול עולה", "رنين صاعد", "Clopoțel urcător", "Carillon montant", "Rising chime"], "black_hole": ["🕳️", "חור שחור", "ثقب أسود", "Gaură neagră", "Trou noir", "Black hole"], "rooster": ["🐓", "תרנגול", "ديك", "Cocoș", "Coq", "Rooster"]};
         var LANG_IDX = { he: 1, ar: 2, ro: 3, fr: 4, en: 5 };
         const soundName = id => { const n = SOUND_NAMES[id]; return n ? n[0] + ' ' + n[LANG_IDX[LANG] || 5] : id; };
         function renderSounds() {
@@ -2874,6 +2913,7 @@
     </script>
     <script src="meds.js"></script>
     <script src="themes.js"></script>
+    <script src="worlds.js"></script>
     <script src="scene3d.js"></script>
 </body>
 </html>
