@@ -14,4 +14,5 @@
 - Owner asked for several medicines + injection in one reminder -> M-006 added to stage 1 (approved by card).
 - PC watcher did not react to the new APK (log stuck at 09:02); owner asked to restart the scheduled task.
 - Owner asked for snooze 10m/30m/1h/2h and a choice whether to say medicine names and dose -> M-007.
+- Owner: "open the phone from lock when needed" -> M-008.
 - Open: owner tests stage 1 and M-004.

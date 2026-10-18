@@ -41,6 +41,13 @@ public class AlarmActivity extends Activity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         buildScreen(getIntent());
+
+        // M-008: a swipe-only lock is removed right away; a PIN / fingerprint lock stays (security)
+        KeyguardManager km = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+        if (km != null && km.isKeyguardLocked() && !km.isKeyguardSecure()
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            km.requestDismissKeyguard(this, null);
+        }
     }
 
     @Override
@@ -69,6 +76,11 @@ public class AlarmActivity extends Activity {
         Button taken = button("✅ לקחתי", "#10b981");
         taken.setOnClickListener(v -> answer(src, ActionReceiver.ACTION_TAKEN));
         root.addView(taken);
+
+        // M-008: open the app; if the phone is locked, Android shows its unlock screen first
+        Button open = button("📱 פתח את MedTime", "#334155");
+        open.setOnClickListener(v -> unlockAndOpen(src));
+        root.addView(open);
 
         // M-007: snooze choices in a 2x2 grid
         root.addView(text("⏰ להזכיר שוב בעוד:", 18, "#94a3b8"));
@@ -103,6 +115,28 @@ public class AlarmActivity extends Activity {
                 android.widget.ScrollView.LayoutParams.MATCH_PARENT,
                 android.widget.ScrollView.LayoutParams.MATCH_PARENT));
         setContentView(scroll);
+    }
+
+    private void unlockAndOpen(final Intent src) {
+        KeyguardManager km = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+        if (km != null && km.isKeyguardLocked() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            km.requestDismissKeyguard(this, new KeyguardManager.KeyguardDismissCallback() {
+                @Override
+                public void onDismissSucceeded() {
+                    openApp(src);
+                }
+            });
+        } else {
+            openApp(src);
+        }
+    }
+
+    private void openApp(Intent src) {
+        // The reminder stays on its notification (with Taken / snooze) until answered
+        Intent main = new Intent(this, MainActivity.class);
+        main.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(main);
+        finish();
     }
 
     private void answer(Intent src, String action) {
