@@ -26,6 +26,7 @@ public class Reminders {
     static final String EXTRA_ITEMS = "items"; // JSON array [{name,dose,type}]
     static final String EXTRA_TIME = "time";
     static final String EXTRA_DAILY = "daily";
+    static final String EXTRA_DAYS = "days"; // M-038: "" = every day, else week days "0,3" (0 = Sunday)
 
     static final String EXTRA_SNOOZE_MIN = "snooze_min";
     static final int SNOOZE_MINUTES = 10; // default
@@ -56,10 +57,36 @@ public class Reminders {
             JSONObject r = list.optJSONObject(i);
             if (r == null) continue;
             String time = r.optString("time", "");
-            long at = nextOccurrence(time);
+            String days = daysOf(r);
+            long at = nextOccurrence(time, days);
             if (at <= 0) continue;
-            schedule(ctx, r.optInt("id"), itemsOf(r).toString(), time, at, true);
+            schedule(ctx, r.optInt("id"), itemsOf(r).toString(), time, at, true, days);
         }
+    }
+
+    /** M-038: week days of a reminder as "0,3" ("" = every day). */
+    static String daysOf(JSONObject r) {
+        JSONArray d = r.optJSONArray("days");
+        if (d == null || d.length() == 0 || d.length() >= 7) return "";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < d.length(); i++) { if (sb.length() > 0) sb.append(','); sb.append(d.optInt(i)); }
+        return sb.toString();
+    }
+
+    /** M-038: next HH:mm on one of the chosen week days ("" = any day). */
+    static long nextOccurrence(String hhmm, String days) {
+        long t = nextOccurrence(hhmm);
+        if (t <= 0 || days == null || days.isEmpty()) return t;
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(t);
+        for (int k = 0; k < 8; k++) {
+            int wd = c.get(Calendar.DAY_OF_WEEK) - 1; // 0 = Sunday
+            for (String d : days.split(",")) {
+                if (d.trim().equals(String.valueOf(wd))) return c.getTimeInMillis();
+            }
+            c.add(Calendar.DAY_OF_YEAR, 1);
+        }
+        return t;
     }
 
     /** Next time of HH:mm (today if still ahead, otherwise tomorrow). */
@@ -80,7 +107,24 @@ public class Reminders {
 
     /** Daily alarms use request code id*2, one-time alarms (snooze / test) use id*2+1. */
     static void schedule(Context ctx, int id, String items, String time, long at, boolean daily) {
-        setAlarm(ctx, at, alarmIntent(ctx, id, items, time, daily));
+        schedule(ctx, id, items, time, at, daily, "");
+    }
+
+    static void schedule(Context ctx, int id, String items, String time, long at, boolean daily, String days) {
+        PendingIntent pi = alarmIntent(ctx, id, items, time, daily);
+        if (days != null && !days.isEmpty()) {
+            // same request code, so this replaces the plain one; the extra tells the receiver the days
+            Intent i = new Intent(ctx, AlarmReceiver.class);
+            i.setAction("com.medtime.app.REMINDER_" + id + (daily ? "_D" : "_S"));
+            i.putExtra(EXTRA_ID, id);
+            i.putExtra(EXTRA_ITEMS, items);
+            i.putExtra(EXTRA_TIME, time);
+            i.putExtra(EXTRA_DAILY, daily);
+            i.putExtra(EXTRA_DAYS, days);
+            pi = PendingIntent.getBroadcast(ctx, id * 2 + (daily ? 0 : 1), i,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        }
+        setAlarm(ctx, at, pi);
     }
 
     /** M-036: shared by medicine and appointment alarms. */

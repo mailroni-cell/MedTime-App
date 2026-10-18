@@ -1824,6 +1824,29 @@
         .ts-btns { display: flex; gap: 8px; }
         .ts-btns button { width: 56px; height: 56px; border: none !important; border-radius: 16px; font-weight: 900; color: #fff; background: rgba(51, 65, 85, 0.95); }
         .ts-btns button.sel { background: linear-gradient(180deg, #06b6d4, #0e7490); box-shadow: 0 0 0 2px #a5f3fc, 0 0 16px rgba(34, 211, 238, 0.8); }
+
+        /* ================= M-038: week days + M-039: fit + clear exit button ================= */
+        .day-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; margin: 4px 0 10px; }
+        .day-lbl { flex-basis: 100%; text-align: center; font-weight: 800; color: #fff; font-size: 1.05rem; }
+        .day-chip { border: none !important; border-radius: 999px; min-width: 44px; padding: 9px 10px; font-size: 1.05rem; font-weight: 800; color: #fff;
+            background: rgba(51, 65, 85, 0.95); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2); }
+        .day-chip.sel { background: linear-gradient(180deg, #06b6d4, #0e7490); box-shadow: 0 0 0 2px #a5f3fc, 0 0 14px rgba(34, 211, 238, 0.8); }
+        .med-days { display: inline-block; font-size: 1rem; color: #fde68a; }
+        .exit-btn {
+            top: 2px !important; padding: 7px 12px !important; border-radius: 999px !important; font-size: 1.05rem !important; font-weight: 800 !important;
+            color: #fff !important; background: linear-gradient(180deg, #ef4444, #991b1b) !important; filter: none !important;
+            box-shadow: 0 3px 0 #450a0a, 0 0 14px rgba(239, 68, 68, 0.7) !important; text-shadow: 0 1px 2px #000 !important;
+        }
+        html.fit1 .hero-space { height: 3vh !important; min-height: 18px !important; }
+        html.fit2 .type-btn { padding: 4px 4px !important; }
+        html.fit2 .type-btn .ico { font-size: 1.35rem !important; }
+        html.fit2 #med-form input[type=text] { padding-top: 10px !important; padding-bottom: 10px !important; }
+        html.fit2 .time-btn { min-height: 46px !important; }
+        html.fit2 #med-form { gap: 8px !important; }
+        html.fit3 header { margin-bottom: 4px !important; }
+        html.fit3 h1 { font-size: 1.3rem !important; }
+        html.fit3 .nav-row > button { padding-top: 5px !important; padding-bottom: 5px !important; }
+        html.fit3 .appt-btn .ab-ico { font-size: 1.3rem; }
     </style>
 </head>
 <body>
@@ -1921,7 +1944,7 @@
     <header>
         <h1>MedTime</h1>
         <button type="button" id="gear-btn" class="gear-btn" onclick="openSettingsPage()" aria-label="Settings">⚙️<span class="badge"></span></button>
-        <button type="button" id="exit-btn" class="exit-btn" onclick="exitApp()" data-i18n-title="closeApp" aria-label="close">⏻</button>
+        <button type="button" id="exit-btn" class="exit-btn" onclick="exitApp()" data-i18n-title="closeApp" aria-label="close">⏻ <span data-i18n="exitShort"></span></button>
     </header>
 
     <div id="main-warn" class="main-warn"></div>
@@ -2092,6 +2115,8 @@
     <div id="time-sheet" class="sheet-bg" onclick="if (event.target === this) closeTimePicker()">
         <div class="sheet">
             <h3 data-i18n="timeLabel"></h3>
+            <!-- M-038: which days (empty = every day) -->
+            <div id="day-row" class="day-row"></div>
             <div class="quick-times">
                 <button type="button" onclick="quickTime('08:00')"><span data-i18n="qMorning"></span><b>08:00</b></button>
                 <button type="button" onclick="quickTime('13:00')"><span data-i18n="qNoon"></span><b>13:00</b></button>
@@ -2192,7 +2217,7 @@
             if (!Native) return;
             try {
                 Native.syncReminders(JSON.stringify(meds.map(m => ({
-                    id: m.id, time: m.time, items: m.items
+                    id: m.id, time: m.time, items: m.items, days: m.days || []
                 }))));
             } catch (e) { console.error(e); }
         }
@@ -2244,7 +2269,7 @@
           "soundMedTime": "✨ צלילים מיוחדים של MedTime",
           "themeTitle": "🎨 תצוגה",
           "themeAuto": "🕒 אוטומטי לפי שעה", "themeChoose": "✓ בחר", "themeBack": "↩ חזור",
-          "closeApp": "סגירת האפליקציה", "textSize": "🔠 גודל הטקסט", "volAlert": "🔔 עוצמת צליל התזכורת", "volVoice": "🗣️ עוצמת הקול המקריא", "volAmbient": "🔊 עוצמת צליל הרקע", "volNote": "ביחס לעוצמת השעון המעורר בטלפון", "ambientOn": "🎵 צליל רקע לתצוגה",
+          "closeApp": "סגירת האפליקציה", "exitShort": "יציאה", "everyDay": "כל יום", "repeatOn": "חוזר:", "textSize": "🔠 גודל הטקסט", "volAlert": "🔔 עוצמת צליל התזכורת", "volVoice": "🗣️ עוצמת הקול המקריא", "volAmbient": "🔊 עוצמת צליל הרקע", "volNote": "ביחס לעוצמת השעון המעורר בטלפון", "ambientOn": "🎵 צליל רקע לתצוגה",
           "addReminder": "הוסף תזכורת",
           "voiceTitle": "🔊 הקראה קולית בתזכורת",
           "voiceOn": "להקריא בקול",
@@ -2314,7 +2339,7 @@
           "soundMedTime": "✨ أصوات MedTime الخاصة",
           "themeTitle": "🎨 المظهر",
           "themeAuto": "🕒 تلقائي حسب الوقت", "themeChoose": "✓ اختيار", "themeBack": "↩ رجوع",
-          "closeApp": "إغلاق التطبيق", "textSize": "🔠 حجم النص", "volAlert": "🔔 مستوى صوت التنبيه", "volVoice": "🗣️ مستوى صوت القراءة", "volAmbient": "🔊 مستوى صوت الخلفية", "volNote": "نسبةً إلى مستوى صوت المنبّه في الهاتف", "ambientOn": "🎵 صوت خلفية للمظهر",
+          "closeApp": "إغلاق التطبيق", "exitShort": "خروج", "everyDay": "كل يوم", "repeatOn": "يتكرر:", "textSize": "🔠 حجم النص", "volAlert": "🔔 مستوى صوت التنبيه", "volVoice": "🗣️ مستوى صوت القراءة", "volAmbient": "🔊 مستوى صوت الخلفية", "volNote": "نسبةً إلى مستوى صوت المنبّه في الهاتف", "ambientOn": "🎵 صوت خلفية للمظهر",
           "addReminder": "أضف تذكيرًا",
           "voiceTitle": "🔊 القراءة الصوتية في التذكير",
           "voiceOn": "القراءة بصوت عالٍ",
@@ -2384,7 +2409,7 @@
           "soundMedTime": "✨ Sunete speciale MedTime",
           "themeTitle": "🎨 Aspect",
           "themeAuto": "🕒 Automat după oră", "themeChoose": "✓ Alege", "themeBack": "↩ Înapoi",
-          "closeApp": "Închide aplicația", "textSize": "🔠 Mărimea textului", "volAlert": "🔔 Volumul alertei", "volVoice": "🗣️ Volumul vocii", "volAmbient": "🔊 Volumul sunetului de fundal", "volNote": "Față de volumul alarmei telefonului", "ambientOn": "🎵 Sunet de fundal",
+          "closeApp": "Închide aplicația", "exitShort": "Ieșire", "everyDay": "Zilnic", "repeatOn": "Se repetă:", "textSize": "🔠 Mărimea textului", "volAlert": "🔔 Volumul alertei", "volVoice": "🗣️ Volumul vocii", "volAmbient": "🔊 Volumul sunetului de fundal", "volNote": "Față de volumul alarmei telefonului", "ambientOn": "🎵 Sunet de fundal",
           "addReminder": "Adaugă memento",
           "voiceTitle": "🔊 Citire vocală la memento",
           "voiceOn": "Citește cu voce tare",
@@ -2454,7 +2479,7 @@
           "soundMedTime": "✨ Sons spéciaux MedTime",
           "themeTitle": "🎨 Apparence",
           "themeAuto": "🕒 Auto selon l’heure", "themeChoose": "✓ Choisir", "themeBack": "↩ Retour",
-          "closeApp": "Fermer l’application", "textSize": "🔠 Taille du texte", "volAlert": "🔔 Volume de l’alerte", "volVoice": "🗣️ Volume de la voix", "volAmbient": "🔊 Volume de l’ambiance", "volNote": "Par rapport au volume d’alarme du téléphone", "ambientOn": "🎵 Son d’ambiance",
+          "closeApp": "Fermer l’application", "exitShort": "Quitter", "everyDay": "Tous les jours", "repeatOn": "Répéter :", "textSize": "🔠 Taille du texte", "volAlert": "🔔 Volume de l’alerte", "volVoice": "🗣️ Volume de la voix", "volAmbient": "🔊 Volume de l’ambiance", "volNote": "Par rapport au volume d’alarme du téléphone", "ambientOn": "🎵 Son d’ambiance",
           "addReminder": "Ajouter un rappel",
           "voiceTitle": "🔊 Lecture vocale du rappel",
           "voiceOn": "Lire à voix haute",
@@ -2524,7 +2549,7 @@
           "soundMedTime": "✨ MedTime special sounds",
           "themeTitle": "🎨 Display",
           "themeAuto": "🕒 Auto by time of day", "themeChoose": "✓ Choose", "themeBack": "↩ Back",
-          "closeApp": "Close the app", "textSize": "🔠 Text size", "volAlert": "🔔 Alert sound volume", "volVoice": "🗣️ Voice volume", "volAmbient": "🔊 Background sound volume", "volNote": "Relative to the phone's alarm volume", "ambientOn": "🎵 Background sound",
+          "closeApp": "Close the app", "exitShort": "Exit", "everyDay": "Every day", "repeatOn": "Repeat:", "textSize": "🔠 Text size", "volAlert": "🔔 Alert sound volume", "volVoice": "🗣️ Voice volume", "volAmbient": "🔊 Background sound volume", "volNote": "Relative to the phone's alarm volume", "ambientOn": "🎵 Background sound",
           "addReminder": "Add reminder",
           "voiceTitle": "🔊 Voice readout",
           "voiceOn": "Read aloud",
@@ -2654,7 +2679,7 @@
                 li.className = 'med-item';
                 li.innerHTML = `
                     <div class="med-info">
-                        <h3>⏰ ${m.time}</h3>
+                        <h3>⏰ ${m.time}${m.days && m.days.length && m.days.length < 7 ? ' <span class="med-days">📅 ' + escapeHtml(daysText(m.days)) + '</span>' : ''}</h3>
                         <ul>${m.items.map(it => `<li>${TYPE_ICON[it.type] || '💊'} ${escapeHtml(it.name)}` +
                             `${it.dose ? ' <span style="color:var(--text-muted)">· ' + t('dose') + ': ' + escapeHtml(it.dose) + '</span>' : ''}</li>`).join('')}</ul>
                     </div>
@@ -2875,6 +2900,33 @@
             const inp = doseRow.querySelector('.it-dose');
             inp.readOnly = false; inp.removeAttribute('inputmode'); inp.focus();
         }
+        // ---------- M-038: reminder on chosen week days (e.g. once a week) ----------
+        let selDays = []; // 0 = Sunday ... 6 = Saturday; empty = every day
+        const LOCALES = { he: 'he-IL', ar: 'ar', ro: 'ro-RO', fr: 'fr-FR', en: 'en-GB' };
+        function dayName(d) { return new Date(2023, 0, 1 + d).toLocaleDateString(LOCALES[LANG] || 'he-IL', { weekday: 'short' }); }
+        function daysText(days) {
+            if (!days || !days.length || days.length >= 7) return t('everyDay');
+            return days.slice().sort((a, b) => a - b).map(dayName).join(', ');
+        }
+        function renderDayRow() {
+            const box = document.getElementById('day-row');
+            box.innerHTML = `<span class="day-lbl">${t('repeatOn')}</span>`;
+            const all = document.createElement('button');
+            all.type = 'button'; all.className = 'day-chip all' + (selDays.length ? '' : ' sel'); all.textContent = t('everyDay');
+            all.onclick = () => { selDays = []; renderDayRow(); if (navigator.vibrate) navigator.vibrate(10); };
+            box.appendChild(all);
+            for (let d = 0; d < 7; d++) {
+                const b = document.createElement('button');
+                b.type = 'button'; b.className = 'day-chip' + (selDays.includes(d) ? ' sel' : ''); b.textContent = dayName(d);
+                b.onclick = () => {
+                    selDays = selDays.includes(d) ? selDays.filter(x => x !== d) : selDays.concat(d);
+                    if (selDays.length >= 7) selDays = [];
+                    renderDayRow(); if (navigator.vibrate) navigator.vibrate(10);
+                };
+                box.appendChild(b);
+            }
+        }
+
         function quickTime(v) {
             const [h, m] = v.split(':').map(Number);
             setWheel(wheelH, h); setWheel(wheelM, m);
@@ -2966,6 +3018,8 @@
         let timePickCb = null;
         function openTimePicker(initial, cb, raise) {
             timePickCb = typeof cb === 'function' ? cb : null;
+            document.getElementById('day-row').style.display = timePickCb ? 'none' : '';
+            if (!timePickCb) renderDayRow();
             document.getElementById('time-sheet').style.zIndex = raise ? '70' : '';
             const cur = typeof initial === 'string' ? initial : document.getElementById('med-time').value;
             let h, m;
@@ -2984,7 +3038,7 @@
             const v = String(wheelIndex(wheelH, 24)).padStart(2, '0') + ':' + String(wheelIndex(wheelM, 60)).padStart(2, '0');
             if (timePickCb) { const cb = timePickCb; timePickCb = null; closeTimePicker(); cb(v); return; }
             document.getElementById('med-time').value = v;
-            document.getElementById('time-btn').textContent = '⏰ ' + v;
+            document.getElementById('time-btn').textContent = '⏰ ' + v + (selDays.length ? ' · ' + daysText(selDays) : '');
             closeTimePicker();
         }
 
@@ -3000,7 +3054,8 @@
             if (!timeInput.value) { openTimePicker(); return; }
 
             const meds = loadMeds();
-            meds.push({ id: newId(), time: timeInput.value, items });
+            meds.push({ id: newId(), time: timeInput.value, items, days: selDays.slice() });
+            selDays = [];
             meds.sort((a, b) => a.time.localeCompare(b.time));
             saveMeds(meds);
             playChime();
@@ -3250,11 +3305,24 @@
             let n = 1; try { n = parseInt(localStorage.getItem('medtime_ts'), 10) || 1; } catch (e) { }
             applyTextSize(n);
             document.querySelectorAll('.ts-btns button').forEach(b => b.addEventListener('click', () => {
-                const v = +b.dataset.ts; applyTextSize(v);
+                const v = +b.dataset.ts; applyTextSize(v); setTimeout(fitMain, 100);
                 try { localStorage.setItem('medtime_ts', v); } catch (e) { }
                 if (navigator.vibrate) navigator.vibrate(10);
             }));
         })();
+
+        // ---------- M-039: main screen always fits the phone screen (no scrolling) ----------
+        function fitMain() {
+            const html = document.documentElement;
+            if (html.classList.contains('kb-open') || document.querySelector('.settings-page.open')) return;
+            html.classList.remove('fit1', 'fit2', 'fit3');
+            const over = () => document.body.scrollHeight > window.innerHeight + 2;
+            for (const c of ['fit1', 'fit2', 'fit3']) { if (!over()) break; html.classList.add(c); }
+        }
+        window.addEventListener('resize', () => setTimeout(fitMain, 80));
+        window.addEventListener('load', () => setTimeout(fitMain, 120));
+        setTimeout(fitMain, 400); setTimeout(fitMain, 1500);
+        new MutationObserver(() => requestAnimationFrame(fitMain)).observe(document.getElementById('med-form'), { childList: true, subtree: true });
         // M-031: close the app (reminders keep working, they are booked in Android)
         function exitApp() {
             amb.pause();
