@@ -4,12 +4,12 @@ Runs on GitHub Actions (the cloud editor cannot reach Commons).
 Step 1 (always): search candidates -> sound-cache/candidates.json
 Step 2 (if tools/sounds_pick.json exists): download the picked files, make 90 s loops
          -> app/src/main/assets/ambient/<key>.ogg and sound-cache/CREDITS.json"""
-import json, os, re, subprocess, time, traceback, urllib.parse, urllib.request
+import json, os, re, subprocess, time, traceback, urllib.error, urllib.parse, urllib.request
 LOG = []
 def log(*a):
     print(*a); LOG.append(' '.join(str(x) for x in a))
 
-UA = {'User-Agent': 'MedTime-App/1.0 (github.com/mailroni-cell/MedTime-App; calm sounds)'}
+UA = {'User-Agent': 'MedTimeSoundFetch/1.0 (https://github.com/mailroni-cell/MedTime-App; one-off fetch of a few CC sound files) python-urllib'}
 API = 'https://commons.wikimedia.org/w/api.php'
 OK_LIC = re.compile(r'^(cc0|public domain|pd|cc by(-sa)? ?[0-9.]*|cc-by(-sa)?-[0-9.]+)', re.I)
 QUERIES = {
@@ -24,18 +24,30 @@ QUERIES = {
     'zen': ['stream water flowing', 'brook babbling', 'creek water sound'],
 }
 
+def fetch(url, timeout=60):
+    # Wikimedia rate-limits shared GitHub runners: wait and retry, honouring Retry-After
+    for n in range(7):
+        time.sleep(2)
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=timeout) as r:
+                return r.read()
+        except urllib.error.HTTPError as e:
+            if e.code != 429 or n == 6: raise
+            ra = e.headers.get('Retry-After')
+            time.sleep(min(120, int(ra) if ra and ra.isdigit() else 10 * (n + 1)))
+
 def get(params):
-    time.sleep(1)
     q = API + '?' + urllib.parse.urlencode(dict(params, format='json', formatversion=2))
-    with urllib.request.urlopen(urllib.request.Request(q, headers=UA), timeout=60) as r:
-        return json.load(r)
+    return json.loads(fetch(q))
 
 def strip(h):
     return re.sub(r'<[^>]+>', '', h or '').strip()[:200]
 
 def scout():
-    out = {}
+    try: out = json.load(open('sound-cache/candidates.json'))
+    except Exception: out = {}
     for key, qs in QUERIES.items():
+        if out.get(key): continue
         seen = {}
         for q in qs:
             try:
@@ -72,8 +84,7 @@ def make(key, items):
         ii = get({'action': 'query', 'titles': it['title'], 'prop': 'imageinfo', 'iiprop': 'url|extmetadata',
                   'iiextmetadatafilter': 'LicenseShortName|Artist'})['query']['pages'][0]['imageinfo'][0]
         raw = 'sound-cache/raw/%s_%d' % (key, i)
-        with urllib.request.urlopen(urllib.request.Request(ii['url'], headers=UA), timeout=300) as r, open(raw, 'wb') as f:
-            f.write(r.read())
+        open(raw, 'wb').write(fetch(ii['url'], 300))
         wav = raw + '.wav'
         cmd = ['ffmpeg', '-y', '-v', 'error']
         if it.get('start'): cmd += ['-ss', str(it['start'])]
