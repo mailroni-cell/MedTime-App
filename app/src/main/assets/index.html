@@ -2342,6 +2342,14 @@
         .home-card .appt-btn .ab-txt { flex-direction: row !important; flex-wrap: wrap; justify-content: center; column-gap: 10px; }
         html.lowvision .appt-btn .ab-title, html.ts3 .appt-btn .ab-title, html.lowvision .appt-btn .ab-sub, html.ts3 .appt-btn .ab-sub { white-space: nowrap; }
         html.lowvision .mt-glint { display: none !important; }
+
+        /* M-065: low-vision: frames are drawn inside the buttons (inset), so nothing is cut at the screen edge; titles shrink to one line */
+        html.lowvision .wiz .wz-body, html.ts3 .wiz .wz-body { padding-left: 6px !important; padding-right: 6px !important; box-sizing: border-box; }
+        html.lowvision #med-form input[type=text], html.lowvision .type-btn, html.lowvision .time-btn, html.lowvision .af-chip, html.lowvision .af-in,
+        html.lowvision .day-chip, html.lowvision .unit-chip, html.lowvision .mw-chip, html.lowvision .btn-add-item, html.lowvision .ap-card {
+            outline: none !important; border: none !important; box-shadow: inset 0 0 0 3px #ffeb3b !important; }
+        html.lowvision .type-btn.sel, html.lowvision .af-chip.sel, html.lowvision .day-chip.sel, html.lowvision .unit-chip.sel { box-shadow: inset 0 0 0 5px #22d3ee !important; }
+        .wiz .af-head h2 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: min(1.6rem, 7vw) !important; }
     </style>
 </head>
 <body>
@@ -4000,6 +4008,8 @@
 
         document.getElementById('low-vision').addEventListener('change', e => {
             try { localStorage.setItem('medtime_lowvision', e.target.checked ? '1' : '0'); } catch (err) { }
+            // M-065: turning low-vision off brings everything back to normal, also the text size
+            if (!e.target.checked) { applyTextSize(1); try { localStorage.setItem('medtime_ts', 1); } catch (err) { } setTimeout(fitMain, 100); }
             applyLowVision(e.target.checked);
             updateSettingsSummary();
         });
