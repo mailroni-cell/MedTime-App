@@ -27,7 +27,15 @@ public class Reminders {
     static final String EXTRA_TIME = "time";
     static final String EXTRA_DAILY = "daily";
 
-    static final int SNOOZE_MINUTES = 10;
+    static final String EXTRA_SNOOZE_MIN = "snooze_min";
+    static final int SNOOZE_MINUTES = 10; // default
+    /** M-007: snooze choices on the reminder screen */
+    static final int[] SNOOZE_CHOICES = {10, 30, 60, 120};
+
+    // M-007: voice options (set from the app page)
+    static final String KEY_VOICE_ON = "voice_on";
+    static final String KEY_SAY_NAMES = "say_names";
+    static final String KEY_SAY_DOSE = "say_dose";
 
     /** Save the new list from the page, cancel the old alarms and schedule the new ones. */
     static void sync(Context ctx, String json) {
@@ -89,8 +97,9 @@ public class Reminders {
         }
     }
 
-    static void snooze(Context ctx, int id, String items, String time) {
-        long at = System.currentTimeMillis() + SNOOZE_MINUTES * 60_000L;
+    static void snooze(Context ctx, int id, String items, String time, int minutes) {
+        if (minutes <= 0) minutes = SNOOZE_MINUTES;
+        long at = System.currentTimeMillis() + minutes * 60_000L;
         schedule(ctx, id, items, time, at, false);
     }
 
@@ -141,6 +150,10 @@ public class Reminders {
 
     /** One line per item, e.g. "זריקה אינסולין · מינון: 10 יחידות". */
     static String[] lines(String itemsJson) {
+        return lines(itemsJson, true);
+    }
+
+    static String[] lines(String itemsJson, boolean withDose) {
         JSONArray a = parse(itemsJson);
         String[] out = new String[a.length()];
         for (int i = 0; i < a.length(); i++) {
@@ -149,20 +162,36 @@ public class Reminders {
             String label = typeLabel(o.optString("type"));
             String s = (label.isEmpty() ? "" : label + " ") + o.optString("name", "").trim();
             String dose = o.optString("dose", "").trim();
-            if (!dose.isEmpty()) s += " · מינון: " + dose;
+            if (withDose && !dose.isEmpty()) s += " · מינון: " + dose;
             out[i] = s;
         }
         return out;
     }
 
     /** Spoken text, based on the wording of the old Cyber Pharma 3D app. */
-    static String speechText(String itemsJson) {
-        String[] l = lines(itemsJson);
+    static String speechText(Context ctx, String itemsJson) {
+        SharedPreferences p = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        boolean names = p.getBoolean(KEY_SAY_NAMES, true);
+        boolean dose = p.getBoolean(KEY_SAY_DOSE, true);
+        String[] l = lines(itemsJson, dose);
+        // M-007: without names just say that it is time (privacy)
+        if (!names) {
+            return l.length > 1 ? "תזכורת. הגיע הזמן לקחת את התרופות." : "תזכורת. הגיע הזמן לקחת את התרופה.";
+        }
         StringBuilder sb = new StringBuilder(l.length > 1
                 ? "תזכורת. הגיע הזמן לקחת את התרופות: "
                 : "תזכורת. הגיע הזמן לקחת את התרופה: ");
         for (String s : l) sb.append(s.replace(" · ", ", ")).append(". ");
         return sb.toString().trim();
+    }
+
+    static boolean voiceOn(Context ctx) {
+        return ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(KEY_VOICE_ON, true);
+    }
+
+    static void setVoiceOptions(Context ctx, boolean on, boolean names, boolean dose) {
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
+                .putBoolean(KEY_VOICE_ON, on).putBoolean(KEY_SAY_NAMES, names).putBoolean(KEY_SAY_DOSE, dose).apply();
     }
 
     private static JSONArray parse(String s) {

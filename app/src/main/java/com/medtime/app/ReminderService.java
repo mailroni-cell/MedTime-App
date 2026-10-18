@@ -64,7 +64,12 @@ public class ReminderService extends Service {
             wakeLock.acquire(60_000L);
         }
 
-        speak(Reminders.speechText(items));
+        if (Reminders.voiceOn(this)) {
+            speak(Reminders.speechText(this, items));
+        } else {
+            // Voice turned off in the app: sound + vibration from the notification only
+            handler.postDelayed(this::finishKeepNotification, 3000L);
+        }
         // Safety net: never keep the service running longer than a minute
         handler.postDelayed(this::finishKeepNotification, 60_000L);
         return START_NOT_STICKY;
@@ -180,11 +185,11 @@ public class ReminderService extends Service {
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         Intent taken = new Intent(ctx, ActionReceiver.class).setAction(ActionReceiver.ACTION_TAKEN).putExtras(extras);
-        Intent snooze = new Intent(ctx, ActionReceiver.class).setAction(ActionReceiver.ACTION_SNOOZE).putExtras(extras);
-        PendingIntent takenPi = PendingIntent.getBroadcast(ctx, id * 4 + 2, taken,
+        PendingIntent takenPi = PendingIntent.getBroadcast(ctx, id * 8 + 2, taken,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        PendingIntent snoozePi = PendingIntent.getBroadcast(ctx, id * 4 + 3, snooze,
-                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        // Notification has room for 3 buttons: taken, 10 min, 30 min (all 4 snooze choices are on the full screen)
+        PendingIntent snooze10 = snoozeIntent(ctx, extras, id, 10, 3);
+        PendingIntent snooze30 = snoozeIntent(ctx, extras, id, 30, 4);
 
         String body = "הגיע הזמן לקחת:\n" + String.join("\n", lines);
 
@@ -203,11 +208,19 @@ public class ReminderService extends Service {
                 .setAutoCancel(false)
                 .setOngoing(true)
                 .addAction(new Notification.Action.Builder(null, "✅ לקחתי", takenPi).build())
-                .addAction(new Notification.Action.Builder(null, "⏰ דחה " + Reminders.SNOOZE_MINUTES + " דק'", snoozePi).build());
+                .addAction(new Notification.Action.Builder(null, "⏰ 10 דק'", snooze10).build())
+                .addAction(new Notification.Action.Builder(null, "⏰ חצי שעה", snooze30).build());
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             b.setDefaults(Notification.DEFAULT_ALL);
         }
         return b.build();
+    }
+
+    static PendingIntent snoozeIntent(Context ctx, Bundle extras, int id, int minutes, int slot) {
+        Intent i = new Intent(ctx, ActionReceiver.class).setAction(ActionReceiver.ACTION_SNOOZE).putExtras(extras);
+        i.putExtra(Reminders.EXTRA_SNOOZE_MIN, minutes);
+        return PendingIntent.getBroadcast(ctx, id * 8 + slot, i,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
     /** Fallback when the service may not start: show the notification without voice. */

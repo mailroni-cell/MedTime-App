@@ -28,6 +28,12 @@ public class NativeBridge {
         Reminders.sync(activity.getApplicationContext(), json);
     }
 
+    /** M-007: voice on/off, say medicine names, say dose. */
+    @JavascriptInterface
+    public void setVoiceOptions(boolean on, boolean names, boolean dose) {
+        Reminders.setVoiceOptions(activity.getApplicationContext(), on, names, dose);
+    }
+
     /** Test reminder in N seconds (works with the app closed). */
     @JavascriptInterface
     public void testReminder(String itemsJson, int seconds) {

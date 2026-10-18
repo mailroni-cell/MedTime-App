@@ -68,10 +68,32 @@ public class AlarmActivity extends Activity {
 
         Button taken = button("✅ לקחתי", "#10b981");
         taken.setOnClickListener(v -> answer(src, ActionReceiver.ACTION_TAKEN));
-        Button snooze = button("⏰ דחה ב-" + Reminders.SNOOZE_MINUTES + " דקות", "#2563eb");
-        snooze.setOnClickListener(v -> answer(src, ActionReceiver.ACTION_SNOOZE));
         root.addView(taken);
-        root.addView(snooze);
+
+        // M-007: snooze choices in a 2x2 grid
+        root.addView(text("⏰ להזכיר שוב בעוד:", 18, "#94a3b8"));
+        LinearLayout row = null;
+        for (int k = 0; k < Reminders.SNOOZE_CHOICES.length; k++) {
+            final int min = Reminders.SNOOZE_CHOICES[k];
+            if (k % 2 == 0) {
+                row = new LinearLayout(this);
+                row.setOrientation(LinearLayout.HORIZONTAL);
+                root.addView(row, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+            }
+            Button b = button(snoozeLabel(min), "#2563eb");
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, dp(60), 1f);
+            lp.topMargin = dp(10);
+            lp.leftMargin = dp(5);
+            lp.rightMargin = dp(5);
+            b.setLayoutParams(lp);
+            b.setOnClickListener(v -> {
+                Intent i = new Intent(src);
+                i.putExtra(Reminders.EXTRA_SNOOZE_MIN, min);
+                answer(i, ActionReceiver.ACTION_SNOOZE);
+            });
+            row.addView(b);
+        }
 
         // Scrolls when there are many items
         android.widget.ScrollView scroll = new android.widget.ScrollView(this);
@@ -88,6 +110,15 @@ public class AlarmActivity extends Activity {
         i.setAction(action);
         ActionReceiver.handle(this, i);
         finish();
+    }
+
+    static String snoozeLabel(int min) {
+        switch (min) {
+            case 30: return "חצי שעה";
+            case 60: return "שעה";
+            case 120: return "שעתיים";
+            default: return min + " דקות";
+        }
     }
 
     private TextView text(String s, int sp, String color) {

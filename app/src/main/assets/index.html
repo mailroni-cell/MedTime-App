@@ -224,6 +224,31 @@
             line-height: 1.5;
         }
 
+        /* M-007: voice options */
+        .voice-card h3 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: #38bdf8;
+        }
+
+        .switch-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            font-size: 0.95rem;
+        }
+
+        .switch-row input {
+            width: 22px;
+            height: 22px;
+            accent-color: var(--accent);
+        }
+
+        .switch-row.disabled {
+            opacity: 0.4;
+        }
+
         .btn-delete {
             background: transparent;
             border: 1px solid var(--danger);
@@ -253,6 +278,13 @@
     </div>
 
     <div id="status-box" class="status-box"></div>
+
+    <div class="card voice-card">
+        <h3>🔊 הקראה קולית בתזכורת</h3>
+        <label class="switch-row"><span>להקריא בקול</span><input type="checkbox" id="v-on"></label>
+        <label class="switch-row" id="row-names"><span>להגיד אילו תרופות</span><input type="checkbox" id="v-names"></label>
+        <label class="switch-row" id="row-dose"><span>להגיד גם את המינון</span><input type="checkbox" id="v-dose"></label>
+    </div>
 
     <ul id="med-list" class="med-list"></ul>
 
@@ -482,6 +514,36 @@
         });
 
         addItemRow();
+
+        // M-007: voice options, saved here and in Android
+        function loadVoice() {
+            try { return Object.assign({ on: true, names: true, dose: true }, JSON.parse(localStorage.getItem('medtime_voice') || '{}')); }
+            catch (e) { return { on: true, names: true, dose: true }; }
+        }
+
+        function applyVoice(v) {
+            document.getElementById('v-on').checked = v.on;
+            document.getElementById('v-names').checked = v.names;
+            document.getElementById('v-dose').checked = v.dose;
+            document.getElementById('row-names').classList.toggle('disabled', !v.on);
+            document.getElementById('row-dose').classList.toggle('disabled', !v.on || !v.names);
+            if (Native && Native.setVoiceOptions) {
+                try { Native.setVoiceOptions(v.on, v.names, v.dose); } catch (e) { }
+            }
+        }
+
+        ['v-on', 'v-names', 'v-dose'].forEach(idName => {
+            document.getElementById(idName).addEventListener('change', () => {
+                const v = {
+                    on: document.getElementById('v-on').checked,
+                    names: document.getElementById('v-names').checked,
+                    dose: document.getElementById('v-dose').checked
+                };
+                localStorage.setItem('medtime_voice', JSON.stringify(v));
+                applyVoice(v);
+            });
+        });
+        applyVoice(loadVoice());
 
         renderMeds();
         syncNative(loadMeds());

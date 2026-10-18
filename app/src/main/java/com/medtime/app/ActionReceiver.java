@@ -5,7 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-/** M-005: "לקחתי" / "דחה 10 דק'" buttons on the notification and on the reminder screen. */
+/** M-005 / M-007: "לקחתי" / snooze (10 min, 30 min, 1 h, 2 h) buttons on the notification and on the reminder screen. */
 public class ActionReceiver extends BroadcastReceiver {
     static final String ACTION_TAKEN = "com.medtime.app.TAKEN";
     static final String ACTION_SNOOZE = "com.medtime.app.SNOOZE";
@@ -21,7 +21,8 @@ public class ActionReceiver extends BroadcastReceiver {
             Reminders.snooze(ctx,
                     id,
                     intent.getStringExtra(Reminders.EXTRA_ITEMS),
-                    intent.getStringExtra(Reminders.EXTRA_TIME));
+                    intent.getStringExtra(Reminders.EXTRA_TIME),
+                    intent.getIntExtra(Reminders.EXTRA_SNOOZE_MIN, Reminders.SNOOZE_MINUTES));
         }
         ctx.stopService(new Intent(ctx, ReminderService.class));
         NotificationManager nm = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
