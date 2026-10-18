@@ -2324,6 +2324,16 @@
             filter: drop-shadow(0 0 3px #fff) drop-shadow(0 0 6px rgba(var(--gA), .9));
             animation: mtGlint 1.9s cubic-bezier(.45, .05, .55, .95) forwards; }
         @keyframes mtGlint { 0% { --ga: var(--gs); opacity: 0; } 15% { opacity: 1; } 80% { opacity: 1; } 100% { --ga: calc(var(--gs) + var(--gd)); opacity: 0; } }
+
+        /* M-062: the MedTime title uses the whole width; settings and exit float at the bottom corners */
+        h1.mt-logo, html.fit3 h1.mt-logo { font-size: min(5.2rem, calc((100vw - 28px) / 4.6)) !important; }
+        header .gear-btn, header .exit-btn, .gear-btn, .exit-btn { position: fixed !important; top: auto !important; bottom: calc(18px + env(safe-area-inset-bottom)) !important; z-index: 40; }
+        .gear-btn { inset-inline-start: auto !important; left: 18px !important; right: auto !important; width: 60px !important; height: 60px !important; }
+        .exit-btn { right: 18px !important; left: auto !important; width: 60px !important; height: 60px !important; }
+        html.relax-open .gear-btn, html.relax-open .exit-btn, html.med-open .gear-btn, html.med-open .exit-btn, body:has(.settings-page.open) .gear-btn, body:has(.settings-page.open) .exit-btn { display: none !important; }
+        /* M-063: no see-through panel around the main menu, the buttons stand on the background */
+        .home-card { background: none !important; border: none !important; box-shadow: none !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+        .home-card::before, .home-card::after { display: none !important; }
     </style>
 </head>
 <body>
