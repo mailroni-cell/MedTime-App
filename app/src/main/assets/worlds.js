@@ -261,6 +261,137 @@ window.MedWorlds = function (THREE, ctx) {
             }
             fireflies(30, '#ffffff');
         },
+        // ---------- M-055: new 3D worlds ----------
+        dna(th) {
+            const cA = new THREE.Color(th.p[0]), cB = new THREE.Color(th.p[1]);
+            const bead = new THREE.SphereGeometry(0.16, 16, 12), rungG = new THREE.CylinderGeometry(0.035, 0.035, 1, 6);
+            const mA = glossy(cA, { emissive: cA, emissiveIntensity: 0.6 }), mB = glossy(cB, { emissive: cB, emissiveIntensity: 0.6 });
+            const rungM = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.35 });
+            [[-6.5, -12, 0.35, 1], [6.5, -15, -0.3, -1], [0, -24, 0.15, 1]].forEach(([x, z, tilt, dir]) => {
+                const h = new THREE.Group();
+                for (let i = 0; i < 46; i++) {
+                    const y = (i - 23) * 0.42, a = i * 0.42, R = 1.3;
+                    const p1 = new THREE.Vector3(Math.cos(a) * R, y, Math.sin(a) * R), p2 = new THREE.Vector3(-Math.cos(a) * R, y, -Math.sin(a) * R);
+                    const b1 = new THREE.Mesh(bead, mA), b2 = new THREE.Mesh(bead, mB); b1.position.copy(p1); b2.position.copy(p2); h.add(b1, b2);
+                    if (i % 2 === 0) { const r = new THREE.Mesh(rungG, rungM); r.position.set(0, y, 0); r.scale.y = R * 2; r.rotation.z = Math.PI / 2; r.rotation.y = -a; h.add(r); }
+                    if (i % 6 === 0) { const g = new THREE.Sprite(new THREE.SpriteMaterial({ map: dot, color: i % 12 ? cA : cB, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false })); g.scale.set(1.1, 1.1, 1); g.position.copy(p1); h.add(g); }
+                }
+                h.position.set(x, 2, z); h.rotation.z = tilt; group.add(h);
+                updaters.push((dt, t) => { h.rotation.y += dir * dt * 0.35; h.position.y = 2 + Math.sin(t * 0.3 + x) * 0.8; });
+            });
+            fireflies(40, th.p[0]);
+        },
+        blackhole(th) {
+            const hole = new THREE.Group(); hole.position.set(0, 9, -30); group.add(hole);
+            hole.add(new THREE.Mesh(new THREE.SphereGeometry(2.2, 48, 32), new THREE.MeshBasicMaterial({ color: 0x000000 })));
+            const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: dot, color: th.neb[1], transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false })); halo.scale.set(9, 9, 1); hole.add(halo);
+            const N = 4000, pos = new Float32Array(N * 3), col = new Float32Array(N * 3), dat = [];
+            const c1 = new THREE.Color(th.neb[0]), c2 = new THREE.Color(th.neb[2]), c = new THREE.Color();
+            for (let i = 0; i < N; i++) { const r = 2.6 + Math.pow(Math.random(), 1.7) * 9; dat.push({ r, a: rnd(0, 6.28), y: rnd(-0.15, 0.15) * (r * 0.12) }); c.copy(c1).lerp(c2, (r - 2.6) / 9).multiplyScalar(1.3 - (r - 2.6) / 12); col.set([c.r, c.g, c.b], i * 3); }
+            const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(pos, 3)); geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+            const disk = new THREE.Points(geo, new THREE.PointsMaterial({ size: 0.16, map: dot, vertexColors: true, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+            disk.rotation.x = 1.25; hole.add(disk);
+            const ring = new THREE.Mesh(new THREE.TorusGeometry(2.45, 0.08, 12, 96), new THREE.MeshBasicMaterial({ color: 0xfff1d6 })); hole.add(ring);
+            updaters.push((dt, t) => {
+                for (let i = 0; i < N; i++) { const d = dat[i]; d.a += dt * 2.4 / Math.sqrt(d.r); pos[i * 3] = Math.cos(d.a) * d.r; pos[i * 3 + 1] = d.y; pos[i * 3 + 2] = Math.sin(d.a) * d.r; }
+                geo.attributes.position.needsUpdate = true;
+                ring.rotation.z = t * 0.2; halo.material.opacity = 0.75 + 0.2 * Math.sin(t * 1.5);
+            });
+            shootingStars(3, th.p[0]);
+        },
+        butterflies(th) {
+            const wingTex = (c1, c2) => canvasTex(128, 128, (g) => {
+                const gr = g.createRadialGradient(10, 64, 4, 10, 64, 120); gr.addColorStop(0, '#fff'); gr.addColorStop(0.25, c1); gr.addColorStop(1, c2);
+                g.fillStyle = gr; g.beginPath(); g.moveTo(4, 64); g.bezierCurveTo(40, -10, 130, 0, 120, 50); g.bezierCurveTo(115, 70, 70, 70, 60, 66);
+                g.bezierCurveTo(100, 80, 110, 125, 70, 122); g.bezierCurveTo(40, 120, 20, 90, 4, 64); g.fill();
+                g.fillStyle = 'rgba(255,255,255,0.8)'; [[80, 30, 6], [96, 44, 4], [70, 100, 5]].forEach(([x, y, r]) => { g.beginPath(); g.arc(x, y, r, 0, 7); g.fill(); });
+            });
+            const sets = [[th.neb[0], th.neb[2]], [th.p[0], th.neb[1]], [th.hero[0], th.hero[1]]].map(([a, b]) => wingTex(a, b));
+            const wg = new THREE.PlaneGeometry(1, 1); wg.translate(0.5, 0, 0);
+            for (let i = 0; i < 14; i++) {
+                const m = new THREE.MeshBasicMaterial({ map: pick(sets), transparent: true, side: THREE.DoubleSide, depthWrite: false });
+                const b = new THREE.Group(), L = new THREE.Mesh(wg, m), R = new THREE.Mesh(wg, m); R.scale.x = -1; b.add(L, R);
+                const s = rnd(0.6, 1.2); b.scale.setScalar(s); group.add(b);
+                const c = new THREE.Vector3(rnd(-8, 8), rnd(-3, 8), rnd(-14, -3)), ph = rnd(0, 6), sp = rnd(0.25, 0.5), fl = rnd(9, 13);
+                updaters.push((dt, t) => {
+                    const a = t * sp + ph; b.position.set(c.x + Math.sin(a) * 3, c.y + Math.sin(a * 1.7) * 1.2, c.z + Math.cos(a) * 2);
+                    b.rotation.y = -a + Math.PI / 2; b.rotation.x = 0.5; const f = Math.sin(t * fl + ph) * 1.1; L.rotation.y = f; R.rotation.y = -f;
+                });
+            }
+            fireflies(40, th.p[1]);
+        },
+        bubbles(th) {
+            const m = new THREE.ShaderMaterial({
+                transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, uniforms: { uT: { value: 0 } },
+                vertexShader: 'varying vec3 vN; varying vec3 vV; varying vec3 vP; void main(){ vN=normalize(normalMatrix*normal); vec4 mv=modelViewMatrix*vec4(position,1.); vV=normalize(-mv.xyz); vP=position; gl_Position=projectionMatrix*mv; }',
+                fragmentShader: 'uniform float uT; varying vec3 vN; varying vec3 vV; varying vec3 vP; void main(){ float f=pow(1.-abs(dot(vN,vV)),2.5); float k=f*6.+vP.y*3.+uT*0.6; vec3 rb=0.5+0.5*cos(6.2831*(vec3(0.,0.33,0.67)+k)); float spec=pow(max(dot(vN,normalize(vec3(-0.4,0.6,0.7))),0.),60.); gl_FragColor=vec4(rb*f*1.3+spec, f*0.9+spec); }'
+            });
+            const geo = new THREE.SphereGeometry(1, 32, 24);
+            for (let i = 0; i < 16; i++) {
+                const b = new THREE.Mesh(geo, m), s = rnd(0.4, 1.4); b.scale.setScalar(s); b.position.set(rnd(-9, 9), rnd(-8, 10), rnd(-14, -2)); group.add(b);
+                const sp = rnd(0.3, 0.7), ph = rnd(0, 6);
+                updaters.push((dt, t) => { b.position.y += sp * dt; b.position.x += Math.sin(t * 0.7 + ph) * dt * 0.3; b.scale.set(s * (1 + 0.04 * Math.sin(t * 3 + ph)), s * (1 - 0.04 * Math.sin(t * 3 + ph)), s); if (b.position.y > 12) b.position.y = -9; });
+            }
+            updaters.push((dt, t) => { m.uniforms.uT.value = t; });
+            fireflies(30, '#ffffff');
+        },
+        tunnel(th) {
+            const rings = [], cols = [th.neb[0], th.neb[1], th.neb[2], th.ga];
+            for (let i = 0; i < 26; i++) {
+                const r = new THREE.Mesh(new THREE.TorusGeometry(7, 0.06, 8, 64), new THREE.MeshBasicMaterial({ color: cols[i % 4], transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending }));
+                r.position.set(0, 2, -i * 4); group.add(r); rings.push(r);
+            }
+            updaters.push((dt, t) => rings.forEach((r, i) => {
+                r.position.z += dt * 6; if (r.position.z > 10) r.position.z -= 104;
+                r.rotation.z = t * 0.2 + i * 0.15; const k = Math.min(1, (r.position.z + 100) / 60); r.material.opacity = k * 0.9;
+                r.position.x = Math.sin(t * 0.4 + r.position.z * 0.05) * 1.5; r.position.y = 2 + Math.cos(t * 0.3 + r.position.z * 0.05) * 1.2;
+            }));
+            shootingStars(4, th.p[0]);
+        },
+        molecules(th) {
+            const atom = new THREE.SphereGeometry(0.35, 24, 16), bond = new THREE.CylinderGeometry(0.07, 0.07, 1, 8);
+            const cols = [th.neb[0], th.neb[1], th.neb[2], '#ffffff'];
+            for (let n = 0; n < 6; n++) {
+                const mol = new THREE.Group(), pts = [new THREE.Vector3()];
+                for (let k = 0; k < 5; k++) pts.push(new THREE.Vector3(rnd(-1, 1), rnd(-1, 1), rnd(-1, 1)).normalize().multiplyScalar(1.2).add(pick(pts)));
+                pts.forEach((p, i) => {
+                    const c = new THREE.Color(cols[i % 4]); const a = new THREE.Mesh(atom, glossy(c, { emissive: c, emissiveIntensity: 0.35 }));
+                    a.position.copy(p); a.scale.setScalar(i ? 0.8 : 1.2); mol.add(a);
+                    if (i) { const q = pts[Math.max(0, i - 1 - (i % 2))]; const bd = new THREE.Mesh(bond, new THREE.MeshStandardMaterial({ color: 0xdbeafe, metalness: 0.6, roughness: 0.3 }));
+                        bd.position.copy(p).add(q).multiplyScalar(0.5); bd.scale.y = p.distanceTo(q); bd.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), p.clone().sub(q).normalize()); mol.add(bd); }
+                });
+                const s = rnd(0.8, 1.4); mol.scale.setScalar(s); mol.position.set(rnd(-8, 8), rnd(-4, 8), rnd(-15, -4)); group.add(mol);
+                const sp = new THREE.Vector3(rnd(-0.4, 0.4), rnd(-0.5, 0.5), rnd(-0.2, 0.2)), ph = rnd(0, 6);
+                updaters.push((dt, t) => { mol.rotation.x += sp.x * dt; mol.rotation.y += sp.y * dt; mol.rotation.z += sp.z * dt; mol.position.y += Math.sin(t * 0.5 + ph) * dt * 0.25; });
+            }
+            fireflies(30, th.p[0]);
+        },
+        balloons(th) {
+            const geo = new THREE.SphereGeometry(0.8, 32, 24); geo.scale(1, 1.2, 1);
+            for (let i = 0; i < 12; i++) {
+                const c = new THREE.Color(pick([th.neb[0], th.neb[1], th.neb[2], th.hero[0], th.hero[1]]));
+                const b = new THREE.Group(), ball = new THREE.Mesh(geo, glossy(c, { emissive: c, emissiveIntensity: 0.15 }));
+                const str = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, -0.95, 0), new THREE.Vector3(0.1, -2.2, 0)]), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 }));
+                b.add(ball, str); const s = rnd(0.7, 1.3); b.scale.setScalar(s); b.position.set(rnd(-9, 9), rnd(-9, 9), rnd(-14, -3)); group.add(b);
+                const sp = rnd(0.35, 0.7), ph = rnd(0, 6);
+                updaters.push((dt, t) => { b.position.y += sp * dt; b.rotation.z = Math.sin(t * 0.8 + ph) * 0.12; b.position.x += Math.sin(t * 0.5 + ph) * dt * 0.25; if (b.position.y > 13) b.position.y = -10; });
+            }
+            fireflies(25, '#ffffff');
+        },
+        galaxy3d(th) {
+            const N = 9000, pos = new Float32Array(N * 3), col = new Float32Array(N * 3), c = new THREE.Color(), cIn = new THREE.Color(th.neb[2]), cOut = new THREE.Color(th.neb[1]);
+            for (let i = 0; i < N; i++) {
+                const r = Math.pow(Math.random(), 1.5) * 12, arm = (i % 3) / 3 * 6.283, sp = r * 0.45, j = () => (Math.random() - 0.5) * (0.4 + r * 0.12);
+                pos.set([Math.cos(arm + sp) * r + j(), j() * 0.4, Math.sin(arm + sp) * r + j()], i * 3);
+                c.copy(cIn).lerp(cOut, r / 12); col.set([c.r, c.g, c.b], i * 3);
+            }
+            const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(pos, 3)); geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+            const gal = new THREE.Points(geo, new THREE.PointsMaterial({ size: 0.14, map: dot, vertexColors: true, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+            gal.position.set(0, 6, -26); gal.rotation.x = 1.0; group.add(gal);
+            const core = new THREE.Sprite(new THREE.SpriteMaterial({ map: dot, color: 0xfff3d6, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false })); core.scale.set(5, 5, 1); gal.add(core);
+            updaters.push((dt) => { gal.rotation.z += dt * 0.06; });
+            shootingStars(3, th.p[0]);
+        },
         space(th) { shootingStars(6, th.p[0]); twinkle(th); },
         meds() { }
     };
