@@ -6,6 +6,7 @@
 - Automation set up: GitHub build -> APK to PC folder -> watcher installs + launches on the phone.
 
 ## Now
+- 2026-10-18 evening (later): builds 58-60 = M-061..M-064 (settings labels fit, help tile 📖, glint on icons, full-width title with settings/exit at bottom corners, no panel behind main menu, stacked main buttons, low-vision fits, floor fades). Build 60 installed 19:03. HANDOFF: next session reads CLAUDE.md, STATE.md, CHANGES.md (last rows M-057..M-064 all ⏳ waiting for owner test), continues build->deliver->install loop.
 - 2026-10-18 evening: builds 49-52 installed (M-046..M-051): appointment wizard 7 steps, styled dialogs, 3D opening 6.6 s + big title, clean home + 7-step medicine wizard (medwiz.js), Done buttons. Owner idea for later (not started, needs his go): separate calm app "הפרות של אורלי" (only calm mode: many 3D backgrounds, sounds, nature, recommendations).
 - 2026-10-18 evening: M-057..M-060 (opening fix + credit, in-app updates via Updater.java + release latest, menu frame glint, Help tile). Updates need one-time "allow installs from MedTime" on the phone.
 - 2026-10-18 afternoon: build 46 (M-042 appointment wizard, M-043 Audiowide title + ECG line + clean power exit icon) installed 17:31. Build 47 = M-044 calm mode (relax.js: 5 Three.js worlds, synthesized bowls/Om + nature loops, breathing guide, sleep timer) + M-045 medical look (Rubik font everywhere, medical add-reminder button). Open ideas offered to owner: share appointment to WhatsApp, 'every two days' / 'once a month'.
