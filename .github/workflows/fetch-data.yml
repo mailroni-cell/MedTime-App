@@ -1,0 +1,26 @@
+name: Fetch open data (streets, cities, clinics)
+
+# Runs when tools/fetch_data.py changes; saves results under data-cache/ and commits them.
+on:
+  push:
+    branches: [main]
+    paths: ['tools/fetch_data.py']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch
+        run: python3 tools/fetch_data.py || true
+      - name: Commit results
+        run: |
+          git config user.name "medtime-bot"
+          git config user.email "medtime-bot@users.noreply.github.com"
+          git add data-cache || true
+          git commit -m "data: fetched open data [skip ci]" || echo "nothing to commit"
+          git push || true
