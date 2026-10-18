@@ -6,7 +6,7 @@
 - Automation set up: GitHub build -> APK to PC folder -> watcher installs + launches on the phone.
 
 ## HANDOFF (2026-10-18 night, end of session) - read this first
-- Latest: build 78 (run 78) = M-067..M-074, all ⏳ waiting for owner test. Last installed on the phone: build 77; build 78 copied to PC.
+- Latest: build 78 (run 78) = M-067..M-074, all ⏳ waiting for owner test. Build 78 installed on the phone 20:30.
 - Recent: 👓 low-vision button on main screen (neon + halo when on), low-vision note fits screen, handwritten credit "פיתוח ועיצוב: רוני שניידר" / "Designed & developed by Roni Schneider" (SVG paths, scratchpad shaping with uharfbuzz), calm mode: 10 3D worlds, light bottom bar (Display/Sound/Timer/↺ Last mode/🔓 Lock), opens quiet with nothing pre-chosen, real nature recordings (M-072, from Wikimedia Commons by workflow fetch-sounds.yml + tools/sounds_pick.json; credits in Help "🎧"), seamless cross-fading sound player (ambPlayer in relax.js).
 - Owner said "perfect" on real sounds. Fire / underwater / space / synth still synthesized (no good free recording found).
 - Delivery loop: push main -> wait release latest build-info.txt has the SHA -> curl APK to /mnt/project-files/medtime-builds/ -> device_commit_files to C:\Users\Roni\Downloads\MedTime\MedTime-latest.apk (force) -> check size with device_list_dir (first copy is often the OLD file, recommit) -> stage install_log.txt, hash must match md5.
