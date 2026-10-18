@@ -110,7 +110,13 @@
                 'لكي تصل التذكيرات دائمًا: لا توقف التطبيق قسرًا من إعدادات الهاتف، ووافق على "بلا قيود للبطارية". زر الخروج يغلق الشاشة فقط والتذكيرات تستمر.',
                 'Ca mementourile să vină mereu: nu opriți forțat aplicația din setări și acceptați „fără restricții de baterie”. Butonul de ieșire închide doar ecranul.',
                 'Pour que les rappels arrivent toujours : ne forcez pas l\'arrêt de l\'appli et acceptez « batterie sans restriction ». Le bouton quitter ferme seulement l\'écran.',
-                'So reminders always arrive: don\'t force-stop the app in phone settings, and allow "no battery restrictions". The exit button only closes the screen; reminders go on.']]
+                'So reminders always arrive: don\'t force-stop the app in phone settings, and allow "no battery restrictions". The exit button only closes the screen; reminders go on.']],
+        ['🎧', ['צלילי הטבע', 'أصوات الطبيعة', 'Sunetele naturii', 'Sons de la nature', 'Nature sounds'],
+            ['במצב רוגע יש הקלטות טבע אמיתיות מ־Wikimedia Commons, ברישיון חופשי. תודה למקליטים: גשם: Zuvji (CC BY-SA 4.0) · ים: Luftrum (CC BY 3.0) · יער: Matutinho (CC BY-SA 4.0) · לילה: Glaneur de sons (CC BY 3.0) · סערה: Serg Childed (CC BY-SA 4.0) · נחל: Extemporalist (CC0) · רוח: Robert EA Harvey (CC BY-SA 4.0).',
+                'في وضع الهدوء تسجيلات طبيعة حقيقية من Wikimedia Commons برخصة حرة. شكرًا للمسجلين: Rain: Zuvji (CC BY-SA 4.0) · Sea: Luftrum (CC BY 3.0) · Forest: Matutinho (CC BY-SA 4.0) · Night: Glaneur de sons (CC BY 3.0) · Storm: Serg Childed (CC BY-SA 4.0) · Stream: Extemporalist (CC0) · Wind: Robert EA Harvey (CC BY-SA 4.0).',
+                'Modul relaxare folosește înregistrări reale din Wikimedia Commons, cu licență liberă. Mulțumiri: Rain: Zuvji (CC BY-SA 4.0) · Sea: Luftrum (CC BY 3.0) · Forest: Matutinho (CC BY-SA 4.0) · Night: Glaneur de sons (CC BY 3.0) · Storm: Serg Childed (CC BY-SA 4.0) · Stream: Extemporalist (CC0) · Wind: Robert EA Harvey (CC BY-SA 4.0).',
+                'Le mode détente utilise de vrais enregistrements de Wikimedia Commons, sous licence libre. Merci à : Rain: Zuvji (CC BY-SA 4.0) · Sea: Luftrum (CC BY 3.0) · Forest: Matutinho (CC BY-SA 4.0) · Night: Glaneur de sons (CC BY 3.0) · Storm: Serg Childed (CC BY-SA 4.0) · Stream: Extemporalist (CC0) · Wind: Robert EA Harvey (CC BY-SA 4.0).',
+                'Calm mode uses real nature recordings from Wikimedia Commons under free licenses. Thanks to: Rain: Zuvji (CC BY-SA 4.0) · Sea: Luftrum (CC BY 3.0) · Forest: Matutinho (CC BY-SA 4.0) · Night: Glaneur de sons (CC BY 3.0) · Storm: Serg Childed (CC BY-SA 4.0) · Stream: Extemporalist (CC0) · Wind: Robert EA Harvey (CC BY-SA 4.0).']],
     ];
 
     // ---------------- build the two tiles ----------------
