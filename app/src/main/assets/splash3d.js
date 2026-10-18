@@ -14,7 +14,7 @@
     sp.classList.add('sp-3d');
 
     var W = innerWidth, H = innerHeight;
-    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.75));
+    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5)); // M-085: fewer pixels = smooth
     renderer.setSize(W, H, false);
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -53,8 +53,23 @@
         var a = Math.random() * Math.PI * 2, r = 1.5 + Math.random() * 18;
         sData.push({ x: Math.cos(a) * r, y: Math.sin(a) * r, z: -Math.random() * 200, v: 60 + Math.random() * 80 });
     }
+    // M-085: every streak has its own colour (cyan, violet, pink, gold), bright head, faded tail
+    var sCol = new Float32Array(NS * 6), PAL = [0x67e8f9, 0xa78bfa, 0xf472b6, 0xfde047, 0x34d399, 0x60a5fa], cc = new THREE.Color();
+    for (var i2 = 0; i2 < NS; i2++) {
+        cc.setHex(PAL[i2 % PAL.length]);
+        sCol.set([cc.r, cc.g, cc.b, cc.r * 0.15, cc.g * 0.15, cc.b * 0.15], i2 * 6);
+    }
     var sGeo = new THREE.BufferGeometry(); sGeo.setAttribute('position', new THREE.BufferAttribute(sPos, 3));
-    var sMat = new THREE.LineBasicMaterial({ color: 0xbfe9ff, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false });
+    sGeo.setAttribute('color', new THREE.BufferAttribute(sCol, 3));
+    var sMat = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
+
+    // M-085: colourful nebula clouds far behind, slowly drifting and breathing
+    var neb = [], NEB = [[0x7c3aed, -7, 5], [0x06b6d4, 7, -4], [0xdb2777, -5, -6], [0x2563eb, 6, 6], [0xf59e0b, 0, -1]];
+    NEB.forEach(function (n, j) {
+        var m = new THREE.Sprite(new THREE.SpriteMaterial({ map: glow, color: n[0], transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
+        m.position.set(n[1] * 2.2, n[2] * 2.2, -60); m.scale.set(46, 46, 1); scene.add(m);
+        neb.push({ m: m, x: n[1] * 2.2, y: n[2] * 2.2, ph: j * 1.3 });
+    });
     var streaks = new THREE.LineSegments(sGeo, sMat); scene.add(streaks);
 
     // ---- glossy capsule (two halves + shiny band) ----
@@ -85,9 +100,10 @@
     for (var b = 0; b < NB; b++) {
         var y = (b / (NB - 1) - 0.5) * 4.2, ang = b * 0.55;
         [0, Math.PI].forEach(function (off, s) {
-            var m = new THREE.Mesh(beadG, s ? mB : mA);
+            var hc = new THREE.Color().setHSL(((b / NB) * 0.8 + s * 0.5) % 1, 0.9, 0.62); // M-085: rainbow helix
+            var m = new THREE.Mesh(beadG, new THREE.MeshBasicMaterial({ color: hc, toneMapped: false }));
             m.position.set(Math.cos(ang + off) * 1.25, y, Math.sin(ang + off) * 1.25);
-            var gs = new THREE.Sprite(new THREE.SpriteMaterial({ map: glow, color: s ? 0xe879f9 : 0x67e8f9, transparent: true, opacity: 0.45, blending: THREE.AdditiveBlending, depthWrite: false }));
+            var gs = new THREE.Sprite(new THREE.SpriteMaterial({ map: glow, color: hc, transparent: true, opacity: 0.5, toneMapped: false, blending: THREE.AdditiveBlending, depthWrite: false }));
             gs.scale.set(0.38, 0.38, 1); m.add(gs);
             helix.add(m); beads.push({ m: m, d: b / NB });
         });
@@ -100,15 +116,34 @@
     scene.add(helix);
 
     // ---- shock-wave ring + spark burst ----
-    var ring = new THREE.Mesh(new THREE.RingGeometry(0.9, 1.05, 64), new THREE.MeshBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false }));
-    scene.add(ring);
+    // M-085: three coloured shock-waves one after another
+    var rings = [0x22d3ee, 0xe879f9, 0xfacc15].map(function (c) {
+        var r0 = new THREE.Mesh(new THREE.RingGeometry(0.9, 1.08, 64), new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: 0, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
+        scene.add(r0); return r0;
+    });
+    // M-085: light rays turning behind the capsule after the burst
+    function rayTex() {
+        var c = document.createElement('canvas'); c.width = c.height = 256; var g = c.getContext('2d');
+        g.translate(128, 128);
+        for (var k = 0; k < 18; k++) {
+            g.rotate(Math.PI * 2 / 18);
+            var gr = g.createLinearGradient(0, 0, 0, -128); gr.addColorStop(0, 'rgba(255,255,255,0.9)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+            g.fillStyle = gr; g.beginPath(); g.moveTo(0, 0); g.lineTo(-7, -128); g.lineTo(7, -128); g.closePath(); g.fill();
+        }
+        return new THREE.CanvasTexture(c);
+    }
+    var rays = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: rayTex(), color: 0xa5f3fc, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
+    rays.scale.set(9, 9, 1); scene.add(rays);
     var NP = 260, pPos = new Float32Array(NP * 3), pVel = [];
     for (var q = 0; q < NP; q++) {
         var v = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize().multiplyScalar(2 + Math.random() * 6);
         pVel.push(v);
     }
+    var pCol = new Float32Array(NP * 3);
+    for (var q2 = 0; q2 < NP; q2++) { cc.setHSL(Math.random(), 0.95, 0.65); pCol.set([cc.r, cc.g, cc.b], q2 * 3); } // M-085: rainbow sparks
     var pGeo = new THREE.BufferGeometry(); pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-    var pMat = new THREE.PointsMaterial({ map: glow, size: 0.28, color: 0xfde68a, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false });
+    pGeo.setAttribute('color', new THREE.BufferAttribute(pCol, 3));
+    var pMat = new THREE.PointsMaterial({ map: glow, size: 0.32, vertexColors: true, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
     var sparks = new THREE.Points(pGeo, pMat); scene.add(sparks);
 
     // ---- bloom when available ----
@@ -117,7 +152,8 @@
         if (THREE.EffectComposer && THREE.UnrealBloomPass) {
             composer = new THREE.EffectComposer(renderer);
             composer.addPass(new THREE.RenderPass(scene, camera));
-            composer.addPass(new THREE.UnrealBloomPass(new THREE.Vector2(W, H), 0.55, 0.4, 0.6));
+            if (composer.setPixelRatio) composer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.25)); // M-085: lighter glow pass
+            composer.addPass(new THREE.UnrealBloomPass(new THREE.Vector2(W / 2, H / 2), 0.55, 0.4, 0.62));
         }
     } catch (e) { composer = null; }
 
@@ -136,8 +172,10 @@
         if (!t0) { if (!window.__spGo) return; t0 = now; last = now; window.__sp3d = true; window.__spGo(); }
         var dt = Math.min(0.1, (now - last) / 1000); last = now; T += dt;
         var t = T;
-        if (dt > 0.045) slow++;
-        if (slow > 25 && composer) composer = null; // weak phone: drop bloom
+        // M-085: decide about the glow only once, in the first 0.5 s (before anything is on screen),
+        // so the look never jumps in the middle of the show
+        if (t > 0.15 && t < 0.5 && dt > 0.034) slow++;
+        if (slow > 4 && composer && t < 0.6) composer = null; // weak phone: no glow
 
         // warp: fast at first, then slows and fades
         var warp = t < 1.6 ? 1 : Math.max(0, 1 - (t - 1.6) / 1.4);
@@ -146,10 +184,16 @@
             s.z += s.v * dt * (0.15 + 0.85 * warp);
             if (s.z > 12) s.z -= 200;
             var len = 0.4 + 6 * warp;
-            sPos.set([s.x, s.y, s.z, s.x, s.y, s.z - len], i * 6);
+            var o = i * 6; // M-085: no new arrays each frame (no garbage = no hiccups)
+            sPos[o] = s.x; sPos[o + 1] = s.y; sPos[o + 2] = s.z; sPos[o + 3] = s.x; sPos[o + 4] = s.y; sPos[o + 5] = s.z - len;
         }
         sGeo.attributes.position.needsUpdate = true;
         sMat.opacity = 0.25 + 0.65 * warp;
+        for (var n = 0; n < neb.length; n++) {
+            var nb = neb[n];
+            nb.m.material.opacity = (0.22 + 0.08 * Math.sin(t * 0.9 + nb.ph)) * ease(t / 1.2);
+            nb.m.position.x = nb.x + Math.sin(t * 0.25 + nb.ph) * 3; nb.m.position.y = nb.y + Math.cos(t * 0.2 + nb.ph) * 2;
+        }
 
         // capsule: flies in from far (0.5-2.3 s), settles at home, keeps turning
         var k = back((t - 0.5) / 1.8);
@@ -168,13 +212,22 @@
 
         // burst at 2.9 s
         var bt = t - 2.9;
-        if (bt > 0 && bt < 1.6) {
-            ring.position.copy(home); ring.lookAt(camera.position);
-            ring.scale.setScalar(1 + bt * 4); ring.material.opacity = 0.45 * (1 - bt / 1.6);
-            pMat.opacity = 1 - bt / 1.6;
-            for (var p = 0; p < NP; p++) { var v = pVel[p]; pPos.set([home.x + v.x * bt, home.y + v.y * bt, v.z * bt], p * 3); }
+        for (var ri = 0; ri < 3; ri++) {
+            var rt = bt - ri * 0.22, rg = rings[ri];
+            if (rt > 0 && rt < 1.6) { rg.position.copy(home); rg.lookAt(camera.position); rg.scale.setScalar(1 + rt * (4 + ri)); rg.material.opacity = 0.4 * (1 - rt / 1.6); }
+            else rg.material.opacity = 0;
+        }
+        if (bt > 0 && bt < 1.8) {
+            var bk = bt / 1.8;
+            pMat.opacity = 1 - bk;
+            for (var p = 0; p < NP; p++) { var v = pVel[p], po = p * 3, dr = bt * (1 - bk * 0.35); pPos[po] = home.x + v.x * dr; pPos[po + 1] = home.y + v.y * dr - bt * bt * 0.4; pPos[po + 2] = v.z * dr; }
             pGeo.attributes.position.needsUpdate = true;
-        } else { ring.material.opacity = 0; pMat.opacity = 0; }
+        } else pMat.opacity = 0;
+        // rays: appear with the burst, keep turning softly, change colour slowly
+        rays.position.set(home.x, home.y, cap.position.z - 1.5);
+        rays.rotation.z = t * 0.35;
+        rays.material.opacity = bt > 0 ? Math.min(0.22, bt * 0.5) * (1 - ease((t - 7.4) / 0.8)) : 0;
+        rays.material.color.setHSL((0.5 + t * 0.06) % 1, 0.8, 0.7);
 
         key.position.x = Math.sin(t) * 6; rim.position.y = Math.cos(t * 0.8) * 4;
         var fin = ease((t - 6.6) / 1.4); // M-057: finale: capsule and helix rush toward the viewer

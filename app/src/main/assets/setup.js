@@ -211,6 +211,7 @@
         if (document.getElementById('splash')) return false;
         const w = document.getElementById('welcome');
         if (w && w.classList.contains('show')) return false;
+        if (document.querySelector('.ob-bg')) return false; // M-086: welcome wizard first
         return !document.querySelector('.mt-dlg-bg');
     }
     let tries = 0;
