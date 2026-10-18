@@ -31,6 +31,7 @@
         lBefore: ['🔔 להזכיר לפני התור', '🔔 التذكير قبل الموعد', '🔔 Amintește-mi înainte cu', '🔔 Me rappeler avant', '🔔 Remind me before'],
         lTravel: ['🚗 זמן נסיעה: תזכורת "הגיע הזמן לצאת"', '🚗 مدة الطريق: تذكير "حان وقت الخروج"', '🚗 Timp de drum: memento „e timpul să pleci”', '🚗 Temps de trajet : rappel « il est temps de partir »', '🚗 Travel time: "time to leave" reminder'],
         phNotes: ['📝 הערות (לדוגמה: לבוא בצום)', '📝 ملاحظات (مثال: الحضور صائمًا)', '📝 Note (ex.: pe nemâncate)', '📝 Notes (ex. : venir à jeun)', '📝 Notes (e.g. come fasting)'],
+        savedOk: ['✅ התור נשמר', '✅ تم حفظ الموعد', '✅ Programare salvată', '✅ Rendez-vous enregistré', '✅ Appointment saved'],
         save: ['💾 שמור תור', '💾 حفظ الموعد', '💾 Salvează', '💾 Enregistrer', '💾 Save appointment'],
         del: ['🗑️ מחק תור', '🗑️ حذف الموعد', '🗑️ Șterge', '🗑️ Supprimer', '🗑️ Delete'],
         confirmDel: ['למחוק את התור?', 'حذف الموعد؟', 'Ștergeți programarea?', 'Supprimer ce rendez-vous ?', 'Delete this appointment?'],
@@ -309,9 +310,16 @@
         rememberContact(form);
         save(list);
         closeApptForm();
+        toast(tt('savedOk'));
         if (typeof playChime === 'function') playChime();
         vib([20, 40, 20]);
     };
+    function toast(msg) {
+        const d = document.createElement('div');
+        d.className = 'mt-toast'; d.textContent = msg;
+        document.body.appendChild(d);
+        setTimeout(() => d.remove(), 2700);
+    }
     window.apptDelete = function (idx) {
         const i = typeof idx === 'number' ? idx : editIdx;
         if (i < 0 || !confirm(tt('confirmDel'))) return;

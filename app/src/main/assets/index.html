@@ -1847,6 +1847,23 @@
         html.fit3 h1 { font-size: 1.3rem !important; }
         html.fit3 .nav-row > button { padding-top: 5px !important; padding-bottom: 5px !important; }
         html.fit3 .appt-btn .ab-ico { font-size: 1.3rem; }
+
+        /* ================= M-040: appointment form fixes ================= */
+        /* settings pages had overflow hidden (M-015): the form could not scroll to Save, the time sheet opened under it */
+        .appt-page, .appt-form-page, .list-page { overflow-y: auto !important; -webkit-overflow-scrolling: touch; height: 100vh; height: 100dvh; }
+        .sheet-bg.raise { z-index: 70 !important; }
+        .af-foot {
+            position: sticky; bottom: 0; width: 100%; max-width: 560px; z-index: 5; padding: 12px 0 calc(12px + env(safe-area-inset-bottom));
+            background: linear-gradient(180deg, rgba(7, 11, 26, 0), rgba(7, 11, 26, 0.95) 35%);
+        }
+        html.kb-open .af-foot { position: static; }
+        .af-foot .af-save { width: 100%; margin: 0; }
+        .mt-toast {
+            position: fixed; left: 50%; bottom: 14vh; transform: translateX(-50%); z-index: 9000; padding: 16px 26px; border-radius: 999px;
+            font-size: 1.3rem; font-weight: 900; color: #fff; background: linear-gradient(180deg, #10b981, #047857);
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.9); animation: toastIn 2.6s ease both; pointer-events: none; white-space: nowrap;
+        }
+        @keyframes toastIn { 0% { opacity: 0; transform: translate(-50%, 30px) scale(0.8); } 12%, 80% { opacity: 1; transform: translate(-50%, 0) scale(1); } 100% { opacity: 0; transform: translate(-50%, -10px); } }
     </style>
 </head>
 <body>
@@ -2018,7 +2035,7 @@
         <div class="af-sec"><div class="af-lbl" data-tx="lBefore"></div><div id="af-before" class="af-chips"></div></div>
         <div class="af-sec"><div class="af-lbl" data-tx="lTravel"></div><div id="af-travel" class="af-chips"></div></div>
         <div class="af-sec"><div class="af-wrap"><input type="text" id="af-notes" class="af-in" data-txph="phNotes" autocomplete="off"></div></div>
-        <button type="button" class="btn-add af-save" onclick="apptSave()" data-tx="save"></button>
+        <div class="af-foot"><button type="button" class="btn-add af-save" onclick="apptSave()" data-tx="save"></button></div>
         <button type="button" id="af-delete" class="af-del" onclick="apptDelete()" data-tx="del"></button>
     </div>
 
@@ -3020,7 +3037,7 @@
             timePickCb = typeof cb === 'function' ? cb : null;
             document.getElementById('day-row').style.display = timePickCb ? 'none' : '';
             if (!timePickCb) renderDayRow();
-            document.getElementById('time-sheet').style.zIndex = raise ? '70' : '';
+            document.getElementById('time-sheet').classList.toggle('raise', !!raise);
             const cur = typeof initial === 'string' ? initial : document.getElementById('med-time').value;
             let h, m;
             if (cur) { [h, m] = cur.split(':').map(Number); }
