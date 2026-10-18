@@ -1517,6 +1517,10 @@
         @keyframes lbBump { 0% { transform: scale(1); } 35% { transform: scale(1.12); box-shadow: 0 0 30px 10px rgba(168, 85, 247, 1); } 100% { transform: scale(1); } }
         .list-page { z-index: 45 !important; background: radial-gradient(ellipse at 50% 0%, rgba(76, 29, 149, 0.55), rgba(7, 11, 26, 0.94) 70%) !important; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
         .list-page .med-list { width: 100%; margin: 0; padding: 0; }
+
+        /* ================= M-024: suggestions open above the field, keyboard covers below ================= */
+        .suggest { top: auto !important; bottom: calc(100% + 8px); flex-direction: column-reverse !important; overflow-y: auto; }
+        .dose-units { top: auto !important; bottom: calc(100% + 8px); }
     </style>
 </head>
 <body>
@@ -2313,6 +2317,8 @@
                     });
                     box.appendChild(b);
                 });
+                // M-024: open above the field (the keyboard covers the area below), best match nearest the field
+                box.style.maxHeight = Math.max(120, inp.getBoundingClientRect().top - 64) + 'px';
                 box.classList.add('open');
             };
             inp.addEventListener('input', show);
