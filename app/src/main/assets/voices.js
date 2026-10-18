@@ -13,6 +13,10 @@
         note: ['לחצו ▶ כדי לשמוע, ועל השם כדי לבחור', 'اضغط ▶ للاستماع وعلى الاسم للاختيار', 'Apăsați ▶ ca să ascultați și numele ca să alegeți', '▶ pour écouter, le nom pour choisir', 'Tap ▶ to listen, the name to choose'],
         def: ['ברירת המחדל של הטלפון', 'الافتراضي في الهاتف', 'Implicită a telefonului', 'Par défaut du téléphone', 'Phone default'],
         voice: ['קול', 'صوت', 'Voce', 'Voix', 'Voice'],
+        // M-082b: every voice gets a friendly name (unisex names: Android does not say if a voice is a man or a woman)
+        names: [['נועם', 'טל', 'שי', 'עדי', 'אורי', 'יובל', 'גל', 'עומר'], ['نور', 'سلام', 'رضا', 'إيمان', 'وفاء', 'جهاد', 'صباح', 'هدى'],
+            ['Alex', 'Andrei', 'Ioana', 'Dani', 'Cristi', 'Vali', 'Sasha', 'Mihai'], ['Camille', 'Dominique', 'Claude', 'Lou', 'Sacha', 'Maxime', 'Alix', 'Eden'],
+            ['Alex', 'Sam', 'Jordan', 'Robin', 'Taylor', 'Jamie', 'Casey', 'Riley']],
         net: ['🌐 צריך אינטרנט', '🌐 يحتاج إنترنت', '🌐 necesită internet', '🌐 Internet requis', '🌐 needs internet'],
         loading: ['טוען קולות…', 'جارٍ التحميل…', 'Se încarcă…', 'Chargement…', 'Loading voices…'],
         sample: ['שלום, הגיע הזמן לקחת אקמול, כדור אחד.', 'مرحبًا، حان وقت تناول الدواء، حبة واحدة.', 'Bună, este timpul să luați medicamentul, o pastilă.', 'Bonjour, c\'est l\'heure de prendre votre médicament, un comprimé.', 'Hello, it is time to take your medicine, one tablet.']
@@ -41,8 +45,10 @@
         box.querySelector('.vc-note').textContent = tx('note');
         const list = box.querySelector('.vc-list');
         if (!data) { list.textContent = tx('loading'); return; }
-        const items = [{ name: '', label: tx('def') }].concat((data.voices || []).filter(v => v.installed !== false)
-            .map((v, n) => ({ name: v.name, label: tx('voice') + ' ' + (n + 1) + (v.country ? ' (' + v.country + ')' : ''), sub: v.local ? '' : tx('net') })));
+        // only voices that are on the phone and work without internet
+        const nm = T.names[li()];
+        const items = [{ name: '', label: tx('def') }].concat((data.voices || []).filter(v => v.installed !== false && v.local)
+            .map((v, n) => ({ name: v.name, label: '🗣️ ' + (nm[n] || tx('voice') + ' ' + (n + 1)) })));
         items.forEach(it => {
             const r = document.createElement('div'); r.className = 'vc-row';
             r.innerHTML = '<button type="button" class="vc-pick"></button><button type="button" class="vc-play" aria-label="play">▶</button>';
