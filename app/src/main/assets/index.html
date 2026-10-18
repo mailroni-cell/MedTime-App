@@ -1451,6 +1451,38 @@
             .type-btn .ico { font-size: 1.8rem !important; }
             .hero-space { height: 9vh !important; min-height: 60px !important; }
         }
+
+        /* ================= M-022: previous medicines as chips, glowing plus ================= */
+        #item-rows .item-head, #item-rows.multi .item-head { display: none !important; }
+        .it-chip { display: none; }
+        .item-row.collapsed { padding: 0 !important; }
+        .item-row.collapsed > :not(.it-chip) { display: none !important; }
+        .item-row.collapsed .it-chip {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            padding: 8px 14px; border-radius: 999px; color: #fff; font-size: 1.1rem; font-weight: 700;
+            background: linear-gradient(180deg, rgba(34, 211, 238, 0.35), rgba(14, 116, 144, 0.35));
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 14px 2px rgba(34, 211, 238, 0.6), 0 0 28px 6px rgba(168, 85, 247, 0.3);
+            text-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+            animation: chipIn 0.35s cubic-bezier(.2, .8, .2, 1);
+        }
+        #item-rows { display: flex !important; flex-direction: row !important; flex-wrap: wrap; justify-content: center; }
+        #item-rows > .item-row { flex: 1 1 100%; min-width: 0; }
+        #item-rows > .item-row.collapsed { flex: 0 1 auto; }
+        .item-row.collapsed .it-chip { padding: 6px 10px; font-size: 1rem; }
+        .chip-ico { font-size: 1.4rem; }
+        .chip-x { background: rgba(0, 0, 0, 0.35) !important; border: none !important; color: #fff; border-radius: 50%; width: 30px; height: 30px; padding: 0; font-size: 0.9rem; }
+        @keyframes chipIn { from { transform: scale(0.6); opacity: 0; } to { transform: none; opacity: 1; } }
+        button.btn-add-item { display: flex !important; align-items: center; justify-content: center; gap: 12px; padding: 8px 12px !important; }
+        .plus-orb {
+            display: inline-flex; align-items: center; justify-content: center; flex: none;
+            width: 40px; height: 40px; border-radius: 50%;
+            font-size: 2rem; font-weight: 900; line-height: 1; color: #fff;
+            background: radial-gradient(circle at 35% 30%, #a5f3fc, #06b6d4 55%, #7c3aed);
+            box-shadow: 0 0 12px 3px rgba(34, 211, 238, 0.9), 0 0 30px 8px rgba(168, 85, 247, 0.55), inset 0 2px 3px rgba(255, 255, 255, 0.6);
+            text-shadow: none !important;
+            animation: orbPulse 2.4s ease-in-out infinite;
+        }
+        @keyframes orbPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
     </style>
 </head>
 <body>
@@ -1469,7 +1501,7 @@
     <div class="card">
         <form id="med-form" class="form-group">
             <div id="item-rows" class="form-group"></div>
-            <button type="button" class="btn-add-item" onclick="addItemRow()" data-i18n="addMore"></button>
+            <button type="button" class="btn-add-item" onclick="addMoreItem()"><span class="plus-orb">+</span><span data-i18n-strip="addMore"></span></button>
             <input type="hidden" id="med-time">
             <button type="button" id="time-btn" class="time-btn" onclick="openTimePicker()"></button>
             <button type="submit" class="btn-add" data-i18n="addReminder"></button>
@@ -2062,7 +2094,10 @@
                     `<button type="button" class="type-btn${ty === 'pill' ? ' sel' : ''}" data-type="${ty}">` +
                     `<span class="ico">${TYPE_ICON[ty]}</span><span data-i18n="type_${ty}">${t('type_' + ty)}</span></button>`).join('')}</div>` +
                 `<div class="name-wrap"><input type="text" class="it-name" autocomplete="off" data-i18n-ph="nameLabel" placeholder="${t('nameLabel')}"><div class="suggest"></div></div>` +
-                `<input type="text" class="it-dose" data-i18n-ph="doseLabel" placeholder="${t('doseLabel')}">`;
+                `<input type="text" class="it-dose" data-i18n-ph="doseLabel" placeholder="${t('doseLabel')}">` +
+                `<div class="it-chip"><span class="chip-ico"></span><span class="chip-txt"></span><button type="button" class="chip-x">✕</button></div>`;
+            row.querySelector('.it-chip').onclick = e => { if (!e.target.closest('.chip-x')) expandRow(row); };
+            row.querySelector('.chip-x').onclick = () => { row.remove(); if (!itemRows.querySelector('.item-row:not(.collapsed)')) addItemRow(); numberRows(); };
             row.querySelectorAll('.type-btn').forEach(b => {
                 b.onclick = () => {
                     row.querySelectorAll('.type-btn').forEach(x => x.classList.remove('sel'));
@@ -2078,6 +2113,35 @@
             };
             attachSuggest(row);
             itemRows.appendChild(row);
+            numberRows();
+        }
+
+        // M-022: "another medicine" keeps the previous one as a small chip and clears the fields
+        function collapseRow(row) {
+            const name = row.querySelector('.it-name').value.trim();
+            const dose = row.querySelector('.it-dose').value.trim();
+            row.querySelector('.chip-ico').textContent = TYPE_ICON[row.dataset.type] || '💊';
+            row.querySelector('.chip-txt').textContent = name + (dose ? ' · ' + dose : '');
+            row.classList.add('collapsed');
+        }
+        function openRow() { return itemRows.querySelector('.item-row:not(.collapsed)'); }
+        function addMoreItem() {
+            const cur = openRow();
+            if (cur) {
+                const inp = cur.querySelector('.it-name');
+                if (!inp.value.trim()) { inp.focus(); if (navigator.vibrate) navigator.vibrate([30, 40, 30]); return; }
+                collapseRow(cur);
+            }
+            addItemRow();
+            if (navigator.vibrate) navigator.vibrate(15);
+            const n = openRow(); if (n) n.querySelector('.it-name').focus();
+        }
+        function expandRow(row) {
+            const cur = openRow();
+            if (cur && cur !== row) {
+                if (cur.querySelector('.it-name').value.trim()) collapseRow(cur); else cur.remove();
+            }
+            row.classList.remove('collapsed');
             numberRows();
         }
 
