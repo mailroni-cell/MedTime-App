@@ -18,6 +18,8 @@ public class Sounds {
 
     static final String KEY_SOUND = "sound_uri"; // "" = phone's default alarm, "none" = silent
     static final String KEY_LOW_VISION = "low_vision";
+    static final String KEY_ALERT_VOL = "alert_volume"; // M-032: 0-100, share of the phone's alarm volume
+    static final String KEY_VOICE_VOL = "voice_volume";
 
     private static Ringtone preview;
     private static final Handler handler = new Handler(Looper.getMainLooper());
@@ -71,6 +73,21 @@ public class Sounds {
         ctx.getSharedPreferences(Reminders.PREFS, Context.MODE_PRIVATE).edit().putBoolean(KEY_LOW_VISION, on).apply();
     }
 
+    /** M-032: alert sound / voice volume chosen in settings, 0..1 (default full). */
+    static float alertVolume(Context ctx) {
+        return ctx.getSharedPreferences(Reminders.PREFS, Context.MODE_PRIVATE).getInt(KEY_ALERT_VOL, 100) / 100f;
+    }
+
+    static float voiceVolume(Context ctx) {
+        return ctx.getSharedPreferences(Reminders.PREFS, Context.MODE_PRIVATE).getInt(KEY_VOICE_VOL, 100) / 100f;
+    }
+
+    static void setVolumes(Context ctx, int alert, int voice) {
+        ctx.getSharedPreferences(Reminders.PREFS, Context.MODE_PRIVATE).edit()
+                .putInt(KEY_ALERT_VOL, Math.max(0, Math.min(100, alert)))
+                .putInt(KEY_VOICE_VOL, Math.max(0, Math.min(100, voice))).apply();
+    }
+
     /** Ringtone for a uri ("" = default alarm), on the alarm volume. Null for "none". */
     static Ringtone ringtone(Context ctx, String uriStr) {
         if ("none".equals(uriStr)) return null;
@@ -82,7 +99,10 @@ public class Sounds {
                     .setUsage(AudioAttributes.USAGE_ALARM)
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                     .build());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) r.setLooping(false);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                r.setLooping(false);
+                r.setVolume(alertVolume(ctx));
+            }
         }
         return r;
     }

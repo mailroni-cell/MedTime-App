@@ -1594,9 +1594,191 @@
             filter: drop-shadow(0 0 8px rgba(248, 113, 113, 0.8));
         }
         .exit-btn:active { transform: scale(0.9); }
+
+        /* ---------- M-032: volume sliders ---------- */
+        .vol-row { padding: 12px 0 4px; }
+        .vol-row .vol-head { display: flex; justify-content: space-between; align-items: center; font-size: 1.1rem; margin-bottom: 8px; }
+        .vol-row .vol-val { font-weight: 700; color: #67e8f9; min-width: 3.2em; text-align: center; }
+        .vol-note { font-size: 0.85rem; opacity: 0.7; padding: 2px 0 10px; }
+        input.vol {
+            -webkit-appearance: none; appearance: none; width: 100%; height: 14px; border-radius: 999px; border: none; padding: 0;
+            background: linear-gradient(90deg, rgba(var(--gA), 1) 0%, rgba(var(--gB), 1) var(--p, 50%), rgba(148, 163, 184, 0.25) var(--p, 50%));
+            box-shadow: 0 0 12px rgba(var(--gA), 0.45), inset 0 1px 3px rgba(0, 0, 0, 0.6);
+        }
+        input.vol::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 34px; height: 34px; border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #fff, #a5f3fc 40%, #0891b2);
+            box-shadow: 0 0 16px rgba(var(--gA), 0.9), 0 3px 6px rgba(0, 0, 0, 0.6);
+        }
+
+        /* ---------- M-032: opening animation (every launch) ---------- */
+        #splash {
+            position: fixed; inset: 0; z-index: 10000; overflow: hidden; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; color: #fff; cursor: pointer;
+            background: radial-gradient(ellipse at 50% 42%, #1e1b4b 0%, #0b1026 45%, #02030a 100%);
+            transition: opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease;
+        }
+        #splash, #welcome { position: fixed !important; }
+        #splash { z-index: 10000 !important; }
+        #welcome { z-index: 9999 !important; }
+        #splash.out { opacity: 0; transform: scale(1.35); filter: blur(6px); pointer-events: none; }
+        #splash .sp-star { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #fff;
+            box-shadow: 0 0 6px #fff; animation: spTwinkle 1.6s ease-in-out infinite alternate; opacity: 0; }
+        @keyframes spTwinkle { from { opacity: 0.1; transform: scale(0.6); } to { opacity: 1; transform: scale(1.2); } }
+        #splash .sp-stage { position: relative; width: 44vmin; height: 44vmin; display: flex; align-items: center; justify-content: center; perspective: 600px; }
+        #splash .sp-ring { position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(103, 232, 249, 0.8);
+            box-shadow: 0 0 30px rgba(103, 232, 249, 0.6), inset 0 0 30px rgba(168, 85, 247, 0.5); opacity: 0;
+            animation: spRing 2.2s ease-out infinite; }
+        #splash .sp-ring.r2 { animation-delay: 0.7s; border-color: rgba(192, 132, 252, 0.8); }
+        #splash .sp-ring.r3 { animation-delay: 1.4s; }
+        @keyframes spRing { 0% { transform: scale(0.2); opacity: 0; } 25% { opacity: 1; } 100% { transform: scale(1.6); opacity: 0; } }
+        #splash .sp-cap { width: 15vmin; height: 36vmin; border-radius: 8vmin; position: relative; transform-style: preserve-3d;
+            animation: spCapIn 1.3s cubic-bezier(.2, 1.4, .4, 1) both, spCapSpin 3.2s linear 1.3s infinite;
+            filter: drop-shadow(0 0 22px rgba(56, 189, 248, 0.9)) drop-shadow(0 0 40px rgba(239, 68, 68, 0.6)); }
+        #splash .sp-cap::before, #splash .sp-cap::after { content: ""; position: absolute; left: 0; right: 0; height: 50%; }
+        #splash .sp-cap::before { top: 0; border-radius: 8vmin 8vmin 0 0;
+            background: linear-gradient(90deg, #7f1d1d, #ef4444 35%, #fecaca 50%, #ef4444 65%, #7f1d1d); }
+        #splash .sp-cap::after { bottom: 0; border-radius: 0 0 8vmin 8vmin;
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6 35%, #dbeafe 50%, #3b82f6 65%, #1e3a8a); }
+        @keyframes spCapIn { 0% { transform: scale(0) rotateZ(-540deg) rotateX(60deg); opacity: 0; } 100% { transform: scale(1) rotateZ(35deg) rotateX(0); opacity: 1; } }
+        @keyframes spCapSpin { from { transform: rotateZ(35deg) rotateY(0); } to { transform: rotateZ(35deg) rotateY(360deg); } }
+        #splash .sp-title { margin-top: 4vmin; font-size: clamp(2.6rem, 13vmin, 6rem); font-weight: 800; letter-spacing: 0.04em; direction: ltr; }
+        #splash .sp-title span { display: inline-block; opacity: 0;
+            background: linear-gradient(180deg, #fff, #67e8f9 55%, #c084fc); -webkit-background-clip: text; background-clip: text; color: transparent;
+            filter: drop-shadow(0 0 14px rgba(103, 232, 249, 0.85));
+            animation: spLetter 0.7s cubic-bezier(.2, 1.6, .4, 1) forwards; }
+        @keyframes spLetter { 0% { opacity: 0; transform: translateY(-60px) scale(2.2) rotateX(90deg); } 100% { opacity: 1; transform: none; } }
+        #splash .sp-tag { margin-top: 1.2vmin; font-size: clamp(1rem, 5vmin, 1.6rem); opacity: 0; color: #c7d2fe;
+            animation: spFade 0.8s ease 1.5s forwards; text-shadow: 0 0 12px rgba(129, 140, 248, 0.9); }
+        #splash .sp-credit { position: absolute; bottom: calc(7vh + env(safe-area-inset-bottom)); left: 0; right: 0; text-align: center;
+            font-size: clamp(1rem, 4.6vmin, 1.5rem); font-weight: 600; opacity: 0; padding: 0 16px;
+            background: linear-gradient(90deg, #fbbf24, #fff7ed 45%, #f472b6 55%, #fbbf24) 0 0 / 200% 100%;
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            animation: spFade 0.9s ease 1.9s forwards, spShine 2.4s linear 1.9s infinite; }
+        @keyframes spFade { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+        @keyframes spShine { to { background-position: -200% 0; } }
+
+        /* ---------- M-032: first launch: choose language ---------- */
+        #welcome {
+            position: fixed; inset: 0; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center;
+            gap: 2.4vh; padding: calc(16px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));
+            background: radial-gradient(ellipse at 50% 30%, #1e1b4b, #02030a 85%); color: #fff;
+            transition: opacity 0.5s ease;
+        }
+        #welcome.show { display: flex; animation: spFade 0.6s ease both; }
+        #welcome.out { opacity: 0; }
+        #welcome .wl-globe { font-size: 4.2rem; filter: drop-shadow(0 0 18px rgba(103, 232, 249, 0.9)); animation: wlSpin 6s linear infinite; }
+        @keyframes wlSpin { 0%, 100% { transform: rotateY(0) } 50% { transform: rotateY(180deg) } }
+        #welcome .wl-title { font-size: clamp(1.6rem, 7vmin, 2.4rem); font-weight: 800; text-align: center; min-height: 1.4em;
+            text-shadow: 0 0 16px rgba(103, 232, 249, 0.8); transition: opacity 0.35s; }
+        #welcome .wl-langs { display: grid; grid-template-columns: 1fr; gap: 1.6vh; width: min(100%, 420px); }
+        #welcome .wl-langs button {
+            display: flex; align-items: center; justify-content: center; gap: 14px; font-size: 1.5rem; font-weight: 700; color: #fff;
+            padding: 2vh 14px; border-radius: 22px; border: 2px solid rgba(103, 232, 249, 0.35);
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+            box-shadow: 0 5px 0 #020617, 0 0 18px rgba(var(--gA), 0.35); transition: transform 0.12s, box-shadow 0.2s;
+        }
+        #welcome .wl-langs button .flag { font-size: 1.9rem; }
+        #welcome .wl-langs button:active { transform: translateY(4px); box-shadow: 0 1px 0 #020617; }
+        #welcome .wl-langs button.sel { border-color: #67e8f9; background: linear-gradient(180deg, #0e7490, #0c4a6e);
+            box-shadow: 0 5px 0 #082f49, 0 0 28px rgba(var(--gA), 0.9); }
+        #welcome .wl-note { font-size: 1.1rem; text-align: center; color: #c7d2fe; min-height: 2.6em; max-width: 420px; }
+        #welcome .wl-go { font-size: 1.5rem; font-weight: 800; padding: 1.8vh 48px; border-radius: 999px; border: none; color: #022c22;
+            background: linear-gradient(180deg, #6ee7b7, #10b981); box-shadow: 0 5px 0 #065f46, 0 0 30px rgba(16, 185, 129, 0.9);
+            visibility: hidden; }
+        #welcome .wl-go.on { visibility: visible; animation: spFade 0.4s ease both; }
     </style>
 </head>
 <body>
+    <!-- M-032: opening animation on every launch (tap to skip), then language choice on the first launch -->
+    <div id="splash" onclick="window.endSplash && endSplash()">
+        <div class="sp-stage"><div class="sp-ring"></div><div class="sp-ring r2"></div><div class="sp-ring r3"></div><div class="sp-cap"></div></div>
+        <div class="sp-title"><span style="animation-delay:.55s">M</span><span style="animation-delay:.65s">e</span><span style="animation-delay:.75s">d</span><span style="animation-delay:.85s">T</span><span style="animation-delay:.95s">i</span><span style="animation-delay:1.05s">m</span><span style="animation-delay:1.15s">e</span></div>
+        <div class="sp-tag" id="sp-tag"></div>
+        <div class="sp-credit" id="sp-credit"></div>
+    </div>
+    <div id="welcome">
+        <div class="wl-globe">🌍</div>
+        <div class="wl-title" id="wl-title">בחרו שפה</div>
+        <div class="wl-langs">
+            <button type="button" data-lang="he"><span class="flag">🇮🇱</span>עברית</button>
+            <button type="button" data-lang="ar"><span class="flag">🌙</span>العربية</button>
+            <button type="button" data-lang="ro"><span class="flag">🇷🇴</span>Română</button>
+            <button type="button" data-lang="fr"><span class="flag">🇫🇷</span>Français</button>
+            <button type="button" data-lang="en"><span class="flag">🇬🇧</span>English</button>
+        </div>
+        <div class="wl-note" id="wl-note"></div>
+        <button type="button" class="wl-go" id="wl-go"></button>
+    </div>
+    <script>
+        (function () {
+            // Texts here are needed before the main script runs and in all languages at once
+            var TX = {
+                he: { tag: 'התרופות שלך, בזמן', credit: '✨ פותח ועוצב על ידי רוני ✨', pick: 'בחרו שפה', note: 'אפשר לשנות את השפה בכל עת בהגדרות ⚙️', go: 'המשך ✓', dir: 'rtl' },
+                ar: { tag: 'أدويتك في وقتها', credit: '✨ تطوير وتصميم روني ✨', pick: 'اختر اللغة', note: 'يمكن تغيير اللغة في أي وقت من الإعدادات ⚙️', go: 'متابعة ✓', dir: 'rtl' },
+                ro: { tag: 'Medicamentele tale, la timp', credit: '✨ Creat și proiectat de Roni ✨', pick: 'Alegeți limba', note: 'Puteți schimba limba oricând din Setări ⚙️', go: 'Continuă ✓', dir: 'ltr' },
+                fr: { tag: 'Vos médicaments, à l’heure', credit: '✨ Conçu et créé par Roni ✨', pick: 'Choisissez la langue', note: 'Vous pouvez changer la langue à tout moment dans les Réglages ⚙️', go: 'Continuer ✓', dir: 'ltr' },
+                en: { tag: 'Your medicines, on time', credit: '✨ Designed and built by Roni ✨', pick: 'Choose your language', note: 'You can change the language any time in Settings ⚙️', go: 'Continue ✓', dir: 'ltr' }
+            };
+            var stored = null;
+            try { stored = localStorage.getItem('medtime_lang'); } catch (e) { }
+            var L = TX[stored] ? stored : 'he';
+            var sp = document.getElementById('splash');
+            document.getElementById('sp-tag').textContent = TX[L].tag;
+            var cr = document.getElementById('sp-credit');
+            cr.textContent = TX[L].credit; cr.dir = TX[L].dir;
+            for (var i = 0; i < 46; i++) {
+                var st = document.createElement('div');
+                st.className = 'sp-star';
+                st.style.left = (Math.random() * 100) + '%';
+                st.style.top = (Math.random() * 100) + '%';
+                st.style.animationDelay = (Math.random() * 1.6) + 's';
+                var sz = 1 + Math.random() * 3; st.style.width = st.style.height = sz + 'px';
+                sp.appendChild(st);
+            }
+            var done = false;
+            window.endSplash = function () {
+                if (done) return; done = true; window.__splashEnd = performance.now();
+                sp.classList.add('out');
+                setTimeout(function () { sp.remove(); }, 750);
+                if (!TX[stored]) showWelcome();
+            };
+            setTimeout(window.endSplash, 3600);
+
+            function showWelcome() {
+                var w = document.getElementById('welcome'), title = document.getElementById('wl-title'),
+                    note = document.getElementById('wl-note'), go = document.getElementById('wl-go');
+                var order = ['he', 'ar', 'ro', 'fr', 'en'], k = 0, chosen = null;
+                w.classList.add('show');
+                // Title changes language every 1.6 s until one is chosen
+                var cyc = setInterval(function () {
+                    if (chosen) return;
+                    title.style.opacity = 0;
+                    setTimeout(function () { if (chosen) return; k = (k + 1) % 5; title.textContent = TX[order[k]].pick; title.dir = TX[order[k]].dir; title.style.opacity = 1; }, 350);
+                }, 1600);
+                w.querySelectorAll('.wl-langs button').forEach(function (b) {
+                    b.addEventListener('click', function () {
+                        chosen = b.dataset.lang;
+                        w.querySelectorAll('.wl-langs button').forEach(function (x) { x.classList.toggle('sel', x === b); });
+                        var tx = TX[chosen];
+                        title.textContent = tx.pick; title.dir = tx.dir; title.style.opacity = 1;
+                        note.textContent = tx.note; note.dir = tx.dir;
+                        go.textContent = tx.go; go.classList.add('on');
+                        if (navigator.vibrate) { try { navigator.vibrate(15); } catch (e) { } }
+                        var sel = document.getElementById('lang-select');
+                        if (sel) { sel.value = chosen; sel.dispatchEvent(new Event('change')); }
+                    });
+                });
+                go.addEventListener('click', function () {
+                    if (!chosen) return;
+                    clearInterval(cyc);
+                    try { localStorage.setItem('medtime_lang', chosen); } catch (e) { }
+                    w.classList.add('out');
+                    setTimeout(function () { w.remove(); }, 500);
+                });
+            }
+        })();
+    </script>
     <canvas id="bg3d"></canvas>
 
     <header>
@@ -1677,6 +1859,9 @@
                 <span class="set-chev">⌄</span>
             </button>
             <div class="set-body">
+                <div class="vol-row"><div class="vol-head"><span data-i18n="volAlert"></span><span class="vol-val" id="vol-alert-v"></span></div><input type="range" class="vol" id="vol-alert" min="0" max="100" step="5"></div>
+                <div class="vol-row"><div class="vol-head"><span data-i18n="volVoice"></span><span class="vol-val" id="vol-voice-v"></span></div><input type="range" class="vol" id="vol-voice" min="0" max="100" step="5"></div>
+                <div class="vol-note" data-i18n="volNote"></div>
                 <div id="sound-list" class="sound-list"></div>
             </div>
         </section>
@@ -1688,6 +1873,7 @@
             </button>
             <div class="set-body">
                 <label class="toggle-row"><span data-i18n="ambientOn"></span><input type="checkbox" id="amb-on" class="toggle"></label>
+                <div class="vol-row"><div class="vol-head"><span data-i18n="volAmbient"></span><span class="vol-val" id="vol-amb-v"></span></div><input type="range" class="vol" id="vol-amb" min="0" max="100" step="5"></div>
                 <div id="theme-grid" class="theme-grid"></div>
             </div>
         </section>
@@ -1870,7 +2056,7 @@
           "soundMedTime": "✨ צלילים מיוחדים של MedTime",
           "themeTitle": "🎨 תצוגה",
           "themeAuto": "🕒 אוטומטי לפי שעה", "themeChoose": "✓ בחר", "themeBack": "↩ חזור",
-          "closeApp": "סגירת האפליקציה", "ambientOn": "🎵 צליל רקע לתצוגה",
+          "closeApp": "סגירת האפליקציה", "volAlert": "🔔 עוצמת צליל התזכורת", "volVoice": "🗣️ עוצמת הקול המקריא", "volAmbient": "🔊 עוצמת צליל הרקע", "volNote": "ביחס לעוצמת השעון המעורר בטלפון", "ambientOn": "🎵 צליל רקע לתצוגה",
           "addReminder": "הוסף תזכורת",
           "voiceTitle": "🔊 הקראה קולית בתזכורת",
           "voiceOn": "להקריא בקול",
@@ -1940,7 +2126,7 @@
           "soundMedTime": "✨ أصوات MedTime الخاصة",
           "themeTitle": "🎨 المظهر",
           "themeAuto": "🕒 تلقائي حسب الوقت", "themeChoose": "✓ اختيار", "themeBack": "↩ رجوع",
-          "closeApp": "إغلاق التطبيق", "ambientOn": "🎵 صوت خلفية للمظهر",
+          "closeApp": "إغلاق التطبيق", "volAlert": "🔔 مستوى صوت التنبيه", "volVoice": "🗣️ مستوى صوت القراءة", "volAmbient": "🔊 مستوى صوت الخلفية", "volNote": "نسبةً إلى مستوى صوت المنبّه في الهاتف", "ambientOn": "🎵 صوت خلفية للمظهر",
           "addReminder": "أضف تذكيرًا",
           "voiceTitle": "🔊 القراءة الصوتية في التذكير",
           "voiceOn": "القراءة بصوت عالٍ",
@@ -2010,7 +2196,7 @@
           "soundMedTime": "✨ Sunete speciale MedTime",
           "themeTitle": "🎨 Aspect",
           "themeAuto": "🕒 Automat după oră", "themeChoose": "✓ Alege", "themeBack": "↩ Înapoi",
-          "closeApp": "Închide aplicația", "ambientOn": "🎵 Sunet de fundal",
+          "closeApp": "Închide aplicația", "volAlert": "🔔 Volumul alertei", "volVoice": "🗣️ Volumul vocii", "volAmbient": "🔊 Volumul sunetului de fundal", "volNote": "Față de volumul alarmei telefonului", "ambientOn": "🎵 Sunet de fundal",
           "addReminder": "Adaugă memento",
           "voiceTitle": "🔊 Citire vocală la memento",
           "voiceOn": "Citește cu voce tare",
@@ -2080,7 +2266,7 @@
           "soundMedTime": "✨ Sons spéciaux MedTime",
           "themeTitle": "🎨 Apparence",
           "themeAuto": "🕒 Auto selon l’heure", "themeChoose": "✓ Choisir", "themeBack": "↩ Retour",
-          "closeApp": "Fermer l’application", "ambientOn": "🎵 Son d’ambiance",
+          "closeApp": "Fermer l’application", "volAlert": "🔔 Volume de l’alerte", "volVoice": "🗣️ Volume de la voix", "volAmbient": "🔊 Volume de l’ambiance", "volNote": "Par rapport au volume d’alarme du téléphone", "ambientOn": "🎵 Son d’ambiance",
           "addReminder": "Ajouter un rappel",
           "voiceTitle": "🔊 Lecture vocale du rappel",
           "voiceOn": "Lire à voix haute",
@@ -2150,7 +2336,7 @@
           "soundMedTime": "✨ MedTime special sounds",
           "themeTitle": "🎨 Display",
           "themeAuto": "🕒 Auto by time of day", "themeChoose": "✓ Choose", "themeBack": "↩ Back",
-          "closeApp": "Close the app", "ambientOn": "🎵 Background sound",
+          "closeApp": "Close the app", "volAlert": "🔔 Alert sound volume", "volVoice": "🗣️ Voice volume", "volAmbient": "🔊 Background sound volume", "volNote": "Relative to the phone's alarm volume", "ambientOn": "🎵 Background sound",
           "addReminder": "Add reminder",
           "voiceTitle": "🔊 Voice readout",
           "voiceOn": "Read aloud",
@@ -2780,7 +2966,9 @@
         applyThemeUI(curTheme());
 
         // ---------- M-030: ambient sound of the theme (loops, quiet, starts after the first touch) ----------
-        var amb = new Audio(); amb.loop = true; amb.volume = 0.35;
+        var amb = new Audio(); amb.loop = true;
+        function ambVol() { try { const v = parseInt(localStorage.getItem('medtime_amb_vol'), 10); return isNaN(v) ? 35 : v; } catch (e) { return 35; } }
+        amb.volume = ambVol() / 100;
         var ambUnlocked = false;
         function ambOn() { try { return localStorage.getItem('medtime_amb') !== '0'; } catch (e) { return true; } }
         function updateAmbient(i) {
@@ -2796,6 +2984,30 @@
         ambBox.checked = ambOn();
         ambBox.addEventListener('change', () => { try { localStorage.setItem('medtime_amb', ambBox.checked ? '1' : '0'); } catch (e) { } updateAmbient(); });
 
+
+        // ---------- M-032: volume sliders (background sound in the page; alert + voice kept in Android) ----------
+        function paintVol(el) { el.style.setProperty('--p', el.value + '%'); document.getElementById(el.id + '-v').textContent = el.value + '%'; }
+        (function () {
+            const a = document.getElementById('vol-amb'), al = document.getElementById('vol-alert'), vo = document.getElementById('vol-voice');
+            a.value = ambVol(); paintVol(a);
+            let nv = { alert: 100, voice: 100 };
+            if (Native && Native.getVolumes) { try { nv = JSON.parse(Native.getVolumes()); } catch (e) { } }
+            al.value = nv.alert; vo.value = nv.voice; paintVol(al); paintVol(vo);
+            a.addEventListener('input', () => {
+                paintVol(a); amb.volume = a.value / 100;
+                try { localStorage.setItem('medtime_amb_vol', a.value); } catch (e) { }
+                if (a.value > 0 && !ambBox.checked) { ambBox.checked = true; ambBox.dispatchEvent(new Event('change')); }
+            });
+            const saveNative = () => { if (Native && Native.setVolumes) { try { Native.setVolumes(parseInt(al.value, 10), parseInt(vo.value, 10)); } catch (e) { } } };
+            [al, vo].forEach(el => el.addEventListener('input', () => { paintVol(el); saveNative(); }));
+            // Let go of the alert slider = hear the chosen sound at that volume
+            al.addEventListener('change', () => {
+                if (Native && Native.previewSound && Native.getChosenSound) {
+                    const u = Native.getChosenSound() || '';
+                    if (u !== 'none') Native.previewSound(u);
+                }
+            });
+        })();
         // M-031: close the app (reminders keep working, they are booked in Android)
         function exitApp() {
             amb.pause();

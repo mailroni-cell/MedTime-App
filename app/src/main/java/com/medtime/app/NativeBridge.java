@@ -63,6 +63,16 @@ public class NativeBridge {
     @JavascriptInterface
     public void stopPreview() { Sounds.stopPreview(); }
 
+    /** M-032: alert sound and voice volume, 0-100. */
+    @JavascriptInterface
+    public void setVolumes(int alert, int voice) { Sounds.setVolumes(activity.getApplicationContext(), alert, voice); }
+
+    @JavascriptInterface
+    public String getVolumes() {
+        Context ctx = activity.getApplicationContext();
+        return "{\"alert\":" + Math.round(Sounds.alertVolume(ctx) * 100) + ",\"voice\":" + Math.round(Sounds.voiceVolume(ctx) * 100) + "}";
+    }
+
     @JavascriptInterface
     public void setLowVision(boolean on) { Sounds.setLowVision(activity.getApplicationContext(), on); }
 

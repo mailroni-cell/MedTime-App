@@ -133,9 +133,12 @@ public class ReminderService extends Service {
             });
             // Let the notification sound finish first, then say it twice
             tts.playSilentUtterance(delayMs, TextToSpeech.QUEUE_FLUSH, "pause1");
-            tts.speak(text, TextToSpeech.QUEUE_ADD, null, "first");
+            // M-032: voice volume from settings
+            Bundle vp = new Bundle();
+            vp.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, Sounds.voiceVolume(ReminderService.this));
+            tts.speak(text, TextToSpeech.QUEUE_ADD, vp, "first");
             tts.playSilentUtterance(1500, TextToSpeech.QUEUE_ADD, "pause2");
-            tts.speak(text, TextToSpeech.QUEUE_ADD, null, "last");
+            tts.speak(text, TextToSpeech.QUEUE_ADD, vp, "last");
         });
     }
 
