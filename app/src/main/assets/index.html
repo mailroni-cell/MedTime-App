@@ -1958,6 +1958,113 @@
         .exit-btn svg { width: 36px; height: 36px; overflow: visible; }
         .exit-btn svg path, .exit-btn svg line { fill: none; stroke: #f87171; stroke-width: 2.8; stroke-linecap: round; }
         .exit-btn:active svg path, .exit-btn:active svg line { stroke: #fff; }
+
+        /* ================= M-044: calm mode (3D worlds, zen sounds, breathing, sleep timer) ================= */
+        .nav-row > .relax-btn { flex: 0 0 auto; width: 72px; }
+        .relax-btn {
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; border: none !important; border-radius: 22px;
+            padding: 6px 4px; color: #fff; font-weight: 800; font-size: 0.95rem; line-height: 1.15;
+            background: radial-gradient(circle at 30% 20%, rgba(167, 139, 250, 0.75), rgba(49, 46, 129, 0.85) 70%);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 16px 3px rgba(139, 92, 246, 0.6); text-shadow: 0 1px 2px #000;
+        }
+        .relax-btn .rb-ico { font-size: 1.5rem; animation: rbGlow 4s ease-in-out infinite; }
+        @keyframes rbGlow { 50% { filter: drop-shadow(0 0 8px #fde68a); transform: scale(1.08); } }
+        html.fit3 .relax-btn .rb-ico { font-size: 1.2rem; }
+        #relax { position: fixed !important; inset: 0; z-index: 8000 !important; display: none; background: #000; overflow: hidden; touch-action: none; user-select: none; }
+        #relax.open { display: block; }
+        #relax #rx-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+        #relax.rx-in #rx-canvas { animation: rxIn 2.2s ease both; }
+        @keyframes rxIn { from { opacity: 0; } to { opacity: 1; } }
+        #relax .rx-fade { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; transition: opacity 19s linear; }
+        #relax.rx-ending .rx-fade { opacity: 1; }
+        #relax .rx-close {
+            position: absolute; top: calc(10px + env(safe-area-inset-top)); inset-inline-start: 12px; width: 52px; height: 52px; border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.35) !important; background: rgba(15, 23, 42, 0.55) !important; color: #fff; font-size: 1.5rem; font-weight: 900;
+            backdrop-filter: blur(6px); transition: opacity 0.6s; z-index: 3;
+        }
+        #relax .rx-left { position: absolute; top: calc(22px + env(safe-area-inset-top)); inset-inline-end: 16px; color: #e0e7ff; font-size: 1.05rem; font-weight: 800;
+            text-shadow: 0 1px 4px #000; transition: opacity 0.6s; z-index: 3; }
+        #relax .rx-hint { position: absolute; left: 0; right: 0; top: 40%; text-align: center; color: #c7d2fe; font-size: 1.1rem; font-weight: 700; padding: 0 30px;
+            text-shadow: 0 1px 6px #000; transition: opacity 1.5s; pointer-events: none; }
+        #relax .rx-hint.gone { opacity: 0; }
+        #relax .rx-breath { position: absolute; left: 50%; top: 22%; width: 150px; height: 150px; margin-left: -75px; display: none; align-items: center; justify-content: center; pointer-events: none; }
+        #relax.rx-br-on .rx-breath { display: flex; }
+        #relax .rx-ring { position: absolute; inset: 0; border-radius: 50%; border: 3px solid rgba(165, 243, 252, 0.75);
+            box-shadow: 0 0 24px rgba(34, 211, 238, 0.6), inset 0 0 24px rgba(34, 211, 238, 0.35); }
+        #relax .rx-btext { position: relative; color: #fff; font-size: 1.45rem; font-weight: 800; text-shadow: 0 1px 6px #000; }
+        #relax .rx-panel {
+            position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 14px calc(14px + env(safe-area-inset-bottom)); z-index: 4;
+            background: linear-gradient(180deg, rgba(2, 6, 23, 0), rgba(2, 6, 23, 0.82) 14%, rgba(2, 6, 23, 0.92));
+            transition: transform 0.6s ease, opacity 0.6s; color: #fff;
+        }
+        #relax.rx-hide .rx-panel { transform: translateY(105%); opacity: 0; }
+        #relax.rx-hide .rx-close, #relax.rx-hide .rx-left { opacity: 0.35; }
+        #relax .rx-title { text-align: center; font-size: 1.35rem; font-weight: 900; margin: 4px 0 6px; }
+        #relax .rx-lbl { font-size: 1.02rem; font-weight: 800; color: #c7d2fe; margin: 8px 2px 5px; }
+        #relax .rx-row { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 6px; scrollbar-width: none; }
+        #relax .rx-row::-webkit-scrollbar { display: none; }
+        #relax .rx-chip {
+            flex: 0 0 auto; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(255, 255, 255, 0.18) !important; border-radius: 999px;
+            padding: 9px 14px; font-size: 1.05rem; font-weight: 800; color: #fff; background: rgba(30, 41, 59, 0.85) !important; white-space: nowrap;
+        }
+        #relax .rx-chip .rx-ico { font-size: 1.2rem; }
+        #relax .rx-chip.sel { background: linear-gradient(180deg, #8b5cf6, #4c1d95) !important; border-color: #c4b5fd !important; box-shadow: 0 0 14px rgba(139, 92, 246, 0.9); }
+        #relax .rx-line { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; font-size: 1.05rem; font-weight: 800; }
+        #relax .rx-line input[type=range] { flex: 1; max-width: 60%; }
+        html.relax-open body { overflow: hidden !important; }
+        #relax.rx-orb .rx-ring { display: none; }
+        #relax.rx-orb .rx-breath { top: 64%; }
+        #relax .rx-hint { top: 16% !important; }
+
+        /* ================= M-045: medical look: Rubik font (Hebrew / Arabic / Latin, offline), medical "add reminder" button ================= */
+        @font-face { font-family: 'MTUI'; font-weight: 400; font-display: swap; src: url('fonts/rubik-arabic-400-normal.woff2') format('woff2'); unicode-range: U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC,U+102E0-102FB,U+10E60-10E7E,U+10EC2-10EC4,U+10EFC-10EFF,U+1EE00-1EE03,U+1EE05-1EE1F,U+1EE21-1EE22,U+1EE24,U+1EE27,U+1EE29-1EE32,U+1EE34-1EE37,U+1EE39,U+1EE3B,U+1EE42,U+1EE47,U+1EE49,U+1EE4B,U+1EE4D-1EE4F,U+1EE51-1EE52,U+1EE54,U+1EE57,U+1EE59,U+1EE5B,U+1EE5D,U+1EE5F,U+1EE61-1EE62,U+1EE64,U+1EE67-1EE6A,U+1EE6C-1EE72,U+1EE74-1EE77,U+1EE79-1EE7C,U+1EE7E,U+1EE80-1EE89,U+1EE8B-1EE9B,U+1EEA1-1EEA3,U+1EEA5-1EEA9,U+1EEAB-1EEBB,U+1EEF0-1EEF1; }
+        @font-face { font-family: 'MTUI'; font-weight: 400; font-display: swap; src: url('fonts/rubik-hebrew-400-normal.woff2') format('woff2'); unicode-range: U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F; }
+        @font-face { font-family: 'MTUI'; font-weight: 400; font-display: swap; src: url('fonts/rubik-latin-ext-400-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+        @font-face { font-family: 'MTUI'; font-weight: 400; font-display: swap; src: url('fonts/rubik-latin-400-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+        @font-face { font-family: 'MTUI'; font-weight: 500; font-display: swap; src: url('fonts/rubik-arabic-500-normal.woff2') format('woff2'); unicode-range: U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC,U+102E0-102FB,U+10E60-10E7E,U+10EC2-10EC4,U+10EFC-10EFF,U+1EE00-1EE03,U+1EE05-1EE1F,U+1EE21-1EE22,U+1EE24,U+1EE27,U+1EE29-1EE32,U+1EE34-1EE37,U+1EE39,U+1EE3B,U+1EE42,U+1EE47,U+1EE49,U+1EE4B,U+1EE4D-1EE4F,U+1EE51-1EE52,U+1EE54,U+1EE57,U+1EE59,U+1EE5B,U+1EE5D,U+1EE5F,U+1EE61-1EE62,U+1EE64,U+1EE67-1EE6A,U+1EE6C-1EE72,U+1EE74-1EE77,U+1EE79-1EE7C,U+1EE7E,U+1EE80-1EE89,U+1EE8B-1EE9B,U+1EEA1-1EEA3,U+1EEA5-1EEA9,U+1EEAB-1EEBB,U+1EEF0-1EEF1; }
+        @font-face { font-family: 'MTUI'; font-weight: 500; font-display: swap; src: url('fonts/rubik-hebrew-500-normal.woff2') format('woff2'); unicode-range: U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F; }
+        @font-face { font-family: 'MTUI'; font-weight: 500; font-display: swap; src: url('fonts/rubik-latin-ext-500-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+        @font-face { font-family: 'MTUI'; font-weight: 500; font-display: swap; src: url('fonts/rubik-latin-500-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+        @font-face { font-family: 'MTUI'; font-weight: 700; font-display: swap; src: url('fonts/rubik-arabic-700-normal.woff2') format('woff2'); unicode-range: U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC,U+102E0-102FB,U+10E60-10E7E,U+10EC2-10EC4,U+10EFC-10EFF,U+1EE00-1EE03,U+1EE05-1EE1F,U+1EE21-1EE22,U+1EE24,U+1EE27,U+1EE29-1EE32,U+1EE34-1EE37,U+1EE39,U+1EE3B,U+1EE42,U+1EE47,U+1EE49,U+1EE4B,U+1EE4D-1EE4F,U+1EE51-1EE52,U+1EE54,U+1EE57,U+1EE59,U+1EE5B,U+1EE5D,U+1EE5F,U+1EE61-1EE62,U+1EE64,U+1EE67-1EE6A,U+1EE6C-1EE72,U+1EE74-1EE77,U+1EE79-1EE7C,U+1EE7E,U+1EE80-1EE89,U+1EE8B-1EE9B,U+1EEA1-1EEA3,U+1EEA5-1EEA9,U+1EEAB-1EEBB,U+1EEF0-1EEF1; }
+        @font-face { font-family: 'MTUI'; font-weight: 700; font-display: swap; src: url('fonts/rubik-hebrew-700-normal.woff2') format('woff2'); unicode-range: U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F; }
+        @font-face { font-family: 'MTUI'; font-weight: 700; font-display: swap; src: url('fonts/rubik-latin-ext-700-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+        @font-face { font-family: 'MTUI'; font-weight: 700; font-display: swap; src: url('fonts/rubik-latin-700-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+        @font-face { font-family: 'MTUI'; font-weight: 800; font-display: swap; src: url('fonts/rubik-arabic-800-normal.woff2') format('woff2'); unicode-range: U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC,U+102E0-102FB,U+10E60-10E7E,U+10EC2-10EC4,U+10EFC-10EFF,U+1EE00-1EE03,U+1EE05-1EE1F,U+1EE21-1EE22,U+1EE24,U+1EE27,U+1EE29-1EE32,U+1EE34-1EE37,U+1EE39,U+1EE3B,U+1EE42,U+1EE47,U+1EE49,U+1EE4B,U+1EE4D-1EE4F,U+1EE51-1EE52,U+1EE54,U+1EE57,U+1EE59,U+1EE5B,U+1EE5D,U+1EE5F,U+1EE61-1EE62,U+1EE64,U+1EE67-1EE6A,U+1EE6C-1EE72,U+1EE74-1EE77,U+1EE79-1EE7C,U+1EE7E,U+1EE80-1EE89,U+1EE8B-1EE9B,U+1EEA1-1EEA3,U+1EEA5-1EEA9,U+1EEAB-1EEBB,U+1EEF0-1EEF1; }
+        @font-face { font-family: 'MTUI'; font-weight: 800; font-display: swap; src: url('fonts/rubik-hebrew-800-normal.woff2') format('woff2'); unicode-range: U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F; }
+        @font-face { font-family: 'MTUI'; font-weight: 800; font-display: swap; src: url('fonts/rubik-latin-ext-800-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+        @font-face { font-family: 'MTUI'; font-weight: 800; font-display: swap; src: url('fonts/rubik-latin-800-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+        body, input, select, textarea, button { font-family: 'MTUI', -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important; }
+        h1.mt-logo, #splash .sp-title { font-family: 'MTLogo2', 'MTLogo', sans-serif !important; }
+        button.btn-add.btn-med {
+            position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; gap: 12px;
+            min-height: 58px; padding: 10px 18px !important; border-radius: 999px !important; border: 2px solid rgba(204, 251, 241, 0.75) !important;
+            font-size: 1.3rem !important; font-weight: 800 !important; letter-spacing: 0.01em; color: #fff !important;
+            background: linear-gradient(180deg, #2dd4bf 0%, #0d9488 48%, #0f766e 100%) !important;
+            box-shadow: 0 5px 0 #134e4a, 0 10px 26px rgba(20, 184, 166, 0.55), inset 0 2px 0 rgba(255, 255, 255, 0.45) !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6) !important;
+        }
+        button.btn-add.btn-med:active { transform: translateY(4px); box-shadow: 0 1px 0 #134e4a, 0 4px 12px rgba(20, 184, 166, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.35) !important; }
+        .btn-med .ba-cross {
+            position: relative; z-index: 1; flex: 0 0 auto; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(circle at 35% 30%, #ffffff, #e2fdf8 60%, #b7f0e6); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35), 0 0 12px rgba(255, 255, 255, 0.6);
+            animation: crossBeat 1.6s ease-in-out infinite;
+        }
+        .btn-med .ba-cross svg { width: 24px; height: 24px; }
+        .btn-med .ba-cross path { fill: #ef4444; stroke: #b91c1c; stroke-width: 0.8; }
+        @keyframes crossBeat { 0%, 60%, 100% { transform: scale(1); } 15% { transform: scale(1.14); } 30% { transform: scale(0.98); } 45% { transform: scale(1.07); } }
+        .btn-med .ba-txt { position: relative; z-index: 1; }
+        .btn-med .ba-ecg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.4; }
+        .btn-med .ba-ecg polyline { fill: none; stroke: #ccfbf1; stroke-width: 2; stroke-linejoin: round; vector-effect: non-scaling-stroke;
+            stroke-dasharray: 340; animation: ecgRun 2.6s linear infinite; }
+        html.fit2 button.btn-add.btn-med { min-height: 50px; }
+        /* medical touches on the form and menus */
+        .type-btn.sel { position: relative; }
+        .type-btn.sel::after {
+            content: '✚'; position: absolute; top: 5px; inset-inline-end: 7px; font-size: 0.85rem; line-height: 1; color: #fff;
+            width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
+            background: #ef4444; box-shadow: 0 0 8px rgba(239, 68, 68, 0.9);
+        }
+        .settings-page h2, .appt-page h2, .list-page h2, .af-head h2, .wiz h2 { letter-spacing: 0.01em; font-weight: 800 !important; }
     </style>
 </head>
 <body>
@@ -2069,10 +2176,11 @@
             <button type="button" class="btn-add-item" onclick="addMoreItem()"><span class="plus-orb">+</span><span data-i18n-strip="addMore"></span></button>
             <input type="hidden" id="med-time">
             <button type="button" id="time-btn" class="time-btn" onclick="openTimePicker()"></button>
-            <button type="submit" class="btn-add" data-i18n="addReminder"></button>
+            <button type="submit" class="btn-add btn-med"><span class="ba-cross" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/></svg></span><span class="ba-txt" data-i18n="addReminder"></span><svg class="ba-ecg" viewBox="0 0 300 40" preserveAspectRatio="none" aria-hidden="true"><polyline points="0,22 110,22 122,22 130,8 140,34 148,22 160,22 168,15 176,22 300,22"/></svg></button>
             <div class="nav-row">
                 <button type="button" id="list-btn" class="list-btn" onclick="openListPage()"></button>
                 <button type="button" id="appt-btn" class="appt-btn" onclick="openApptPage()"></button>
+                <button type="button" id="relax-btn" class="relax-btn" onclick="openRelax()"><span class="rb-ico">🌙</span><span class="rb-txt"></span></button>
             </div>
         </form>
     </div>
@@ -3222,6 +3330,7 @@
             renderStatus();
             renderSounds();
             if (window.apptRender) apptRender(); // M-036
+            if (window.relaxRender) relaxRender(); // M-044
         });
 
         // M-013: reminder cards tilt in 3D under the finger
@@ -3357,7 +3466,7 @@
         function ambOn() { try { return localStorage.getItem('medtime_amb') !== '0'; } catch (e) { return true; } }
         function updateAmbient(i) {
             const th = (window.MED_THEMES || [])[i == null ? curTheme() : i];
-            if (!th || !ambOn() || !ambUnlocked || document.hidden) { amb.pause(); return; }
+            if (!th || !ambOn() || !ambUnlocked || document.hidden || window.relaxOn) { amb.pause(); return; }
             const src = 'ambient/' + th.amb + '.ogg';
             if (!amb.src.endsWith(src)) amb.src = src;
             amb.play().catch(() => { });
@@ -3574,6 +3683,7 @@
         renderStatus();
     </script>
     <script src="appts.js"></script>
+    <script src="relax.js"></script>
     <script src="meds.js"></script>
     <script src="themes.js"></script>
     <script src="worlds.js"></script>

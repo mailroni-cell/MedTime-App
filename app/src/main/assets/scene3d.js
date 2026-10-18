@@ -469,6 +469,7 @@
     window.MedTime3D = {
         pulse() { burst = 1; },
         setDim(on) { canvas.style.opacity = on ? '0.35' : '1'; },
+        pause(on) { paused = !!on; if (!paused && running) { clock.getDelta(); requestAnimationFrame(loop); } }, // M-044: calm mode has its own 3D
         setTheme(i) { applyTheme((window.MED_THEMES || [])[i]); }
     };
     try { const ti = window.medEffectiveTheme ? window.medEffectiveTheme() : parseInt(localStorage.getItem('medtime_theme') || '0', 10) || 0; applyTheme((window.MED_THEMES || [])[ti]); } catch (e) { }
@@ -477,14 +478,15 @@
 
     // ---- loop with automatic quality control ----
     const clock = new THREE.Clock();
+    let paused = false;
     let running = true, frames = 0, fpsTime = 0, lowQuality = false;
     document.addEventListener('visibilitychange', () => {
         running = !document.hidden;
-        if (running) { clock.getDelta(); requestAnimationFrame(loop); }
+        if (running && !paused) { clock.getDelta(); requestAnimationFrame(loop); }
     });
 
     function loop() {
-        if (!running) return;
+        if (!running || paused) return;
         requestAnimationFrame(loop);
         const dt = Math.min(clock.getDelta(), 0.05);
         const t = clock.elapsedTime;
