@@ -2360,6 +2360,18 @@
         .wiz .wz-step { min-width: 0; max-width: 100%; }
         html.lowvision .af-navtest { background: #000 !important; color: #ffeb3b !important; }
         html.lowvision .af-navtest[disabled] { opacity: 0.7; color: #cbd5e1 !important; }
+
+        /* M-067: 👓 low-vision button at the bottom centre of the main screen */
+        .lv-btn { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom)); z-index: 40;
+            width: 64px; height: 64px; border-radius: 50%; border: none; padding: 0; font-size: 2rem; display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(circle at 35% 30%, #fde68a, #facc15 45%, #a16207); animation: lvFloat 3.6s ease-in-out infinite; animation-delay: -0.9s;
+            box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.6), 0 4px 0 #713f12, 0 8px 14px rgba(0, 0, 0, 0.55), 0 0 18px rgba(250, 204, 21, 0.7); }
+        @keyframes lvFloat { 0%, 100% { transform: translateX(-50%); } 50% { transform: translateX(-50%) translateY(-6px); } }
+        .lv-btn span { transform: translateY(1px); }
+        .lv-btn:active { transform: translateX(-50%) scale(0.92); }
+        .set-body .ts-row .ts-lbl { display: none; }
+        html.lowvision .lv-btn { box-shadow: inset 0 0 0 4px #000, 0 0 0 3px #ffeb3b, 0 0 22px #ffeb3b; }
+        html.relax-open .lv-btn, html.med-open .lv-btn, body:has(.settings-page.open) .lv-btn { display: none !important; }
     </style>
 </head>
 <body>
@@ -2466,6 +2478,7 @@
 
     <header>
         <h1 class="mt-logo" aria-label="MedTime"><svg class="mt-word" viewBox="-40 -60 9950 2991" aria-hidden="true"><use href="#mtL0" xlink:href="#mtL0" y="260" fill="#042f2e"/><use href="#mtL0" xlink:href="#mtL0" y="234" fill="#083344"/><use href="#mtL0" xlink:href="#mtL0" y="208" fill="#083344"/><use href="#mtL0" xlink:href="#mtL0" y="182" fill="#164e63"/><use href="#mtL0" xlink:href="#mtL0" y="156" fill="#164e63"/><use href="#mtL0" xlink:href="#mtL0" y="130" fill="#155e75"/><use href="#mtL0" xlink:href="#mtL0" y="104" fill="#155e75"/><use href="#mtL0" xlink:href="#mtL0" y="78" fill="#0e7490"/><use href="#mtL0" xlink:href="#mtL0" y="52" fill="#0e7490"/><use href="#mtL0" xlink:href="#mtL0" y="26" fill="#0891b2"/><use href="#mtL0" xlink:href="#mtL0" fill="url(#mtFront)"/><use href="#mtL0" xlink:href="#mtL0" fill="url(#mtShine)" class="mt-shine"/><use href="#mtL1" xlink:href="#mtL1" y="260" fill="#042f2e"/><use href="#mtL1" xlink:href="#mtL1" y="234" fill="#083344"/><use href="#mtL1" xlink:href="#mtL1" y="208" fill="#083344"/><use href="#mtL1" xlink:href="#mtL1" y="182" fill="#164e63"/><use href="#mtL1" xlink:href="#mtL1" y="156" fill="#164e63"/><use href="#mtL1" xlink:href="#mtL1" y="130" fill="#155e75"/><use href="#mtL1" xlink:href="#mtL1" y="104" fill="#155e75"/><use href="#mtL1" xlink:href="#mtL1" y="78" fill="#0e7490"/><use href="#mtL1" xlink:href="#mtL1" y="52" fill="#0e7490"/><use href="#mtL1" xlink:href="#mtL1" y="26" fill="#0891b2"/><use href="#mtL1" xlink:href="#mtL1" fill="url(#mtFront)"/><use href="#mtL1" xlink:href="#mtL1" fill="url(#mtShine)" class="mt-shine"/><use href="#mtL2" xlink:href="#mtL2" y="260" fill="#042f2e"/><use href="#mtL2" xlink:href="#mtL2" y="234" fill="#083344"/><use href="#mtL2" xlink:href="#mtL2" y="208" fill="#083344"/><use href="#mtL2" xlink:href="#mtL2" y="182" fill="#164e63"/><use href="#mtL2" xlink:href="#mtL2" y="156" fill="#164e63"/><use href="#mtL2" xlink:href="#mtL2" y="130" fill="#155e75"/><use href="#mtL2" xlink:href="#mtL2" y="104" fill="#155e75"/><use href="#mtL2" xlink:href="#mtL2" y="78" fill="#0e7490"/><use href="#mtL2" xlink:href="#mtL2" y="52" fill="#0e7490"/><use href="#mtL2" xlink:href="#mtL2" y="26" fill="#0891b2"/><use href="#mtL2" xlink:href="#mtL2" fill="url(#mtFront)"/><use href="#mtL2" xlink:href="#mtL2" fill="url(#mtShine)" class="mt-shine"/><use href="#mtL3" xlink:href="#mtL3" y="260" fill="#042f2e"/><use href="#mtL3" xlink:href="#mtL3" y="234" fill="#083344"/><use href="#mtL3" xlink:href="#mtL3" y="208" fill="#083344"/><use href="#mtL3" xlink:href="#mtL3" y="182" fill="#164e63"/><use href="#mtL3" xlink:href="#mtL3" y="156" fill="#164e63"/><use href="#mtL3" xlink:href="#mtL3" y="130" fill="#155e75"/><use href="#mtL3" xlink:href="#mtL3" y="104" fill="#155e75"/><use href="#mtL3" xlink:href="#mtL3" y="78" fill="#0e7490"/><use href="#mtL3" xlink:href="#mtL3" y="52" fill="#0e7490"/><use href="#mtL3" xlink:href="#mtL3" y="26" fill="#0891b2"/><use href="#mtL3" xlink:href="#mtL3" fill="url(#mtFront)"/><use href="#mtL3" xlink:href="#mtL3" fill="url(#mtShine)" class="mt-shine"/><use href="#mtL4" xlink:href="#mtL4" y="260" fill="#042f2e"/><use href="#mtL4" xlink:href="#mtL4" y="234" fill="#083344"/><use href="#mtL4" xlink:href="#mtL4" y="208" fill="#083344"/><use href="#mtL4" xlink:href="#mtL4" y="182" fill="#164e63"/><use href="#mtL4" xlink:href="#mtL4" y="156" fill="#164e63"/><use href="#mtL4" xlink:href="#mtL4" y="130" fill="#155e75"/><use href="#mtL4" xlink:href="#mtL4" y="104" fill="#155e75"/><use href="#mtL4" xlink:href="#mtL4" y="78" fill="#0e7490"/><use href="#mtL4" xlink:href="#mtL4" y="52" fill="#0e7490"/><use href="#mtL4" xlink:href="#mtL4" y="26" fill="#0891b2"/><use href="#mtL4" xlink:href="#mtL4" fill="url(#mtFront)"/><use href="#mtL4" xlink:href="#mtL4" fill="url(#mtShine)" class="mt-shine"/><use href="#mtL5" xlink:href="#mtL5" y="260" fill="#042f2e"/><use href="#mtL5" xlink:href="#mtL5" y="234" fill="#083344"/><use href="#mtL5" xlink:href="#mtL5" y="208" fill="#083344"/><use href="#mtL5" xlink:href="#mtL5" y="182" fill="#164e63"/><use href="#mtL5" xlink:href="#mtL5" y="156" fill="#164e63"/><use href="#mtL5" xlink:href="#mtL5" y="130" fill="#155e75"/><use href="#mtL5" xlink:href="#mtL5" y="104" fill="#155e75"/><use href="#mtL5" xlink:href="#mtL5" y="78" fill="#0e7490"/><use href="#mtL5" xlink:href="#mtL5" y="52" fill="#0e7490"/><use href="#mtL5" xlink:href="#mtL5" y="26" fill="#0891b2"/><use href="#mtL5" xlink:href="#mtL5" fill="url(#mtFront)"/><use href="#mtL5" xlink:href="#mtL5" fill="url(#mtShine)" class="mt-shine"/><use href="#mtL6" xlink:href="#mtL6" y="260" fill="#042f2e"/><use href="#mtL6" xlink:href="#mtL6" y="234" fill="#083344"/><use href="#mtL6" xlink:href="#mtL6" y="208" fill="#083344"/><use href="#mtL6" xlink:href="#mtL6" y="182" fill="#164e63"/><use href="#mtL6" xlink:href="#mtL6" y="156" fill="#164e63"/><use href="#mtL6" xlink:href="#mtL6" y="130" fill="#155e75"/><use href="#mtL6" xlink:href="#mtL6" y="104" fill="#155e75"/><use href="#mtL6" xlink:href="#mtL6" y="78" fill="#0e7490"/><use href="#mtL6" xlink:href="#mtL6" y="52" fill="#0e7490"/><use href="#mtL6" xlink:href="#mtL6" y="26" fill="#0891b2"/><use href="#mtL6" xlink:href="#mtL6" fill="url(#mtFront)"/><use href="#mtL6" xlink:href="#mtL6" fill="url(#mtShine)" class="mt-shine"/></svg><svg class="lg-ecg" viewBox="0 0 220 20" aria-hidden="true"><polyline class="e-base" points="0,12 70,12 80,12 86,3 94,19 100,12 110,12 116,6 122,12 220,12"/><polyline class="e-pulse" points="0,12 70,12 80,12 86,3 94,19 100,12 110,12 116,6 122,12 220,12"/></svg></h1>
+        <button type="button" id="lv-btn" class="lv-btn" onclick="toggleLowVisionMain()" aria-label="Low vision"><span>👓</span></button>
         <button type="button" id="gear-btn" class="gear-btn" onclick="openSettingsPage()" aria-label="Settings"><span class="gear-ico">⚙️</span><span class="badge"></span></button>
         <button type="button" id="exit-btn" class="exit-btn" onclick="exitApp()" data-i18n-title="closeApp" aria-label="close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.1 6.2a8 8 0 1 0 9.8 0"/><line x1="12" y1="2.6" x2="12" y2="11.2"/></svg></button>
     </header>
@@ -2672,12 +2685,12 @@
         </section>
         <section class="set-tile" style="--g:linear-gradient(135deg,#facc15,#ca8a04)">
             <button type="button" class="set-tile-head" onclick="toggleTile(this)">
-                <span class="set-ico">👓</span>
-                <span class="set-txt"><span class="set-title" data-i18n-strip="lowVisionTitle"></span><span class="set-sub" id="sub-lowVisionTitle"></span></span>
+                <span class="set-ico">🔠</span>
+                <span class="set-txt"><span class="set-title" data-i18n-strip="textSize"></span><span class="set-sub" id="sub-lowVisionTitle"></span></span>
                 <span class="set-chev">⌄</span>
             </button>
             <div class="set-body">
-                <label class="toggle-row"><span data-i18n="lowVisionOn"></span><input type="checkbox" id="low-vision" class="toggle"></label>
+                <label class="toggle-row" hidden style="display:none"><span data-i18n="lowVisionOn"></span><input type="checkbox" id="low-vision" class="toggle"></label>
                 <div class="ts-row"><div class="ts-lbl" data-i18n="textSize"></div>
                     <div class="ts-btns"><button type="button" data-ts="1" style="font-size:1rem">A</button><button type="button" data-ts="2" style="font-size:1.3rem">A</button><button type="button" data-ts="3" style="font-size:1.65rem">A</button></div></div>
             </div>
@@ -3927,6 +3940,7 @@
             document.querySelectorAll('.ts-btns button').forEach(b => b.addEventListener('click', () => {
                 const v = +b.dataset.ts; applyTextSize(v); setTimeout(fitMain, 100);
                 try { localStorage.setItem('medtime_ts', v); } catch (e) { }
+                updateSettingsSummary();
                 if (navigator.vibrate) navigator.vibrate(10);
             }));
         })();
@@ -3958,7 +3972,7 @@
             set('voiceTitle', v.on ? [t('on'), v.names ? t('namesShort') : null, v.names && v.dose ? t('doseShort') : null].filter(Boolean).join(' · ') : t('off'));
             const chosen = document.querySelector('#sound-list input[name=snd]:checked');
             set('soundTitle', chosen ? chosen.parentElement.textContent.trim() : t('tapToChange'));
-            set('lowVisionTitle', document.getElementById('low-vision').checked ? t('on') : t('off'));
+            set('lowVisionTitle', (() => { let n = 1; try { n = parseInt(localStorage.getItem('medtime_ts'), 10) || 1; } catch (e) { } return ['A', 'A+', 'A++'][n - 1] || 'A'; })()); // M-067: tile = text size
             if (window.MED_THEMES) set('themeTitle', storedTheme() === 'auto' ? t('themeAuto') : themeName(MED_THEMES[curTheme()] || MED_THEMES[0]));
             set('statusTitle', lastStatusProblem ? t('statusProblem') : t('statusOk'));
         }
@@ -4016,10 +4030,22 @@
             if (Native && Native.setLowVision) { try { Native.setLowVision(on); } catch (e) { } }
         }
 
+        // M-067: 👓 button on the main screen turns low-vision on / off in one tap
+        function toggleLowVisionMain() {
+            const c = document.getElementById('low-vision');
+            c.checked = !c.checked;
+            c.dispatchEvent(new Event('change'));
+            if (navigator.vibrate) navigator.vibrate(15);
+            const d = document.createElement('div'); d.className = 'mt-toast';
+            d.textContent = '👓 ' + t('lowVisionTitle').replace(/^\S+\s/, '') + ': ' + (c.checked ? t('on') : t('off'));
+            document.body.appendChild(d); setTimeout(() => d.remove(), 2200);
+        }
         document.getElementById('low-vision').addEventListener('change', e => {
             try { localStorage.setItem('medtime_lowvision', e.target.checked ? '1' : '0'); } catch (err) { }
             // M-065: turning low-vision off brings everything back to normal, also the text size
             if (!e.target.checked) { applyTextSize(1); try { localStorage.setItem('medtime_ts', 1); } catch (err) { } setTimeout(fitMain, 100); }
+            // M-067: after choosing, back to the main screen
+            setTimeout(() => { closeTiles(); closeSettingsPage(); }, 350);
             applyLowVision(e.target.checked);
             updateSettingsSummary();
         });
