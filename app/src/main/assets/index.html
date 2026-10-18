@@ -1323,7 +1323,8 @@
         @keyframes floatY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 
         /* M-016: medicine name suggestions */
-        .name-wrap { position: relative; }
+        .name-wrap { position: relative; width: 100%; }
+        .name-wrap input { width: 100%; box-sizing: border-box; }
         .card { position: relative; z-index: 5; }
         .name-wrap:focus-within, .item-row:focus-within { z-index: 50; }
         .suggest {
@@ -1344,8 +1345,52 @@
         .sug b { font-weight: 800; }
         .sug small { color: #a5b4fc; font-size: 0.9rem; }
         .sug .ico { font-size: 1.3rem; }
+        .sug .sug-dose { font-style: normal; font-size: 0.85rem; color: #fde68a; background: rgba(250, 204, 21, 0.12); padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
         html.lowvision .sug { background: #000; color: #ffeb3b; font-size: 1.5rem; outline: 2px solid #ffeb3b; }
         html.lowvision #med-form input[type=text] { background: #000 !important; outline: 3px solid #ffeb3b !important; animation: none; }
+
+        /* ================= M-019: form fits one screen + contrast halo ================= */
+        .hero-space { height: 14vh !important; min-height: 96px !important; }
+        #med-form { gap: 8px !important; }
+        #med-form .form-group, #item-rows { gap: 6px !important; }
+        .item-row { padding: 2px !important; gap: 6px !important; }
+        .item-head { font-size: 0.95rem; min-height: 26px; }
+        .field-label { font-size: 0.9rem !important; margin: 0 !important; }
+        .type-grid { grid-template-columns: repeat(6, 1fr) !important; gap: 6px !important; }
+        .type-btn { padding: 8px 2px !important; font-size: 0.78rem !important; border-radius: 16px !important; }
+        .type-btn .ico { font-size: 1.45rem !important; }
+        #med-form input[type=text] { padding: 11px 16px !important; font-size: 1.15rem !important; }
+        .time-btn { font-size: 2.4rem !important; padding: 2px !important; }
+        button.btn-add-item { padding: 6px !important; }
+        button.btn-add { padding: 13px !important; }
+        @media (max-height: 700px) {
+            .hero-space { height: 9vh !important; min-height: 60px !important; }
+            .type-btn span:not(.ico) { display: none; }
+        }
+
+        /* contrast halo: darkens and blurs whatever is behind (so light text always reads),
+           with a soft dark glow inside and a faint light glow outside. Works on bright and dark spots */
+        #med-form input[type=text], .type-btn, .time-btn, button.btn-add-item, .med-item {
+            backdrop-filter: blur(10px) brightness(0.55) saturate(1.4) !important;
+            -webkit-backdrop-filter: blur(10px) brightness(0.55) saturate(1.4) !important;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.16),
+                0 0 16px 3px rgba(3, 5, 20, 0.55),
+                0 0 34px 6px rgba(125, 211, 252, 0.16),
+                0 12px 24px rgba(0, 0, 0, 0.45) !important;
+        }
+        .type-btn.sel {
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                0 0 16px 3px rgba(3, 5, 20, 0.5),
+                0 0 30px 6px rgba(34, 211, 238, 0.65) !important;
+        }
+        .time-btn, button.btn-add-item { border-radius: 999px !important; }
+        .time-btn { background: rgba(3, 7, 25, 0.25) !important; }
+        .field-label, .item-head, button.btn-add-item, .time-btn, .type-btn {
+            text-shadow: 0 0 4px rgba(0, 0, 0, 0.95), 0 0 12px rgba(0, 0, 0, 0.8), 0 0 22px rgba(56, 189, 248, 0.35) !important;
+        }
+        html.lowvision .type-btn, html.lowvision .time-btn { backdrop-filter: none !important; background: #000 !important; }
     </style>
 </head>
 <body>
@@ -1988,7 +2033,7 @@
             const own = [];
             try {
                 JSON.parse(localStorage.getItem('medtime_list') || '[]').forEach(r =>
-                    (r.items || [{ name: r.name, type: 'pill' }]).forEach(it => { if (it && it.name) own.push({ h: it.name, e: '', t: it.type || 'pill', own: true }); }));
+                    (r.items || [{ name: r.name, type: 'pill' }]).forEach(it => { if (it && it.name) own.push({ h: it.name, e: '', t: it.type || 'pill', d: it.dose || '', own: true }); }));
             } catch (e) { }
             const all = own.concat(window.MED_DB || []);
             const starts = [], inside = [], seen = new Set();
@@ -2001,6 +2046,20 @@
                 else if (fields.some(f => f.includes(nq))) { inside.push(m); seen.add(key); }
             });
             return starts.concat(inside).filter(m => normName(m.h) !== nq).slice(0, 6);
+        }
+        // M-018: typical dose in the current language (units are stored in Hebrew)
+        const DOSE_UNITS = {
+            en: [['מק"ג', 'mcg'], ['מ"ג', 'mg'], ['יחידות', 'units'], ['טיפות', 'drops'], ['טיפה', 'drop'], ['שאיפות', 'puffs'], ['התזות', 'sprays'], ['כדור', 'tablet'], ['כמוסה', 'capsule']],
+            fr: [['מק"ג', 'µg'], ['מ"ג', 'mg'], ['יחידות', 'unités'], ['טיפות', 'gouttes'], ['טיפה', 'goutte'], ['שאיפות', 'bouffées'], ['התזות', 'pulvérisations'], ['כדור', 'comprimé'], ['כמוסה', 'gélule']],
+            ro: [['מק"ג', 'mcg'], ['מ"ג', 'mg'], ['יחידות', 'unități'], ['טיפות', 'picături'], ['טיפה', 'picătură'], ['שאיפות', 'pufuri'], ['התזות', 'pulverizări'], ['כדור', 'comprimat'], ['כמוסה', 'capsulă']],
+            ar: [['מק"ג', 'ميكروغرام'], ['מ"ג', 'ملغ'], ['יחידות', 'وحدات'], ['טיפות', 'قطرات'], ['טיפה', 'قطرة'], ['שאיפות', 'بخات'], ['התזות', 'رشات'], ['כדור', 'حبة'], ['כמוסה', 'كبسولة']]
+        };
+        function doseText(d) {
+            if (!d) return '';
+            const map = DOSE_UNITS[LANG];
+            if (!map) return d;
+            map.forEach(([he, x]) => { d = d.split(he).join(x); });
+            return d;
         }
         function attachSuggest(row) {
             const inp = row.querySelector('.it-name');
@@ -2016,7 +2075,9 @@
                     b.className = 'sug';
                     const main = latin && m.e ? m.e : m.h;
                     const sub = latin ? m.h : m.e;
-                    b.innerHTML = `<span class="ico">${m.own ? '⭐' : (TYPE_ICON[m.t] || '💊')}</span><b></b>${sub ? '<small></small>' : ''}`;
+                    const dz = doseText(m.d);
+                    b.innerHTML = `<span class="ico">${m.own ? '⭐' : (TYPE_ICON[m.t] || '💊')}</span><b></b>${sub ? '<small></small>' : ''}${dz ? '<em class="sug-dose"></em>' : ''}`;
+                    if (dz) b.querySelector('.sug-dose').textContent = dz;
                     b.querySelector('b').textContent = main;
                     if (sub) b.querySelector('small').textContent = sub;
                     b.addEventListener('pointerdown', ev => {
@@ -2027,7 +2088,9 @@
                         close();
                         if (navigator.vibrate) navigator.vibrate(15);
                         const dose = row.querySelector('.it-dose');
-                        if (dose && !dose.value) dose.focus();
+                        // typical dose is only a suggestion: filled when empty, the user can change it
+                        if (dose && !dose.value && dz) dose.value = dz;
+                        if (dose) dose.focus();
                     });
                     box.appendChild(b);
                 });

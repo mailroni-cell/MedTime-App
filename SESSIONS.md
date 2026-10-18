@@ -24,4 +24,5 @@
 - Build 21 installed 10:35: owner: "moves and looks wonderful", but settings screen narrow and generic -> M-014.
 - Build 22 installed 10:44. Owner: no scrolling, no frames, more color/depth in background; chose icon grid -> M-015.
 - Owner: autocomplete medicine names after 2 letters -> M-016 (built-in list, recommended). Owner: frameless floating buttons/fields, centred text, capsule colour too pale -> M-017.
+- Build 24 installed 11:01. Owner accepted typical-dose idea -> M-018; form scrolls again and blends into background -> M-019. Later: first-launch language screen + opening animation with owner credit.
 - Open: owner tests stage 1 and M-004.
