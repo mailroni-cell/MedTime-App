@@ -1,0 +1,46 @@
+name: Offline voices (Piper)
+
+# M-087: builds the voice packs the app downloads once (release "voices"). Runs when tools/voices.txt changes.
+on:
+  push:
+    branches: [main]
+    paths: ['tools/voices.txt', '.github/workflows/voices.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  voices:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download and repack
+        run: |
+          set -e
+          mkdir -p out work
+          first=""
+          grep -v '^#' tools/voices.txt | while read -r id name; do
+            [ -z "$id" ] && continue
+            curl -sSfL -o work/$id.tar.bz2 "https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/$name.tar.bz2"
+            mkdir -p work/$id && tar xjf work/$id.tar.bz2 -C work/$id --strip-components=1
+            mkdir -p work/pack-$id
+            cp work/$id/*.onnx work/pack-$id/model.onnx
+            cp work/$id/tokens.txt work/pack-$id/tokens.txt
+            (cd work/pack-$id && zip -q -9 ../../out/$id.zip model.onnx tokens.txt)
+            if [ ! -d work/espeak-ng-data ]; then cp -r work/$id/espeak-ng-data work/espeak-ng-data; fi
+          done
+          # pronunciation data: shared files + only the 4 languages we use
+          cd work/espeak-ng-data
+          find . -maxdepth 1 -name '*_dict' ! -name ar_dict ! -name ro_dict ! -name fr_dict ! -name en_dict -delete
+          cd ..
+          zip -q -r -9 ../out/espeak.zip espeak-ng-data
+          cd ..
+          ls -la out
+          (cd out && sha256sum *.zip > sums.txt && cat sums.txt)
+      - name: Publish release "voices"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete voices --yes --cleanup-tag || true
+          gh release create voices out/*.zip out/sums.txt --target "${{ github.sha }}" --title "MedTime offline voices" --notes "Piper voices (sherpa-onnx), downloaded once by the app" --prerelease

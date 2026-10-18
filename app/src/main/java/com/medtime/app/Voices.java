@@ -54,7 +54,7 @@ class Voices {
     /** Applies the chosen voice to a ready TTS (used by the reminder service). */
     static void apply(Context ctx, TextToSpeech t) {
         String name = chosen(ctx);
-        if (name.isEmpty()) return;
+        if (name.isEmpty() || Piper.isPiper(name)) return;
         try {
             for (Voice v : forLang(ctx, t)) if (v.getName().equals(name)) { t.setVoice(v); return; }
         } catch (Exception ignored) { }
@@ -81,7 +81,10 @@ class Voices {
                     arr.put(new JSONObject().put("name", v.getName()).put("local", !v.isNetworkConnectionRequired())
                             .put("installed", !notInstalled).put("country", v.getLocale().getCountry()));
                 }
-                o.put("ok", ready).put("voices", arr).put("chosen", chosen(a));
+                // M-087: the offline Piper voices of this language (downloaded once by the app)
+                JSONArray pv = Piper.list(a, norm(I18n.lang(a)));
+                for (int i = 0; i < pv.length(); i++) arr.put(pv.get(i));
+                o.put("ok", ready).put("voices", arr).put("chosen", chosen(a)).put("piper", Piper.status(a));
             } catch (Exception ignored) { }
             final String js = "window.mtVoices && mtVoices(" + o + ")";
             a.runOnUiThread(() -> wv.evaluateJavascript(js, null));
@@ -90,6 +93,8 @@ class Voices {
 
     /** Says a sample sentence with a voice ("" = phone default for the language). */
     static void preview(Activity a, String name, String text) {
+        if (Piper.isPiper(name)) { if (tts != null) try { tts.stop(); } catch (Exception ignored) { } Piper.preview(a.getApplicationContext(), name, text); return; }
+        Piper.stop();
         withTts(a, () -> {
             if (!ready) return;
             try {

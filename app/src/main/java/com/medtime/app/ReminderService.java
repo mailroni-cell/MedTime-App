@@ -103,6 +103,19 @@ public class ReminderService extends Service {
     }
 
     private void speak(final String text, final long delayMs) {
+        // M-087: an offline Piper voice chosen in settings speaks by itself; if it cannot, the phone voice speaks
+        String pv = Voices.chosen(this);
+        if (Piper.isPiper(pv) && Piper.ready(this, pv)) {
+            saveTtsState("ok");
+            Piper.speakTwice(this, pv, text, delayMs,
+                    () -> handler.post(this::finishKeepNotification),
+                    () -> handler.post(() -> speakPhone(text, delayMs, false)));
+            return;
+        }
+        speakPhone(text, delayMs, true);
+    }
+
+    private void speakPhone(final String text, final long delayMs, final boolean piperFallback) {
         // A second reminder at the same moment replaces the first voice instead of talking over it
         if (tts != null) {
             tts.stop();
@@ -121,6 +134,15 @@ public class ReminderService extends Service {
                 if (r != TextToSpeech.LANG_MISSING_DATA && r != TextToSpeech.LANG_NOT_SUPPORTED) break;
             }
             if (r == TextToSpeech.LANG_MISSING_DATA || r == TextToSpeech.LANG_NOT_SUPPORTED) {
+                // M-087: the phone has no voice for this language: use an offline Piper voice if there is one
+                String fb = piperFallback ? Piper.firstReady(ReminderService.this, Voices.norm(I18n.lang(ReminderService.this))) : null;
+                if (fb != null) {
+                    saveTtsState("ok");
+                    Piper.speakTwice(ReminderService.this, fb, text, delayMs,
+                            () -> handler.post(ReminderService.this::finishKeepNotification),
+                            () -> handler.post(ReminderService.this::finishKeepNotification));
+                    return;
+                }
                 saveTtsState("no_voice");
                 finishKeepNotification();
                 return;
@@ -170,6 +192,7 @@ public class ReminderService extends Service {
     @Override
     public void onDestroy() {
         handler.removeCallbacksAndMessages(null);
+        Piper.stop();
         if (tts != null) {
             tts.stop();
             tts.shutdown();

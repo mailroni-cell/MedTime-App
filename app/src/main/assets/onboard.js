@@ -35,6 +35,7 @@
         doneT: ['שלום {n}! הכל מוכן 🎉', 'أهلًا {n}! كل شيء جاهز 🎉', 'Bună, {n}! Totul e gata 🎉', 'Bonjour {n} ! Tout est prêt 🎉', 'Hi {n}! All set 🎉'],
         doneT0: ['הכל מוכן 🎉', 'كل شيء جاهز 🎉', 'Totul e gata 🎉', 'Tout est prêt 🎉', 'All set 🎉'],
         doneX: ['עכשיו נאשר לטלפון לשלוח תזכורות, ואז מוסיפים את התרופה הראשונה ➕.', 'الآن نسمح للهاتف بإرسال التذكيرات، ثم نضيف أول دواء ➕.', 'Acum permitem telefonului să trimită mementouri, apoi adăugăm primul medicament ➕.', 'Autorisons maintenant les rappels, puis ajoutons le premier médicament ➕.', 'Now let the phone send reminders, then add your first medicine ➕.'],
+        again: ['✨ אשף הפתיחה מההתחלה (שם, כתב, עיצוב, קול)', '✨ معالج البداية من جديد (الاسم، الخط، التصميم، الصوت)', '✨ Asistentul de început din nou', '✨ Relancer l\'assistant de bienvenue', '✨ Run the welcome setup again'],
         doneB: ['יוצאים לדרך', 'هيا بنا', 'Începem', 'C\'est parti', 'Let\'s go'],
         // home greeting by time of day
         g: [['בוקר טוב', 'צהריים טובים', 'ערב טוב', 'לילה טוב'], ['صباح الخير', 'نهارك سعيد', 'مساء الخير', 'تصبح على خير'],
@@ -89,6 +90,22 @@
     setInterval(hello, 10 * 60 * 1000);
     const lsel = document.getElementById('lang-select');
     if (lsel) lsel.addEventListener('change', () => setTimeout(hello, 200));
+
+    // ---------- button in settings (language tile) to run the welcome setup again ----------
+    if (lsel) {
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = 'ob-again';
+        b.style.cssText = 'width:100%;margin-top:12px;border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;border-radius:16px;padding:13px 10px;font-size:1rem;font-weight:700';
+        const lbl = () => { b.textContent = pick(T.again); };
+        lbl(); lsel.addEventListener('change', () => setTimeout(lbl, 200));
+        b.onclick = () => {
+            vib();
+            if (typeof closeTiles === 'function') try { closeTiles(); } catch (e) { }
+            if (typeof closeSettingsPage === 'function') try { closeSettingsPage(); } catch (e) { }
+            setTimeout(() => window.mtOnboard(), 350);
+        };
+        lsel.parentNode.appendChild(b);
+    }
 
     // ---------- the wizard ----------
     let bg = null;

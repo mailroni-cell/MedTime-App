@@ -1,0 +1,8 @@
+# M-087: offline Piper voices (sherpa-onnx int8 builds). Each line: <pack id> <sherpa-onnx model name>
+# The workflow voices.yml repacks each one as <pack id>.zip (model.onnx + tokens.txt) on the release "voices",
+# plus espeak.zip (pronunciation data for ar/ro/fr/en). The app downloads them by itself once and then works offline.
+ar_kareem vits-piper-ar_JO-kareem-medium-int8
+ro_mihai vits-piper-ro_RO-mihai-medium-int8
+fr_upmc vits-piper-fr_FR-upmc-medium-int8
+en_amy vits-piper-en_US-amy-medium-int8
+en_ryan vits-piper-en_US-ryan-medium-int8

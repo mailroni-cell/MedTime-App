@@ -18,6 +18,10 @@
             ['Alex', 'Andrei', 'Ioana', 'Dani', 'Cristi', 'Vali', 'Sasha', 'Mihai'], ['Camille', 'Dominique', 'Claude', 'Lou', 'Sacha', 'Maxime', 'Alix', 'Eden'],
             ['Alex', 'Sam', 'Jordan', 'Robin', 'Taylor', 'Jamie', 'Casey', 'Riley']],
         net: ['🌐 צריך אינטרנט', '🌐 يحتاج إنترنت', '🌐 necesită internet', '🌐 Internet requis', '🌐 needs internet'],
+        man: ['גבר', 'رجل', 'bărbat', 'homme', 'man'],
+        woman: ['אישה', 'امرأة', 'femeie', 'femme', 'woman'],
+        offline: ['✨ קולות חדשים, עובדים בלי אינטרנט', '✨ أصوات جديدة تعمل بدون إنترنت', '✨ Voci noi, fără internet', '✨ Nouvelles voix, sans Internet', '✨ New voices, work offline'],
+        dl: ['⏳ יורד לבד בפעם הראשונה ב-Wi-Fi', '⏳ يُنزَّل تلقائيًا أول مرة عبر Wi-Fi', '⏳ Se descarcă singur prima dată pe Wi-Fi', '⏳ Se télécharge seul la première fois en Wi-Fi', '⏳ Downloads by itself once, on Wi-Fi'],
         loading: ['טוען קולות…', 'جارٍ التحميل…', 'Se încarcă…', 'Chargement…', 'Loading voices…'],
         sample: ['שלום, הגיע הזמן לקחת אקמול, כדור אחד.', 'مرحبًا، حان وقت تناول الدواء، حبة واحدة.', 'Bună, este timpul să luați medicamentul, o pastilă.', 'Bonjour, c\'est l\'heure de prendre votre médicament, un comprimé.', 'Hello, it is time to take your medicine, one tablet.']
     };
@@ -47,15 +51,21 @@
         if (!data) { list.textContent = tx('loading'); return; }
         // only voices that are on the phone and work without internet
         const nm = T.names[li()];
-        const items = [{ name: '', label: tx('def') }].concat((data.voices || []).filter(v => v.installed !== false && v.local)
-            .map((v, n) => ({ name: v.name, label: '🗣️ ' + (nm[n] || tx('voice') + ' ' + (n + 1)) })));
+        const phone = (data.voices || []).filter(v => !v.piper && v.installed !== false && v.local);
+        const items = [{ name: '', label: tx('def') }].concat(phone.map((v, n) => ({ name: v.name, label: '🗣️ ' + (nm[n] || tx('voice') + ' ' + (n + 1)) })));
+        // M-087: offline Piper voices with their own names (man / woman)
+        const pv = (data.voices || []).filter(v => v.piper);
+        if (pv.length) items.push({ head: tx('offline') });
+        pv.forEach(v => items.push({ name: v.name, label: (v.g === 'f' ? '👩 ' : '👨 ') + v.label, sub: tx(v.g === 'f' ? 'woman' : 'man') + (v.ready ? '' : ' · ' + tx('dl') + (v.pct ? ' ' + v.pct + '%' : '')), off: !v.ready }));
         items.forEach(it => {
+            if (it.head) { const h = document.createElement('div'); h.className = 'vc-note'; h.style.marginTop = '12px'; h.style.opacity = '1'; h.style.fontWeight = '700'; h.textContent = it.head; list.appendChild(h); return; }
             const r = document.createElement('div'); r.className = 'vc-row';
             r.innerHTML = '<button type="button" class="vc-pick"></button><button type="button" class="vc-play" aria-label="play">▶</button>';
             const p = r.querySelector('.vc-pick');
             p.textContent = it.label;
             if (it.sub) { const s = document.createElement('small'); s.textContent = it.sub; p.appendChild(s); }
             if ((data.chosen || '') === it.name) p.classList.add('sel');
+            if (it.off) { p.disabled = true; p.style.opacity = '.55'; r.querySelector('.vc-play').style.visibility = 'hidden'; list.appendChild(r); return; }
             p.onclick = () => {
                 data.chosen = it.name; N.setVoice(it.name);
                 list.querySelectorAll('.vc-pick').forEach(x => x.classList.toggle('sel', x === p));
@@ -66,7 +76,13 @@
             list.appendChild(r);
         });
     }
-    window.mtVoices = function (o) { data = o || { voices: [] }; draw(); };
+    let again = null;
+    window.mtVoices = function (o) {
+        data = o || { voices: [] }; draw();
+        // while voices are downloading, refresh the list now and then
+        clearTimeout(again);
+        if (data.piper && data.piper.busy && body.closest('.set-tile').classList.contains('open')) again = setTimeout(() => { try { N.listVoices(); } catch (e) { } }, 4000);
+    };
     function load() { data = null; draw(); try { N.listVoices(); } catch (e) { } }
     // load when the tile opens and when the language changes (voices are per language)
     body.closest('.set-tile').querySelector('.set-tile-head').addEventListener('click', load);
