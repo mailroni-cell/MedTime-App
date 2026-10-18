@@ -29,10 +29,10 @@
  },
  {
   "sound": "storm",
-  "file": "File:Regen en onweer - SoundCloud - Beeld en Geluid.ogg",
-  "url": "https://commons.wikimedia.org/wiki/File%3ARegen_en_onweer_-_SoundCloud_-_Beeld_en_Geluid.ogg",
-  "license": "CC BY-SA 3.0",
-  "artist": "Beeld en Geluid"
+  "file": "File:Summer thunderstorm in the woods.ogg",
+  "url": "https://commons.wikimedia.org/wiki/File%3ASummer_thunderstorm_in_the_woods.ogg",
+  "license": "CC BY-SA 4.0",
+  "artist": "Serg Childed"
  },
  {
   "sound": "zen",
@@ -40,5 +40,12 @@
   "url": "https://commons.wikimedia.org/wiki/File%3ASnowmelt_flowing_into_lake_at_Okanagan_Mountain_Provincial_Park.flac",
   "license": "CC0",
   "artist": "Extemporalist"
+ },
+ {
+  "sound": "wind",
+  "file": "File:Wind sounds 2020-05-10 1625.mp3",
+  "url": "https://commons.wikimedia.org/wiki/File%3AWind_sounds_2020-05-10_1625.mp3",
+  "license": "CC BY-SA 4.0",
+  "artist": "Robert EA Harvey"
  }
 ]

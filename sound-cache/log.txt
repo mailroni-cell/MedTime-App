@@ -1,64 +1,7 @@
-fire 99
-wind 180
-storm 31
-underwater 24
-zen 51
-FAILED rain Traceback (most recent call last):
-  File "/home/runner/work/MedTime-App/MedTime-App/tools/fetch_sounds.py", line 122, in <module>
-    try: make(key, items)
-         ^^^^^^^^^^^^^^^^
-  File "/home/runner/work/MedTime-App/MedTime-App/tools/fetch_sounds.py", line 110, in make
-    subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', src, '-filter_complex',
-  File "/usr/lib/python3.12/subprocess.py", line 571, in run
-    raise CalledProcessError(retcode, process.args,
-subprocess.CalledProcessError: Command '['ffmpeg', '-y', '-v', 'error', '-i', 'sound-cache/raw/rain_0.wav', '-filter_complex', '[0]atrim=4.000000:94.000000,asetpts=N/SR/TB[body];[0]atrim=0:4.000000,asetpts=N/SR/TB[head];[body]atrim=0:86.000000,asetpts=N/SR/TB[b1];[body]atrim=86.000000,asetpts=N/SR/TB[b2];[b2][head]acrossfade=d=4.000000:c1=qsin:c2=qsin[tail];[b1][tail]concat=n=2:v=0:a=1[o]', '-map', '[o]', '-c:a', 'libvorbis', '-q:a', '2', 'app/src/main/assets/ambient/rain.ogg']' returned non-zero exit status 234.
-
-FAILED ocean Traceback (most recent call last):
-  File "/home/runner/work/MedTime-App/MedTime-App/tools/fetch_sounds.py", line 122, in <module>
-    try: make(key, items)
-         ^^^^^^^^^^^^^^^^
-  File "/home/runner/work/MedTime-App/MedTime-App/tools/fetch_sounds.py", line 110, in make
-    subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', src, '-filter_complex',
-  File "/usr/lib/python3.12/subprocess.py", line 571, in run
-    raise CalledProcessError(retcode, process.args,
-subprocess.CalledProcessError: Command '['ffmpeg', '-y', '-v', 'error', '-i', 'sound-cache/raw/ocean_0.wav', '-filter_complex', '[0]atrim=4.000000:94.000000,asetpts=N/SR/TB[body];[0]atrim=0:4.000000,asetpts=N/SR/TB[head];[body]atrim=0:86.000000,asetpts=N/SR/TB[b1];[body]atrim=86.000000,asetpts=N/SR/TB[b2];[b2][head]acrossfade=d=4.000000:c1=qsin:c2=qsin[tail];[b1][tail]concat=n=2:v=0:a=1[o]', '-map', '[o]', '-c:a', 'libvorbis', '-q:a', '2', 'app/src/main/assets/ambient/ocean.ogg']' returned non-zero exit status 234.
-
-FAILED forest Traceback (most recent call last):
-  File "/home/runner/work/MedTime-App/MedTime-App/tools/fetch_sounds.py", line 122, in <module>
-    try: make(key, items)
-         ^^^^^^^^^^^^^^^^
-  File "/home/runner/work/MedTime-App/MedTime-App/tools/fetch_sounds.py", line 110, in make
-    subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', src, '-filter_complex',
-  File "/usr/lib/python3.12/subprocess.py", line 571, in run
-    raise CalledProcessError(retcode, process.args,
-subprocess.CalledProcessError: Command '['ffmpeg', '-y', '-v', 'error', '-i', 'sound-cache/raw/forest_0.wav', '-filter_complex', '[0]atrim=4.000000:94.000000,asetpts=N/SR/TB[body];[0]atrim=0:4.000000,asetpts=N/SR/TB[head];[body]atrim=0:86.000000,asetpts=N/SR/TB[b1];[body]atrim=86.000000,asetpts=N/SR/TB[b2];[b2][head]acrossfade=d=4.000000:c1=qsin:c2=qsin[tail];[b1][tail]concat=n=2:v=0:a=1[o]', '-map', '[o]', '-c:a', 'libvorbis', '-q:a', '2', 'app/src/main/assets/ambient/forest.ogg']' returned non-zero exit status 234.
-
-FAILED night Traceback (most recent call last):
-  File "/home/runner/work/MedTime-App/MedTime-App/tools/fetch_sounds.py", line 122, in <module>
-    try: make(key, items)
-         ^^^^^^^^^^^^^^^^
-  File "/home/runner/work/MedTime-App/MedTime-App/tools/fetch_sounds.py", line 110, in make
-    subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', src, '-filter_complex',
-  File "/usr/lib/python3.12/subprocess.py", line 571, in run
-    raise CalledProcessError(retcode, process.args,
-subprocess.CalledProcessError: Command '['ffmpeg', '-y', '-v', 'error', '-i', 'sound-cache/raw/night_0.wav', '-filter_complex', '[0]atrim=4.000000:57.045329,asetpts=N/SR/TB[body];[0]atrim=0:4.000000,asetpts=N/SR/TB[head];[body]atrim=0:49.045329,asetpts=N/SR/TB[b1];[body]atrim=49.045329,asetpts=N/SR/TB[b2];[b2][head]acrossfade=d=4.000000:c1=qsin:c2=qsin[tail];[b1][tail]concat=n=2:v=0:a=1[o]', '-map', '[o]', '-c:a', 'libvorbis', '-q:a', '2', 'app/src/main/assets/ambient/night.ogg']' returned non-zero exit status 234.
-
-FAILED storm Traceback (most recent call last):
-  File "/home/runner/work/MedTime-App/MedTime-App/tools/fetch_sounds.py", line 122, in <module>
-    try: make(key, items)
-         ^^^^^^^^^^^^^^^^
-  File "/home/runner/work/MedTime-App/MedTime-App/tools/fetch_sounds.py", line 110, in make
-    subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', src, '-filter_complex',
-  File "/usr/lib/python3.12/subprocess.py", line 571, in run
-    raise CalledProcessError(retcode, process.args,
-subprocess.CalledProcessError: Command '['ffmpeg', '-y', '-v', 'error', '-i', 'sound-cache/raw/storm_0.wav', '-filter_complex', '[0]atrim=4.000000:94.000000,asetpts=N/SR/TB[body];[0]atrim=0:4.000000,asetpts=N/SR/TB[head];[body]atrim=0:86.000000,asetpts=N/SR/TB[b1];[body]atrim=86.000000,asetpts=N/SR/TB[b2];[b2][head]acrossfade=d=4.000000:c1=qsin:c2=qsin[tail];[b1][tail]concat=n=2:v=0:a=1[o]', '-map', '[o]', '-c:a', 'libvorbis', '-q:a', '2', 'app/src/main/assets/ambient/storm.ogg']' returned non-zero exit status 234.
-
-FAILED zen Traceback (most recent call last):
-  File "/home/runner/work/MedTime-App/MedTime-App/tools/fetch_sounds.py", line 122, in <module>
-    try: make(key, items)
-         ^^^^^^^^^^^^^^^^
-  File "/home/runner/work/MedTime-App/MedTime-App/tools/fetch_sounds.py", line 110, in make
-    subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', src, '-filter_complex',
-  File "/usr/lib/python3.12/subprocess.py", line 571, in run
-    raise CalledProcessError(retcode, process.args,
-subprocess.CalledProcessError: Command '['ffmpeg', '-y', '-v', 'error', '-i', 'sound-cache/raw/zen_0.wav', '-filter_complex', '[0]atrim=4.000000:94.000000,asetpts=N/SR/TB[body];[0]atrim=0:4.000000,asetpts=N/SR/TB[head];[body]atrim=0:86.000000,asetpts=N/SR/TB[b1];[body]atrim=86.000000,asetpts=N/SR/TB[b2];[b2][head]acrossfade=d=4.000000:c1=qsin:c2=qsin[tail];[b1][tail]concat=n=2:v=0:a=1[o]', '-map', '[o]', '-c:a', 'libvorbis', '-q:a', '2', 'app/src/main/assets/ambient/zen.ogg']' returned non-zero exit status 234.
+made app/src/main/assets/ambient/rain.ogg 1240715
+made app/src/main/assets/ambient/ocean.ogg 1061799
+made app/src/main/assets/ambient/forest.ogg 861067
+made app/src/main/assets/ambient/night.ogg 634149
+made app/src/main/assets/ambient/storm.ogg 1097494
+made app/src/main/assets/ambient/zen.ogg 882735
+made app/src/main/assets/ambient/wind.ogg 1088544
