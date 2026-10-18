@@ -10,11 +10,25 @@ android {
         applicationId "com.medtime.app"
         minSdk 24
         targetSdk 34
-        versionCode 1
-        versionName "1.0"
+        // Build number from GitHub Actions, so every build has a higher version
+        versionCode 100 + (System.getenv('GITHUB_RUN_NUMBER') ?: '0').toInteger()
+        versionName "1.0." + (System.getenv('GITHUB_RUN_NUMBER') ?: '0')
+    }
+
+    // Fixed signing key: every new APK installs over the previous one on the phone
+    signingConfigs {
+        debug {
+            storeFile file('medtime-debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
     }
 
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
