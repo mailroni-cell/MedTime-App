@@ -26,7 +26,7 @@
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x060a1c, 0.035);
+    scene.fog = new THREE.FogExp2(0x120a2e, 0.03);
 
     const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 200);
     camera.position.set(0, 0.6, 12);
@@ -48,15 +48,29 @@
             vertexShader: 'varying vec3 vP; void main(){ vP = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
             fragmentShader: [
                 'uniform float uTime; varying vec3 vP;',
+                // M-015: colorful nebula sky with soft noise clouds
+                'float h3(vec3 p){ p = fract(p * 0.3183099 + 0.1); p *= 17.0; return fract(p.x * p.y * p.z * (p.x + p.y + p.z)); }',
+                'float n3(vec3 x){ vec3 i = floor(x); vec3 f = fract(x); f = f*f*(3.0-2.0*f);',
+                '  return mix(mix(mix(h3(i), h3(i+vec3(1,0,0)), f.x), mix(h3(i+vec3(0,1,0)), h3(i+vec3(1,1,0)), f.x), f.y),',
+                '             mix(mix(h3(i+vec3(0,0,1)), h3(i+vec3(1,0,1)), f.x), mix(h3(i+vec3(0,1,1)), h3(i+vec3(1,1,1)), f.x), f.y), f.z); }',
+                'float fbm(vec3 p){ float v = 0.0; float a = 0.5; for (int i = 0; i < 5; i++){ v += a * n3(p); p *= 2.03; a *= 0.5; } return v; }',
                 'void main(){',
                 '  float h = vP.y * 0.5 + 0.5;',
-                '  vec3 top = vec3(0.10, 0.06, 0.28);',
-                '  vec3 mid = vec3(0.02, 0.10, 0.22);',
-                '  vec3 bot = vec3(0.01, 0.02, 0.06);',
-                '  vec3 c = mix(bot, mid, smoothstep(0.0, 0.5, h));',
-                '  c = mix(c, top, smoothstep(0.5, 1.0, h));',
-                '  float aur = sin(vP.x * 6.0 + uTime * 0.25) * sin(vP.z * 5.0 - uTime * 0.18);',
-                '  c += vec3(0.0, 0.25, 0.35) * smoothstep(0.55, 1.0, aur) * smoothstep(0.35, 0.8, h) * 0.35;',
+                '  vec3 deep = vec3(0.02, 0.01, 0.07);',
+                '  vec3 c = mix(vec3(0.01, 0.03, 0.08), vec3(0.08, 0.03, 0.20), smoothstep(0.2, 1.0, h));',
+                '  vec3 q = vP * 2.2 + vec3(uTime * 0.012, uTime * 0.008, 0.0);',
+                '  float n1 = fbm(q);',
+                '  float n2 = fbm(q * 1.7 + vec3(5.2, 1.3, uTime * 0.01));',
+                '  vec3 violet = vec3(0.55, 0.15, 0.85);',
+                '  vec3 teal = vec3(0.05, 0.75, 0.85);',
+                '  vec3 pink = vec3(0.95, 0.25, 0.60);',
+                '  vec3 neb = mix(violet, teal, smoothstep(0.35, 0.75, n2));',
+                '  neb = mix(neb, pink, smoothstep(0.62, 0.85, n1) * 0.7);',
+                '  float density = smoothstep(0.38, 0.85, n1) * smoothstep(0.05, 0.6, h);',
+                '  c += neb * density * 0.75;',
+                '  float stars = step(0.9965, h3(floor(vP * 420.0)));',
+                '  c += vec3(stars) * smoothstep(0.3, 0.9, h) * 0.9;',
+                '  c = mix(deep, c, smoothstep(0.0, 0.25, h));',
                 '  gl_FragColor = vec4(c, 1.0);',
                 '}'
             ].join('\n')
@@ -255,6 +269,63 @@
     }));
     scene.add(particles);
 
+    // ---- M-015: far bokeh lights (big soft colored circles) ----
+    const bokehColors = [0x22d3ee, 0xa855f7, 0xf472b6, 0x38bdf8, 0x34d399, 0xfbbf24];
+    const bokeh = [];
+    for (let i = 0; i < 26; i++) {
+        const m = new THREE.SpriteMaterial({ map: dot, color: bokehColors[i % bokehColors.length], transparent: true, opacity: rnd(0.12, 0.32), depthWrite: false, blending: THREE.AdditiveBlending, fog: false });
+        const sp = new THREE.Sprite(m);
+        const sc = rnd(2.5, 7);
+        sp.scale.set(sc, sc, 1);
+        sp.position.set(rnd(-28, 28), rnd(-6, 18), rnd(-45, -20));
+        sp.userData = { ph: Math.random() * 6.28, sp: rnd(0.1, 0.35), base: sp.position.clone(), op: m.opacity };
+        scene.add(sp);
+        bokeh.push(sp);
+    }
+
+    // ---- M-015: soft colored light beams from above ----
+    const beamTex = (() => {
+        const c = document.createElement('canvas');
+        c.width = 64; c.height = 256;
+        const g = c.getContext('2d');
+        const gr = g.createLinearGradient(0, 0, 0, 256);
+        gr.addColorStop(0, 'rgba(255,255,255,0.9)');
+        gr.addColorStop(1, 'rgba(255,255,255,0)');
+        g.fillStyle = gr;
+        g.fillRect(0, 0, 64, 256);
+        const gx = g.createLinearGradient(0, 0, 64, 0);
+        gx.addColorStop(0, 'rgba(0,0,0,1)'); gx.addColorStop(0.5, 'rgba(0,0,0,0)'); gx.addColorStop(1, 'rgba(0,0,0,1)');
+        g.globalCompositeOperation = 'destination-out';
+        g.fillStyle = gx;
+        g.fillRect(0, 0, 64, 256);
+        return new THREE.CanvasTexture(c);
+    })();
+    const beams = [];
+    [[0x22d3ee, -5], [0xc084fc, 1], [0xf472b6, 6]].forEach(([color, x], i) => {
+        const beam = new THREE.Mesh(
+            new THREE.PlaneGeometry(4.5, 26),
+            new THREE.MeshBasicMaterial({ map: beamTex, color, transparent: true, opacity: 0.16, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, fog: false })
+        );
+        beam.position.set(x, 6, -16 - i * 3);
+        beam.rotation.z = (i - 1) * 0.35;
+        beam.userData = { ph: i * 2.1, rz: beam.rotation.z };
+        scene.add(beam);
+        beams.push(beam);
+    });
+
+    // ---- M-015: a second, closer layer of bigger glowing particles = more depth ----
+    const N2 = 70;
+    const p2 = new Float32Array(N2 * 3);
+    for (let i = 0; i < N2; i++) {
+        p2[i * 3] = rnd(-9, 9); p2[i * 3 + 1] = rnd(-6, 9); p2[i * 3 + 2] = rnd(2, 8);
+    }
+    const g2 = new THREE.BufferGeometry();
+    g2.setAttribute('position', new THREE.BufferAttribute(p2, 3));
+    const nearParticles = new THREE.Points(g2, new THREE.PointsMaterial({
+        size: 0.35, map: dot, color: 0xbae6fd, transparent: true, opacity: 0.55, depthWrite: false, blending: THREE.AdditiveBlending
+    }));
+    scene.add(nearParticles);
+
     // ---- bloom ----
     let composer = null, bloom = null;
     if (THREE.EffectComposer && THREE.UnrealBloomPass) {
@@ -372,6 +443,18 @@
         halo.material.opacity = 0.6 + Math.sin(t * 2) * 0.3;
         ring.material.color.setHSL(0.53 + Math.sin(t * 0.2) * 0.08, 0.9, 0.6);
 
+        bokeh.forEach(b => {
+            const u = b.userData;
+            b.position.x = u.base.x + Math.sin(t * u.sp + u.ph) * 2.5;
+            b.position.y = u.base.y + Math.cos(t * u.sp * 0.8 + u.ph) * 1.5;
+            b.material.opacity = u.op * (0.7 + 0.3 * Math.sin(t * 0.9 + u.ph));
+        });
+        beams.forEach(b => {
+            b.rotation.z = b.userData.rz + Math.sin(t * 0.15 + b.userData.ph) * 0.12;
+            b.material.opacity = 0.11 + 0.07 * Math.sin(t * 0.4 + b.userData.ph);
+        });
+        nearParticles.rotation.y = -t * 0.015;
+        nearParticles.position.y = Math.sin(t * 0.3) * 0.6;
         particles.rotation.y = t * 0.02;
         particles.position.y = Math.sin(t * 0.2) * 0.5;
 
