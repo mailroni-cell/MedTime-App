@@ -4,7 +4,10 @@ Runs on GitHub Actions (the cloud editor cannot reach Commons).
 Step 1 (always): search candidates -> sound-cache/candidates.json
 Step 2 (if tools/sounds_pick.json exists): download the picked files, make 90 s loops
          -> app/src/main/assets/ambient/<key>.ogg and sound-cache/CREDITS.json"""
-import json, os, re, subprocess, urllib.parse, urllib.request
+import json, os, re, subprocess, time, traceback, urllib.parse, urllib.request
+LOG = []
+def log(*a):
+    print(*a); LOG.append(' '.join(str(x) for x in a))
 
 UA = {'User-Agent': 'MedTime-App/1.0 (github.com/mailroni-cell/MedTime-App; calm sounds)'}
 API = 'https://commons.wikimedia.org/w/api.php'
@@ -22,6 +25,7 @@ QUERIES = {
 }
 
 def get(params):
+    time.sleep(1)
     q = API + '?' + urllib.parse.urlencode(dict(params, format='json', formatversion=2))
     with urllib.request.urlopen(urllib.request.Request(q, headers=UA), timeout=60) as r:
         return json.load(r)
@@ -39,7 +43,7 @@ def scout():
                          'gsrlimit': 40, 'prop': 'imageinfo', 'iiprop': 'url|size|mime|extmetadata|metadata',
                          'iiextmetadatafilter': 'LicenseShortName|Artist|ImageDescription'})
             except Exception as e:
-                print('search failed', q, e); continue
+                log('search failed', q, repr(e)); continue
             for p in (d.get('query') or {}).get('pages', []):
                 ii = (p.get('imageinfo') or [{}])[0]
                 em = ii.get('extmetadata') or {}
@@ -56,7 +60,7 @@ def scout():
                                     'artist': strip((em.get('Artist') or {}).get('value')),
                                     'desc': strip((em.get('ImageDescription') or {}).get('value'))}
         out[key] = sorted(seen.values(), key=lambda c: -c['len'])
-        print(key, len(out[key]))
+        log(key, len(out[key]))
     os.makedirs('sound-cache', exist_ok=True)
     json.dump(out, open('sound-cache/candidates.json', 'w'), ensure_ascii=False, indent=1)
 
@@ -97,7 +101,7 @@ def make(key, items):
                     '[body]atrim=0:%f,asetpts=N/SR/TB[b1];[body]atrim=%f,asetpts=N/SR/TB[b2];'
                     '[b2][head]acrossfade=d=%f:c1=qsin:c2=qsin[tail];[b1][tail]concat=n=2:v=0:a=1[o]' % (X, L + X, X, L - X, L - X, X),
                     '-map', '[o]', '-c:a', 'libvorbis', '-q:a', '2', out], check=True)
-    print('made', out, os.path.getsize(out))
+    log('made', out, os.path.getsize(out))
 
 CRED = []
 if __name__ == '__main__':
@@ -105,5 +109,6 @@ if __name__ == '__main__':
     if os.path.exists('tools/sounds_pick.json'):
         for key, items in json.load(open('tools/sounds_pick.json')).items():
             try: make(key, items)
-            except Exception as e: print('FAILED', key, e)
+            except Exception as e: log('FAILED', key, traceback.format_exc()[-1500:])
         json.dump(CRED, open('sound-cache/CREDITS.json', 'w'), ensure_ascii=False, indent=1)
+    open('sound-cache/log.txt', 'w').write('\n'.join(LOG))
