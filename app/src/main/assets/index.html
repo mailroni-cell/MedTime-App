@@ -2551,7 +2551,7 @@
                 if (!TX[stored]) showWelcome();
             };
             // M-057: the timeline starts on the first real frame (splash3d.js adds .go and ends it at 7.6 s); safety net here
-            window.__spGo = function () { if (sp.classList.contains('go')) return; sp.classList.add('go'); setTimeout(window.endSplash, 8600); };
+            window.__spGo = function () { if (sp.classList.contains('go')) return; sp.classList.add('go'); setTimeout(function () { if (!window.__sp3d) window.endSplash(); }, 9800); }; // M-078: with 3D, splash3d.js ends it after the finale on its own clock
             setTimeout(function () { if (!window.THREE) window.__spGo(); }, 50);
             setTimeout(window.__spGo, 4000); // no 3D frame yet: start the show anyway
             setTimeout(window.endSplash, 20000);
