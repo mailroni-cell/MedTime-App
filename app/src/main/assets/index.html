@@ -1483,6 +1483,40 @@
             animation: orbPulse 2.4s ease-in-out infinite;
         }
         @keyframes orbPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+        /* ================= M-023: smaller type buttons, list screen, dose units ================= */
+        .type-grid { gap: 8px !important; }
+        .type-btn { padding: 7px 4px !important; font-size: 0.95rem !important; border-radius: 18px !important; }
+        .type-btn .ico { font-size: 1.75rem !important; }
+        .dose-wrap { position: relative; width: 100%; }
+        .dose-wrap input { width: 100%; box-sizing: border-box; }
+        .dose-units {
+            display: none; flex-wrap: wrap; justify-content: center; gap: 6px;
+            position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 40;
+            padding: 8px; border-radius: 22px; background: rgba(10, 14, 40, 0.9);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(34, 211, 238, 0.35);
+        }
+        .dose-wrap:focus-within .dose-units { display: flex; }
+        .dose-wrap:focus-within { z-index: 50; }
+        .unit-chip {
+            border: none !important; border-radius: 999px; padding: 9px 14px; font-size: 1.05rem; font-weight: 700; color: #fff;
+            background: linear-gradient(180deg, rgba(34, 211, 238, 0.45), rgba(124, 58, 237, 0.45));
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 10px rgba(34, 211, 238, 0.6);
+        }
+        .unit-chip:active { transform: scale(0.94); }
+        .list-btn {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            border: none !important; border-radius: 999px; padding: 10px 14px; color: #fff; font-size: 1.05rem; font-weight: 700;
+            background: linear-gradient(180deg, rgba(168, 85, 247, 0.55), rgba(76, 29, 149, 0.6));
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 16px 3px rgba(168, 85, 247, 0.7), 0 0 34px 8px rgba(34, 211, 238, 0.25);
+            text-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
+        }
+        .lb-count { display: inline-flex; align-items: center; justify-content: center; min-width: 30px; height: 30px; border-radius: 50%; background: #fff; color: #6d28d9; font-weight: 900; text-shadow: none; }
+        .lb-next { font-weight: 500; opacity: 0.9; }
+        .list-btn.bump { animation: lbBump 0.7s cubic-bezier(.2, .8, .2, 1); }
+        @keyframes lbBump { 0% { transform: scale(1); } 35% { transform: scale(1.12); box-shadow: 0 0 30px 10px rgba(168, 85, 247, 1); } 100% { transform: scale(1); } }
+        .list-page { z-index: 45 !important; background: radial-gradient(ellipse at 50% 0%, rgba(76, 29, 149, 0.55), rgba(7, 11, 26, 0.94) 70%) !important; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+        .list-page .med-list { width: 100%; margin: 0; padding: 0; }
     </style>
 </head>
 <body>
@@ -1505,10 +1539,19 @@
             <input type="hidden" id="med-time">
             <button type="button" id="time-btn" class="time-btn" onclick="openTimePicker()"></button>
             <button type="submit" class="btn-add" data-i18n="addReminder"></button>
+            <button type="button" id="list-btn" class="list-btn" onclick="openListPage()"></button>
         </form>
     </div>
 
-    <ul id="med-list" class="med-list"></ul>
+    <!-- M-023: reminders list on its own screen, so the main screen never scrolls -->
+    <div id="list-page" class="settings-page list-page">
+        <div class="settings-hero">
+            <button type="button" class="close-3d" onclick="closeListPage()" data-i18n-title="close" aria-label="close">✕</button>
+            <div class="hero-gear">📋</div>
+            <h2 data-i18n="myReminders"></h2>
+        </div>
+        <ul id="med-list" class="med-list"></ul>
+    </div>
 
     <!-- M-011: settings screen (gear button) -->
     <div id="settings-page" class="settings-page">
@@ -1699,6 +1742,7 @@
           "hours": "שעה",
           "minutes": "דקות",
           "addMore": "➕ עוד תרופה / זריקה לאותה שעה",
+          "myReminders": "התזכורות שלי", "nextAt": "הבאה", "noReminders": "אין עדיין תזכורות",
           "addReminder": "הוסף תזכורת",
           "voiceTitle": "🔊 הקראה קולית בתזכורת",
           "voiceOn": "להקריא בקול",
@@ -1763,6 +1807,7 @@
           "hours": "الساعة",
           "minutes": "الدقائق",
           "addMore": "➕ دواء / حقنة أخرى في نفس الوقت",
+          "myReminders": "تذكيراتي", "nextAt": "التالي", "noReminders": "لا توجد تذكيرات بعد",
           "addReminder": "أضف تذكيرًا",
           "voiceTitle": "🔊 القراءة الصوتية في التذكير",
           "voiceOn": "القراءة بصوت عالٍ",
@@ -1827,6 +1872,7 @@
           "hours": "Ora",
           "minutes": "Minute",
           "addMore": "➕ Încă un medicament / o injecție la aceeași oră",
+          "myReminders": "Mementourile mele", "nextAt": "Următorul", "noReminders": "Încă nu există mementouri",
           "addReminder": "Adaugă memento",
           "voiceTitle": "🔊 Citire vocală la memento",
           "voiceOn": "Citește cu voce tare",
@@ -1891,6 +1937,7 @@
           "hours": "Heure",
           "minutes": "Minutes",
           "addMore": "➕ Un autre médicament / une injection à la même heure",
+          "myReminders": "Mes rappels", "nextAt": "Prochain", "noReminders": "Aucun rappel pour l’instant",
           "addReminder": "Ajouter un rappel",
           "voiceTitle": "🔊 Lecture vocale du rappel",
           "voiceOn": "Lire à voix haute",
@@ -1955,6 +2002,7 @@
           "hours": "Hour",
           "minutes": "Minutes",
           "addMore": "➕ Another medicine / injection at the same time",
+          "myReminders": "My reminders", "nextAt": "Next", "noReminders": "No reminders yet",
           "addReminder": "Add reminder",
           "voiceTitle": "🔊 Voice readout",
           "voiceOn": "Read aloud",
@@ -2060,8 +2108,24 @@
             saveMeds(meds);
         }
 
-        function renderMeds() {
+        function updateListBtn() {
             const meds = loadMeds();
+            const btn = document.getElementById('list-btn');
+            if (!meds.length) { btn.style.display = 'none'; return; }
+            btn.style.display = '';
+            const now = new Date(), cur = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+            const next = (meds.find(m => m.time > cur) || meds[0]).time;
+            btn.innerHTML = `<span class="lb-count">${meds.length}</span><span class="lb-title"></span><span class="lb-next">⏰ <span class="lb-nt"></span> ${next}</span>`;
+            btn.querySelector('.lb-title').textContent = t('myReminders');
+            btn.querySelector('.lb-nt').textContent = t('nextAt');
+        }
+        function openListPage() { document.getElementById('list-page').classList.add('open'); }
+        function closeListPage() { document.getElementById('list-page').classList.remove('open'); }
+
+        function renderMeds() {
+            updateListBtn();
+            const meds = loadMeds();
+            if (!meds.length) closeListPage();
             list.innerHTML = '';
             meds.forEach((m, idx) => {
                 const li = document.createElement('li');
@@ -2094,7 +2158,7 @@
                     `<button type="button" class="type-btn${ty === 'pill' ? ' sel' : ''}" data-type="${ty}">` +
                     `<span class="ico">${TYPE_ICON[ty]}</span><span data-i18n="type_${ty}">${t('type_' + ty)}</span></button>`).join('')}</div>` +
                 `<div class="name-wrap"><input type="text" class="it-name" autocomplete="off" data-i18n-ph="nameLabel" placeholder="${t('nameLabel')}"><div class="suggest"></div></div>` +
-                `<input type="text" class="it-dose" data-i18n-ph="doseLabel" placeholder="${t('doseLabel')}">` +
+                `<div class="dose-wrap"><input type="text" class="it-dose" data-i18n-ph="doseLabel" placeholder="${t('doseLabel')}"><div class="dose-units"></div></div>` +
                 `<div class="it-chip"><span class="chip-ico"></span><span class="chip-txt"></span><button type="button" class="chip-x">✕</button></div>`;
             row.querySelector('.it-chip').onclick = e => { if (!e.target.closest('.chip-x')) expandRow(row); };
             row.querySelector('.chip-x').onclick = () => { row.remove(); if (!itemRows.querySelector('.item-row:not(.collapsed)')) addItemRow(); numberRows(); };
@@ -2112,6 +2176,7 @@
                 numberRows();
             };
             attachSuggest(row);
+            attachUnits(row);
             itemRows.appendChild(row);
             numberRows();
         }
@@ -2181,6 +2246,40 @@
             map.forEach(([he, x]) => { d = d.split(he).join(x); });
             return d;
         }
+        // M-023: dose unit templates by medicine type (shown while typing the dose)
+        const UNITS = {
+            pill: ['מ"ג', 'כדור', 'חצי כדור', 'כמוסה'], injection: ['יחידות', 'מ"ג', 'מ"ל'],
+            drops: ['טיפות', 'טיפה בכל עין', 'מ"ל'], syrup: ['מ"ל', 'כפית', 'כף'],
+            cream: ['שכבה דקה', 'גרם', 'פעמיים ביום'], inhaler: ['שאיפות', 'התזות']
+        };
+        const UNIT_TR = {
+            en: { 'מ"ג': 'mg', 'כדור': 'tablet', 'חצי כדור': 'half tablet', 'כמוסה': 'capsule', 'יחידות': 'units', 'מ"ל': 'ml', 'טיפות': 'drops', 'טיפה בכל עין': 'drop in each eye', 'כפית': 'teaspoon', 'כף': 'tablespoon', 'שכבה דקה': 'thin layer', 'גרם': 'g', 'פעמיים ביום': 'twice a day', 'שאיפות': 'puffs', 'התזות': 'sprays' },
+            fr: { 'מ"ג': 'mg', 'כדור': 'comprimé', 'חצי כדור': 'demi-comprimé', 'כמוסה': 'gélule', 'יחידות': 'unités', 'מ"ל': 'ml', 'טיפות': 'gouttes', 'טיפה בכל עין': 'goutte dans chaque œil', 'כפית': 'cuillère à café', 'כף': 'cuillère à soupe', 'שכבה דקה': 'couche fine', 'גרם': 'g', 'פעמיים ביום': 'deux fois par jour', 'שאיפות': 'bouffées', 'התזות': 'pulvérisations' },
+            ro: { 'מ"ג': 'mg', 'כדור': 'comprimat', 'חצי כדור': 'jumătate de comprimat', 'כמוסה': 'capsulă', 'יחידות': 'unități', 'מ"ל': 'ml', 'טיפות': 'picături', 'טיפה בכל עין': 'o picătură în fiecare ochi', 'כפית': 'linguriță', 'כף': 'lingură', 'שכבה דקה': 'strat subțire', 'גרם': 'g', 'פעמיים ביום': 'de două ori pe zi', 'שאיפות': 'pufuri', 'התזות': 'pulverizări' },
+            ar: { 'מ"ג': 'ملغ', 'כדור': 'حبة', 'חצי כדור': 'نصف حبة', 'כמוסה': 'كبسولة', 'יחידות': 'وحدات', 'מ"ל': 'مل', 'טיפות': 'قطرات', 'טיפה בכל עין': 'قطرة في كل عين', 'כפית': 'ملعقة صغيرة', 'כף': 'ملعقة كبيرة', 'שכבה דקה': 'طبقة رقيقة', 'גרם': 'غ', 'פעמיים ביום': 'مرتين يوميا', 'שאיפות': 'بخات', 'התזות': 'رشات' }
+        };
+        const unitText = u => (UNIT_TR[LANG] && UNIT_TR[LANG][u]) || u;
+        function attachUnits(row) {
+            const inp = row.querySelector('.it-dose'), box = row.querySelector('.dose-units');
+            const fill = () => {
+                box.innerHTML = '';
+                (UNITS[row.dataset.type] || UNITS.pill).forEach(u => {
+                    const b = document.createElement('button');
+                    b.type = 'button'; b.className = 'unit-chip'; b.textContent = unitText(u);
+                    b.addEventListener('pointerdown', ev => {
+                        ev.preventDefault();
+                        const num = (inp.value.match(/^[\d.,\/½¼\s]+/) || [''])[0].trim();
+                        inp.value = (num || '1') + ' ' + unitText(u);
+                        if (navigator.vibrate) navigator.vibrate(10);
+                    });
+                    box.appendChild(b);
+                });
+            };
+            inp.addEventListener('focus', fill);
+            row.querySelectorAll('.type-btn').forEach(b => b.addEventListener('click', fill));
+            fill();
+        }
+
         function attachSuggest(row) {
             const inp = row.querySelector('.it-name');
             const box = row.querySelector('.suggest');
@@ -2297,6 +2396,7 @@
             saveMeds(meds);
             playChime();
             if (window.MedTime3D) window.MedTime3D.pulse(); // M-013: hero capsule celebrates
+            const lb = document.getElementById('list-btn'); lb.classList.remove('bump'); void lb.offsetWidth; lb.classList.add('bump');
 
             itemRows.innerHTML = '';
             addItemRow();
