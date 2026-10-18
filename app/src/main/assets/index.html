@@ -1437,6 +1437,20 @@
             box-shadow: 0 6px 0 #1e3a8a, 0 0 22px 4px rgba(59, 130, 246, 0.9), 0 0 48px 12px rgba(168, 85, 247, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
         }
         html.lowvision #med-form input[type=text], html.lowvision .type-btn, html.lowvision .time-btn { animation: none !important; box-shadow: 0 0 0 3px #ffeb3b !important; }
+
+        /* ================= M-021: labels inside the fields, bigger type buttons ================= */
+        .item-head { display: none !important; }
+        #item-rows.multi .item-head { display: flex !important; }
+        .type-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 10px !important; }
+        .type-btn { padding: 12px 4px !important; font-size: 1.05rem !important; gap: 4px !important; border-radius: 22px !important; }
+        .type-btn .ico { font-size: 2.2rem !important; }
+        .tb-empty { font-size: 1.3rem; font-weight: 700; letter-spacing: 0; }
+        .time-btn { min-height: 58px; }
+        @media (max-height: 760px) {
+            .type-btn { padding: 8px 4px !important; }
+            .type-btn .ico { font-size: 1.8rem !important; }
+            .hero-space { height: 9vh !important; min-height: 60px !important; }
+        }
     </style>
 </head>
 <body>
@@ -1456,9 +1470,8 @@
         <form id="med-form" class="form-group">
             <div id="item-rows" class="form-group"></div>
             <button type="button" class="btn-add-item" onclick="addItemRow()" data-i18n="addMore"></button>
-            <div class="field-label" data-i18n="timeLabel"></div>
             <input type="hidden" id="med-time">
-            <button type="button" id="time-btn" class="time-btn" onclick="openTimePicker()">--:--</button>
+            <button type="button" id="time-btn" class="time-btn" onclick="openTimePicker()"></button>
             <button type="submit" class="btn-add" data-i18n="addReminder"></button>
         </form>
     </div>
@@ -2045,14 +2058,11 @@
             row.innerHTML =
                 `<div class="item-head"><span><span data-i18n="item">${t('item')}</span> <span class="it-num"></span></span>` +
                 `<button type="button" class="btn-remove-item" data-i18n-title="remove" title="${t('remove')}">✕</button></div>` +
-                `<div class="field-label" data-i18n="typeLabel">${t('typeLabel')}</div>` +
                 `<div class="type-grid">${TYPES.map(ty =>
                     `<button type="button" class="type-btn${ty === 'pill' ? ' sel' : ''}" data-type="${ty}">` +
                     `<span class="ico">${TYPE_ICON[ty]}</span><span data-i18n="type_${ty}">${t('type_' + ty)}</span></button>`).join('')}</div>` +
-                `<div class="field-label" data-i18n="nameLabel">${t('nameLabel')}</div>` +
-                `<div class="name-wrap"><input type="text" class="it-name" autocomplete="off" data-i18n-ph="namePh" placeholder="${t('namePh')}"><div class="suggest"></div></div>` +
-                `<div class="field-label" data-i18n="doseLabel">${t('doseLabel')}</div>` +
-                `<input type="text" class="it-dose" data-i18n-ph="dosePh" placeholder="${t('dosePh')}">`;
+                `<div class="name-wrap"><input type="text" class="it-name" autocomplete="off" data-i18n-ph="nameLabel" placeholder="${t('nameLabel')}"><div class="suggest"></div></div>` +
+                `<input type="text" class="it-dose" data-i18n-ph="doseLabel" placeholder="${t('doseLabel')}">`;
             row.querySelectorAll('.type-btn').forEach(b => {
                 b.onclick = () => {
                     row.querySelectorAll('.type-btn').forEach(x => x.classList.remove('sel'));
@@ -2149,6 +2159,7 @@
 
         function numberRows() {
             [...itemRows.children].forEach((r, i) => { r.querySelector('.it-num').textContent = i + 1; });
+            itemRows.classList.toggle('multi', itemRows.children.length > 1); // M-021: "item N" only with several
         }
 
         // ---------- M-010: scroll wheel time picker ----------
@@ -2226,8 +2237,14 @@
             itemRows.innerHTML = '';
             addItemRow();
             timeInput.value = '';
-            document.getElementById('time-btn').textContent = '--:--';
+            resetTimeBtn();
         });
+
+        // M-021: label sits inside the time button until a time is chosen
+        function resetTimeBtn() {
+            document.getElementById('time-btn').innerHTML = `<span class="tb-empty">⏰ <span data-i18n="timeLabel">${t('timeLabel')}</span></span>`;
+        }
+        resetTimeBtn();
 
         applyLanguage();
         addItemRow();
