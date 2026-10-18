@@ -8,9 +8,9 @@
     const TX = {
         btn: ['רוגע', 'هدوء', 'Relaxare', 'Détente', 'Calm'],
         title: ['🌙 רגע של רוגע', '🌙 لحظة هدوء', '🌙 Clipă de liniște', '🌙 Un moment de calme', '🌙 A calm moment'],
-        scene: ['🎬 רקע', '🎬 الخلفية', '🎬 Peisaj', '🎬 Décor', '🎬 Scene'],
-        sound: ['🎵 צליל', '🎵 الصوت', '🎵 Sunet', '🎵 Son', '🎵 Sound'],
-        timer: ['⏳ כיבוי אוטומטי', '⏳ إيقاف تلقائي', '⏳ Oprire automată', '⏳ Arrêt automatique', '⏳ Sleep timer'],
+        scene: ['תצוגה', 'المشهد', 'Peisaj', 'Décor', 'Scene'],
+        sound: ['צליל', 'الصوت', 'Sunet', 'Son', 'Sound'],
+        timer: ['כיבוי אוטומטי', 'إيقاف تلقائي', 'Oprire automată', 'Arrêt automatique', 'Sleep timer'],
         vol: ['🔊 עוצמה', '🔊 مستوى الصوت', '🔊 Volum', '🔊 Volume', '🔊 Volume'],
         breath: ['🫁 הנחיית נשימה', '🫁 إرشاد التنفس', '🫁 Ghid de respirație', '🫁 Guide de respiration', '🫁 Breathing guide'],
         inhale: ['שאיפה…', 'شهيق…', 'Inspiră…', 'Inspirez…', 'Breathe in…'],
@@ -34,7 +34,7 @@
         a_forest: ['יער', 'غابة', 'Pădure', 'Forêt', 'Forest'],
         a_night: ['לילה', 'ليل', 'Noapte', 'Nuit', 'Night'],
         a_fire: ['אח בוערת', 'موقد', 'Foc', 'Feu', 'Fireplace'],
-        a_none: ['שקט', 'صمت', 'Liniște', 'Silence', 'Silence'],
+        a_none: ['ללא צליל', 'بدون صوت', 'Fără sunet', 'Sans son', 'No sound'],
         // M-068: new worlds, sounds and the tabbed menu
         s_snow: ['יער מושלג', 'غابة ثلجية', 'Pădure înzăpezită', 'Forêt enneigée', 'Snowy forest'],
         s_jelly: ['מדוזות במעמקים', 'قناديل البحر', 'Meduze', 'Méduses', 'Jellyfish deep'],
@@ -54,7 +54,7 @@
     const tx = k => (TX[k] || [k])[li()];
 
     const SCENES = [['aurora', '🌌'], ['ocean', '🌊'], ['galaxy', '🌀'], ['lanterns', '🏮'], ['orb', '🔮'], ['snow', '🌲'], ['jelly', '🪼'], ['fireflies', '✨'], ['sunset', '🌅'], ['nebula', '☁️']];
-    const SOUNDS = [['bowls', '🔔'], ['drone', '🕉️'], ['chimes', '🎐'], ['zen', '🎋'], ['rain', '🌧️'], ['ocean', '🌊'], ['forest', '🌲'], ['night', '🦗'], ['fire', '🔥'], ['wind', '🍃'], ['storm', '⛈️'], ['underwater', '🫧'], ['space', '🪐'], ['synth', '🎹'], ['none', '🔇']];
+    const SOUNDS = [['none', '🔇'], ['bowls', '🔔'], ['drone', '🕉️'], ['chimes', '🎐'], ['zen', '🎋'], ['rain', '🌧️'], ['ocean', '🌊'], ['forest', '🌲'], ['night', '🦗'], ['fire', '🔥'], ['wind', '🍃'], ['storm', '⛈️'], ['underwater', '🫧'], ['space', '🪐'], ['synth', '🎹']];
     const TIMERS = [0, 10, 20, 30, 45, 60];
     const BREATH = { inh: 4, hold: 1.5, exh: 6 }; // seconds, calm 4 / 1.5 / 6 rhythm
     const BP = BREATH.inh + BREATH.hold + BREATH.exh;
@@ -78,10 +78,12 @@
             '<div class="rx-hint"></div>' +
             '<div class="rx-panel">' +
             '<div class="rx-title"></div>' +
-            '<div class="rx-tabs"><button type="button" data-t="scene"></button><button type="button" data-t="sound"></button><button type="button" data-t="timer"></button></div>' +
-            '<div class="rx-grid" id="rx-grid"></div>' +
+            '<div class="rx-scroll">' +
+            ['scene', 'sound', 'timer'].map((t, i) => '<section class="rx-sec" data-t="' + t + '"><div class="rx-h"><span class="rx-hn">' + (i + 1) + '</span><b></b><small></small></div>' +
+                '<div class="rx-grid"></div></section>').join('') +
             '<div class="rx-line"><span data-k="vol"></span><input type="range" class="vol" id="rx-vol" min="0" max="100" step="5"></div>' +
             '<label class="rx-line"><span data-k="breath"></span><input type="checkbox" id="rx-br" class="toggle"></label>' +
+            '</div>' +
             '<button type="button" class="rx-go"></button>' +
             '</div>' +
             '<button type="button" class="rx-mini"><span class="rx-mini-ico"></span><span class="rx-mini-t"></span></button>';
@@ -94,7 +96,6 @@
         const br = root.querySelector('#rx-br');
         br.addEventListener('change', () => { st.breath = br.checked; save(); drawBreath(); poke(); });
         panel.addEventListener('pointerdown', e => { e.stopPropagation(); poke(); });
-        root.querySelectorAll('.rx-tabs button').forEach(b => b.addEventListener('click', () => { tab = b.dataset.t; drawPanel(); poke(); }));
         root.querySelector('.rx-go').addEventListener('click', e => { e.stopPropagation(); hidePanel(); });
         const mini = root.querySelector('.rx-mini');
         mini.addEventListener('pointerdown', e => e.stopPropagation());
@@ -114,10 +115,10 @@
         });
     }
     function paintVol() { const v = root.querySelector('#rx-vol'); v.value = st.vol; v.style.setProperty('--p', st.vol + '%'); }
-    let tab = 'scene';
     const vib = ms => { if (navigator.vibrate) try { navigator.vibrate(ms); } catch (e) { } };
-    function grid(list, cur, label, pick) {
-        const box = root.querySelector('#rx-grid');
+    // M-071: one list with a separate heading for each part (background / sound / timer) and the choices under it
+    function grid(t, list, cur, label, pick) {
+        const box = root.querySelector('.rx-sec[data-t=' + t + '] .rx-grid');
         box.innerHTML = list.map(([k, ico]) => '<button type="button" class="rx-tile' + (k === cur ? ' sel' : '') + '" data-k="' + k + '">' +
             '<span class="rx-ico">' + (ico || '⏳') + '</span><span class="rx-tl">' + label(k) + '</span></button>').join('');
         box.querySelectorAll('.rx-tile').forEach(b => b.addEventListener('click', () => { vib(12); pick(b.dataset.k); poke(); }));
@@ -126,16 +127,22 @@
         root.querySelector('.rx-title').textContent = tx('title');
         root.querySelectorAll('[data-k]').forEach(el => { if (!el.classList.contains('rx-tile') && TX[el.dataset.k]) el.textContent = tx(el.dataset.k); });
         root.querySelector('.rx-hint').textContent = tx('tapHint');
-        root.querySelectorAll('.rx-tabs button').forEach(b => {
-            const cur = b.dataset.t === 'scene' ? (SCENES.find(x => x[0] === st.scene) || [])[1] : b.dataset.t === 'sound' ? (SOUNDS.find(x => x[0] === st.sound) || [])[1] : (+st.timer ? st.timer + "'" : '♾️');
-            b.innerHTML = '<span>' + tx(b.dataset.t) + '</span><small>' + (cur || '') + '</small>';
-            b.classList.toggle('on', b.dataset.t === tab);
+        root.querySelectorAll('.rx-sec').forEach(sec => {
+            const t = sec.dataset.t;
+            const cur = t === 'scene' ? (SCENES.find(x => x[0] === st.scene) || [])[1] + ' ' + tx('s_' + st.scene)
+                : t === 'sound' ? (SOUNDS.find(x => x[0] === st.sound) || [])[1] + ' ' + tx('a_' + st.sound)
+                    : (+st.timer ? st.timer + ' ' + tx('min') : '♾️ ' + tx('off'));
+            sec.querySelector('.rx-h b').textContent = tx(t);
+            sec.querySelector('.rx-h small').textContent = cur;
         });
-        const next = t => setTimeout(() => { tab = t; if (open) drawPanel(); }, 450);
-        if (tab === 'scene') grid(SCENES, st.scene, k => tx('s_' + k), k => { st.scene = k; save(); setScene(k); drawPanel(); next('sound'); });
-        else if (tab === 'sound') grid(SOUNDS, st.sound, k => tx('a_' + k), k => { st.sound = k; save(); playSound(k); drawPanel(); next('timer'); });
-        else grid(TIMERS.map(m => [String(m), m ? '⏳' : '♾️']), String(st.timer), k => +k ? k + ' ' + tx('min') : tx('off'),
-            k => { st.timer = +k; save(); startTimer(); drawPanel(); setTimeout(hidePanel, 500); });
+        const goTo = t => setTimeout(() => {
+            const sec = root.querySelector('.rx-sec[data-t=' + t + ']'), box = root.querySelector('.rx-scroll');
+            if (sec && box) box.scrollTo({ top: sec.offsetTop - box.offsetTop - 4, behavior: 'smooth' });
+        }, 350);
+        grid('scene', SCENES, st.scene, k => tx('s_' + k), k => { st.scene = k; save(); setScene(k); drawPanel(); goTo('sound'); });
+        grid('sound', SOUNDS, st.sound, k => tx('a_' + k), k => { st.sound = k; save(); playSound(k); drawPanel(); goTo('timer'); });
+        grid('timer', TIMERS.map(m => [String(m), m ? '⏳' : '♾️']), String(st.timer), k => +k ? k + ' ' + tx('min') : tx('off'),
+            k => { st.timer = +k; save(); startTimer(); drawPanel(); setTimeout(hidePanel, 600); });
         root.querySelector('.rx-go').textContent = tx('go');
         root.querySelector('.rx-mini-ico').textContent = (SCENES.find(x => x[0] === st.scene) || ['', '🌙'])[1];
         root.querySelector('.rx-mini-t').textContent = tx('menu');
@@ -143,7 +150,7 @@
         root.querySelector('#rx-br').checked = !!st.breath;
         drawBreath();
     }
-    function hidePanel() { clearTimeout(hideT); root.classList.add('rx-hide'); tab = 'scene'; }
+    function hidePanel() { clearTimeout(hideT); root.classList.add('rx-hide'); }
     function poke() { clearTimeout(hideT); root.classList.remove('rx-hide'); hideT = setTimeout(hidePanel, 25000); }
     function togglePanel() { if (root.classList.contains('rx-hide')) poke(); else hidePanel(); }
     function drawBreath() { root.classList.toggle('rx-br-on', !!st.breath || st.scene === 'orb'); }
@@ -181,19 +188,18 @@
     function setVol(v) {
         vol = v; clearInterval(fadeI);
         if (master) master.gain.setTargetAtTime(v * 0.9, ac.currentTime, 0.1);
-        if (loopEl) loopEl.volume = Math.min(1, v);
     }
     function fadeVol(to, ms) {
         clearInterval(fadeI); const from = vol, t0 = Date.now();
         fadeI = setInterval(() => {
             const k = Math.min(1, (Date.now() - t0) / ms), v = from + (to - from) * k; vol = v;
-            if (master) master.gain.value = v * 0.9; if (loopEl) loopEl.volume = Math.max(0, Math.min(1, v));
+            if (master) master.gain.value = v * 0.9;
             if (k >= 1) clearInterval(fadeI);
         }, 100);
     }
     function stopSound() {
         clearTimeout(synthT); synthT = 0;
-        if (loopEl) { loopEl.pause(); loopEl.src = ''; loopEl = null; }
+        if (loopEl) { loopEl.stop(); loopEl = null; }
         nodes.forEach(n => { try { n.stop ? n.stop() : n.disconnect(); } catch (e) { } }); nodes = [];
     }
     function bowl(f, amp) {
@@ -243,6 +249,36 @@
         for (let i = 0; i < n; i++) setTimeout(() => { if (open && ac) bowl(notes[Math.floor(Math.random() * notes.length)], 0.28 + Math.random() * 0.2); }, i * (180 + Math.random() * 420));
         synthT = setTimeout(chimes, 1600 + Math.random() * 3800);
     }
+    // M-071: nature sounds with no cut and no noticeable repeat: two players take turns, each one starts at a
+    // random spot of the recording at a slightly different speed, with a slow 3 s cross-fade, plus a gentle slow swell
+    function ambPlayer(k) {
+        const els = [0, 1].map(() => { const e = new Audio('ambient/' + k + '.ogg'); e.preload = 'auto'; e.loop = true; e.volume = 0; e.preservesPitch = false; return e; });
+        const g = [0, 0], ph = Math.random() * 6.28, t0 = Date.now();
+        let cur = 0, nextAt = 0, alive = true;
+        const go = i => {
+            const e = els[i], d = isFinite(e.duration) && e.duration > 6 ? e.duration : 0;
+            const at = d ? Math.random() * (d - 8) : 0, rate = 0.93 + Math.random() * 0.14;
+            try { if (d) e.currentTime = at; } catch (x) { }
+            try { e.playbackRate = rate; } catch (x) { }
+            e.play().catch(() => { });
+            // hand over before this player reaches the end of the recording (so its loop point is never heard)
+            const room = d ? ((d - at) / rate - 3.3) * 1000 : 9000;
+            cur = i; nextAt = Date.now() + Math.max(3500, Math.min(room, 7000 + Math.random() * 6000));
+        };
+        go(0);
+        const iv = setInterval(() => {
+            if (!alive) return;
+            if (Date.now() > nextAt) go(1 - cur);
+            const tt = (Date.now() - t0) / 1000, swell = 0.82 + 0.1 * Math.sin(tt * 0.11 + ph) + 0.08 * Math.sin(tt * 0.047 + ph * 2);
+            for (let i = 0; i < 2; i++) {
+                g[i] = i === cur ? Math.min(1, g[i] + 0.017) : Math.max(0, g[i] - 0.017);
+                // equal-power cross-fade, so the loudness does not dip in the middle
+                els[i].volume = Math.max(0, Math.min(1, Math.sin(g[i] * Math.PI / 2) * vol * swell));
+                if (i !== cur && g[i] === 0 && !els[i].paused) els[i].pause();
+            }
+        }, 50);
+        return { stop() { alive = false; clearInterval(iv); els.forEach(e => { try { e.pause(); e.removeAttribute('src'); e.load(); } catch (x) { } }); } };
+    }
     function playSound(k) {
         stopSound();
         if (k === 'none' || !open) return;
@@ -251,8 +287,7 @@
             master.gain.value = vol * 0.9;
             k === 'bowls' ? bowls() : k === 'drone' ? drone() : chimes();
         } else {
-            loopEl = new Audio('ambient/' + k + '.ogg'); loopEl.loop = true; loopEl.volume = Math.min(1, vol);
-            loopEl.play().catch(() => { });
+            loopEl = ambPlayer(k);
         }
     }
 
@@ -416,14 +451,14 @@
         lanterns() {
             scene.add(skyDome(0x0b0a2a, 0x02030c, 0x5a2a3a));
             const st1 = stars(1500, 700, 40, 2.8); scene.add(st1);
-            const water = new THREE.Mesh(new THREE.PlaneGeometry(2000, 2000), new THREE.MeshBasicMaterial({ color: 0x02030a, transparent: true, opacity: 0.9, depthWrite: false }));
-            water.rotation.x = -Math.PI / 2; water.renderOrder = 5; scene.add(water);
-            const hills = new THREE.Mesh(new THREE.PlaneGeometry(2000, 40), new THREE.MeshBasicMaterial({ color: 0x050616 }));
+            const water = new THREE.Mesh(new THREE.PlaneGeometry(2000, 2000), new THREE.MeshBasicMaterial({ color: 0x1c1436, transparent: true, opacity: 0.8, depthWrite: false }));
+            water.rotation.x = -Math.PI / 2; water.renderOrder = 0; scene.add(water);
+            const hills = new THREE.Mesh(new THREE.PlaneGeometry(2000, 40), new THREE.MeshBasicMaterial({ color: 0x150f30 }));
             hills.position.set(0, 8, -420); scene.add(hills);
             const body = new THREE.CylinderGeometry(0.55, 0.42, 1.1, 14, 1, true);
             const bodyM = new THREE.MeshBasicMaterial({ color: 0xffa94d, side: THREE.DoubleSide });
             const glowM = new THREE.SpriteMaterial({ map: glowTex(), color: 0xff8a3d, transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false });
-            const reflM = new THREE.SpriteMaterial({ map: glowTex(), color: 0xff7a2e, transparent: true, opacity: 0.32, blending: THREE.AdditiveBlending, depthWrite: false });
+            const reflM = new THREE.SpriteMaterial({ map: glowTex(), color: 0xff7a2e, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending, depthWrite: false });
             const L = [];
             const reset = (o, first) => {
                 o.x = (Math.random() - 0.5) * 110; o.z = -12 - Math.random() * 170; o.y = first ? Math.random() * 70 : -2 - Math.random() * 5;
@@ -431,11 +466,11 @@
             };
             for (let i = 0; i < 90; i++) {
                 const g = new THREE.Group(), mb = new THREE.Mesh(body, bodyM), gl = new THREE.Sprite(glowM), rf = new THREE.Sprite(reflM);
-                gl.scale.set(6.5, 6.5, 1); g.add(mb); g.add(gl); rf.scale.set(4, 7, 1); rf.renderOrder = 1;
+                gl.scale.set(6.5, 6.5, 1); g.add(mb); g.add(gl); rf.scale.set(6, 14, 1); rf.renderOrder = 6;
                 scene.add(g); scene.add(rf);
                 const o = { g, rf }; reset(o, true); L.push(o);
             }
-            camera.position.set(0, 6, 30); camera.userData.base = new THREE.Vector3(0, 6, 30); camera.userData.at = new THREE.Vector3(0, 26, -200);
+            camera.position.set(0, 6, 30); camera.userData.base = new THREE.Vector3(0, 6, 30); camera.userData.at = new THREE.Vector3(0, 52, -200);
             return {
                 update(t, dt) {
                     st1.userData.u.uT.value = t;
@@ -444,7 +479,6 @@
                         const sw = Math.sin(t * 0.5 + o.ph) * 1.2;
                         o.g.position.set(o.x + sw, o.y, o.z); o.g.rotation.z = Math.sin(t * 0.8 + o.ph) * 0.08;
                         o.rf.position.set(o.x + sw, -o.y * 0.6 - 0.5, o.z); o.rf.visible = o.y < 70;
-                        o.rf.material.opacity = 0.32;
                     });
                 }
             };

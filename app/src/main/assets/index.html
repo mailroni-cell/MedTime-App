@@ -2424,6 +2424,29 @@
         html.lowvision .lv-btn .lv-on { display: flex; position: absolute; top: -6px; right: -6px; width: 26px; height: 26px; border-radius: 50%; align-items: center; justify-content: center;
             background: #22c55e; color: #000; font-style: normal; font-size: 1.05rem; font-weight: 900; box-shadow: 0 0 0 2px #000, 0 0 10px #22c55e; }
         #splash .cr-hw { max-width: calc(100vw - 32px); }
+
+        /* M-071: calm menu: a separate heading for each part, its choices under it, one vertical scroll */
+        #relax .rx-tabs { display: none !important; }
+        #relax .rx-scroll { max-height: 58vh; overflow-y: auto; overscroll-behavior: contain; padding: 0 2px 4px; }
+        #relax .rx-sec { margin: 0 0 12px; }
+        #relax .rx-h { display: flex; align-items: center; gap: 10px; padding: 9px 12px; margin: 0 0 8px; border-radius: 16px; position: sticky; top: 0; z-index: 2;
+            background: linear-gradient(180deg, rgba(76, 29, 149, 0.96), rgba(46, 16, 101, 0.96)); box-shadow: inset 0 1px 1px rgba(255,255,255,.25), 0 4px 10px rgba(0,0,0,.45); }
+        #relax .rx-hn { flex: none; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font: 900 1rem 'MTUI', sans-serif; color: #1e1b4b; background: #c4b5fd; }
+        #relax .rx-h b { font: 900 1.2rem 'MTUI', sans-serif; color: #fff; }
+        #relax .rx-h small { margin-inline-start: auto; font: 700 0.95rem 'MTUI', sans-serif; color: #ddd6fe; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 50%; }
+        #relax .rx-sec .rx-grid { max-height: none !important; overflow: visible !important; }
+        #relax .rx-sec .rx-tile { min-height: 70px; }
+        #relax.rx-hide .rx-panel { visibility: hidden; transition: transform 0.6s ease, opacity 0.6s, visibility 0s 0.6s; }
+
+        /* M-071: low-vision on: the 👓 button glows like neon, with a halo around it */
+        html.lowvision .lv-btn { background: radial-gradient(circle at 40% 35%, #f7ffb3, #d9ff00 45%, #a3e635) !important;
+            animation: lvFloat 3.6s ease-in-out infinite, lvNeon 1.8s ease-in-out infinite !important;
+            box-shadow: 0 0 0 3px #000, 0 0 0 6px #e6ff3a, 0 0 22px 8px rgba(217, 255, 0, 0.85), 0 0 50px 18px rgba(217, 255, 0, 0.45) !important; }
+        @keyframes lvNeon { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.25) drop-shadow(0 0 14px #e6ff3a); } }
+        html.lowvision .lv-btn .lv-g { filter: none; }
+        html.lowvision .lv-btn .lv-lens { fill: rgba(0, 0, 0, 0.12); stroke: #000; stroke-width: 6.5; }
+        html.lowvision .lv-btn .lv-arm { stroke: #000; stroke-width: 6.5; }
     </style>
 </head>
 <body>
