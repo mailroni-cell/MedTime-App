@@ -280,7 +280,7 @@
                     vertexShader: 'uniform float uT,uS; varying vec2 vUv; void main(){ vUv=uv; vec3 p=position; p.z+=sin(p.x*0.025+uT*0.12+uS)*28.+sin(p.x*0.07-uT*0.09)*7.; p.y+=sin(p.x*0.03+uT*0.1)*4.; gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.); }',
                     fragmentShader: 'uniform float uT,uS; uniform vec3 uC1,uC2; varying vec2 vUv; ' + NOISE +
                         'void main(){ float n=fbm(vec2(vUv.x*5.+uS+uT*0.035, uT*0.06)); float rays=noise(vec2(vUv.x*140.+n*14., uT*0.25+uS)); rays=0.35+0.65*rays*rays;' +
-                        'float top=0.45+0.5*n; float band=smoothstep(0.,0.18,vUv.y)*(1.-smoothstep(top-0.3,top,vUv.y)); float a=band*rays*(0.45+n)*1.25;' +
+                        'float top=0.45+0.5*n; float band=smoothstep(0.,0.18,vUv.y)*(1.-smoothstep(top-0.3,top,vUv.y)); float a=band*rays*(0.45+n)*1.6;' +
                         'float edge=smoothstep(0.,0.12,vUv.x)*smoothstep(1.,0.88,vUv.x); vec3 col=mix(uC1,uC2,smoothstep(0.15,0.85,vUv.y)); gl_FragColor=vec4(col*a*edge, a*edge); }'
                 });
                 mats.push(m); return m;
@@ -332,7 +332,7 @@
                 fragmentShader: 'uniform vec3 uMoon; uniform float uT; varying vec3 vW; varying vec3 vN; ' + NOISE +
                     'void main(){ vec2 q=vW.xz*0.35; float e=0.6; float n0=fbm(q+uT*0.25); vec3 N=normalize(vN+vec3(fbm(q+vec2(e,0.)+uT*0.25)-n0,0.,fbm(q+vec2(0.,e)+uT*0.25)-n0)*0.9);' +
                     'vec3 V=normalize(cameraPosition-vW); vec3 R=reflect(-V,N); float F=0.02+0.98*pow(1.-max(dot(N,V),0.),5.);' +
-                    'float sp=pow(max(dot(R,uMoon),0.),300.)*4.+pow(max(dot(R,uMoon),0.),40.)*0.22; vec3 deep=vec3(0.004,0.015,0.04); vec3 sky=vec3(0.05,0.08,0.2);' +
+                    'float sp=pow(max(dot(R,uMoon),0.),300.)*4.+pow(max(dot(R,uMoon),0.),40.)*0.22; vec3 deep=vec3(0.004,0.015,0.04); vec3 sky=vec3(0.06,0.11,0.32);' +
                     'vec3 c=mix(deep,sky,F)+sp*vec3(1.,0.94,0.78); float d=length(vW-cameraPosition); c=mix(c,vec3(0.07,0.1,0.22),smoothstep(100.,440.,d)); gl_FragColor=vec4(c,1.); }'
             });
             scene.add(new THREE.Mesh(g, m));
@@ -357,7 +357,7 @@
                 transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
                 uniforms: { uT: { value: 0 }, uMap: { value: glowTex() }, uPR: { value: renderer.getPixelRatio() } },
                 vertexShader: 'attribute vec3 color; attribute float ph; uniform float uPR; varying vec3 vC; void main(){ vC=color; vec4 mv=modelViewMatrix*vec4(position,1.); gl_PointSize=(1.+ph*2.4)*uPR*(170./-mv.z); gl_Position=projectionMatrix*mv; }',
-                fragmentShader: 'uniform sampler2D uMap; varying vec3 vC; void main(){ float a=texture2D(uMap,gl_PointCoord).a; gl_FragColor=vec4(vC*a*0.75,a); }'
+                fragmentShader: 'uniform sampler2D uMap; varying vec3 vC; void main(){ float a=texture2D(uMap,gl_PointCoord).a; gl_FragColor=vec4(vC*a*1.0,a); }'
             });
             const gal = new THREE.Points(g, m); scene.add(gal);
             const core = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex(), color: 0xffd7a0, blending: THREE.AdditiveBlending, depthWrite: false }));

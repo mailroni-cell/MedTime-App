@@ -16,7 +16,7 @@
         return;
     }
 
-    let dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+    let dpr = Math.min(window.devicePixelRatio || 1, 1.5); // M-053: lighter = smoother
     renderer.setPixelRatio(dpr);
     renderer.setSize(window.innerWidth, window.innerHeight, false);
     renderer.outputEncoding = THREE.sRGBEncoding;
@@ -68,7 +68,7 @@
                 '  if (uMode < 0.5) {',  // nebula
                 '    vec3 neb = mix(uC1, uC2, smoothstep(0.35, 0.75, n2));',
                 '    neb = mix(neb, uC3, smoothstep(0.62, 0.85, n1) * 0.7);',
-                '    c += neb * smoothstep(0.38, 0.85, n1) * smoothstep(0.05, 0.6, h) * 0.75 * uDens;',
+                '    c += neb * smoothstep(0.38, 0.85, n1) * smoothstep(0.05, 0.6, h) * 1.0 * uDens;',
                 '  } else if (uMode < 1.5) {',  // aurora curtains
                 '    float w = vP.x * 3.0 + vP.z * 2.0 + n1 * 3.0 + uTime * 0.08;',
                 '    float band = pow(abs(sin(w)), 6.0) + 0.6 * pow(abs(sin(w * 1.7 + 1.3)), 8.0);',
@@ -424,6 +424,18 @@
         composer.addPass(new THREE.RenderPass(scene, camera));
         bloom = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.45, 0.5, 0.93);
         composer.addPass(bloom);
+        // M-053: richer colours in every theme: saturation + contrast + soft vignette as the last step
+        if (THREE.ShaderPass) {
+            composer.addPass(new THREE.ShaderPass({
+                uniforms: { tDiffuse: { value: null }, uSat: { value: 1.5 }, uCon: { value: 1.12 } },
+                vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+                fragmentShader: 'uniform sampler2D tDiffuse; uniform float uSat, uCon; varying vec2 vUv;' +
+                    'void main(){ vec4 c = texture2D(tDiffuse, vUv); float l = dot(c.rgb, vec3(0.299, 0.587, 0.114));' +
+                    'vec3 col = mix(vec3(l), c.rgb, uSat); col = (col - 0.5) * uCon + 0.5 + 0.02;' +
+                    'float v = smoothstep(1.15, 0.35, length(vUv - 0.5) * 1.6); col *= mix(0.78, 1.0, v);' +
+                    'gl_FragColor = vec4(clamp(col, 0.0, 1.0), c.a); }'
+            }));
+        }
     }
 
     // ---- layout: keep the hero near the top whatever the screen shape ----
@@ -479,7 +491,7 @@
     // ---- loop with automatic quality control ----
     const clock = new THREE.Clock();
     let paused = false;
-    let running = true, frames = 0, fpsTime = 0, lowQuality = false;
+    let running = true, frames = 0, fpsTime = 0, lowQuality = false, quality = 3, sdt = 1 / 60;
     document.addEventListener('visibilitychange', () => {
         running = !document.hidden;
         if (running && !paused) { clock.getDelta(); requestAnimationFrame(loop); }
@@ -488,20 +500,22 @@
     function loop() {
         if (!running || paused) return;
         requestAnimationFrame(loop);
-        const dt = Math.min(clock.getDelta(), 0.05);
+        // M-053: while the opening screen covers everything, do not draw (the opening runs smoother)
+        const spl = document.getElementById('splash');
+        if (spl && !spl.classList.contains('out')) { clock.getDelta(); return; }
+        const rawDt = Math.min(clock.getDelta(), 0.05);
+        sdt += (rawDt - sdt) * 0.15; // M-053: smoothed step = no tiny jumps when a frame is late
+        const dt = sdt;
         const t = clock.elapsedTime;
+        frames++; fpsTime += rawDt;
 
         // quality: if the phone struggles, drop bloom and resolution once
-        frames++; fpsTime += dt;
         if (fpsTime > 3) {
             const fps = frames / fpsTime;
-            if (fps < 32 && !lowQuality) {
-                lowQuality = true;
-                dpr = 1;
-                renderer.setPixelRatio(dpr);
-                renderer.shadowMap.enabled = false;
-                resize();
-            }
+            // M-053: step down early so motion stays smooth (shadows -> resolution -> bloom)
+            if (fps < 52 && quality === 3) { quality = 2; renderer.shadowMap.enabled = false; scene.traverse(o => { if (o.material) o.material.needsUpdate = true; }); }
+            else if (fps < 48 && quality === 2) { quality = 1; dpr = Math.min(dpr, 1.15); renderer.setPixelRatio(dpr); resize(); }
+            else if (fps < 40 && quality === 1) { quality = 0; lowQuality = true; dpr = 1; renderer.setPixelRatio(dpr); if (bloom) bloom.enabled = false; resize(); }
             frames = 0; fpsTime = 0;
         }
 
@@ -573,7 +587,7 @@
             particles.position.y = Math.sin(t * 0.2) * 0.5;
         }
 
-        if (composer && !lowQuality) composer.render();
+        if (composer) composer.render();
         else renderer.render(scene, camera);
     }
     requestAnimationFrame(loop);

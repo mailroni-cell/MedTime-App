@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>MedTime</title>
+    <link rel="stylesheet" href="fonts.css">
     <!-- M-013: Three.js bundled in the app (works offline) -->
     <script src="lib/three.min.js"></script>
     <script src="lib/CopyShader.js"></script>
@@ -1866,7 +1867,6 @@
         @keyframes toastIn { 0% { opacity: 0; transform: translate(-50%, 30px) scale(0.8); } 12%, 80% { opacity: 1; transform: translate(-50%, 0) scale(1); } 100% { opacity: 0; transform: translate(-50%, -10px); } }
 
         /* ================= M-041: floating 3D MedTime logo + round exit button ================= */
-        @font-face { font-family: 'MTLogo'; src: url('fonts/fredoka-latin-700-normal.woff2') format('woff2'); font-weight: 700; font-display: block; }
         header { min-height: 64px; display: flex; justify-content: center; align-items: flex-start; }
         h1.mt-logo {
             position: relative; display: inline-block; margin: 0; font-family: 'MTLogo', 'Segoe UI', sans-serif; font-weight: 700;
@@ -1941,7 +1941,6 @@
         .wiz .af-del { margin-top: 8px; padding: 8px 18px; font-size: 1rem; }
 
         /* ================= M-043: medical title font + heartbeat line, clean power icon exit ================= */
-        @font-face { font-family: 'MTLogo2'; src: url('fonts/audiowide-latin-400-normal.woff2') format('woff2'); font-display: block; }
         h1.mt-logo, #splash .sp-title { font-family: 'MTLogo2', 'MTLogo', 'Segoe UI', sans-serif !important; font-weight: 400 !important; }
         h1.mt-logo { font-size: 2.45rem; letter-spacing: 0.01em; }
         html.fit3 h1.mt-logo { font-size: 1.95rem !important; }
@@ -2017,22 +2016,6 @@
         #relax .rx-hint { top: 16% !important; }
 
         /* ================= M-045: medical look: Rubik font (Hebrew / Arabic / Latin, offline), medical "add reminder" button ================= */
-        @font-face { font-family: 'MTUI'; font-weight: 400; font-display: swap; src: url('fonts/rubik-arabic-400-normal.woff2') format('woff2'); unicode-range: U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC,U+102E0-102FB,U+10E60-10E7E,U+10EC2-10EC4,U+10EFC-10EFF,U+1EE00-1EE03,U+1EE05-1EE1F,U+1EE21-1EE22,U+1EE24,U+1EE27,U+1EE29-1EE32,U+1EE34-1EE37,U+1EE39,U+1EE3B,U+1EE42,U+1EE47,U+1EE49,U+1EE4B,U+1EE4D-1EE4F,U+1EE51-1EE52,U+1EE54,U+1EE57,U+1EE59,U+1EE5B,U+1EE5D,U+1EE5F,U+1EE61-1EE62,U+1EE64,U+1EE67-1EE6A,U+1EE6C-1EE72,U+1EE74-1EE77,U+1EE79-1EE7C,U+1EE7E,U+1EE80-1EE89,U+1EE8B-1EE9B,U+1EEA1-1EEA3,U+1EEA5-1EEA9,U+1EEAB-1EEBB,U+1EEF0-1EEF1; }
-        @font-face { font-family: 'MTUI'; font-weight: 400; font-display: swap; src: url('fonts/rubik-hebrew-400-normal.woff2') format('woff2'); unicode-range: U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F; }
-        @font-face { font-family: 'MTUI'; font-weight: 400; font-display: swap; src: url('fonts/rubik-latin-ext-400-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
-        @font-face { font-family: 'MTUI'; font-weight: 400; font-display: swap; src: url('fonts/rubik-latin-400-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
-        @font-face { font-family: 'MTUI'; font-weight: 500; font-display: swap; src: url('fonts/rubik-arabic-500-normal.woff2') format('woff2'); unicode-range: U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC,U+102E0-102FB,U+10E60-10E7E,U+10EC2-10EC4,U+10EFC-10EFF,U+1EE00-1EE03,U+1EE05-1EE1F,U+1EE21-1EE22,U+1EE24,U+1EE27,U+1EE29-1EE32,U+1EE34-1EE37,U+1EE39,U+1EE3B,U+1EE42,U+1EE47,U+1EE49,U+1EE4B,U+1EE4D-1EE4F,U+1EE51-1EE52,U+1EE54,U+1EE57,U+1EE59,U+1EE5B,U+1EE5D,U+1EE5F,U+1EE61-1EE62,U+1EE64,U+1EE67-1EE6A,U+1EE6C-1EE72,U+1EE74-1EE77,U+1EE79-1EE7C,U+1EE7E,U+1EE80-1EE89,U+1EE8B-1EE9B,U+1EEA1-1EEA3,U+1EEA5-1EEA9,U+1EEAB-1EEBB,U+1EEF0-1EEF1; }
-        @font-face { font-family: 'MTUI'; font-weight: 500; font-display: swap; src: url('fonts/rubik-hebrew-500-normal.woff2') format('woff2'); unicode-range: U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F; }
-        @font-face { font-family: 'MTUI'; font-weight: 500; font-display: swap; src: url('fonts/rubik-latin-ext-500-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
-        @font-face { font-family: 'MTUI'; font-weight: 500; font-display: swap; src: url('fonts/rubik-latin-500-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
-        @font-face { font-family: 'MTUI'; font-weight: 700; font-display: swap; src: url('fonts/rubik-arabic-700-normal.woff2') format('woff2'); unicode-range: U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC,U+102E0-102FB,U+10E60-10E7E,U+10EC2-10EC4,U+10EFC-10EFF,U+1EE00-1EE03,U+1EE05-1EE1F,U+1EE21-1EE22,U+1EE24,U+1EE27,U+1EE29-1EE32,U+1EE34-1EE37,U+1EE39,U+1EE3B,U+1EE42,U+1EE47,U+1EE49,U+1EE4B,U+1EE4D-1EE4F,U+1EE51-1EE52,U+1EE54,U+1EE57,U+1EE59,U+1EE5B,U+1EE5D,U+1EE5F,U+1EE61-1EE62,U+1EE64,U+1EE67-1EE6A,U+1EE6C-1EE72,U+1EE74-1EE77,U+1EE79-1EE7C,U+1EE7E,U+1EE80-1EE89,U+1EE8B-1EE9B,U+1EEA1-1EEA3,U+1EEA5-1EEA9,U+1EEAB-1EEBB,U+1EEF0-1EEF1; }
-        @font-face { font-family: 'MTUI'; font-weight: 700; font-display: swap; src: url('fonts/rubik-hebrew-700-normal.woff2') format('woff2'); unicode-range: U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F; }
-        @font-face { font-family: 'MTUI'; font-weight: 700; font-display: swap; src: url('fonts/rubik-latin-ext-700-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
-        @font-face { font-family: 'MTUI'; font-weight: 700; font-display: swap; src: url('fonts/rubik-latin-700-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
-        @font-face { font-family: 'MTUI'; font-weight: 800; font-display: swap; src: url('fonts/rubik-arabic-800-normal.woff2') format('woff2'); unicode-range: U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC,U+102E0-102FB,U+10E60-10E7E,U+10EC2-10EC4,U+10EFC-10EFF,U+1EE00-1EE03,U+1EE05-1EE1F,U+1EE21-1EE22,U+1EE24,U+1EE27,U+1EE29-1EE32,U+1EE34-1EE37,U+1EE39,U+1EE3B,U+1EE42,U+1EE47,U+1EE49,U+1EE4B,U+1EE4D-1EE4F,U+1EE51-1EE52,U+1EE54,U+1EE57,U+1EE59,U+1EE5B,U+1EE5D,U+1EE5F,U+1EE61-1EE62,U+1EE64,U+1EE67-1EE6A,U+1EE6C-1EE72,U+1EE74-1EE77,U+1EE79-1EE7C,U+1EE7E,U+1EE80-1EE89,U+1EE8B-1EE9B,U+1EEA1-1EEA3,U+1EEA5-1EEA9,U+1EEAB-1EEBB,U+1EEF0-1EEF1; }
-        @font-face { font-family: 'MTUI'; font-weight: 800; font-display: swap; src: url('fonts/rubik-hebrew-800-normal.woff2') format('woff2'); unicode-range: U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F; }
-        @font-face { font-family: 'MTUI'; font-weight: 800; font-display: swap; src: url('fonts/rubik-latin-ext-800-normal.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
-        @font-face { font-family: 'MTUI'; font-weight: 800; font-display: swap; src: url('fonts/rubik-latin-800-normal.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
         body, input, select, textarea, button { font-family: 'MTUI', -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important; }
         h1.mt-logo, #splash .sp-title { font-family: 'MTLogo2', 'MTLogo', sans-serif !important; }
         button.btn-add.btn-med {
@@ -2214,6 +2197,58 @@
         .wiz .af-head { position: relative; width: 100%; max-width: 560px; min-height: 62px !important; display: flex; align-items: center; justify-content: center; margin-bottom: 4px !important; }
         .wiz .af-head h2 { margin: 0; padding: 0 58px; }
         .wiz .wz-dots { margin-top: 2px !important; }
+
+        /* M-053: phosphor (glowing monitor-green) heartbeat line: dim trace + bright travelling pulse */
+        h1.mt-logo { margin-bottom: 0.55em !important; }
+        h1.mt-logo .lg-ecg { position: absolute; left: 3%; top: 100%; margin: 0 !important; height: 0.5em !important; width: 94% !important; overflow: visible; }
+        .lg-ecg polyline, .sp-ecg polyline { fill: none; stroke-linejoin: round; stroke-linecap: round; animation: none; }
+        .lg-ecg .e-base, .sp-ecg .e-base { stroke: #22ff88 !important; stroke-width: 2.2 !important; opacity: 0.45; stroke-dasharray: none !important;
+            filter: drop-shadow(0 0 3px #22ff88) !important; }
+        .lg-ecg .e-pulse, .sp-ecg .e-pulse { stroke: #d9ffe9 !important; stroke-width: 3.2 !important; stroke-dasharray: 46 400 !important;
+            filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 6px #39ff88) drop-shadow(0 0 14px #00ff73) !important;
+            animation: ecgPulse 2.2s linear infinite !important; }
+        @keyframes ecgPulse { from { stroke-dashoffset: 446; } to { stroke-dashoffset: 0; } }
+        .sp-ecg .e-base { animation: spEcgIn 1s ease-out 3.4s both !important; }
+        .sp-ecg .e-pulse { animation: ecgPulse 1.6s linear 3.4s infinite both !important; }
+        @keyframes spEcgIn { from { opacity: 0; } to { opacity: 0.55; } }
+        .btn-med .ba-ecg polyline { stroke: #b6ffd6 !important; filter: drop-shadow(0 0 4px #39ff88); }
+
+        /* M-053: softer, rounder, raised menus (bevel light on top, shadow under, gentle theme glow) */
+        .type-btn, .af-chip:not(.type), .mw-chip, .ap-card, .med-item, .set-tile, .af-in, #med-form input[type=text], .time-btn, .day-chip, .unit-chip {
+            border-radius: 24px !important;
+        }
+        .af-chip.type, .type-btn { border-radius: 26px !important; }
+        .ap-card, .med-item, .set-tile { border-radius: 28px !important; }
+        .type-btn:not(.sel), .af-chip:not(.sel), .mw-chip, .time-btn, .day-chip:not(.sel), .unit-chip:not(.sel) {
+            box-shadow: inset 0 2px 1px rgba(255, 255, 255, 0.22), inset 0 -4px 6px rgba(0, 0, 0, 0.35), 0 6px 14px rgba(0, 0, 0, 0.45), 0 0 14px rgba(var(--gA), 0.28) !important;
+            background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0) 45%, rgba(0, 0, 0, 0.18)) !important;
+        }
+        .type-btn.sel, .af-chip.sel, .day-chip.sel, .unit-chip.sel {
+            box-shadow: inset 0 2px 1px rgba(255, 255, 255, 0.45), inset 0 -4px 6px rgba(0, 0, 0, 0.3), 0 6px 16px rgba(0, 0, 0, 0.45), 0 0 0 2px #a5f3fc, 0 0 22px rgba(34, 211, 238, 0.85) !important;
+        }
+        .af-in, #med-form input[type=text] {
+            box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.55), inset 0 -1px 0 rgba(255, 255, 255, 0.12), 0 0 0 2px rgba(var(--gA), 0.35), 0 0 16px rgba(var(--gA), 0.25) !important;
+        }
+        .list-btn, .appt-btn, .relax-btn, .wz-nav button, .page-done, .appt-new { border-radius: 30px !important; }
+        .list-btn, .appt-btn, .relax-btn {
+            box-shadow: inset 0 2px 1px rgba(255, 255, 255, 0.4), inset 0 -5px 8px rgba(0, 0, 0, 0.35), 0 8px 18px rgba(0, 0, 0, 0.5), 0 0 22px rgba(var(--gA), 0.4) !important;
+        }
+        .type-btn:active, .af-chip:active, .mw-chip:active, .list-btn:active, .appt-btn:active, .relax-btn:active { transform: translateY(3px) scale(0.98); }
+
+        /* M-054: settings + exit buttons: 3D, floating, gear turns slowly */
+        .gear-btn, .exit-btn { animation: hdrFloat 3.6s ease-in-out infinite; transition: none !important; }
+        .exit-btn { animation-delay: -1.8s; }
+        @keyframes hdrFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        .gear-btn .gear-ico { display: inline-block; font-size: 2.2rem; line-height: 1; animation: gearSpin 12s linear infinite;
+            filter: drop-shadow(0 1px 0 #475569) drop-shadow(0 2px 0 #334155) drop-shadow(0 3px 0 #1e293b) drop-shadow(0 8px 8px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 10px rgba(var(--gA), 0.8)); }
+        @keyframes gearSpin { to { transform: rotate(360deg); } }
+        .gear-btn { filter: none !important; }
+        .gear-btn:active .gear-ico { animation-duration: 1s; }
+        .exit-btn svg { width: 40px !important; height: 40px !important; }
+        .exit-btn { filter: drop-shadow(0 1px 0 #b91c1c) drop-shadow(0 2px 0 #991b1b) drop-shadow(0 3px 0 #7f1d1d) drop-shadow(0 8px 8px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 10px rgba(248, 113, 113, 0.9)) !important; }
+        .exit-btn svg path, .exit-btn svg line { stroke: #fca5a5 !important; stroke-width: 3.2 !important; }
+        .exit-btn svg line { animation: pwrGlow 2.4s ease-in-out infinite; }
+        @keyframes pwrGlow { 50% { stroke: #fff; } }
     </style>
 </head>
 <body>
@@ -2221,7 +2256,7 @@
     <div id="splash" onclick="window.endSplash && endSplash()">
         <div class="sp-stage"><div class="sp-ring"></div><div class="sp-ring r2"></div><div class="sp-ring r3"></div><div class="sp-cap"></div></div>
         <div class="sp-title"><span style="animation-delay:2.50s">M</span><span style="animation-delay:2.62s">e</span><span style="animation-delay:2.74s">d</span><span style="animation-delay:2.86s">T</span><span style="animation-delay:2.98s">i</span><span style="animation-delay:3.10s">m</span><span style="animation-delay:3.22s">e</span></div>
-        <svg class="sp-ecg" viewBox="0 0 300 40" aria-hidden="true"><polyline points="0,22 105,22 120,22 130,4 142,38 152,22 166,22 176,13 186,22 300,22"/></svg>
+        <svg class="sp-ecg" viewBox="0 0 300 40" aria-hidden="true"><polyline class="e-base" points="0,22 105,22 120,22 130,4 142,38 152,22 166,22 176,13 186,22 300,22"/><polyline class="e-pulse" points="0,22 105,22 120,22 130,4 142,38 152,22 166,22 176,13 186,22 300,22"/></svg>
         <div class="sp-tag" id="sp-tag"></div>
         <div class="sp-credit" id="sp-credit"></div>
     </div>
@@ -2311,8 +2346,8 @@
     <canvas id="bg3d"></canvas>
 
     <header>
-        <h1 class="mt-logo" aria-label="MedTime"><span class="lg-back" aria-hidden="true">MedTime</span><span class="lg-front">MedTime</span><svg class="lg-ecg" viewBox="0 0 220 20" aria-hidden="true"><polyline points="0,12 70,12 80,12 86,3 94,19 100,12 110,12 116,6 122,12 220,12"/></svg></h1>
-        <button type="button" id="gear-btn" class="gear-btn" onclick="openSettingsPage()" aria-label="Settings">⚙️<span class="badge"></span></button>
+        <h1 class="mt-logo" aria-label="MedTime"><span class="lg-back" aria-hidden="true">MedTime</span><span class="lg-front">MedTime</span><svg class="lg-ecg" viewBox="0 0 220 20" aria-hidden="true"><polyline class="e-base" points="0,12 70,12 80,12 86,3 94,19 100,12 110,12 116,6 122,12 220,12"/><polyline class="e-pulse" points="0,12 70,12 80,12 86,3 94,19 100,12 110,12 116,6 122,12 220,12"/></svg></h1>
+        <button type="button" id="gear-btn" class="gear-btn" onclick="openSettingsPage()" aria-label="Settings"><span class="gear-ico">⚙️</span><span class="badge"></span></button>
         <button type="button" id="exit-btn" class="exit-btn" onclick="exitApp()" data-i18n-title="closeApp" aria-label="close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.1 6.2a8 8 0 1 0 9.8 0"/><line x1="12" y1="2.6" x2="12" y2="11.2"/></svg></button>
     </header>
 
@@ -3648,6 +3683,7 @@
             applyThemeUI(i);
             document.body.classList.remove('theme-preview');
             renderThemes(); updateSettingsSummary();
+            if (keep) { closeTiles(); closeSettingsPage(); } // M-054: chosen -> back to the main screen
         }
         function renderThemes() {
             const box = document.getElementById('theme-grid'); if (!box || !window.MED_THEMES) return;
