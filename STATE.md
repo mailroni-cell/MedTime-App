@@ -1,13 +1,24 @@
-# MedTime - STATE (updated 2026-10-18 08:30)
+# MedTime - STATE (updated 2026-10-18 09:05)
 
 ## Where we are
 - First successful build ever on 2026-10-18 (run #10, before that 9 failed builds).
 - App today: dark Hebrew screen, small Three.js animation on top, add reminder / delete reminder. Basic.
 - Automation set up: GitHub build -> APK to PC folder -> watcher installs + launches on the phone.
 
-## Waiting
-- Owner runs `setup_autoinstall.ps1` once on the PC (registers the watcher). Then installs are automatic.
-- Owner tests the app on the phone.
+## Done and verified
+- Auto-install works: watcher registered 2026-10-18 08:58, log shows "INSTALLED + STARTED" (run #10 APK).
+
+## DECISION (owner, 2026-10-18 09:00): bring ALL features of the old rich version into MedTime
+Owner tested: "the app looks basic, without all the elements". Port everything from Cyber Pharma 3D v2.1 (Flutter, pill-reminder) into MedTime (HTML/JS + Java), in stages, each stage: build -> auto-install -> owner tests.
+Sources of the old version:
+- Google Drive "My Apps / יומן תרופות": main.dart (Google Doc id 1ExAKFz3TVaOYGdyZM2-XxDjg1eF9PSuGB_aOkhjKxpA), CHANGELOG.md (id 1nTNR1hFrIDS-08AiogiSkwpMeCS39KeD8NOKChym8uE), pubspec.yaml
+- GitHub repo mailroni-cell/pill-reminder: .github/workflows/build.yml (whole Flutter app embedded in the workflow)
+Proposed stages (owner to approve order):
+1. Real reminders: Android AlarmManager + notifications that fire when the app is closed, full-screen pop-up, sound + vibration, TTS reading of medicine name + dose (Java bridge to WebView).
+2. Doctor appointments: type, doctor, date/time, clinic address, alert before (0/15/30/60/120 min/1 day), Waze + Google Maps buttons.
+3. Dose picker by horizontal scroll [1 2 3 4 5 6 8 10] with neon highlight + haptic click.
+4. Look: 3D "pneumatic" buttons with vibration, thick frames with 4 materials (glossy polymer, brushed titanium, carbon neon, quantum gold), deep 3D layers, 14 animated 3D backgrounds (seamless loop), neon color themes.
+5. Settings screen: live preview, background / theme / frame pickers, language, 16 alert sounds with test, volume slider, accessibility + voice switches.
 
 ## Ideas (from the old Flutter version pill-reminder)
 - Voice reading (TTS) of medicine name and dose.
