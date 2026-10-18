@@ -4,7 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>MedTime</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- M-013: Three.js bundled in the app (works offline) -->
+    <script src="lib/three.min.js"></script>
+    <script src="lib/CopyShader.js"></script>
+    <script src="lib/LuminosityHighPassShader.js"></script>
+    <script src="lib/EffectComposer.js"></script>
+    <script src="lib/RenderPass.js"></script>
+    <script src="lib/ShaderPass.js"></script>
+    <script src="lib/UnrealBloomPass.js"></script>
+    <script src="lib/RoomEnvironment.js"></script>
     <style>
         :root {
             --primary: #2563eb;
@@ -593,9 +601,232 @@
             font-size: 0.85rem;
             cursor: pointer;
         }
+
+        /* ================= M-013: 3D look ================= */
+        html {
+            background: #070b1a;
+        }
+
+        body {
+            background: transparent !important;
+            perspective: 1200px;
+        }
+
+        #bg3d {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            display: block;
+            transition: opacity 0.4s;
+        }
+
+        body > *:not(#bg3d):not(script) {
+            position: relative;
+            z-index: 1;
+        }
+
+        .settings-page, .sheet-bg {
+            z-index: 40 !important;
+            position: fixed !important;
+        }
+
+        .hero-space {
+            height: 24vh;
+            min-height: 140px;
+            pointer-events: none;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            background: linear-gradient(180deg, #ffffff 0%, #7dd3fc 45%, #c084fc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.55)) drop-shadow(0 4px 2px rgba(0, 0, 0, 0.6));
+        }
+
+        /* glass cards with depth, rim light and inner gloss */
+        .card, .med-item {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.62), rgba(15, 23, 42, 0.48)) !important;
+            backdrop-filter: blur(16px) saturate(150%);
+            -webkit-backdrop-filter: blur(16px) saturate(150%);
+            border: 1px solid rgba(148, 163, 184, 0.28);
+            border-radius: 20px !important;
+            box-shadow:
+                0 1px 0 rgba(255, 255, 255, 0.18) inset,
+                0 -12px 30px rgba(56, 189, 248, 0.06) inset,
+                0 18px 40px rgba(0, 0, 0, 0.55),
+                0 4px 12px rgba(0, 0, 0, 0.4);
+            transform-style: preserve-3d;
+            animation: rise3d 0.7s cubic-bezier(.2, .8, .2, 1) both;
+        }
+
+        .card::before, .med-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: linear-gradient(120deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0) 38%);
+            pointer-events: none;
+        }
+
+        .card, .med-item {
+            position: relative;
+        }
+
+        .med-item {
+            border-right: none !important;
+            border-inline-start: 5px solid #38bdf8 !important;
+            transition: transform 0.25s ease-out;
+            will-change: transform;
+        }
+
+        .med-list .med-item:nth-child(2) { animation-delay: 0.08s; }
+        .med-list .med-item:nth-child(3) { animation-delay: 0.16s; }
+        .med-list .med-item:nth-child(4) { animation-delay: 0.24s; }
+        .med-list .med-item:nth-child(n+5) { animation-delay: 0.3s; }
+
+        @keyframes rise3d {
+            from { opacity: 0; transform: translateY(40px) rotateX(18deg) scale(0.96); }
+            to { opacity: 1; transform: none; }
+        }
+
+        .item-row {
+            background: rgba(2, 6, 23, 0.55) !important;
+            border: 1px solid rgba(56, 189, 248, 0.25) !important;
+            border-radius: 16px !important;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45) inset, 0 1px 0 rgba(255, 255, 255, 0.06);
+        }
+
+        input, select, .time-btn {
+            background: rgba(15, 23, 42, 0.75) !important;
+            border: 1px solid rgba(148, 163, 184, 0.35) !important;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5) inset;
+        }
+
+        input:focus {
+            border-color: #38bdf8 !important;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5) inset, 0 0 0 3px rgba(56, 189, 248, 0.25);
+        }
+
+        /* pneumatic 3D buttons: raised edge, glow, press down */
+        button.btn-add {
+            background: linear-gradient(180deg, #3b82f6 0%, #2563eb 55%, #1d4ed8 100%) !important;
+            border-radius: 14px !important;
+            padding: 16px !important;
+            font-size: 1.15rem !important;
+            box-shadow: 0 6px 0 #1e3a8a, 0 10px 24px rgba(37, 99, 235, 0.55), 0 1px 0 rgba(255, 255, 255, 0.4) inset;
+            transform: translateY(0);
+            transition: transform 0.08s, box-shadow 0.08s;
+        }
+
+        button.btn-add:active {
+            transform: translateY(5px);
+            box-shadow: 0 1px 0 #1e3a8a, 0 4px 10px rgba(37, 99, 235, 0.5), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+        }
+
+        .type-btn {
+            background: linear-gradient(180deg, rgba(51, 65, 85, 0.9), rgba(30, 41, 59, 0.9)) !important;
+            box-shadow: 0 4px 0 rgba(2, 6, 23, 0.9), 0 6px 14px rgba(0, 0, 0, 0.45), 0 1px 0 rgba(255, 255, 255, 0.15) inset;
+            transition: transform 0.08s, box-shadow 0.08s;
+        }
+
+        .type-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 rgba(2, 6, 23, 0.9), 0 2px 6px rgba(0, 0, 0, 0.45);
+        }
+
+        .type-btn.sel {
+            background: linear-gradient(180deg, #0e7490, #0c4a6e) !important;
+            box-shadow: 0 4px 0 #082f49, 0 0 18px rgba(56, 189, 248, 0.8), 0 1px 0 rgba(255, 255, 255, 0.3) inset !important;
+        }
+
+        .type-btn .ico {
+            filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.6));
+            transition: transform 0.3s;
+        }
+
+        .type-btn.sel .ico {
+            transform: scale(1.18) rotate(-8deg);
+        }
+
+        .time-btn {
+            font-size: 2.2rem !important;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.9)) !important;
+            color: #e0f2fe !important;
+            text-shadow: 0 0 14px rgba(56, 189, 248, 0.8);
+            box-shadow: 0 5px 0 rgba(2, 6, 23, 0.9), 0 10px 22px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.12) inset !important;
+        }
+
+        button.btn-add-item {
+            background: rgba(56, 189, 248, 0.08) !important;
+            border-radius: 14px !important;
+        }
+
+        .gear-btn {
+            filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.6));
+            transition: transform 0.6s;
+        }
+
+        .gear-btn:active {
+            transform: rotate(120deg);
+        }
+
+        .med-info h3 {
+            font-size: 1.35rem !important;
+            color: #e0f2fe;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+        }
+
+        .med-info li {
+            font-size: 1.05rem !important;
+        }
+
+        .sheet {
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.92), rgba(15, 23, 42, 0.96)) !important;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.6);
+            animation: sheetUp 0.35s cubic-bezier(.2, .8, .2, 1);
+        }
+
+        @keyframes sheetUp {
+            from { transform: translateY(100%); }
+            to { transform: none; }
+        }
+
+        .settings-page {
+            background: rgba(7, 11, 26, 0.72) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        /* wide screens / landscape: form and list side by side */
+        @media (min-width: 760px) {
+            body {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr;
+                column-gap: 14px;
+                align-content: start;
+            }
+            header, .hero-space, #main-warn {
+                grid-column: 1 / -1;
+            }
+        }
+
+        html.lowvision .card,
+        html.lowvision .med-item {
+            background: #000 !important;
+            backdrop-filter: none;
+        }
     </style>
 </head>
 <body>
+    <canvas id="bg3d"></canvas>
 
     <header>
         <h1>MedTime</h1>
@@ -604,7 +835,8 @@
 
     <div id="main-warn" class="main-warn"></div>
 
-    <div id="canvas-container"></div>
+    <!-- M-013: room for the 3D hero capsule floating at the top -->
+    <div class="hero-space"></div>
 
     <div class="card">
         <form id="med-form" class="form-group">
@@ -678,55 +910,6 @@
     </div>
 
     <script>
-        const container = document.getElementById('canvas-container');
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        
-        renderer.setSize(container.clientWidth, container.clientHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        container.appendChild(renderer.domElement);
-
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-        scene.add(ambientLight);
-        const dirLight = new THREE.DirectionalLight(0x38bdf8, 1.2);
-        dirLight.position.set(5, 5, 5);
-        scene.add(dirLight);
-
-        const pillGroup = new THREE.Group();
-        const cylinderGeo = new THREE.CylinderGeometry(0.7, 0.7, 1.2, 32);
-        const sphereGeo = new THREE.SphereGeometry(0.7, 32, 16);
-
-        const matRed = new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.3, metalness: 0.1 });
-        const matWhite = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.3, metalness: 0.1 });
-
-        const bodyMesh = new THREE.Mesh(cylinderGeo, matWhite);
-        const capTop = new THREE.Mesh(sphereGeo, matRed);
-        capTop.position.y = 0.6;
-        const capBottom = new THREE.Mesh(sphereGeo, matWhite);
-        capBottom.position.y = -0.6;
-
-        pillGroup.add(bodyMesh, capTop, capBottom);
-        pillGroup.rotation.z = Math.PI / 4;
-        scene.add(pillGroup);
-
-        camera.position.z = 4.5;
-
-        function animate() {
-            requestAnimationFrame(animate);
-            pillGroup.rotation.y += 0.015;
-            pillGroup.rotation.x += 0.008;
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        window.addEventListener('resize', () => {
-            if (!container) return;
-            camera.aspect = container.clientWidth / container.clientHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(container.clientWidth, container.clientHeight);
-        });
-
         function playChime() {
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1277,6 +1460,7 @@
             meds.sort((a, b) => a.time.localeCompare(b.time));
             saveMeds(meds);
             playChime();
+            if (window.MedTime3D) window.MedTime3D.pulse(); // M-013: hero capsule celebrates
 
             itemRows.innerHTML = '';
             addItemRow();
@@ -1297,6 +1481,19 @@
             renderStatus();
             renderSounds();
         });
+
+        // M-013: reminder cards tilt in 3D under the finger
+        list.addEventListener('pointermove', e => {
+            const card = e.target.closest('.med-item');
+            if (!card) return;
+            const r = card.getBoundingClientRect();
+            const x = (e.clientX - r.left) / r.width - 0.5;
+            const y = (e.clientY - r.top) / r.height - 0.5;
+            card.style.transform = `rotateY(${x * 10}deg) rotateX(${-y * 10}deg) translateZ(10px)`;
+        });
+        ['pointerleave', 'pointerup', 'pointercancel'].forEach(ev => list.addEventListener(ev, () => {
+            list.querySelectorAll('.med-item').forEach(c => { c.style.transform = ''; });
+        }, true));
 
         // ---------- M-011: settings screen ----------
         function openSettingsPage() {
@@ -1341,6 +1538,7 @@
 
         function applyLowVision(on) {
             document.documentElement.classList.toggle('lowvision', on);
+            if (window.MedTime3D) window.MedTime3D.setDim(on);
             document.getElementById('low-vision').checked = on;
             if (Native && Native.setLowVision) { try { Native.setLowVision(on); } catch (e) { } }
         }
@@ -1385,5 +1583,6 @@
         syncNative(loadMeds());
         renderStatus();
     </script>
+    <script src="scene3d.js"></script>
 </body>
 </html>
