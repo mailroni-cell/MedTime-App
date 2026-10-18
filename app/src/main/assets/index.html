@@ -2065,6 +2065,27 @@
             background: #ef4444; box-shadow: 0 0 8px rgba(239, 68, 68, 0.9);
         }
         .settings-page h2, .appt-page h2, .list-page h2, .af-head h2, .wiz h2 { letter-spacing: 0.01em; font-weight: 800 !important; }
+
+        /* ================= M-046: wizard in 7 short steps, nav always above the keyboard ================= */
+        html.kb-open .appt-form-page.wiz { overflow: hidden !important; height: calc(100vh - var(--kb, 0px)) !important; height: calc(100dvh - var(--kb, 0px)) !important; padding-bottom: 6px !important; }
+        html.kb-open .wiz .af-head, html.kb-open .wiz .wz-dots, html.kb-open .wiz .af-del { display: none !important; }
+        html.kb-open .wiz .wz-step-title { font-size: 1.25rem; margin-bottom: 4px; }
+        .wiz .wz-body { overflow-y: auto; overscroll-behavior: contain; padding-bottom: 8px; }
+        html.kb-open .wiz .wz-nav button { padding: 11px 10px; }
+        .wz-dots { gap: 6px !important; }
+        .wz-dots button { width: 34px !important; height: 34px !important; font-size: 1rem !important; }
+        .af-days { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .af-days .af-chip { flex-direction: column; padding: 8px 4px; font-size: 1.05rem; line-height: 1.2; }
+        .af-days .af-chip b { font-size: 1.35rem; }
+        .af-days .af-chip { display: flex !important; flex-direction: column !important; align-items: center; justify-content: center; gap: 0; }
+        .af-days .af-chip > * { display: block; white-space: nowrap; }
+        .af-sum .s-when { white-space: normal !important; }
+        .af-day-text { margin-top: 4px; }
+        .af-opt { text-align: center; color: #94a3b8; font-size: 1rem; font-weight: 700; margin-top: 4px; }
+        .af-opt-big { text-align: center; color: #e0f2fe; font-size: 1.2rem; font-weight: 800; }
+        .af-sum { background: rgba(15, 23, 42, 0.75); border: 2px solid rgba(253, 230, 138, 0.55); border-radius: 18px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+        .af-sum div { font-size: 1.15rem; font-weight: 700; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .af-sum .s-when { color: #fde68a; font-size: 1.25rem; font-weight: 900; }
     </style>
 </head>
 <body>
@@ -2204,7 +2225,6 @@
         </div>
         <button type="button" class="appt-new" onclick="openApptForm()"><span class="plus-orb">+</span><span data-tx="apptNew"></span></button>
         <div id="appt-list" class="appt-list"></div>
-        <button type="button" class="btn-test appt-test" onclick="apptTest()" data-tx="testAppt"></button>
     </div>
     <div id="appt-form-page" class="settings-page list-page appt-form-page wiz">
         <!-- M-042: appointment form as 4 short steps, no scrolling, no wheel -->
@@ -2218,7 +2238,7 @@
             <section class="wz-step" data-step="0">
                 <div id="af-types" class="af-chips af-types"></div>
                 <div class="af-lbl" data-tx="lDoctor"></div>
-                <div class="af-wrap"><input type="text" id="af-doctor" class="af-in" data-txph="phDoctor" autocomplete="off"></div>
+                <div class="af-wrap"><input type="text" id="af-doctor" class="af-in" data-txph="phDoctor" autocomplete="off" enterkeyhint="next"></div>
             </section>
             <section class="wz-step" data-step="1">
                 <div class="af-chips af-when">
@@ -2226,6 +2246,10 @@
                     <button type="button" id="af-tomorrow" class="af-chip" onclick="apptSetDay(1)" data-tx="tomorrow"></button>
                     <button type="button" id="af-other" class="af-chip af-other"><span></span><input type="date" id="af-date" tabindex="-1"></button>
                 </div>
+                <div class="af-chips af-days" id="af-days"></div>
+                <div class="af-when-text af-day-text" id="af-day-text"></div>
+            </section>
+            <section class="wz-step" data-step="2">
                 <div class="tp">
                     <div class="tp-col"><button type="button" class="tp-btn" data-tp="h+1">▲</button><div class="tp-val" id="tp-h">09</div><button type="button" class="tp-btn" data-tp="h-1">▼</button><small data-tx="hourL"></small></div>
                     <div class="tp-sep">:</div>
@@ -2234,27 +2258,34 @@
                 <div class="af-chips tp-quick" id="tp-quick"></div>
                 <div id="af-when-text" class="af-when-text"></div>
             </section>
-            <section class="wz-step" data-step="2">
-                <div class="af-wrap"><input type="text" id="af-place" class="af-in" data-txph="phPlace" autocomplete="off"></div>
-                <div class="af-wrap"><input type="text" id="af-city" class="af-in" data-txph="phCity" autocomplete="off"></div>
+            <section class="wz-step" data-step="3">
+                <div class="af-wrap"><input type="text" id="af-place" class="af-in" data-txph="phPlace" autocomplete="off" enterkeyhint="next"></div>
+                <div class="af-wrap"><input type="text" id="af-city" class="af-in" data-txph="phCity" autocomplete="off" enterkeyhint="next"></div>
                 <div class="af-row">
-                    <div class="af-wrap af-grow"><input type="text" id="af-street" class="af-in" data-txph="phStreet" autocomplete="off"></div>
-                    <div class="af-wrap af-house"><input type="text" id="af-house" class="af-in" data-txph="phHouse" inputmode="numeric" autocomplete="off"></div>
+                    <div class="af-wrap af-grow"><input type="text" id="af-street" class="af-in" data-txph="phStreet" autocomplete="off" enterkeyhint="next"></div>
+                    <div class="af-wrap af-house"><input type="text" id="af-house" class="af-in" data-txph="phHouse" inputmode="numeric" autocomplete="off" enterkeyhint="done"></div>
                 </div>
-                <button type="button" id="af-navtest" class="af-chip af-navtest"></button>
+            </section>
+            <section class="wz-step" data-step="4">
                 <div class="af-lbl" data-tx="lFund"></div>
                 <div id="af-funds" class="af-chips"></div>
                 <div class="af-row">
-                    <div class="af-wrap af-grow"><input type="tel" id="af-phone" class="af-in" data-txph="phPhone" autocomplete="off"></div>
+                    <div class="af-wrap af-grow"><input type="tel" id="af-phone" class="af-in" data-txph="phPhone" autocomplete="off" enterkeyhint="next"></div>
                     <button type="button" id="af-fundcall" class="af-chip af-fundcall"></button>
                 </div>
+                <div class="af-wrap"><input type="text" id="af-notes" class="af-in" data-txph="phNotes" autocomplete="off" enterkeyhint="done"></div>
+                <div class="af-opt" data-tx="optional"></div>
             </section>
-            <section class="wz-step" data-step="3">
-                <div class="af-lbl" data-tx="lBefore"></div>
-                <div id="af-before" class="af-chips"></div>
+            <section class="wz-step" data-step="5">
+                <div class="af-opt-big" data-tx="navAsk"></div>
+                <button type="button" id="af-navtest" class="af-chip af-navtest"></button>
                 <div class="af-lbl" data-tx="lTravel"></div>
                 <div id="af-travel" class="af-chips"></div>
-                <div class="af-wrap"><input type="text" id="af-notes" class="af-in" data-txph="phNotes" autocomplete="off"></div>
+                <div class="af-opt" data-tx="optional"></div>
+            </section>
+            <section class="wz-step" data-step="6">
+                <div class="af-lbl" data-tx="lBefore"></div>
+                <div id="af-before" class="af-chips"></div>
                 <div id="af-summary" class="af-summary"></div>
             </section>
         </div>
@@ -3512,7 +3543,13 @@
             if (kb > 0) {
                 const el = document.activeElement;
                 const page = el && el.closest ? el.closest('.settings-page') : null;
-                if (page) { // M-036: field inside a full-screen page (appointment form): scroll the page
+                const wbody = el && el.closest ? el.closest('.wz-body') : null;
+                if (wbody) { // M-046: wizard: page shrinks above the keyboard, scroll the step so the field is near the top
+                    setTimeout(() => {
+                        const r = el.getBoundingClientRect(), br = wbody.getBoundingClientRect();
+                        wbody.scrollTo({ top: wbody.scrollTop + r.top - br.top - 6, behavior: 'smooth' });
+                    }, 80);
+                } else if (page) { // M-036: field inside a full-screen page (appointment form): scroll the page
                     setTimeout(() => {
                         const visible = window.innerHeight - kb;
                         const r = el.getBoundingClientRect();

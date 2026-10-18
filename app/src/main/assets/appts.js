@@ -32,9 +32,14 @@
         lTravel: ['🚗 זמן נסיעה: תזכורת "הגיע הזמן לצאת"', '🚗 مدة الطريق: تذكير "حان وقت الخروج"', '🚗 Timp de drum: memento „e timpul să pleci”', '🚗 Temps de trajet : rappel « il est temps de partir »', '🚗 Travel time: "time to leave" reminder'],
         phNotes: ['📝 הערות (לדוגמה: לבוא בצום)', '📝 ملاحظات (مثال: الحضور صائمًا)', '📝 Note (ex.: pe nemâncate)', '📝 Notes (ex. : venir à jeun)', '📝 Notes (e.g. come fasting)'],
         stWhat: ['1. איזה תור?', '1. أي موعد؟', '1. Ce programare?', '1. Quel rendez-vous ?', '1. What appointment?'],
-        stWhen: ['2. מתי?', '2. متى؟', '2. Când?', '2. Quand ?', '2. When?'],
-        stWhere: ['3. איפה?', '3. أين؟', '3. Unde?', '3. Où ?', '3. Where?'],
-        stRemind: ['4. תזכורות וסיכום', '4. التذكيرات والملخص', '4. Mementouri și rezumat', '4. Rappels et résumé', '4. Reminders and summary'],
+        stWhen: ['2. באיזה יום?', '2. في أي يوم؟', '2. În ce zi?', '2. Quel jour ?', '2. Which day?'],
+        stTime: ['3. באיזו שעה?', '3. في أي ساعة؟', '3. La ce oră?', '3. À quelle heure ?', '3. What time?'],
+        stWhere: ['4. איפה?', '4. أين؟', '4. Unde?', '4. Où ?', '4. Where?'],
+        stMore: ['5. טלפון והערות', '5. هاتف وملاحظات', '5. Telefon și note', '5. Téléphone et notes', '5. Phone and notes'],
+        stNav: ['6. ניווט', '6. الملاحة', '6. Navigație', '6. Navigation', '6. Navigation'],
+        stRemind: ['7. תזכורת וסיכום', '7. التذكير والملخص', '7. Memento și rezumat', '7. Rappel et résumé', '7. Reminder and summary'],
+        optional: ['לא חובה. אפשר ללחוץ "הבא"', 'اختياري. يمكن الضغط "التالي"', 'Opțional. Poți apăsa „Înainte”', 'Facultatif. Vous pouvez appuyer sur « Suivant »', 'Optional. You can tap "Next"'],
+        navAsk: ['רוצים לבדוק את הדרך בווייז?', 'هل تريد فحص الطريق في Waze؟', 'Verifici drumul în Waze?', 'Vérifier le trajet dans Waze ?', 'Check the route in Waze?'],
         next: ['הבא ⬅', 'التالي ⬅', 'Înainte ➡', 'Suivant ➡', 'Next ➡'],
         back: ['➡ הקודם', '➡ السابق', '⬅ Înapoi', '⬅ Retour', '⬅ Back'],
         hourL: ['שעה', 'ساعة', 'oră', 'heure', 'hour'], minL: ['דקות', 'دقائق', 'minute', 'minutes', 'minutes'],
@@ -253,7 +258,8 @@
     }
     // M-042: the form is 4 short steps: what / when / where / reminders + summary
     let step = 0;
-    const STEP_TITLES = ['stWhat', 'stWhen', 'stWhere', 'stRemind'];
+    const STEP_TITLES = ['stWhat', 'stWhen', 'stTime', 'stWhere', 'stMore', 'stNav', 'stRemind'];
+    const LAST = STEP_TITLES.length - 1;
     function drawForm() {
         $('af-title').textContent = tt(editIdx >= 0 ? 'apptEdit' : 'apptNew');
         document.querySelectorAll('#appt-form-page [data-tx]').forEach(el => { el.textContent = tt(el.dataset.tx); });
@@ -270,7 +276,7 @@
         document.querySelectorAll('#appt-form-page .wz-step').forEach(el => el.classList.toggle('on', +el.dataset.step === step));
         $('wz-step-title').textContent = tt(STEP_TITLES[step]);
         const dots = $('wz-dots'); dots.innerHTML = '';
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i <= LAST; i++) {
             const d = document.createElement('button');
             d.type = 'button'; d.textContent = i + 1;
             d.className = i === step ? 'cur' : (i < step ? 'done' : '');
@@ -280,20 +286,21 @@
         $('wz-back').disabled = step === 0;
         $('wz-back').textContent = tt('back');
         const nx = $('wz-next');
-        nx.textContent = step === 3 ? tt('save') : tt('next');
-        nx.classList.toggle('save', step === 3);
-        if (step === 3) drawSummary();
-        if (step === 2) drawNavTest();
+        nx.textContent = step === LAST ? tt('save') : tt('next');
+        nx.classList.toggle('save', step === LAST);
+        if (step === LAST) drawSummary();
+        if (step === 5) drawNavTest();
+        $('appt-form-page').querySelector('.wz-body').scrollTop = 0;
     }
     window.wzGo = function (d) {
         readFields();
-        if (d > 0 && step === 1 && (!form.date || !form.time)) {
+        if (d > 0 && (step === 1 || step === 2) && (!form.date || !form.time)) {
             if (!form.date) { form.date = isoDate(new Date()); }
             if (!form.time) { form.time = '09:00'; }
             drawWhen();
         }
-        if (d > 0 && step === 3) { apptSave(); return; }
-        step = Math.max(0, Math.min(3, step + d));
+        if (d > 0 && step === LAST) { apptSave(); return; }
+        step = Math.max(0, Math.min(LAST, step + d));
         vib(10);
         if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
         drawStep();
@@ -317,14 +324,16 @@
         const box = $('af-summary');
         if (!box) return;
         if (!form.date || !form.time) { box.innerHTML = ''; return; }
-        box.innerHTML = cardHtml(form, -1, false, true);
-        const q = navQuery(form);
-        if (q) {
-            const b = document.createElement('button');
-            b.type = 'button'; b.className = 'af-chip af-navtest'; b.textContent = tt('navCheck') + ': ' + q;
-            b.onclick = () => { vib(15); if (N && N.openWaze) N.openWaze(q); else window.open('https://waze.com/ul?navigate=yes&q=' + encodeURIComponent(q)); };
-            box.appendChild(b);
-        }
+        const ty = TYPES.find(x => x[0] === form.type);
+        const lines = [
+            '<div class="s-when">📅 ' + esc(new Date(whenOf(form)).toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long' })) + ' · ⏰ ' + esc(form.time) + '</div>',
+            '<div>' + (ty ? ty[1] + ' ' + esc(ty[2][li()]) : '🩺') + (form.doctor ? ' · ' + esc(form.doctor) : '') + '</div>'
+        ];
+        const ad = addressText(form); if (ad) lines.push('<div>📍 ' + esc(ad) + '</div>');
+        if (form.phone) lines.push('<div>📞 ' + esc(form.phone) + '</div>');
+        lines.push('<div>🔔 ' + esc(minsText(form.before)) + '</div>');
+        if (form.travel) lines.push('<div>🚗 ' + esc(minsText(form.travel)) + '</div>');
+        box.innerHTML = '<div class="af-sum">' + lines.join('') + '</div>';
     }
     // inline time: ▲ / ▼ for hour and minutes (tap = 1 step, hold = repeat)
     function curHM() { const [h, m] = (form.time || '09:00').split(':').map(Number); return [h, m]; }
@@ -359,13 +368,35 @@
         const [h, m] = curHM();
         $('tp-h').textContent = pad2(h); $('tp-m').textContent = pad2(m);
         $('tp-quick').querySelectorAll('.af-chip').forEach(x => x.classList.toggle('sel', x.dataset.v === form.time));
+        drawDays();
+        $('af-day-text').textContent = form.date ? '📅 ' + new Date(whenOf({ date: form.date, time: '12:00' })).toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long' }) : tt('pickDay');
         $('af-when-text').textContent = form.date
             ? '📅 ' + new Date(whenOf(form)).toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long' }) + ' · ⏰ ' + form.time
             : tt('pickDay');
     }
+    function drawDays() {
+        const box = $('af-days'); if (!box) return;
+        box.innerHTML = '';
+        for (let n = 2; n < 14; n++) {
+            const d = new Date(Date.now() + n * 864e5), iso = isoDate(d);
+            const b = document.createElement('button');
+            b.type = 'button'; b.className = 'af-chip' + (form.date === iso ? ' sel' : '');
+            b.innerHTML = '<span>' + esc(d.toLocaleDateString(locale(), { weekday: 'short' })) + '</span><b>' + d.getDate() + '</b><span>' + esc(d.toLocaleDateString(locale(), { month: 'short' })) + '</span>';
+            b.onclick = () => { form.date = iso; vib(10); drawWhen(); };
+            box.appendChild(b);
+        }
+    }
     function readFields() {
         ['doctor', 'place', 'city', 'street', 'house', 'phone', 'notes'].forEach(k => { form[k] = $('af-' + k).value.trim(); });
     }
+    // M-046: "Next" on the keyboard goes to the next field, or to the next step
+    const ENTER_NEXT = { 'af-doctor': 'step', 'af-place': 'af-city', 'af-city': 'af-street', 'af-street': 'af-house', 'af-house': 'step', 'af-phone': 'af-notes', 'af-notes': 'step' };
+    document.addEventListener('keydown', e => {
+        if (e.key !== 'Enter' || !e.target || !ENTER_NEXT[e.target.id]) return;
+        e.preventDefault();
+        const nx = ENTER_NEXT[e.target.id];
+        if (nx === 'step') { e.target.blur(); wzGo(1); } else { const el = $(nx); if (el) el.focus(); }
+    });
     window.openApptForm = function (idx) {
         editIdx = typeof idx === 'number' ? idx : -1;
         form = editIdx >= 0 ? Object.assign(blank(), load()[editIdx]) : blank();
