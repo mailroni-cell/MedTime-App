@@ -823,6 +823,249 @@
             background: #000 !important;
             backdrop-filter: none;
         }
+
+        /* ================= M-014: settings screen redesign ================= */
+        .settings-page {
+            padding: max(22px, env(safe-area-inset-top)) 12px 16px !important;
+            align-items: stretch !important;
+        }
+
+        .settings-hero {
+            position: relative;
+            text-align: center;
+            padding: 6px 0 14px;
+        }
+
+        .hero-gear {
+            font-size: 4.2rem;
+            line-height: 1;
+            filter: drop-shadow(0 0 18px rgba(56, 189, 248, 0.8)) drop-shadow(0 8px 6px rgba(0, 0, 0, 0.6));
+            animation: gearSpin 14s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes gearSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        .settings-hero h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-top: 6px;
+            background: linear-gradient(180deg, #ffffff, #7dd3fc 50%, #c084fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.5));
+        }
+
+        .close-3d {
+            position: absolute;
+            top: 4px;
+            inset-inline-end: 0;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: none;
+            font-size: 1.5rem;
+            color: #fff;
+            background: radial-gradient(circle at 35% 30%, #64748b, #1e293b 70%);
+            box-shadow: 0 5px 0 #020617, 0 10px 20px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+            transition: transform 0.08s, box-shadow 0.08s;
+        }
+
+        .close-3d:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #020617, 0 4px 10px rgba(0, 0, 0, 0.6);
+        }
+
+        .set-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .set-tile {
+            flex: 0 0 auto;
+            /* five tiles share the screen height below the title */
+            min-height: max(100px, calc((100vh - 250px) / 5));
+            border-radius: 22px;
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.55));
+            backdrop-filter: blur(16px) saturate(150%);
+            -webkit-backdrop-filter: blur(16px) saturate(150%);
+            border: 1px solid rgba(148, 163, 184, 0.28);
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.16) inset, 0 16px 34px rgba(0, 0, 0, 0.55);
+            overflow: hidden;
+            animation: rise3d 0.6s cubic-bezier(.2, .8, .2, 1) both;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .set-tile:nth-child(2) { animation-delay: 0.06s; }
+        .set-tile:nth-child(3) { animation-delay: 0.12s; }
+        .set-tile:nth-child(4) { animation-delay: 0.18s; }
+        .set-tile:nth-child(5) { animation-delay: 0.24s; }
+
+        .set-tile-head {
+            flex: 1;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 18px;
+            background: transparent;
+            border: none;
+            color: var(--text);
+            text-align: start;
+        }
+
+        .set-ico {
+            flex: 0 0 64px;
+            height: 64px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            background: var(--g);
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.35), 0 10px 22px rgba(0, 0, 0, 0.5), 0 2px 0 rgba(255, 255, 255, 0.35) inset;
+        }
+
+        .set-txt {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .set-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .set-sub {
+            font-size: 1rem;
+            color: #7dd3fc;
+        }
+
+        .set-chev {
+            font-size: 1.6rem;
+            color: var(--text-muted);
+            transition: transform 0.3s;
+        }
+
+        .set-tile.open .set-chev {
+            transform: rotate(180deg);
+        }
+
+        .set-body {
+            display: none;
+            padding: 4px 18px 18px;
+        }
+
+        .set-tile.open .set-body {
+            display: block;
+            animation: rise3d 0.4s cubic-bezier(.2, .8, .2, 1) both;
+        }
+
+        .lang-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 10px;
+        }
+
+        .lang-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 8px;
+            font-size: 1.15rem;
+            color: var(--text);
+            border-radius: 14px;
+            border: 2px solid rgba(148, 163, 184, 0.3);
+            background: linear-gradient(180deg, rgba(51, 65, 85, 0.9), rgba(30, 41, 59, 0.9));
+            box-shadow: 0 4px 0 rgba(2, 6, 23, 0.9), 0 8px 16px rgba(0, 0, 0, 0.45);
+        }
+
+        .lang-btn .flag {
+            font-size: 1.5rem;
+        }
+
+        .lang-btn.sel {
+            border-color: #38bdf8;
+            background: linear-gradient(180deg, #0e7490, #0c4a6e);
+            box-shadow: 0 4px 0 #082f49, 0 0 18px rgba(56, 189, 248, 0.8);
+        }
+
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 0;
+            font-size: 1.15rem;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+        }
+
+        .toggle-row.disabled {
+            opacity: 0.4;
+        }
+
+        input.toggle {
+            appearance: none;
+            -webkit-appearance: none;
+            flex: 0 0 64px;
+            width: 64px !important;
+            height: 36px !important;
+            border-radius: 18px;
+            background: linear-gradient(180deg, #1e293b, #334155) !important;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.6) inset !important;
+            border: 1px solid rgba(148, 163, 184, 0.3) !important;
+            position: relative;
+            transition: background 0.25s;
+            padding: 0 !important;
+        }
+
+        input.toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #ffffff, #cbd5e1 70%);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
+            transition: transform 0.25s cubic-bezier(.3, 1.4, .5, 1);
+        }
+
+        input.toggle:checked {
+            background: linear-gradient(180deg, #10b981, #059669) !important;
+            box-shadow: 0 0 14px rgba(16, 185, 129, 0.7), 0 2px 4px rgba(0, 0, 0, 0.4) inset !important;
+        }
+
+        input.toggle:checked::after {
+            transform: translateX(28px);
+        }
+
+        .sound-row {
+            padding: 12px 0 !important;
+            font-size: 1.1rem;
+        }
+
+        .sound-list {
+            max-height: 46vh !important;
+        }
+
+        @media (min-width: 760px) {
+            .set-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                align-content: start;
+            }
+        }
     </style>
 </head>
 <body>
@@ -853,42 +1096,72 @@
 
     <!-- M-011: settings screen (gear button) -->
     <div id="settings-page" class="settings-page">
-        <div class="settings-head">
-            <h2>⚙️ <span data-i18n="settings"></span></h2>
-            <button type="button" onclick="closeSettingsPage()">✕ <span data-i18n="close"></span></button>
+        <div class="settings-hero">
+            <button type="button" class="close-3d" onclick="closeSettingsPage()" data-i18n-title="close" aria-label="close">✕</button>
+            <div class="hero-gear">⚙️</div>
+            <h2 data-i18n="settings"></h2>
         </div>
 
-        <div class="card">
-            <h3 data-i18n="langTitle"></h3>
-            <select id="lang-select" class="lang-select" aria-label="Language">
-                <option value="he">עברית</option>
-                <option value="ar">العربية</option>
-                <option value="ro">Română</option>
-                <option value="fr">Français</option>
-                <option value="en">English</option>
-            </select>
-        </div>
-
-        <div class="card voice-card">
-            <h3 data-i18n="voiceTitle"></h3>
-            <label class="switch-row"><span data-i18n="voiceOn"></span><input type="checkbox" id="v-on"></label>
-            <label class="switch-row" id="row-names"><span data-i18n="voiceNames"></span><input type="checkbox" id="v-names"></label>
-            <label class="switch-row" id="row-dose"><span data-i18n="voiceDose"></span><input type="checkbox" id="v-dose"></label>
-        </div>
-
-        <div class="card">
-            <h3 data-i18n="soundTitle"></h3>
-            <div id="sound-list" class="sound-list"></div>
-        </div>
-
-        <div class="card">
-            <h3 data-i18n="lowVisionTitle"></h3>
-            <label class="switch-row"><span data-i18n="lowVisionOn"></span><input type="checkbox" id="low-vision"></label>
-        </div>
-
-        <div class="card">
-            <h3 data-i18n="statusTitle"></h3>
-            <div id="status-box" class="status-box"></div>
+        <div class="set-grid">
+        <section class="set-tile" style="--g:linear-gradient(135deg,#22d3ee,#2563eb)">
+            <button type="button" class="set-tile-head" onclick="toggleTile(this)">
+                <span class="set-ico">🌐</span>
+                <span class="set-txt"><span class="set-title" data-i18n-strip="langTitle"></span><span class="set-sub" id="sub-langTitle"></span></span>
+                <span class="set-chev">⌄</span>
+            </button>
+            <div class="set-body">
+                <div class="lang-grid"><button type="button" class="lang-btn" data-lang="he"><span class="flag">🇮🇱</span>עברית</button><button type="button" class="lang-btn" data-lang="ar"><span class="flag">🌙</span>العربية</button><button type="button" class="lang-btn" data-lang="ro"><span class="flag">🇷🇴</span>Română</button><button type="button" class="lang-btn" data-lang="fr"><span class="flag">🇫🇷</span>Français</button><button type="button" class="lang-btn" data-lang="en"><span class="flag">🇬🇧</span>English</button></div>
+                <select id="lang-select" class="lang-select" aria-label="Language" hidden>
+                    <option value="he">עברית</option>
+                    <option value="ar">العربية</option>
+                    <option value="ro">Română</option>
+                    <option value="fr">Français</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+        </section>
+        <section class="set-tile" style="--g:linear-gradient(135deg,#a855f7,#6d28d9)">
+            <button type="button" class="set-tile-head" onclick="toggleTile(this)">
+                <span class="set-ico">🔊</span>
+                <span class="set-txt"><span class="set-title" data-i18n-strip="voiceTitle"></span><span class="set-sub" id="sub-voiceTitle"></span></span>
+                <span class="set-chev">⌄</span>
+            </button>
+            <div class="set-body">
+                <label class="toggle-row"><span data-i18n="voiceOn"></span><input type="checkbox" id="v-on" class="toggle"></label>
+                <label class="toggle-row" id="row-names"><span data-i18n="voiceNames"></span><input type="checkbox" id="v-names" class="toggle"></label>
+                <label class="toggle-row" id="row-dose"><span data-i18n="voiceDose"></span><input type="checkbox" id="v-dose" class="toggle"></label>
+            </div>
+        </section>
+        <section class="set-tile" style="--g:linear-gradient(135deg,#f59e0b,#ea580c)">
+            <button type="button" class="set-tile-head" onclick="toggleTile(this)">
+                <span class="set-ico">🔔</span>
+                <span class="set-txt"><span class="set-title" data-i18n-strip="soundTitle"></span><span class="set-sub" id="sub-soundTitle"></span></span>
+                <span class="set-chev">⌄</span>
+            </button>
+            <div class="set-body">
+                <div id="sound-list" class="sound-list"></div>
+            </div>
+        </section>
+        <section class="set-tile" style="--g:linear-gradient(135deg,#facc15,#ca8a04)">
+            <button type="button" class="set-tile-head" onclick="toggleTile(this)">
+                <span class="set-ico">👓</span>
+                <span class="set-txt"><span class="set-title" data-i18n-strip="lowVisionTitle"></span><span class="set-sub" id="sub-lowVisionTitle"></span></span>
+                <span class="set-chev">⌄</span>
+            </button>
+            <div class="set-body">
+                <label class="toggle-row"><span data-i18n="lowVisionOn"></span><input type="checkbox" id="low-vision" class="toggle"></label>
+            </div>
+        </section>
+        <section class="set-tile" style="--g:linear-gradient(135deg,#10b981,#047857)">
+            <button type="button" class="set-tile-head" onclick="toggleTile(this)">
+                <span class="set-ico">🩺</span>
+                <span class="set-txt"><span class="set-title" data-i18n-strip="statusTitle"></span><span class="set-sub" id="sub-statusTitle"></span></span>
+                <span class="set-chev">⌄</span>
+            </button>
+            <div class="set-body">
+                <div id="status-box" class="status-box"></div>
+            </div>
+        </section>
         </div>
     </div>
 
@@ -976,6 +1249,13 @@
         // M-009: all texts in 5 languages
         const I18N = {
          "he": {
+          "on": "פעיל",
+          "off": "כבוי",
+          "namesShort": "שמות",
+          "doseShort": "מינון",
+          "tapToChange": "הקש כדי לשנות",
+          "statusOk": "הכול תקין",
+          "statusProblem": "יש מה לתקן",
           "settings": "הגדרות",
           "close": "סגור",
           "langTitle": "🌐 שפה",
@@ -1033,6 +1313,13 @@
           "type_inhaler": "משאף"
          },
          "ar": {
+          "on": "مفعّل",
+          "off": "متوقف",
+          "namesShort": "الأسماء",
+          "doseShort": "الجرعة",
+          "tapToChange": "انقر للتغيير",
+          "statusOk": "كل شيء على ما يرام",
+          "statusProblem": "يوجد ما يجب إصلاحه",
           "settings": "الإعدادات",
           "close": "إغلاق",
           "langTitle": "🌐 اللغة",
@@ -1090,6 +1377,13 @@
           "type_inhaler": "بخاخ"
          },
          "ro": {
+          "on": "Activ",
+          "off": "Oprit",
+          "namesShort": "nume",
+          "doseShort": "doză",
+          "tapToChange": "Atinge pentru a schimba",
+          "statusOk": "Totul este în regulă",
+          "statusProblem": "Ceva trebuie reparat",
           "settings": "Setări",
           "close": "Închide",
           "langTitle": "🌐 Limbă",
@@ -1147,6 +1441,13 @@
           "type_inhaler": "Inhalator"
          },
          "fr": {
+          "on": "Activé",
+          "off": "Désactivé",
+          "namesShort": "noms",
+          "doseShort": "dose",
+          "tapToChange": "Touchez pour modifier",
+          "statusOk": "Tout est en ordre",
+          "statusProblem": "Quelque chose à corriger",
           "settings": "Réglages",
           "close": "Fermer",
           "langTitle": "🌐 Langue",
@@ -1204,6 +1505,13 @@
           "type_inhaler": "Inhalateur"
          },
          "en": {
+          "on": "On",
+          "off": "Off",
+          "namesShort": "names",
+          "doseShort": "dose",
+          "tapToChange": "Tap to change",
+          "statusOk": "All good",
+          "statusProblem": "Something to fix",
           "settings": "Settings",
           "close": "Close",
           "langTitle": "🌐 Language",
@@ -1276,6 +1584,9 @@
             document.getElementById('lang-select').value = LANG;
             document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
             document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
+            document.querySelectorAll('[data-i18n-strip]').forEach(el => { el.textContent = t(el.dataset.i18nStrip).replace(/^\S+\s/, ''); });
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('sel', b.dataset.lang === LANG));
+            if (typeof updateSettingsSummary === 'function') updateSettingsSummary();
             if (Native && Native.setLanguage) {
                 try { Native.setLanguage(LANG); } catch (e) { }
             }
@@ -1298,6 +1609,7 @@
                     `<button onclick="MedTimeNative.openSettings('tts')">${t('voiceSettings')}</button></div>`;
             }
             const problem = !!html;
+            lastStatusProblem = problem;
             // Main screen: only a short line when something needs fixing; details live in settings
             document.getElementById('main-warn').innerHTML = problem
                 ? `<div class="status-line"><span>${t('problemMain')}</span><button onclick="openSettingsPage()">${t('openSettings')}</button></div>`
@@ -1500,7 +1812,36 @@
             document.getElementById('settings-page').classList.add('open');
             renderSounds();
             renderStatus();
+            updateSettingsSummary();
         }
+
+        // M-014: big tiles that open / close, with the current value under each title
+        function toggleTile(head) {
+            const tile = head.closest('.set-tile');
+            const open = !tile.classList.contains('open');
+            document.querySelectorAll('.set-tile.open').forEach(x => x.classList.remove('open'));
+            if (open) tile.classList.add('open');
+            if (navigator.vibrate) navigator.vibrate(10);
+        }
+
+        var lastStatusProblem = false;
+        function updateSettingsSummary() {
+            const set = (k, v) => { const el = document.getElementById('sub-' + k); if (el) el.textContent = v; };
+            const opt = document.querySelector('#lang-select option[value="' + LANG + '"]');
+            set('langTitle', opt ? opt.textContent : LANG);
+            const v = (typeof loadVoice === 'function') ? loadVoice() : { on: true, names: true, dose: true };
+            set('voiceTitle', v.on ? [t('on'), v.names ? t('namesShort') : null, v.names && v.dose ? t('doseShort') : null].filter(Boolean).join(' · ') : t('off'));
+            const chosen = document.querySelector('#sound-list input[name=snd]:checked');
+            set('soundTitle', chosen ? chosen.parentElement.textContent.trim() : t('tapToChange'));
+            set('lowVisionTitle', document.getElementById('low-vision').checked ? t('on') : t('off'));
+            set('statusTitle', lastStatusProblem ? t('statusProblem') : t('statusOk'));
+        }
+
+        document.querySelectorAll('.lang-btn').forEach(b => b.addEventListener('click', () => {
+            const sel = document.getElementById('lang-select');
+            sel.value = b.dataset.lang;
+            sel.dispatchEvent(new Event('change'));
+        }));
 
         function closeSettingsPage() {
             document.getElementById('settings-page').classList.remove('open');
@@ -1528,6 +1869,7 @@
             });
             box.innerHTML = html;
             box.querySelectorAll('input[name=snd]').forEach(r => r.addEventListener('change', () => {
+                updateSettingsSummary();
                 if (Native && Native.setSound) Native.setSound(r.value);
                 if (Native && Native.previewSound && r.value !== 'none') Native.previewSound(r.value);
             }));
@@ -1546,6 +1888,7 @@
         document.getElementById('low-vision').addEventListener('change', e => {
             try { localStorage.setItem('medtime_lowvision', e.target.checked ? '1' : '0'); } catch (err) { }
             applyLowVision(e.target.checked);
+            updateSettingsSummary();
         });
         applyLowVision((() => { try { return localStorage.getItem('medtime_lowvision') === '1'; } catch (e) { return false; } })());
 
@@ -1575,6 +1918,7 @@
                 };
                 localStorage.setItem('medtime_voice', JSON.stringify(v));
                 applyVoice(v);
+                updateSettingsSummary();
             });
         });
         applyVoice(loadVoice());
