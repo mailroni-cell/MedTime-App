@@ -180,7 +180,7 @@
         /* M-006: several medicines / injections in one reminder */
         .item-row {
             display: grid;
-            grid-template-columns: 90px 1fr 1fr 34px;
+            grid-template-columns: 112px 1fr 1fr 34px;
             gap: 6px;
         }
 
@@ -249,6 +249,19 @@
             opacity: 0.4;
         }
 
+        /* M-009: language picker */
+        header {
+            position: relative;
+        }
+
+        .lang-select {
+            position: absolute;
+            top: 4px;
+            inset-inline-start: 0;
+            padding: 6px 8px;
+            font-size: 0.85rem;
+        }
+
         .btn-delete {
             background: transparent;
             border: 1px solid var(--danger);
@@ -264,6 +277,13 @@
 
     <header>
         <h1>MedTime</h1>
+        <select id="lang-select" class="lang-select" aria-label="Language">
+            <option value="he">עברית</option>
+            <option value="ar">العربية</option>
+            <option value="ro">Română</option>
+            <option value="fr">Français</option>
+            <option value="en">English</option>
+        </select>
     </header>
 
     <div id="canvas-container"></div>
@@ -271,19 +291,19 @@
     <div class="card">
         <form id="med-form" class="form-group">
             <div id="item-rows" class="form-group"></div>
-            <button type="button" class="btn-add-item" onclick="addItemRow()">➕ עוד תרופה / זריקה לאותה שעה</button>
+            <button type="button" class="btn-add-item" onclick="addItemRow()" data-i18n="addMore"></button>
             <input type="time" id="med-time" required>
-            <button type="submit" class="btn-add">הוסף תזכורת</button>
+            <button type="submit" class="btn-add" data-i18n="addReminder"></button>
         </form>
     </div>
 
     <div id="status-box" class="status-box"></div>
 
     <div class="card voice-card">
-        <h3>🔊 הקראה קולית בתזכורת</h3>
-        <label class="switch-row"><span>להקריא בקול</span><input type="checkbox" id="v-on"></label>
-        <label class="switch-row" id="row-names"><span>להגיד אילו תרופות</span><input type="checkbox" id="v-names"></label>
-        <label class="switch-row" id="row-dose"><span>להגיד גם את המינון</span><input type="checkbox" id="v-dose"></label>
+        <h3 data-i18n="voiceTitle"></h3>
+        <label class="switch-row"><span data-i18n="voiceOn"></span><input type="checkbox" id="v-on"></label>
+        <label class="switch-row" id="row-names"><span data-i18n="voiceNames"></span><input type="checkbox" id="v-names"></label>
+        <label class="switch-row" id="row-dose"><span data-i18n="voiceDose"></span><input type="checkbox" id="v-dose"></label>
     </div>
 
     <ul id="med-list" class="med-list"></ul>
@@ -401,12 +421,187 @@
             renderMeds();
         }
 
-        const STATUS_TEXT = {
-            notifications: 'ההתראות של האפליקציה כבויות',
-            exact: 'אין הרשאה לשעון מעורר מדויק',
-            fullScreen: 'אין הרשאה למסך תזכורת מלא',
-            battery: 'חיסכון בסוללה עלול לעכב תזכורות'
+        // M-009: all texts in 5 languages
+        const I18N = {
+         "he": {
+          "addMore": "➕ עוד תרופה / זריקה לאותה שעה",
+          "addReminder": "הוסף תזכורת",
+          "voiceTitle": "🔊 הקראה קולית בתזכורת",
+          "voiceOn": "להקריא בקול",
+          "voiceNames": "להגיד אילו תרופות",
+          "voiceDose": "להגיד גם את המינון",
+          "st_notifications": "ההתראות של האפליקציה כבויות",
+          "st_exact": "אין הרשאה לשעון מעורר מדויק",
+          "st_fullScreen": "אין הרשאה למסך תזכורת מלא",
+          "st_battery": "חיסכון בסוללה עלול לעכב תזכורות",
+          "fix": "תקן",
+          "noVoice": "אין בטלפון קול בשפה הזו להקראה",
+          "voiceSettings": "הגדרות קול",
+          "allOk": "✅ התזכורות פעילות גם כשהאפליקציה סגורה",
+          "test": "🔔 תזכורת ניסיון בעוד דקה",
+          "testName1": "תרופת ניסיון",
+          "testName2": "אינסולין ניסיון",
+          "testDose2": "10 יחידות",
+          "testAlert": "תזכורת ניסיון תופיע בעוד דקה. אפשר לסגור את האפליקציה ולנעול את המסך.",
+          "dose": "מינון",
+          "del": "מחק",
+          "name": "שם",
+          "remove": "הסר",
+          "needName": "צריך לכתוב לפחות שם של תרופה אחת",
+          "type_pill": "כדור",
+          "type_injection": "זריקה",
+          "type_drops": "טיפות",
+          "type_syrup": "סירופ",
+          "type_cream": "משחה",
+          "type_inhaler": "משאף"
+         },
+         "ar": {
+          "addMore": "➕ دواء / حقنة أخرى في نفس الوقت",
+          "addReminder": "أضف تذكيرًا",
+          "voiceTitle": "🔊 القراءة الصوتية في التذكير",
+          "voiceOn": "القراءة بصوت عالٍ",
+          "voiceNames": "ذكر أسماء الأدوية",
+          "voiceDose": "ذكر الجرعة أيضًا",
+          "st_notifications": "إشعارات التطبيق متوقفة",
+          "st_exact": "لا يوجد إذن للمنبه الدقيق",
+          "st_fullScreen": "لا يوجد إذن لشاشة التذكير الكاملة",
+          "st_battery": "توفير البطارية قد يؤخر التذكيرات",
+          "fix": "إصلاح",
+          "noVoice": "لا يوجد صوت لهذه اللغة في الهاتف",
+          "voiceSettings": "إعدادات الصوت",
+          "allOk": "✅ التذكيرات تعمل حتى عندما يكون التطبيق مغلقًا",
+          "test": "🔔 تذكير تجريبي بعد دقيقة",
+          "testName1": "دواء تجريبي",
+          "testName2": "أنسولين تجريبي",
+          "testDose2": "10 وحدات",
+          "testAlert": "سيظهر تذكير تجريبي بعد دقيقة. يمكنك إغلاق التطبيق وقفل الشاشة.",
+          "dose": "الجرعة",
+          "del": "حذف",
+          "name": "الاسم",
+          "remove": "إزالة",
+          "needName": "يجب كتابة اسم دواء واحد على الأقل",
+          "type_pill": "حبة",
+          "type_injection": "حقنة",
+          "type_drops": "قطرات",
+          "type_syrup": "شراب",
+          "type_cream": "مرهم",
+          "type_inhaler": "بخاخ"
+         },
+         "ro": {
+          "addMore": "➕ Încă un medicament / o injecție la aceeași oră",
+          "addReminder": "Adaugă memento",
+          "voiceTitle": "🔊 Citire vocală la memento",
+          "voiceOn": "Citește cu voce tare",
+          "voiceNames": "Spune ce medicamente",
+          "voiceDose": "Spune și doza",
+          "st_notifications": "Notificările aplicației sunt oprite",
+          "st_exact": "Lipsește permisiunea pentru alarmă exactă",
+          "st_fullScreen": "Lipsește permisiunea pentru memento pe tot ecranul",
+          "st_battery": "Economisirea bateriei poate întârzia mementourile",
+          "fix": "Repară",
+          "noVoice": "Nu există voce pentru această limbă pe telefon",
+          "voiceSettings": "Setări voce",
+          "allOk": "✅ Mementourile funcționează și cu aplicația închisă",
+          "test": "🔔 Memento de test peste un minut",
+          "testName1": "Medicament de test",
+          "testName2": "Insulină de test",
+          "testDose2": "10 unități",
+          "testAlert": "Un memento de test va apărea peste un minut. Poți închide aplicația și bloca ecranul.",
+          "dose": "Doza",
+          "del": "Șterge",
+          "name": "Nume",
+          "remove": "Elimină",
+          "needName": "Scrie numele a cel puțin un medicament",
+          "type_pill": "Pastilă",
+          "type_injection": "Injecție",
+          "type_drops": "Picături",
+          "type_syrup": "Sirop",
+          "type_cream": "Cremă",
+          "type_inhaler": "Inhalator"
+         },
+         "fr": {
+          "addMore": "➕ Un autre médicament / une injection à la même heure",
+          "addReminder": "Ajouter un rappel",
+          "voiceTitle": "🔊 Lecture vocale du rappel",
+          "voiceOn": "Lire à voix haute",
+          "voiceNames": "Dire quels médicaments",
+          "voiceDose": "Dire aussi la dose",
+          "st_notifications": "Les notifications de l'application sont désactivées",
+          "st_exact": "Pas d'autorisation pour l'alarme exacte",
+          "st_fullScreen": "Pas d'autorisation pour le rappel plein écran",
+          "st_battery": "L'économiseur de batterie peut retarder les rappels",
+          "fix": "Corriger",
+          "noVoice": "Aucune voix pour cette langue sur le téléphone",
+          "voiceSettings": "Réglages vocaux",
+          "allOk": "✅ Les rappels fonctionnent même application fermée",
+          "test": "🔔 Rappel test dans une minute",
+          "testName1": "Médicament test",
+          "testName2": "Insuline test",
+          "testDose2": "10 unités",
+          "testAlert": "Un rappel test apparaîtra dans une minute. Vous pouvez fermer l'application et verrouiller l'écran.",
+          "dose": "Dose",
+          "del": "Supprimer",
+          "name": "Nom",
+          "remove": "Retirer",
+          "needName": "Saisissez au moins le nom d'un médicament",
+          "type_pill": "Comprimé",
+          "type_injection": "Injection",
+          "type_drops": "Gouttes",
+          "type_syrup": "Sirop",
+          "type_cream": "Crème",
+          "type_inhaler": "Inhalateur"
+         },
+         "en": {
+          "addMore": "➕ Another medicine / injection at the same time",
+          "addReminder": "Add reminder",
+          "voiceTitle": "🔊 Voice readout",
+          "voiceOn": "Read aloud",
+          "voiceNames": "Say which medicines",
+          "voiceDose": "Also say the dose",
+          "st_notifications": "App notifications are off",
+          "st_exact": "No permission for exact alarms",
+          "st_fullScreen": "No permission for full-screen reminders",
+          "st_battery": "Battery saver may delay reminders",
+          "fix": "Fix",
+          "noVoice": "No voice for this language on the phone",
+          "voiceSettings": "Voice settings",
+          "allOk": "✅ Reminders work even when the app is closed",
+          "test": "🔔 Test reminder in 1 minute",
+          "testName1": "Test medicine",
+          "testName2": "Test insulin",
+          "testDose2": "10 units",
+          "testAlert": "A test reminder will appear in one minute. You can close the app and lock the screen.",
+          "dose": "Dose",
+          "del": "Delete",
+          "name": "Name",
+          "remove": "Remove",
+          "needName": "Please enter at least one medicine name",
+          "type_pill": "Pill",
+          "type_injection": "Injection",
+          "type_drops": "Drops",
+          "type_syrup": "Syrup",
+          "type_cream": "Cream",
+          "type_inhaler": "Inhaler"
+         }
         };
+        const RTL_LANGS = ['he', 'ar'];
+        let LANG = 'he';
+        try { LANG = localStorage.getItem('medtime_lang') || 'he'; } catch (e) { }
+        if (!I18N[LANG]) LANG = 'he';
+
+        function t(key) {
+            return (I18N[LANG] && I18N[LANG][key]) || I18N.he[key] || key;
+        }
+
+        function applyLanguage() {
+            document.documentElement.lang = LANG;
+            document.documentElement.dir = RTL_LANGS.includes(LANG) ? 'rtl' : 'ltr';
+            document.getElementById('lang-select').value = LANG;
+            document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+            if (Native && Native.setLanguage) {
+                try { Native.setLanguage(LANG); } catch (e) { }
+            }
+        }
 
         function renderStatus() {
             const box = document.getElementById('status-box');
@@ -416,26 +611,26 @@
             let html = '';
             ['notifications', 'exact', 'fullScreen', 'battery'].forEach(k => {
                 if (st[k] === false) {
-                    html += `<div class="status-line"><span>⚠️ ${STATUS_TEXT[k]}</span>` +
-                        `<button onclick="MedTimeNative.openSettings('${k}')">תקן</button></div>`;
+                    html += `<div class="status-line"><span>⚠️ ${t('st_' + k)}</span>` +
+                        `<button onclick="MedTimeNative.openSettings('${k}')">${t('fix')}</button></div>`;
                 }
             });
-            if (st.tts === 'no_hebrew') {
-                html += `<div class="status-line"><span>⚠️ אין קול עברי בטלפון להקראה</span>` +
-                    `<button onclick="MedTimeNative.openSettings('tts')">הגדרות קול</button></div>`;
+            if (st.tts === 'no_voice' || st.tts === 'no_hebrew') {
+                html += `<div class="status-line"><span>⚠️ ${t('noVoice')}</span>` +
+                    `<button onclick="MedTimeNative.openSettings('tts')">${t('voiceSettings')}</button></div>`;
             }
-            if (!html) html = `<div class="status-line ok"><span>✅ התזכורות פעילות גם כשהאפליקציה סגורה</span></div>`;
-            html += `<button class="btn-test" onclick="testReminder()">🔔 תזכורת ניסיון בעוד דקה</button>`;
+            if (!html) html = `<div class="status-line ok"><span>${t('allOk')}</span></div>`;
+            html += `<button class="btn-test" onclick="testReminder()">${t('test')}</button>`;
             box.innerHTML = html;
         }
 
         function testReminder() {
             if (!Native) return;
             Native.testReminder(JSON.stringify([
-                { name: 'תרופת ניסיון', dose: '1', type: 'pill' },
-                { name: 'אינסולין ניסיון', dose: '10 יחידות', type: 'injection' }
+                { name: t('testName1'), dose: '1', type: 'pill' },
+                { name: t('testName2'), dose: t('testDose2'), type: 'injection' }
             ]), 60);
-            alert('תזכורת ניסיון תופיע בעוד דקה. אפשר לסגור את האפליקציה ולנעול את המסך.');
+            alert(t('testAlert'));
         }
 
         function escapeHtml(s) {
@@ -462,18 +657,15 @@
                     <div class="med-info">
                         <h3>⏰ ${m.time}</h3>
                         <ul>${m.items.map(it => `<li>${TYPE_ICON[it.type] || '💊'} ${escapeHtml(it.name)}` +
-                            `${it.dose ? ' <span style="color:var(--text-muted)">· מינון: ' + escapeHtml(it.dose) + '</span>' : ''}</li>`).join('')}</ul>
+                            `${it.dose ? ' <span style="color:var(--text-muted)">· ' + t('dose') + ': ' + escapeHtml(it.dose) + '</span>' : ''}</li>`).join('')}</ul>
                     </div>
-                    <button class="btn-delete" onclick="deleteMed(${idx})">מחק</button>
+                    <button class="btn-delete" onclick="deleteMed(${idx})">${t('del')}</button>
                 `;
                 list.appendChild(li);
             });
         }
 
-        const TYPES = [
-            ['pill', 'כדור'], ['injection', 'זריקה'], ['drops', 'טיפות'],
-            ['syrup', 'סירופ'], ['cream', 'משחה'], ['inhaler', 'משאף']
-        ];
+        const TYPES = ['pill', 'injection', 'drops', 'syrup', 'cream', 'inhaler'];
         const TYPE_ICON = { pill: '💊', injection: '💉', drops: '💧', syrup: '🥄', cream: '🧴', inhaler: '🌬️' };
         const itemRows = document.getElementById('item-rows');
 
@@ -481,10 +673,10 @@
             const row = document.createElement('div');
             row.className = 'item-row';
             row.innerHTML =
-                `<select class="it-type">${TYPES.map(t => `<option value="${t[0]}">${t[1]}</option>`).join('')}</select>` +
-                `<input type="text" class="it-name" placeholder="שם">` +
-                `<input type="text" class="it-dose" placeholder="מינון">` +
-                `<button type="button" class="btn-remove-item" title="הסר">✕</button>`;
+                `<select class="it-type">${TYPES.map(ty => `<option value="${ty}">${t('type_' + ty)}</option>`).join('')}</select>` +
+                `<input type="text" class="it-name" placeholder="${t('name')}">` +
+                `<input type="text" class="it-dose" placeholder="${t('dose')}">` +
+                `<button type="button" class="btn-remove-item" title="${t('remove')}">✕</button>`;
             row.querySelector('.btn-remove-item').onclick = () => {
                 if (itemRows.children.length > 1) row.remove();
                 else { row.querySelector('.it-name').value = ''; row.querySelector('.it-dose').value = ''; }
@@ -500,7 +692,7 @@
                 name: r.querySelector('.it-name').value.trim(),
                 dose: r.querySelector('.it-dose').value.trim()
             })).filter(it => it.name);
-            if (!items.length) { alert('צריך לכתוב לפחות שם של תרופה אחת'); return; }
+            if (!items.length) { alert(t('needName')); return; }
 
             const meds = loadMeds();
             meds.push({ id: newId(), time: timeInput.value, items });
@@ -513,7 +705,22 @@
             timeInput.value = '';
         });
 
+        applyLanguage();
         addItemRow();
+
+        document.getElementById('lang-select').addEventListener('change', e => {
+            LANG = e.target.value;
+            try { localStorage.setItem('medtime_lang', LANG); } catch (err) { }
+            applyLanguage();
+            // Re-draw the rows / list / status in the new language (typed text is kept)
+            itemRows.querySelectorAll('.it-type').forEach(sel => {
+                [...sel.options].forEach(o => { o.textContent = t('type_' + o.value); });
+            });
+            itemRows.querySelectorAll('.it-name').forEach(i => { i.placeholder = t('name'); });
+            itemRows.querySelectorAll('.it-dose').forEach(i => { i.placeholder = t('dose'); });
+            renderMeds();
+            renderStatus();
+        });
 
         // M-007: voice options, saved here and in Android
         function loadVoice() {

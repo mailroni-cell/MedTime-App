@@ -87,12 +87,14 @@ public class ReminderService extends Service {
                 finishKeepNotification();
                 return;
             }
-            int r = tts.setLanguage(new Locale("he", "IL"));
-            if (r == TextToSpeech.LANG_MISSING_DATA || r == TextToSpeech.LANG_NOT_SUPPORTED) {
-                r = tts.setLanguage(new Locale("iw", "IL"));
+            // M-009: voice in the language chosen in the app
+            int r = TextToSpeech.LANG_NOT_SUPPORTED;
+            for (Locale loc : I18n.voiceLocales(ReminderService.this)) {
+                r = tts.setLanguage(loc);
+                if (r != TextToSpeech.LANG_MISSING_DATA && r != TextToSpeech.LANG_NOT_SUPPORTED) break;
             }
             if (r == TextToSpeech.LANG_MISSING_DATA || r == TextToSpeech.LANG_NOT_SUPPORTED) {
-                saveTtsState("no_hebrew");
+                saveTtsState("no_voice");
                 finishKeepNotification();
                 return;
             }
@@ -175,7 +177,7 @@ public class ReminderService extends Service {
     static Notification buildNotification(Context ctx, Intent src) {
         ensureChannel(ctx);
         int id = src.getIntExtra(Reminders.EXTRA_ID, 0);
-        String[] lines = Reminders.lines(src.getStringExtra(Reminders.EXTRA_ITEMS));
+        String[] lines = Reminders.lines(ctx, src.getStringExtra(Reminders.EXTRA_ITEMS));
         Bundle extras = src.getExtras() != null ? src.getExtras() : new Bundle();
 
         Intent full = new Intent(ctx, AlarmActivity.class);
@@ -191,13 +193,13 @@ public class ReminderService extends Service {
         PendingIntent snooze10 = snoozeIntent(ctx, extras, id, 10, 3);
         PendingIntent snooze30 = snoozeIntent(ctx, extras, id, 30, 4);
 
-        String body = "הגיע הזמן לקחת:\n" + String.join("\n", lines);
+        String body = I18n.t(ctx, "body_prefix") + "\n" + String.join("\n", lines);
 
         Notification.Builder b = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
                 ? new Notification.Builder(ctx, CHANNEL_ID)
                 : new Notification.Builder(ctx);
         b.setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
-                .setContentTitle("💊 תזכורת תרופה")
+                .setContentTitle(I18n.t(ctx, "notif_title"))
                 .setContentText(body)
                 .setStyle(new Notification.BigTextStyle().bigText(body))
                 .setCategory(Notification.CATEGORY_ALARM)
@@ -207,9 +209,9 @@ public class ReminderService extends Service {
                 .setFullScreenIntent(fullPi, true)
                 .setAutoCancel(false)
                 .setOngoing(true)
-                .addAction(new Notification.Action.Builder(null, "✅ לקחתי", takenPi).build())
-                .addAction(new Notification.Action.Builder(null, "⏰ 10 דק'", snooze10).build())
-                .addAction(new Notification.Action.Builder(null, "⏰ חצי שעה", snooze30).build());
+                .addAction(new Notification.Action.Builder(null, I18n.t(ctx, "taken"), takenPi).build())
+                .addAction(new Notification.Action.Builder(null, "⏰ " + I18n.t(ctx, "snooze_10"), snooze10).build())
+                .addAction(new Notification.Action.Builder(null, "⏰ " + I18n.t(ctx, "snooze_30"), snooze30).build());
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             b.setDefaults(Notification.DEFAULT_ALL);
         }

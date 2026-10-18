@@ -58,32 +58,32 @@ public class AlarmActivity extends Activity {
     }
 
     private void buildScreen(final Intent src) {
-        String[] lines = Reminders.lines(src.getStringExtra(Reminders.EXTRA_ITEMS));
+        String[] lines = Reminders.lines(this, src.getStringExtra(Reminders.EXTRA_ITEMS));
 
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
         root.setGravity(Gravity.CENTER);
         root.setBackgroundColor(Color.parseColor("#0f172a"));
-        root.setLayoutDirection(LinearLayout.LAYOUT_DIRECTION_RTL);
+        root.setLayoutDirection(I18n.rtl(this) ? LinearLayout.LAYOUT_DIRECTION_RTL : LinearLayout.LAYOUT_DIRECTION_LTR);
         int pad = dp(28);
         root.setPadding(pad, pad, pad, pad);
 
         root.addView(text("💊", 72, "#38bdf8"));
-        root.addView(text(lines.length > 1 ? "הגיע הזמן לקחת תרופות" : "הגיע הזמן לקחת תרופה", 22, "#94a3b8"));
+        root.addView(text(I18n.t(this, lines.length > 1 ? "screen_many" : "screen_one"), 22, "#94a3b8"));
         int size = lines.length > 3 ? 22 : (lines.length > 1 ? 28 : 34);
         for (String l : lines) root.addView(text(l, size, "#f8fafc"));
 
-        Button taken = button("✅ לקחתי", "#10b981");
+        Button taken = button(I18n.t(this, "taken"), "#10b981");
         taken.setOnClickListener(v -> answer(src, ActionReceiver.ACTION_TAKEN));
         root.addView(taken);
 
         // M-008: open the app; if the phone is locked, Android shows its unlock screen first
-        Button open = button("📱 פתח את MedTime", "#334155");
+        Button open = button(I18n.t(this, "open_app"), "#334155");
         open.setOnClickListener(v -> unlockAndOpen(src));
         root.addView(open);
 
         // M-007: snooze choices in a 2x2 grid
-        root.addView(text("⏰ להזכיר שוב בעוד:", 18, "#94a3b8"));
+        root.addView(text(I18n.t(this, "snooze_header"), 18, "#94a3b8"));
         LinearLayout row = null;
         for (int k = 0; k < Reminders.SNOOZE_CHOICES.length; k++) {
             final int min = Reminders.SNOOZE_CHOICES[k];
@@ -93,7 +93,7 @@ public class AlarmActivity extends Activity {
                 root.addView(row, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT));
             }
-            Button b = button(snoozeLabel(min), "#2563eb");
+            Button b = button(I18n.t(this, "snooze_" + min), "#2563eb");
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, dp(60), 1f);
             lp.topMargin = dp(10);
             lp.leftMargin = dp(5);
@@ -144,15 +144,6 @@ public class AlarmActivity extends Activity {
         i.setAction(action);
         ActionReceiver.handle(this, i);
         finish();
-    }
-
-    static String snoozeLabel(int min) {
-        switch (min) {
-            case 30: return "חצי שעה";
-            case 60: return "שעה";
-            case 120: return "שעתיים";
-            default: return min + " דקות";
-        }
     }
 
     private TextView text(String s, int sp, String color) {

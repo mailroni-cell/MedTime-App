@@ -135,34 +135,27 @@ public class Reminders {
         return one;
     }
 
-    static String typeLabel(String type) {
-        if (type == null) return "";
-        switch (type) {
-            case "pill": return "כדור";
-            case "injection": return "זריקה";
-            case "drops": return "טיפות";
-            case "syrup": return "סירופ";
-            case "cream": return "משחה";
-            case "inhaler": return "משאף";
-            default: return "";
-        }
+    static String typeLabel(Context ctx, String type) {
+        if (type == null || type.isEmpty()) return "";
+        String v = I18n.t(ctx, "type_" + type);
+        return v == null ? "" : v;
     }
 
     /** One line per item, e.g. "זריקה אינסולין · מינון: 10 יחידות". */
-    static String[] lines(String itemsJson) {
-        return lines(itemsJson, true);
+    static String[] lines(Context ctx, String itemsJson) {
+        return lines(ctx, itemsJson, true);
     }
 
-    static String[] lines(String itemsJson, boolean withDose) {
+    static String[] lines(Context ctx, String itemsJson, boolean withDose) {
         JSONArray a = parse(itemsJson);
         String[] out = new String[a.length()];
         for (int i = 0; i < a.length(); i++) {
             JSONObject o = a.optJSONObject(i);
             if (o == null) { out[i] = ""; continue; }
-            String label = typeLabel(o.optString("type"));
+            String label = typeLabel(ctx, o.optString("type"));
             String s = (label.isEmpty() ? "" : label + " ") + o.optString("name", "").trim();
             String dose = o.optString("dose", "").trim();
-            if (withDose && !dose.isEmpty()) s += " · מינון: " + dose;
+            if (withDose && !dose.isEmpty()) s += " · " + I18n.t(ctx, "dose") + ": " + dose;
             out[i] = s;
         }
         return out;
@@ -173,14 +166,12 @@ public class Reminders {
         SharedPreferences p = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
         boolean names = p.getBoolean(KEY_SAY_NAMES, true);
         boolean dose = p.getBoolean(KEY_SAY_DOSE, true);
-        String[] l = lines(itemsJson, dose);
+        String[] l = lines(ctx, itemsJson, dose);
         // M-007: without names just say that it is time (privacy)
         if (!names) {
-            return l.length > 1 ? "תזכורת. הגיע הזמן לקחת את התרופות." : "תזכורת. הגיע הזמן לקחת את התרופה.";
+            return I18n.t(ctx, l.length > 1 ? "speech_generic_many" : "speech_generic_one");
         }
-        StringBuilder sb = new StringBuilder(l.length > 1
-                ? "תזכורת. הגיע הזמן לקחת את התרופות: "
-                : "תזכורת. הגיע הזמן לקחת את התרופה: ");
+        StringBuilder sb = new StringBuilder(I18n.t(ctx, l.length > 1 ? "speech_many" : "speech_one")).append(" ");
         for (String s : l) sb.append(s.replace(" · ", ", ")).append(". ");
         return sb.toString().trim();
     }

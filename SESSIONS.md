@@ -15,4 +15,6 @@
 - PC watcher did not react to the new APK (log stuck at 09:02); owner asked to restart the scheduled task.
 - Owner asked for snooze 10m/30m/1h/2h and a choice whether to say medicine names and dose -> M-007.
 - Owner: "open the phone from lock when needed" -> M-008.
+- Build 16 installed 09:59 (watcher had hung while phone was locked; owner restarted it).
+- Owner asked for Arabic, Hebrew, Romanian, French, English in menus, voice and everything -> M-009 (was planned for stage 5).
 - Open: owner tests stage 1 and M-004.

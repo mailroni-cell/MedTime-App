@@ -34,6 +34,12 @@ public class NativeBridge {
         Reminders.setVoiceOptions(activity.getApplicationContext(), on, names, dose);
     }
 
+    /** M-009: language of the reminder screen, notification and voice (he / ar / ro / fr / en). */
+    @JavascriptInterface
+    public void setLanguage(String lang) {
+        I18n.setLang(activity.getApplicationContext(), lang);
+    }
+
     /** Test reminder in N seconds (works with the app closed). */
     @JavascriptInterface
     public void testReminder(String itemsJson, int seconds) {
