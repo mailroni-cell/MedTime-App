@@ -48,7 +48,10 @@
         a_space: ['חלל', 'فضاء', 'Spațiu', 'Espace', 'Space'],
         a_synth: ['גלים אלקטרוניים', 'موجات إلكترونية', 'Sintetizator', 'Nappes synthé', 'Synth pads'],
         go: ['✓ התחלה', '✓ ابدأ', '✓ Începe', '✓ Commencer', '✓ Start'],
-        menu: ['תפריט', 'القائمة', 'Meniu', 'Menu', 'Menu']
+        menu: ['תפריט', 'القائمة', 'Meniu', 'Menu', 'Menu'],
+        last: ['מצב אחרון', 'الوضع الأخير', 'Ultimul mod', 'Dernier mode', 'Last mode'],
+        lock: ['נעילה', 'قفل', 'Blocare', 'Verrouiller', 'Lock'],
+        locked: ['🔒 המסך נעול · החזיקו את המנעול לפתיחה', '🔒 الشاشة مقفلة · اضغط مطولاً على القفل للفتح', '🔒 Ecran blocat · țineți apăsat lacătul', '🔒 Écran verrouillé · maintenez le cadenas', '🔒 Screen locked · hold the lock to open']
     };
     const li = () => Math.max(0, L5.indexOf(typeof LANG === 'string' ? LANG : 'he'));
     const tx = k => (TX[k] || [k])[li()];
@@ -59,9 +62,17 @@
     const BREATH = { inh: 4, hold: 1.5, exh: 6 }; // seconds, calm 4 / 1.5 / 6 rhythm
     const BP = BREATH.inh + BREATH.hold + BREATH.exh;
 
+    // M-074: calm mode always opens fresh (quiet, nothing pre-chosen); "Last mode" brings back the last choices
+    const FRESH = { scene: 'aurora', sound: 'none', timer: 0 };
     let st = { scene: 'aurora', sound: 'bowls', timer: 30, vol: 60, breath: false };
     try { Object.assign(st, JSON.parse(localStorage.getItem('medtime_relax') || '{}')); } catch (e) { }
-    const save = () => { try { localStorage.setItem('medtime_relax', JSON.stringify(st)); } catch (e) { } };
+    let last = { scene: st.scene, sound: st.sound, timer: st.timer }, chosen = {};
+    // only what was really chosen this time replaces the stored "last mode"
+    const save = () => { try {
+        const sv = JSON.parse(localStorage.getItem('medtime_relax') || '{}'); sv.vol = st.vol; sv.breath = st.breath;
+        ['scene', 'sound', 'timer'].forEach(k => { if (chosen[k]) sv[k] = st[k]; });
+        localStorage.setItem('medtime_relax', JSON.stringify(sv));
+    } catch (e) { } };
 
     // ======================= page =======================
     let root, canvas, panel, hideT = 0, open = false;
@@ -87,7 +98,9 @@
             '<button type="button" class="rx-go"></button>' +
             '</div>' +
             '<button type="button" class="rx-mini"><span class="rx-mini-ico"></span><span class="rx-mini-t"></span></button>' +
-            '<div class="rx-bar">' + ['scene', 'sound', 'timer'].map(t => '<button type="button" data-s="' + t + '"><span class="rx-bi"></span><small></small></button>').join('') + '</div>';
+            '<div class="rx-bar">' + ['scene', 'sound', 'timer', 'last', 'lock'].map(t => '<button type="button" data-s="' + t + '"><span class="rx-bi"></span><small></small></button>').join('') + '</div>' +
+            '<button type="button" class="rx-unlock" aria-label="unlock"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="29"/></svg><span>🔒</span></button>' +
+            '<div class="rx-lockmsg"></div>';
         document.body.appendChild(root);
         canvas = root.querySelector('#rx-canvas');
         panel = root.querySelector('.rx-panel');
@@ -101,8 +114,18 @@
         // M-073: light menu: a slim bar with 3 small buttons; each one opens only its own choices
         root.querySelectorAll('.rx-bar button').forEach(b => {
             b.addEventListener('pointerdown', e => e.stopPropagation());
-            b.addEventListener('click', e => { e.stopPropagation(); vib(10); setSec(sec === b.dataset.s ? '' : b.dataset.s); poke(); });
+            b.addEventListener('click', e => {
+                e.stopPropagation(); vib(10);
+                if (b.dataset.s === 'last') { useLast(); return; }
+                if (b.dataset.s === 'lock') { lockOn(); return; }
+                setSec(sec === b.dataset.s ? '' : b.dataset.s); poke();
+            });
         });
+        // M-074: lock: taps do nothing; hold the lock 1.2 s to open again
+        const ul = root.querySelector('.rx-unlock'); let holdT = 0;
+        const holdEnd = () => { clearTimeout(holdT); ul.classList.remove('hold'); };
+        ul.addEventListener('pointerdown', e => { e.stopPropagation(); ul.classList.add('hold'); holdT = setTimeout(() => { holdEnd(); lockOff(); }, 1200); });
+        ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => ul.addEventListener(ev, holdEnd));
         const mini = root.querySelector('.rx-mini');
         mini.addEventListener('pointerdown', e => e.stopPropagation());
         mini.addEventListener('click', e => { e.stopPropagation(); poke(); });
@@ -117,7 +140,7 @@
         });
         root.addEventListener('pointerup', e => {
             if (!down) return; down = false;
-            if (Math.abs(e.clientX - sx) < 8 && Math.abs(e.clientY - sy) < 8 && !e.target.closest('.rx-panel, .rx-close, .rx-mini, .rx-bar')) { if (sec) setSec(''); else togglePanel(); }
+            if (Math.abs(e.clientX - sx) < 8 && Math.abs(e.clientY - sy) < 8 && !e.target.closest('.rx-panel, .rx-close, .rx-mini, .rx-bar, .rx-unlock')) { if (root.classList.contains('rx-locked')) lockMsg(); else if (sec) setSec(''); else togglePanel(); }
         });
     }
     function paintVol() { const v = root.querySelector('#rx-vol'); v.value = st.vol; v.style.setProperty('--p', st.vol + '%'); }
@@ -146,14 +169,17 @@
             if (sec && box) box.scrollTo({ top: sec.offsetTop - box.offsetTop - 4, behavior: 'smooth' });
         }, 350);
         const done = () => setTimeout(() => setSec(''), 380);
-        grid('scene', SCENES, st.scene, k => tx('s_' + k), k => { st.scene = k; save(); setScene(k); drawPanel(); done(); });
-        grid('sound', SOUNDS, st.sound, k => tx('a_' + k), k => { st.sound = k; save(); playSound(k); drawPanel(); });
-        grid('timer', TIMERS.map(m => [String(m), m ? '⏳' : '♾️']), String(st.timer), k => +k ? k + ' ' + tx('min') : tx('off'),
-            k => { st.timer = +k; save(); startTimer(); drawPanel(); done(); });
+        grid('scene', SCENES, chosen.scene ? st.scene : '', k => tx('s_' + k), k => { st.scene = k; chosen.scene = 1; save(); setScene(k); drawPanel(); done(); });
+        grid('sound', SOUNDS, chosen.sound ? st.sound : '', k => tx('a_' + k), k => { st.sound = k; chosen.sound = 1; save(); playSound(k); drawPanel(); });
+        grid('timer', TIMERS.map(m => [String(m), m ? '⏳' : '♾️']), chosen.timer ? String(st.timer) : '', k => +k ? k + ' ' + tx('min') : tx('off'),
+            k => { st.timer = +k; chosen.timer = 1; save(); startTimer(); drawPanel(); done(); });
         root.querySelectorAll('.rx-bar button').forEach(b => {
             const t = b.dataset.s;
-            b.querySelector('.rx-bi').textContent = t === 'scene' ? (SCENES.find(x => x[0] === st.scene) || [])[1] : t === 'sound' ? (SOUNDS.find(x => x[0] === st.sound) || [])[1] : (+st.timer ? '⏳' : '♾️');
-            b.querySelector('small').textContent = t === 'timer' ? (+st.timer ? st.timer + ' ' + tx('min') : tx('off')) : tx(t);
+            if (t === 'last') { b.querySelector('.rx-bi').textContent = '↺'; b.querySelector('small').textContent = tx('last'); b.hidden = !!(chosen.scene || chosen.sound || chosen.timer); return; }
+            if (t === 'lock') { b.querySelector('.rx-bi').textContent = '🔓'; b.querySelector('small').textContent = tx('lock'); return; }
+            b.querySelector('.rx-bi').textContent = !chosen[t] ? (t === 'scene' ? '🖼️' : t === 'sound' ? '🎵' : '⏳')
+                : t === 'scene' ? (SCENES.find(x => x[0] === st.scene) || [])[1] : t === 'sound' ? (SOUNDS.find(x => x[0] === st.sound) || [])[1] : (+st.timer ? '⏳' : '♾️');
+            b.querySelector('small').textContent = t === 'timer' && chosen.timer ? (+st.timer ? st.timer + ' ' + tx('min') : tx('off')) : tx(t);
             b.classList.toggle('on', sec === t);
         });
         root.querySelector('.rx-go').textContent = tx('go');
@@ -169,6 +195,16 @@
         root.querySelectorAll('.rx-bar button').forEach(b => b.classList.toggle('on', b.dataset.s === t));
         const box = root.querySelector('.rx-scroll'); if (box) box.scrollTop = 0;
     }
+    function useLast() {
+        Object.assign(st, last); chosen = { scene: 1, sound: 1, timer: 1 };
+        setScene(st.scene); playSound(st.sound); startTimer(); save(); drawPanel(); setSec(''); poke();
+    }
+    function lockMsg() {
+        const m = root.querySelector('.rx-lockmsg'); m.textContent = tx('locked');
+        m.classList.add('show'); clearTimeout(m._t); m._t = setTimeout(() => m.classList.remove('show'), 2200);
+    }
+    function lockOn() { setSec(''); root.classList.add('rx-locked'); hidePanel(); lockMsg(); }
+    function lockOff() { vib(25); root.classList.remove('rx-locked'); poke(); }
     function hidePanel() { clearTimeout(hideT); setSec(''); root.classList.add('rx-hide'); }
     function poke() { clearTimeout(hideT); root.classList.remove('rx-hide'); hideT = setTimeout(hidePanel, 25000); }
     function togglePanel() { if (root.classList.contains('rx-hide')) poke(); else hidePanel(); }
@@ -756,6 +792,8 @@
         if (window.amb) try { window.amb.pause(); } catch (e) { }
         if (window.MedTime3D && window.MedTime3D.pause) window.MedTime3D.pause(true);
         root.classList.add('open'); document.documentElement.classList.add('relax-open');
+        try { const sv = JSON.parse(localStorage.getItem('medtime_relax') || '{}'); last = { scene: sv.scene || 'aurora', sound: sv.sound || 'none', timer: sv.timer || 0 }; } catch (e) { }
+        Object.assign(st, FRESH); chosen = {}; root.classList.remove('rx-locked');
         setSec(''); drawPanel(); poke();
         root.querySelector('.rx-hint').classList.remove('gone');
         setTimeout(() => root && root.querySelector('.rx-hint').classList.add('gone'), 6000);

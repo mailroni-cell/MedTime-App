@@ -2474,6 +2474,24 @@
         #relax .rx-sec .rx-tile .rx-ico { font-size: 1.5rem; }
         #relax .rx-sec .rx-tile.sel { background: rgba(139, 92, 246, 0.55); box-shadow: 0 0 0 2px #c4b5fd; }
         #relax.rx-hide .rx-close, #relax.rx-hide .rx-left { opacity: 0.25; }
+
+        /* M-074: "last mode" and screen lock in calm mode */
+        #relax .rx-bar { gap: 4px !important; max-width: calc(100vw - 16px); box-sizing: border-box; }
+        #relax .rx-bar button { width: 64px !important; }
+        #relax .rx-bar button[hidden] { display: none !important; }
+        #relax .rx-bar button[data-s="last"] .rx-bi { font-weight: 900; color: #a7f3d0; }
+        #relax .rx-unlock { position: absolute; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 7; display: none;
+            width: 64px; height: 64px; border-radius: 50%; border: none; padding: 0; background: rgba(10, 14, 35, 0.35); opacity: 0.45; }
+        #relax .rx-unlock span { position: relative; font-size: 1.6rem; }
+        #relax .rx-unlock svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+        #relax .rx-unlock circle { fill: none; stroke: #c4b5fd; stroke-width: 4; stroke-dasharray: 183; stroke-dashoffset: 183; }
+        #relax .rx-unlock.hold { opacity: 1; }
+        #relax .rx-unlock.hold circle { transition: stroke-dashoffset 1.2s linear; stroke-dashoffset: 0; }
+        #relax.rx-locked .rx-unlock { display: flex; align-items: center; justify-content: center; }
+        #relax.rx-locked .rx-bar, #relax.rx-locked .rx-close, #relax.rx-locked .rx-panel { display: none !important; }
+        #relax .rx-lockmsg { position: absolute; left: 16px; right: 16px; bottom: calc(100px + env(safe-area-inset-bottom)); text-align: center; z-index: 7; pointer-events: none;
+            color: #e0e7ff; font: 700 1rem 'MTUI', sans-serif; text-shadow: 0 1px 6px #000; opacity: 0; transition: opacity 0.5s; }
+        #relax .rx-lockmsg.show { opacity: 1; }
     </style>
 </head>
 <body>
