@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         webView = new WebView(this);
         setContentView(webView);
+        FullScreen.apply(this); // M-012
 
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
@@ -59,6 +60,12 @@ public class MainActivity extends AppCompatActivity {
         webView.addJavascriptInterface(new NativeBridge(this), "MedTimeNative");
 
         webView.loadUrl("file:///android_asset/index.html");
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) FullScreen.apply(this); // M-012: hide the bars again after a swipe
     }
 
     @Override

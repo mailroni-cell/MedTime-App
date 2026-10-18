@@ -118,6 +118,7 @@ public class AlarmActivity extends Activity {
                 android.widget.ScrollView.LayoutParams.MATCH_PARENT,
                 android.widget.ScrollView.LayoutParams.MATCH_PARENT));
         setContentView(scroll);
+        FullScreen.apply(this); // M-012
     }
 
     private void unlockAndOpen(final Intent src) {

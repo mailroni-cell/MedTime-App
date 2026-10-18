@@ -19,4 +19,5 @@
 - Owner asked for Arabic, Hebrew, Romanian, French, English in menus, voice and everything -> M-009 (was planned for stage 5).
 - Build 17 installed 10:08. Owner asked: scroll wheel for time, more readable medicine form -> M-010; status line + test button to move to settings (stage 5).
 - Owner: settings under a small gear, with sound choice and low-vision display -> M-011.
+- Build 19 installed 10:22. Owner: use the full phone screen -> M-012.
 - Open: owner tests stage 1 and M-004.
