@@ -2372,6 +2372,29 @@
         .set-body .ts-row .ts-lbl { display: none; }
         html.lowvision .lv-btn { box-shadow: inset 0 0 0 4px #000, 0 0 0 3px #ffeb3b, 0 0 22px #ffeb3b; }
         html.relax-open .lv-btn, html.med-open .lv-btn, body:has(.settings-page.open) .lv-btn { display: none !important; }
+
+        /* M-068: calm mode menu: 3 tabs + tile grid (no sideways scrolling), folds to a small button after choosing */
+        #relax .rx-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 4px 0 10px; }
+        #relax .rx-tabs button { display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 8px 4px; border-radius: 18px; border: none;
+            color: #e0e7ff; font: 800 1rem 'MTUI', sans-serif; background: rgba(30, 41, 59, 0.85); box-shadow: inset 0 1px 1px rgba(255,255,255,.2), 0 4px 10px rgba(0,0,0,.4); }
+        #relax .rx-tabs button small { font-size: 1.05rem; line-height: 1.1; }
+        #relax .rx-tabs button.on { color: #fff; background: linear-gradient(180deg, #8b5cf6, #4c1d95); box-shadow: inset 0 2px 1px rgba(255,255,255,.35), 0 0 16px rgba(139, 92, 246, 0.9); }
+        #relax .rx-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; max-height: 38vh; overflow-y: auto; padding: 2px; overscroll-behavior: contain; }
+        #relax .rx-tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 76px; padding: 8px 4px; border-radius: 20px;
+            border: none; color: #fff; font: 800 0.95rem/1.15 'MTUI', sans-serif; text-align: center; background: rgba(30, 41, 59, 0.82);
+            box-shadow: inset 0 2px 1px rgba(255,255,255,.18), inset 0 -4px 6px rgba(0,0,0,.35), 0 5px 12px rgba(0,0,0,.45); }
+        #relax .rx-tile .rx-ico { font-size: 1.7rem; line-height: 1; }
+        #relax .rx-tile .rx-tl { overflow-wrap: break-word; max-width: 100%; }
+        #relax .rx-tile.sel { background: linear-gradient(180deg, #8b5cf6, #4c1d95); box-shadow: inset 0 2px 1px rgba(255,255,255,.35), 0 0 0 2px #c4b5fd, 0 0 18px rgba(139, 92, 246, 0.9); }
+        #relax .rx-tile:active { transform: scale(0.96); }
+        #relax .rx-go { display: block; width: 100%; margin-top: 12px; min-height: 54px; border: none; border-radius: 28px; color: #fff; font: 900 1.2rem 'MTUI', sans-serif;
+            background: linear-gradient(180deg, #22c55e, #0f766e); box-shadow: inset 0 2px 1px rgba(255,255,255,.4), 0 6px 16px rgba(0,0,0,.5), 0 0 18px rgba(34,197,94,.55); }
+        #relax .rx-mini { position: absolute; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom)); z-index: 5; transform: translate(-50%, 30px); opacity: 0; pointer-events: none;
+            display: flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px; border: 1px solid rgba(196, 181, 253, 0.5); color: #fff;
+            font: 800 1.05rem 'MTUI', sans-serif; background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(6px); transition: opacity .6s, transform .6s; }
+        #relax .rx-mini-ico { font-size: 1.3rem; }
+        #relax.rx-hide .rx-mini { opacity: 0.75; transform: translate(-50%, 0); pointer-events: auto; }
+        #relax .rx-title { margin: 0 0 4px !important; }
     </style>
 </head>
 <body>
