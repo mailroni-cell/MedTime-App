@@ -34,3 +34,6 @@
 - Same day, later: M-042 appointment wizard, M-043 title font (owner chose Audiowide, option 2 of 7) + power-symbol exit, M-044 calm mode (3D worlds + zen sounds + sleep timer), M-045 medical look (Rubik, medical add button). Builds 46, 47.
 - Same day, evening: M-057 opening flows to the end + gold credit 'רוני', M-058 in-app updates (settings tile, download+install from release latest), M-059 random light around menu frames, M-060 Help tile in 5 languages.
 - Same day, night: M-061..M-074: settings/help polish, full-width title, low-vision button on main screen + fixes, calm mode rebuilt (light bar, 10 worlds, real recordings via Wikimedia workflow, last mode, lock), handwritten credit Roni Schneider. Builds 57-78. Handoff written in STATE.md.
+
+## 2026-10-18 (thread 3)
+- Owner said build 78 "perfect". M-075: separate test channel (release test) and everyone channel (release latest, run 78).

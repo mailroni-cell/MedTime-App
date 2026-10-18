@@ -5,6 +5,10 @@ on:
     branches:
       - main
       - master
+    # M-075: a commit that only promotes a build to everyone does not build again
+    paths-ignore:
+      - 'release/**'
+      - '.github/workflows/release-stable.yml'
   workflow_dispatch:
 
 # M-005: needed to publish the APK as the rolling "latest" release
@@ -47,13 +51,15 @@ jobs:
           name: MedTime-Debug-APK
           path: app/build/outputs/apk/debug/*.apk
 
-      # M-005: fixed download link for the newest APK (used by Claude to deliver it to the PC)
-      - name: Publish rolling "latest" release
+      # M-075: every build goes to the "test" release only (owner's phone, via the PC watcher).
+      # The "latest" release is what all users' apps update from; it changes only when the
+      # owner says "משחררים לכולם" (workflow release-stable.yml copies "test" -> "latest").
+      - name: Publish rolling "test" release
         if: github.ref == 'refs/heads/main'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cp app/build/outputs/apk/debug/*.apk MedTime-latest.apk
           echo "run ${{ github.run_number }} / ${{ github.sha }}" > build-info.txt
-          gh release delete latest --yes --cleanup-tag || true
-          gh release create latest MedTime-latest.apk build-info.txt --title "MedTime latest (run ${{ github.run_number }})" --notes "Automatic build ${{ github.run_number }}" --prerelease
+          gh release delete test --yes --cleanup-tag || true
+          gh release create test MedTime-latest.apk build-info.txt --target "${{ github.sha }}" --title "MedTime test (run ${{ github.run_number }})" --notes "Test build ${{ github.run_number }} - owner's phone only" --prerelease

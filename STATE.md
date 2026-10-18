@@ -5,6 +5,10 @@
 - App today: dark Hebrew screen, small Three.js animation on top, add reminder / delete reminder. Basic.
 - Automation set up: GitHub build -> APK to PC folder -> watcher installs + launches on the phone.
 
+## M-075 (2026-10-18): two update channels
+- Builds now publish to release `test` (owner's phone). Release `latest` = what all users get = run 78 (approved "מושלם"). Promote only on "משחררים לכולם": set `run N` in release/stable.txt, push only that file.
+- Delivery loop below now downloads from releases/download/test/ (not latest).
+
 ## HANDOFF (2026-10-18 night, end of session) - read this first
 - Latest: build 78 (run 78) = M-067..M-074, all ⏳ waiting for owner test. Build 78 installed on the phone 20:30.
 - Recent: 👓 low-vision button on main screen (neon + halo when on), low-vision note fits screen, handwritten credit "פיתוח ועיצוב: רוני שניידר" / "Designed & developed by Roni Schneider" (SVG paths, scratchpad shaping with uharfbuzz), calm mode: 10 3D worlds, light bottom bar (Display/Sound/Timer/↺ Last mode/🔓 Lock), opens quiet with nothing pre-chosen, real nature recordings (M-072, from Wikimedia Commons by workflow fetch-sounds.yml + tools/sounds_pick.json; credits in Help "🎧"), seamless cross-fading sound player (ambPlayer in relax.js).

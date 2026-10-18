@@ -1,0 +1,46 @@
+name: Release to everyone
+
+# M-075: copies the tested build (release "test") to release "latest",
+# which every installed MedTime app checks for updates.
+on:
+  push:
+    branches: [main]
+    paths: ['release/stable.txt']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-stable
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Copy "test" to "latest"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          want=$(grep -oE '^run [0-9]+' release/stable.txt | grep -oE '[0-9]+' || true)
+          mkdir -p dl && cd dl
+          if ! gh release download test -R "$REPO" -p MedTime-latest.apk -p build-info.txt; then
+            echo "::notice::No test release yet. Nothing to release."
+            exit 0
+          fi
+          have=$(grep -oE 'run [0-9]+' build-info.txt | grep -oE '[0-9]+')
+          cur=$(gh release download latest -R "$REPO" -p build-info.txt -O - 2>/dev/null | grep -oE 'run [0-9]+' | grep -oE '[0-9]+' || echo 0)
+          echo "wanted run: $want / test release: $have / users now: $cur"
+          if [ -n "$want" ] && [ "$want" != "$have" ]; then
+            if [ "$want" = "$cur" ]; then echo "::notice::Run $want is already released."; exit 0; fi
+            echo "::error::release/stable.txt asks for run $want but the test release is run $have"; exit 1
+          fi
+          sha=$(grep -oE '[0-9a-f]{40}' build-info.txt)
+          gh release delete latest -R "$REPO" --yes --cleanup-tag || true
+          gh release create latest MedTime-latest.apk build-info.txt -R "$REPO" --target "$sha" \
+            --title "MedTime (run $have)" --notes "Released to everyone: build $have"
+          echo "::notice::Released run $have to everyone"
