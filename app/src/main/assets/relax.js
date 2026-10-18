@@ -86,7 +86,8 @@
             '</div>' +
             '<button type="button" class="rx-go"></button>' +
             '</div>' +
-            '<button type="button" class="rx-mini"><span class="rx-mini-ico"></span><span class="rx-mini-t"></span></button>';
+            '<button type="button" class="rx-mini"><span class="rx-mini-ico"></span><span class="rx-mini-t"></span></button>' +
+            '<div class="rx-bar">' + ['scene', 'sound', 'timer'].map(t => '<button type="button" data-s="' + t + '"><span class="rx-bi"></span><small></small></button>').join('') + '</div>';
         document.body.appendChild(root);
         canvas = root.querySelector('#rx-canvas');
         panel = root.querySelector('.rx-panel');
@@ -97,6 +98,11 @@
         br.addEventListener('change', () => { st.breath = br.checked; save(); drawBreath(); poke(); });
         panel.addEventListener('pointerdown', e => { e.stopPropagation(); poke(); });
         root.querySelector('.rx-go').addEventListener('click', e => { e.stopPropagation(); hidePanel(); });
+        // M-073: light menu: a slim bar with 3 small buttons; each one opens only its own choices
+        root.querySelectorAll('.rx-bar button').forEach(b => {
+            b.addEventListener('pointerdown', e => e.stopPropagation());
+            b.addEventListener('click', e => { e.stopPropagation(); vib(10); setSec(sec === b.dataset.s ? '' : b.dataset.s); poke(); });
+        });
         const mini = root.querySelector('.rx-mini');
         mini.addEventListener('pointerdown', e => e.stopPropagation());
         mini.addEventListener('click', e => { e.stopPropagation(); poke(); });
@@ -111,7 +117,7 @@
         });
         root.addEventListener('pointerup', e => {
             if (!down) return; down = false;
-            if (Math.abs(e.clientX - sx) < 8 && Math.abs(e.clientY - sy) < 8 && !e.target.closest('.rx-panel, .rx-close, .rx-mini')) togglePanel();
+            if (Math.abs(e.clientX - sx) < 8 && Math.abs(e.clientY - sy) < 8 && !e.target.closest('.rx-panel, .rx-close, .rx-mini, .rx-bar')) { if (sec) setSec(''); else togglePanel(); }
         });
     }
     function paintVol() { const v = root.querySelector('#rx-vol'); v.value = st.vol; v.style.setProperty('--p', st.vol + '%'); }
@@ -139,10 +145,17 @@
             const sec = root.querySelector('.rx-sec[data-t=' + t + ']'), box = root.querySelector('.rx-scroll');
             if (sec && box) box.scrollTo({ top: sec.offsetTop - box.offsetTop - 4, behavior: 'smooth' });
         }, 350);
-        grid('scene', SCENES, st.scene, k => tx('s_' + k), k => { st.scene = k; save(); setScene(k); drawPanel(); goTo('sound'); });
-        grid('sound', SOUNDS, st.sound, k => tx('a_' + k), k => { st.sound = k; save(); playSound(k); drawPanel(); goTo('timer'); });
+        const done = () => setTimeout(() => setSec(''), 380);
+        grid('scene', SCENES, st.scene, k => tx('s_' + k), k => { st.scene = k; save(); setScene(k); drawPanel(); done(); });
+        grid('sound', SOUNDS, st.sound, k => tx('a_' + k), k => { st.sound = k; save(); playSound(k); drawPanel(); });
         grid('timer', TIMERS.map(m => [String(m), m ? '⏳' : '♾️']), String(st.timer), k => +k ? k + ' ' + tx('min') : tx('off'),
-            k => { st.timer = +k; save(); startTimer(); drawPanel(); setTimeout(hidePanel, 600); });
+            k => { st.timer = +k; save(); startTimer(); drawPanel(); done(); });
+        root.querySelectorAll('.rx-bar button').forEach(b => {
+            const t = b.dataset.s;
+            b.querySelector('.rx-bi').textContent = t === 'scene' ? (SCENES.find(x => x[0] === st.scene) || [])[1] : t === 'sound' ? (SOUNDS.find(x => x[0] === st.sound) || [])[1] : (+st.timer ? '⏳' : '♾️');
+            b.querySelector('small').textContent = t === 'timer' ? (+st.timer ? st.timer + ' ' + tx('min') : tx('off')) : tx(t);
+            b.classList.toggle('on', sec === t);
+        });
         root.querySelector('.rx-go').textContent = tx('go');
         root.querySelector('.rx-mini-ico').textContent = (SCENES.find(x => x[0] === st.scene) || ['', '🌙'])[1];
         root.querySelector('.rx-mini-t').textContent = tx('menu');
@@ -150,7 +163,13 @@
         root.querySelector('#rx-br').checked = !!st.breath;
         drawBreath();
     }
-    function hidePanel() { clearTimeout(hideT); root.classList.add('rx-hide'); }
+    let sec = '';
+    function setSec(t) {
+        sec = t; root.dataset.sec = t;
+        root.querySelectorAll('.rx-bar button').forEach(b => b.classList.toggle('on', b.dataset.s === t));
+        const box = root.querySelector('.rx-scroll'); if (box) box.scrollTop = 0;
+    }
+    function hidePanel() { clearTimeout(hideT); setSec(''); root.classList.add('rx-hide'); }
     function poke() { clearTimeout(hideT); root.classList.remove('rx-hide'); hideT = setTimeout(hidePanel, 25000); }
     function togglePanel() { if (root.classList.contains('rx-hide')) poke(); else hidePanel(); }
     function drawBreath() { root.classList.toggle('rx-br-on', !!st.breath || st.scene === 'orb'); }
@@ -737,7 +756,7 @@
         if (window.amb) try { window.amb.pause(); } catch (e) { }
         if (window.MedTime3D && window.MedTime3D.pause) window.MedTime3D.pause(true);
         root.classList.add('open'); document.documentElement.classList.add('relax-open');
-        drawPanel(); poke();
+        setSec(''); drawPanel(); poke();
         root.querySelector('.rx-hint').classList.remove('gone');
         setTimeout(() => root && root.querySelector('.rx-hint').classList.add('gone'), 6000);
         vol = st.vol / 100;

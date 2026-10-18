@@ -2447,6 +2447,33 @@
         html.lowvision .lv-btn .lv-g { filter: none; }
         html.lowvision .lv-btn .lv-lens { fill: rgba(0, 0, 0, 0.12); stroke: #000; stroke-width: 6.5; }
         html.lowvision .lv-btn .lv-arm { stroke: #000; stroke-width: 6.5; }
+
+        /* M-073: light calm menu: slim bar of 3 small buttons at the bottom; a small glass card shows only the chosen part */
+        #relax .rx-title, #relax .rx-go, #relax .rx-mini, #relax .rx-hint { display: none !important; }
+        #relax .rx-bar { position: absolute; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 6;
+            display: flex; gap: 10px; padding: 6px; border-radius: 999px; background: rgba(10, 14, 35, 0.35); border: 1px solid rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(6px); transition: opacity 0.6s, transform 0.6s; }
+        #relax .rx-bar button { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 74px; height: 58px; border-radius: 29px;
+            border: none; background: transparent; color: #e0e7ff; font: 700 0.78rem 'MTUI', sans-serif; gap: 1px; opacity: 0.85; }
+        #relax .rx-bar button .rx-bi { font-size: 1.45rem; line-height: 1.1; }
+        #relax .rx-bar button small { max-width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #relax .rx-bar button.on { opacity: 1; background: rgba(139, 92, 246, 0.45); box-shadow: 0 0 0 1px rgba(196, 181, 253, 0.6); }
+        #relax.rx-hide .rx-bar { opacity: 0; transform: translate(-50%, 30px); pointer-events: none; }
+        #relax .rx-panel { left: 12px !important; right: 12px !important; bottom: calc(90px + env(safe-area-inset-bottom)) !important; padding: 10px !important; border-radius: 24px;
+            background: rgba(10, 14, 35, 0.55) !important; border: 1px solid rgba(255, 255, 255, 0.12); backdrop-filter: blur(10px);
+            transform: translateY(20px); opacity: 0; visibility: hidden; transition: transform 0.35s ease, opacity 0.35s, visibility 0s 0.35s !important; }
+        #relax[data-sec="scene"] .rx-panel, #relax[data-sec="sound"] .rx-panel, #relax[data-sec="timer"] .rx-panel { transform: none; opacity: 1; visibility: visible; transition: transform 0.35s ease, opacity 0.35s !important; }
+        #relax.rx-hide .rx-panel { opacity: 0 !important; visibility: hidden !important; }
+        #relax .rx-scroll { max-height: 44vh; }
+        #relax .rx-sec, #relax .rx-panel .rx-line { display: none; }
+        #relax[data-sec="scene"] .rx-sec[data-t="scene"], #relax[data-sec="sound"] .rx-sec[data-t="sound"], #relax[data-sec="timer"] .rx-sec[data-t="timer"] { display: block; margin: 0; }
+        #relax[data-sec="sound"] .rx-panel .rx-line { display: flex; }
+        #relax .rx-h { display: none !important; }
+        #relax .rx-sec .rx-grid { gap: 7px; }
+        #relax .rx-sec .rx-tile { min-height: 62px; border-radius: 16px; background: rgba(255, 255, 255, 0.08); box-shadow: none; font-size: 0.88rem; }
+        #relax .rx-sec .rx-tile .rx-ico { font-size: 1.5rem; }
+        #relax .rx-sec .rx-tile.sel { background: rgba(139, 92, 246, 0.55); box-shadow: 0 0 0 2px #c4b5fd; }
+        #relax.rx-hide .rx-close, #relax.rx-hide .rx-left { opacity: 0.25; }
     </style>
 </head>
 <body>
