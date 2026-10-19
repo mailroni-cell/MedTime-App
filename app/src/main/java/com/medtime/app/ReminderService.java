@@ -85,7 +85,7 @@ public class ReminderService extends Service {
         Vibe.play(this, nag >= 2 && !"off".equals(vk) ? "strong" : vk); // M-079
         if (!appt) {
             if (nag < Reminders.NAG_MAX) Reminders.nag(this, intent, nag + 1);
-            else MedLog.record(this, intent, "missed");
+            else { MedLog.record(this, intent, "missed"); Family.alertMissed(this, intent); } // M-100
         }
         if (Reminders.voiceOn(this)) {
             speak(appt ? Appointments.speechText(this, intent) : Reminders.speechText(this, items), hasSound ? SOUND_MS : 800);

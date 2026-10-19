@@ -121,6 +121,51 @@ public class NativeBridge {
         } catch (Exception e) { return false; }
     }
 
+    /** M-099: weekly report as a PDF file, then the share sheet (WhatsApp, mail, Drive...). */
+    @JavascriptInterface
+    public boolean shareReportPdf(String fileName, String json) {
+        try {
+            java.io.File dir = new java.io.File(activity.getCacheDir(), "backup");
+            dir.mkdirs();
+            java.io.File f = new java.io.File(dir, fileName.replaceAll("[^A-Za-z0-9._-]", "_"));
+            ReportPdf.make(activity, json, f);
+            Uri uri = androidx.core.content.FileProvider.getUriForFile(activity, activity.getPackageName() + ".updates", f);
+            Intent i = new Intent(Intent.ACTION_SEND).setType("application/pdf").putExtra(Intent.EXTRA_STREAM, uri)
+                    .putExtra(Intent.EXTRA_SUBJECT, fileName).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            activity.runOnUiThread(() -> {
+                try { activity.startActivity(Intent.createChooser(i, null)); } catch (Exception ignored) { }
+            });
+            return true;
+        } catch (Throwable e) { return false; }
+    }
+
+    /** M-100: family alert settings: {name, phone, on, perm}. */
+    @JavascriptInterface
+    public String getFamily() { return Family.get(activity.getApplicationContext()).toString(); }
+
+    @JavascriptInterface
+    public void setFamily(String name, String phone, boolean on) { Family.set(activity.getApplicationContext(), name, phone, on); }
+
+    @JavascriptInterface
+    public void requestSms() {
+        if (Build.VERSION.SDK_INT >= 23) activity.runOnUiThread(() ->
+                activity.requestPermissions(new String[]{android.Manifest.permission.SEND_SMS}, 102));
+    }
+
+    @JavascriptInterface
+    public boolean testFamily(String text) { return Family.send(activity.getApplicationContext(), text); }
+
+    /** M-100: pick the family member from the contacts; comes back as window.mtContact(name, phone). */
+    @JavascriptInterface
+    public void pickContact() {
+        activity.runOnUiThread(() -> {
+            try {
+                Intent i = new Intent(Intent.ACTION_PICK, android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+                activity.startActivityForResult(i, MainActivity.REQ_CONTACT);
+            } catch (Exception ignored) { }
+        });
+    }
+
     /** M-080: Android file picker; the chosen file comes back as window.mtRestore(text). */
     @JavascriptInterface
     public void pickBackup() {
@@ -133,6 +178,12 @@ public class NativeBridge {
     }
 
     /** M-079: vibration choice for reminders: off / soft / normal / strong / heart / long. */
+    @JavascriptInterface
+    public boolean getVibeNag() { return Vibe.nagOn(activity.getApplicationContext()); } // M-098
+
+    @JavascriptInterface
+    public void setVibeNag(boolean on) { Vibe.setNag(activity.getApplicationContext(), on); }
+
     @JavascriptInterface
     public String getVibration() { return Vibe.chosen(activity.getApplicationContext()); }
 

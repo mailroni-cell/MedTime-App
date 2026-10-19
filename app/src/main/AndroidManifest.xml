@@ -3,6 +3,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SEND_SMS" /> <!-- M-100: family alert -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <!-- M-005: real reminders when the app is closed -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" android:maxSdkVersion="32" />

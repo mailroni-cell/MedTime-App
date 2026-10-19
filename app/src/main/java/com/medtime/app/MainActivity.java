@@ -99,10 +99,22 @@ public class MainActivity extends AppCompatActivity {
 
     // M-080: backup file chosen in the picker -> the page restores it
     static final int REQ_RESTORE = 77;
+    static final int REQ_CONTACT = 78; // M-100
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, android.content.Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQ_CONTACT) { // M-100
+            if (resultCode != RESULT_OK || data == null || data.getData() == null) return;
+            try (android.database.Cursor c = getContentResolver().query(data.getData(), new String[]{
+                    android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                    android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER}, null, null, null)) {
+                if (c != null && c.moveToFirst())
+                    webView.evaluateJavascript("window.mtContact && mtContact(" + org.json.JSONObject.quote(c.getString(0) == null ? "" : c.getString(0))
+                            + "," + org.json.JSONObject.quote(c.getString(1) == null ? "" : c.getString(1)) + ")", null);
+            } catch (Exception ignored) { }
+            return;
+        }
         if (requestCode != REQ_RESTORE || resultCode != RESULT_OK || data == null || data.getData() == null) return;
         try (java.io.InputStream in = getContentResolver().openInputStream(data.getData())) {
             java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();

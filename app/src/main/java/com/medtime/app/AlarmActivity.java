@@ -41,6 +41,7 @@ public class AlarmActivity extends Activity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         buildScreen(getIntent());
+        if (!Appointments.isAppt(getIntent())) UI.postDelayed(buzz, 30_000L); // M-098
 
         // M-008: a swipe-only lock is removed right away; a PIN / fingerprint lock stays (security)
         KeyguardManager km = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
@@ -268,8 +269,19 @@ public class AlarmActivity extends Activity {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, v, getResources().getDisplayMetrics());
     }
 
+    // M-098: until it is answered, a strong vibration every 30 s (can be turned off in settings)
+    private final android.os.Handler UI = new android.os.Handler(android.os.Looper.getMainLooper());
+    private final Runnable buzz = new Runnable() {
+        @Override public void run() {
+            if (leaving || isFinishing()) return;
+            if (Vibe.nagOn(AlarmActivity.this) && !"off".equals(Vibe.chosen(AlarmActivity.this))) Vibe.play(AlarmActivity.this, "strong");
+            UI.postDelayed(this, 30_000L);
+        }
+    };
+
     @Override
     protected void onDestroy() {
+        UI.removeCallbacks(buzz);
         if (current.get() == this) current.clear();
         super.onDestroy();
     }

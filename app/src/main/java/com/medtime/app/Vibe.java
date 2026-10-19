@@ -35,6 +35,15 @@ class Vibe {
         return ctx.getSharedPreferences(Reminders.PREFS, Context.MODE_PRIVATE).getString(KEY, DEF);
     }
 
+    // M-098: strong vibration every 30 s while the reminder window waits for an answer (on by default)
+    static final String KEY_NAG = "vibe_nag";
+    static boolean nagOn(Context ctx) {
+        return ctx.getSharedPreferences(Reminders.PREFS, Context.MODE_PRIVATE).getBoolean(KEY_NAG, true);
+    }
+    static void setNag(Context ctx, boolean on) {
+        ctx.getSharedPreferences(Reminders.PREFS, Context.MODE_PRIVATE).edit().putBoolean(KEY_NAG, on).apply();
+    }
+
     static void choose(Context ctx, String k) {
         ctx.getSharedPreferences(Reminders.PREFS, Context.MODE_PRIVATE).edit().putString(KEY, k == null ? DEF : k).apply();
     }
