@@ -277,7 +277,7 @@
     sp.insertBefore(v, sp.firstChild);
     sp.classList.add('sp-video');
     window.__sp3d = true; // the video ends the opening itself
-    var started = false, failed = false, endAt = 9.85; // M-096: the film plays (almost) to its end
+    var started = false, failed = false, endAt = 11.35; // M-096/M-097: the film plays (almost) to its end, incl. the calm logo ending
     function fail() {
         if (failed || started) return;
         failed = true; try { v.pause(); } catch (e) { }
@@ -297,7 +297,7 @@
     window.addEventListener('resize', placeTag);
     v.addEventListener('playing', function () { if (started) return; started = true; v.classList.add('on'); placeTag(); go(); });
     v.addEventListener('timeupdate', function () {
-        if (v.currentTime >= 8.3) window.__spPrewarm = true; // main screen gets ready during the calm end
+        if (v.currentTime >= 9.8) window.__spPrewarm = true; // main screen gets ready during the calm end
         if (v.currentTime >= endAt && window.endSplash) window.endSplash(); // fade starts while the video still moves
     });
     v.addEventListener('ended', function () { if (window.endSplash) window.endSplash(); });

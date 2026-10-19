@@ -6,7 +6,7 @@ const fs = require('fs'), path = require('path');
 const root = path.join(__dirname, '..');
 const out = path.join(root, 'app/src/main/assets/splash.mp4');
 const frames = '/tmp/medtime-splash-frames';
-const FPS = 60, SECONDS = 10.2;
+const FPS = 60, SECONDS = 11.7; // M-097: 1.5 s calm end with the logo
 (async () => {
   fs.rmSync(frames, { recursive: true, force: true }); fs.mkdirSync(frames, { recursive: true });
   const b = await chromium.launch({ args: ['--use-gl=swiftshader', '--enable-webgl', '--ignore-gpu-blocklist'] });

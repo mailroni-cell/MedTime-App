@@ -23,7 +23,7 @@ public class AlarmActivity extends Activity {
 
     static void closeIfShowing() {
         AlarmActivity a = current.get();
-        if (a != null && !a.isFinishing()) a.runOnUiThread(a::finish);
+        if (a != null && !a.isFinishing()) { a.leaving = true; a.runOnUiThread(a::finish); }
     }
 
     @Override
@@ -191,11 +191,13 @@ public class AlarmActivity extends Activity {
     private void unlockThen(final Runnable r) {
         KeyguardManager km = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
         if (km != null && km.isKeyguardLocked() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            leaving = true; // the unlock screen goes on top: do not pull the reminder back over it
             km.requestDismissKeyguard(this, new KeyguardManager.KeyguardDismissCallback() {
                 @Override
-                public void onDismissSucceeded() { r.run(); }
+                public void onDismissSucceeded() { leaving = true; r.run(); }
             });
         } else {
+            leaving = true;
             r.run();
         }
     }
@@ -203,6 +205,7 @@ public class AlarmActivity extends Activity {
     private void unlockAndOpen(final Intent src) {
         KeyguardManager km = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
         if (km != null && km.isKeyguardLocked() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            leaving = true; // the unlock screen goes on top: do not pull the reminder back over it
             km.requestDismissKeyguard(this, new KeyguardManager.KeyguardDismissCallback() {
                 @Override
                 public void onDismissSucceeded() {
@@ -218,6 +221,7 @@ public class AlarmActivity extends Activity {
         // The reminder stays on its notification (with Taken / snooze) until answered
         Intent main = new Intent(this, MainActivity.class);
         main.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        leaving = true;
         startActivity(main);
         finish();
     }
@@ -225,6 +229,7 @@ public class AlarmActivity extends Activity {
     private void answer(Intent src, String action) {
         Intent i = new Intent(src);
         i.setAction(action);
+        leaving = true;
         ActionReceiver.handle(this, i);
         finish();
     }
@@ -273,4 +278,24 @@ public class AlarmActivity extends Activity {
     @Override
     @SuppressWarnings("deprecation")
     public void onBackPressed() { }
+
+    // M-097: Home / recent apps / another app on top do not hide it either: unanswered, it comes back on top right away
+    // (needs "display over other apps"). When the screen is just turned off it stays where it is (shows on wake).
+    private boolean leaving = false;
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (leaving || isFinishing() || isChangingConfigurations()) return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !android.provider.Settings.canDrawOverlays(this)) return;
+        android.os.PowerManager pm = (android.os.PowerManager) getSystemService(POWER_SERVICE);
+        if (pm != null && !pm.isInteractive()) return;
+        final Intent again = new Intent(getIntent()).setClass(getApplicationContext(), AlarmActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        final android.content.Context app = getApplicationContext();
+        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+            if (leaving || current.get() != this || isFinishing()) return;
+            try { app.startActivity(again); } catch (Exception ignored) { }
+        }, 400);
+    }
 }
