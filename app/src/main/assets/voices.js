@@ -25,7 +25,7 @@
         low: ['קול נמוך', 'صوت منخفض', 'voce joasă', 'voix grave', 'low voice'],
         high: ['קול גבוה', 'صوت عالٍ', 'voce înaltă', 'voix aiguë', 'high voice'],
         pitch: [['אבי', 'מיכל'], ['سامي', 'ليلى'], ['Andrei', 'Ioana'], ['Louis', 'Claire'], ['David', 'Emma']],
-        noHe: ['בעברית עדיין אין קולות נוספים שעובדים בלי אינטרנט, לכן יש כאן את קול הטלפון בשלושה גבהים.', '', '', '', ''],
+        noHe: ['בעברית יש רק את קול הטלפון. הקולות המובנים באפליקציה (בלי אינטרנט) קיימים בערבית, רומנית, צרפתית ואנגלית.', '', '', '', ''],
         loading: ['טוען קולות…', 'جارٍ التحميل…', 'Se încarcă…', 'Chargement…', 'Loading voices…'],
         sample: ['שלום, הגיע הזמן לקחת אקמול, כדור אחד.', 'مرحبًا، حان وقت تناول الدواء، حبة واحدة.', 'Bună, este timpul să luați medicamentul, o pastilă.', 'Bonjour, c\'est l\'heure de prendre votre médicament, un comprimé.', 'Hello, it is time to take your medicine, one tablet.']
     };
@@ -58,21 +58,15 @@
         // only voices that are on the phone and work without internet
         const nm = T.names[li()];
         // M-090: the phone's own variants sounded the same, so instead: the phone voice lower (man) and higher (woman)
-        const P = T.pitch[li()];
-        const items = [{ name: '', label: '🗣️ ' + tx('def') },
-            { name: 'pitch:0.78', label: '👨 ' + P[0], sub: tx('man') + ' · ' + tx('low') },
-            { name: 'pitch:1.3', label: '👩 ' + P[1], sub: tx('woman') + ' · ' + tx('high') }];
-        // a phone voice chosen earlier stays visible so it can be changed
-        const old = (data.voices || []).find(v => !v.piper && v.name === data.chosen);
-        if (old) items.push({ name: old.name, label: '🗣️ ' + nm[0] });
+        // M-091: phone voice + the voices built into the app (no pitch copies, no downloads)
+        const items = [{ name: '', label: '🗣️ ' + tx('def') }];
+        if (String(data.chosen || '').startsWith('pitch:')) data.chosen = '';
         // M-087: offline Piper voices with their own names (man / woman)
         const pv = (data.voices || []).filter(v => v.piper);
         if (pv.length) {
             items.push({ head: tx('offline') });
-            const st = data.piper || {};
-            if (st.total && st.ready < st.total) items.push({ head: tx('dl') + ' (' + st.ready + '/' + st.total + (st.busy && st.pct ? ', ' + st.pct + '%' : '') + ')', small: true });
         } else if (li() === 0) items.push({ head: tx('noHe'), small: true });
-        pv.forEach(v => items.push({ name: v.name, label: (v.g === 'f' ? '👩 ' : '👨 ') + v.label, sub: tx(v.g === 'f' ? 'woman' : 'man') + (v.ready ? '' : ' · ' + tx('dl') + (v.pct ? ' ' + v.pct + '%' : '')), off: !v.ready }));
+        pv.forEach(v => items.push({ name: v.name, label: (v.g === 'f' ? '👩 ' : '👨 ') + v.label, sub: tx(v.g === 'f' ? 'woman' : 'man'), off: !v.ready }));
         items.forEach(it => {
             if (it.head) { const h = document.createElement('div'); h.className = 'vc-note'; h.style.marginTop = it.small ? '2px' : '12px'; h.style.opacity = it.small ? '.75' : '1'; h.style.fontWeight = it.small ? '500' : '700'; h.textContent = it.head; list.appendChild(h); return; }
             const r = document.createElement('div'); r.className = 'vc-row';

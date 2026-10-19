@@ -4,7 +4,6 @@ import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.AudioFormat;
 import android.media.AudioTrack;
-import android.net.ConnectivityManager;
 import android.os.Build;
 
 import com.k2fsa.sherpa.onnx.GeneratedAudio;
@@ -20,18 +19,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 /**
- * M-087: offline Piper voices (sherpa-onnx). The packs are downloaded by the app itself, once,
- * on Wi-Fi, from the release "voices" (see tools/voices.txt). After that they work with no internet.
+ * M-087/M-091: offline Piper voices (sherpa-onnx), inside the APK (assets/piper, added by the build
+ * from the release "voices", see tools/voices.txt). They work with no internet.
  * Voice name format used everywhere: "piper:<pack>:<speaker>".
  */
 class Piper {
-    static final String BASE = "https://github.com/mailroni-cell/MedTime-App/releases/download/voices/";
 
     /** One voice = pack + speaker, its language, a friendly name and m / f. */
     static final String[][] VOICES = {
@@ -46,8 +40,6 @@ class Piper {
     static final String[] PACKS = {"espeak", "ar_kareem", "ro_mihai", "fr_upmc", "en_amy", "en_ryan"};
 
     private static volatile boolean downloading = false;
-    private static volatile String current = "";
-    private static volatile int pct = 0;
     private static OfflineTts engine;
     private static String enginePack = "";
     private static AudioTrack track;
@@ -67,7 +59,9 @@ class Piper {
     /** True when this voice can speak now (pack and pronunciation data on the phone, 64-bit phone). */
     static boolean ready(Context c, String name) {
         String[] v = voice(name);
-        return v != null && supported() && packReady(c, "espeak") && packReady(c, v[2]);
+        if (v == null || !supported() || !inApk(c, v[2])) return false;
+        if (!packReady(c, "espeak")) copyEspeak(c); // first time: prepare now (takes a second)
+        return packReady(c, "espeak");
     }
 
     static boolean supported() {
@@ -91,71 +85,52 @@ class Piper {
                 boolean ok = ready(c, v[0]);
                 arr.put(new JSONObject().put("name", v[0]).put("piper", true).put("label", v[4]).put("g", v[5])
                         .put("local", true).put("installed", ok).put("ready", ok)
-                        .put("pct", ok ? 100 : (current.equals(v[2]) ? pct : 0)));
+                        .put("pct", 0));
             }
         } catch (Exception ignored) { }
         return arr;
     }
 
-    // ---------------- download once, on Wi-Fi ----------------
-    static void ensure(Context ctx) {
-        final Context c = ctx.getApplicationContext();
-        if (!supported() || downloading) return;
-        boolean all = true;
-        for (String p : PACKS) if (!packReady(c, p)) { all = false; break; }
-        if (all) return;
+    // ---------------- M-091: voices are inside the APK (assets/piper); only the small pronunciation data is copied out once ----------------
+    static boolean inApk(Context c, String pack) {
         try {
-            ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
-            if (cm == null || cm.getActiveNetworkInfo() == null || !cm.getActiveNetworkInfo().isConnected()) return;
-            if (cm.isActiveNetworkMetered()) return; // wait for Wi-Fi, do not use the data plan
-        } catch (Exception e) { return; }
-        downloading = true;
-        new Thread(() -> {
-            try {
-                for (String p : PACKS) {
-                    if (packReady(c, p)) continue;
-                    current = p; pct = 0;
-                    if (!fetch(c, p)) break;
-                }
-            } finally { downloading = false; current = ""; }
-        }, "piper-download").start();
+            String[] f = c.getAssets().list("piper/" + pack);
+            return f != null && f.length > 0;
+        } catch (Exception e) { return false; }
     }
 
-    private static boolean fetch(Context c, String pack) {
-        File zip = new File(c.getCacheDir(), pack + ".zip");
-        File tmp = new File(root(c), pack + ".tmp"), dst = new File(root(c), pack);
+    static void ensure(Context ctx) {
+        final Context c = ctx.getApplicationContext();
+        if (!supported() || downloading || packReady(c, "espeak") || !inApk(c, "espeak")) return;
+        downloading = true;
+        new Thread(() -> {
+            try { copyEspeak(c); } finally { downloading = false; }
+        }, "piper-prepare").start();
+    }
+
+    private static synchronized void copyEspeak(Context c) {
+        if (packReady(c, "espeak")) return;
+        File tmp = new File(root(c), "espeak.tmp"), dst = new File(root(c), "espeak");
         try {
-            HttpURLConnection con = (HttpURLConnection) new URL(BASE + pack + ".zip").openConnection();
-            con.setInstanceFollowRedirects(true);
-            con.setConnectTimeout(20000); con.setReadTimeout(30000);
-            if (con.getResponseCode() != 200) return false;
-            long total = con.getContentLength(), got = 0;
-            try (InputStream in = con.getInputStream(); OutputStream out = new FileOutputStream(zip)) {
-                byte[] b = new byte[65536]; int n;
-                while ((n = in.read(b)) > 0) { out.write(b, 0, n); got += n; if (total > 0) pct = (int) (got * 100 / total); }
-            }
-            del(tmp); tmp.mkdirs();
-            String base = tmp.getCanonicalPath() + File.separator;
-            try (ZipInputStream zin = new ZipInputStream(new java.io.FileInputStream(zip))) {
-                ZipEntry e; byte[] b = new byte[65536];
-                while ((e = zin.getNextEntry()) != null) {
-                    File f = new File(tmp, e.getName());
-                    if (!f.getCanonicalPath().startsWith(base)) continue; // stay inside the folder
-                    if (e.isDirectory()) { f.mkdirs(); continue; }
-                    f.getParentFile().mkdirs();
-                    try (OutputStream out = new FileOutputStream(f)) { int n; while ((n = zin.read(b)) > 0) out.write(b, 0, n); }
-                }
-            }
+            del(tmp);
+            copyDir(c, "piper/espeak", tmp);
             del(dst);
-            if (!tmp.renameTo(dst)) return false;
-            new File(dst, ".ok").createNewFile();
-            return true;
-        } catch (Exception e) {
-            return false;
-        } finally {
-            zip.delete();
-            if (tmp.exists()) del(tmp);
+            if (tmp.renameTo(dst)) new File(dst, ".ok").createNewFile();
+        } catch (Exception ignored) {
+        } finally { if (tmp.exists()) del(tmp); }
+    }
+
+    private static void copyDir(Context c, String asset, File to) throws java.io.IOException {
+        String[] kids = c.getAssets().list(asset);
+        if (kids == null || kids.length == 0) {
+            to.getParentFile().mkdirs();
+            try (InputStream in = c.getAssets().open(asset); OutputStream out = new FileOutputStream(to)) {
+                byte[] b = new byte[65536]; int n; while ((n = in.read(b)) > 0) out.write(b, 0, n);
+            }
+            return;
         }
+        to.mkdirs();
+        for (String k : kids) copyDir(c, asset + "/" + k, new File(to, k));
     }
 
     private static void del(File f) {
@@ -169,17 +144,16 @@ class Piper {
     private static OfflineTts engineFor(Context c, String pack) {
         if (engine != null && pack.equals(enginePack)) return engine;
         if (engine != null) { try { engine.free(); } catch (Throwable ignored) { } engine = null; enginePack = ""; }
-        File dir = new File(root(c), pack);
         OfflineTtsVitsModelConfig vits = new OfflineTtsVitsModelConfig();
-        vits.setModel(new File(dir, "model.onnx").getAbsolutePath());
-        vits.setTokens(new File(dir, "tokens.txt").getAbsolutePath());
+        vits.setModel("piper/" + pack + "/model.onnx"); // read straight from the APK
+        vits.setTokens("piper/" + pack + "/tokens.txt");
         vits.setDataDir(new File(new File(root(c), "espeak"), "espeak-ng-data").getAbsolutePath());
         OfflineTtsModelConfig mc = new OfflineTtsModelConfig();
         mc.setVits(vits);
         mc.setNumThreads(2);
         OfflineTtsConfig cfg = new OfflineTtsConfig();
         cfg.setModel(mc);
-        engine = new OfflineTts(null, cfg);
+        engine = new OfflineTts(c.getAssets(), cfg);
         enginePack = pack;
         return engine;
     }
@@ -248,9 +222,7 @@ class Piper {
     static JSONObject status(Context c) {
         JSONObject o = new JSONObject();
         try {
-            int r = 0;
-            for (String p : PACKS) if (packReady(c, p)) r++;
-            o.put("ready", r).put("total", PACKS.length).put("busy", downloading).put("pack", current).put("pct", pct).put("supported", supported());
+            o.put("busy", downloading).put("supported", supported());
         } catch (Exception ignored) { }
         return o;
     }

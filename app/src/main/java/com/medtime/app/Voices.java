@@ -54,8 +54,7 @@ class Voices {
     /** Applies the chosen voice to a ready TTS (used by the reminder service). */
     /** M-090: "pitch:0.78" = the phone voice, lower or higher (sounds like a man / a woman). */
     static float pitchOf(String name) {
-        if (name == null || !name.startsWith("pitch:")) return 1f;
-        try { return Math.max(0.5f, Math.min(2f, Float.parseFloat(name.substring(6)))); } catch (Exception e) { return 1f; }
+        return 1f; // M-091: owner dropped the pitch variants (same voice); an old "pitch:" choice now means the normal voice
     }
 
     static void apply(Context ctx, TextToSpeech t) {

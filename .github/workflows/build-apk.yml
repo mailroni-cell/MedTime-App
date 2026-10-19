@@ -44,6 +44,19 @@ jobs:
           cp jniLibs/arm64-v8a/*.so app/src/main/jniLibs/arm64-v8a/
           rm -rf so.tar.bz2 jniLibs
 
+      # M-091: the offline voices go inside the APK (owner's choice). Packs come from the release "voices" (workflow voices.yml)
+      - name: Offline voices into the APK
+        run: |
+          set -e
+          base=https://github.com/mailroni-cell/MedTime-App/releases/download/voices
+          for p in espeak ar_kareem ro_mihai fr_upmc en_amy en_ryan; do
+            curl -sSfL -o v.zip "$base/$p.zip"
+            mkdir -p app/src/main/assets/piper/$p
+            unzip -q -o v.zip -d app/src/main/assets/piper/$p
+          done
+          rm -f v.zip
+          du -sh app/src/main/assets/piper
+
       - name: Build Debug APK
         run: |
           set -o pipefail
