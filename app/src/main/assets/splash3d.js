@@ -270,12 +270,14 @@
     var v = document.createElement('video');
     v.id = 'spv'; v.muted = true; v.defaultMuted = true; v.playsInline = true; v.preload = 'auto';
     v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); v.setAttribute('webkit-playsinline', '');
-    v.poster = 'splash0.jpg'; // M-095: first frame of the film, so no grey play icon shows before it starts
+    // M-095/M-096: a dark 1-pixel poster (no grey play icon); the film stays hidden until it really moves, then fades in,
+    // so the first second never shows a frozen picture
+    v.poster = 'data:image/gif;base64,R0lGODlhAQABAIAAAAIGFwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==';
     v.src = 'splash.mp4';
     sp.insertBefore(v, sp.firstChild);
     sp.classList.add('sp-video');
     window.__sp3d = true; // the video ends the opening itself
-    var started = false, failed = false, endAt = 9.0;
+    var started = false, failed = false, endAt = 9.85; // M-096: the film plays (almost) to its end
     function fail() {
         if (failed || started) return;
         failed = true; try { v.pause(); } catch (e) { }
@@ -285,7 +287,7 @@
     function go() { if (window.__spGo) window.__spGo(); else setTimeout(go, 16); }
     function placeTag() {
         // the language line sits where it was when the video was recorded (video fills the screen, edges may be cut)
-        var tag = document.getElementById('sp-tag'), f = window.SPLASH_TAG_Y || 0.665;
+        var tag = document.getElementById('sp-tag'), f = window.SPLASH_TAG_Y || 0.673;
         if (!tag || !v.videoWidth) return;
         var sc = Math.max(innerWidth / v.videoWidth, innerHeight / v.videoHeight), h = v.videoHeight * sc;
         tag.style.top = ((innerHeight - h) / 2 + f * h) + 'px';
@@ -293,7 +295,7 @@
     v.addEventListener('error', fail);
     v.addEventListener('loadedmetadata', placeTag);
     window.addEventListener('resize', placeTag);
-    v.addEventListener('playing', function () { if (started) return; started = true; placeTag(); go(); });
+    v.addEventListener('playing', function () { if (started) return; started = true; v.classList.add('on'); placeTag(); go(); });
     v.addEventListener('timeupdate', function () {
         if (v.currentTime >= 8.3) window.__spPrewarm = true; // main screen gets ready during the calm end
         if (v.currentTime >= endAt && window.endSplash) window.endSplash(); // fade starts while the video still moves

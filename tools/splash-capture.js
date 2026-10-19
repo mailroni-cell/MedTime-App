@@ -27,16 +27,20 @@ const FPS = 60, SECONDS = 10.2;
   });
   console.log('SPLASH_TAG_Y', tagY.toFixed(4));
   const N = Math.round(SECONDS * FPS);
-  for (let i = 0; i < N; i++) {
+  const A = +(process.env.FROM || 0), B = +(process.env.TO || N); // test a part only: FROM=300 TO=360
+  for (let i = A; i < B; i++) {
     const ms = i * 1000 / FPS;
     await p.evaluate(ms => {
       document.getAnimations().forEach(a => { try { a.pause(); a.currentTime = ms; } catch (e) { } });
       window.__spRender(ms / 1000);
+      // M-096: wait until the browser really drew this state (without it some frames came out stale -> credit flicker)
+      return new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
     }, ms);
     await p.screenshot({ path: path.join(frames, String(i).padStart(4, '0') + '.jpg'), type: 'jpeg', quality: 95 });
     if (i % 60 === 0) console.log('frame', i, '/', N);
   }
   await b.close();
+  if (process.env.TO) return;
   execSync(`ffmpeg -y -loglevel error -framerate ${FPS} -i ${frames}/%04d.jpg -c:v libx264 -profile:v high -level 4.1 -pix_fmt yuv420p -crf 21 -preset slow -movflags +faststart ${out}`);
   console.log('done', out, fs.statSync(out).size);
 })();
