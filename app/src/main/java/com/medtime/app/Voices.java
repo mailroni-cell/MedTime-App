@@ -52,9 +52,16 @@ class Voices {
     }
 
     /** Applies the chosen voice to a ready TTS (used by the reminder service). */
+    /** M-090: "pitch:0.78" = the phone voice, lower or higher (sounds like a man / a woman). */
+    static float pitchOf(String name) {
+        if (name == null || !name.startsWith("pitch:")) return 1f;
+        try { return Math.max(0.5f, Math.min(2f, Float.parseFloat(name.substring(6)))); } catch (Exception e) { return 1f; }
+    }
+
     static void apply(Context ctx, TextToSpeech t) {
         String name = chosen(ctx);
-        if (name.isEmpty() || Piper.isPiper(name)) return;
+        try { t.setPitch(pitchOf(name)); } catch (Exception ignored) { }
+        if (name.isEmpty() || Piper.isPiper(name) || name.startsWith("pitch:")) return;
         try {
             for (Voice v : forLang(ctx, t)) if (v.getName().equals(name)) { t.setVoice(v); return; }
         } catch (Exception ignored) { }
@@ -103,7 +110,8 @@ class Voices {
                     int r = tts.setLanguage(loc);
                     if (r != TextToSpeech.LANG_MISSING_DATA && r != TextToSpeech.LANG_NOT_SUPPORTED) break;
                 }
-                if (name != null && !name.isEmpty()) for (Voice v : forLang(a, tts)) if (v.getName().equals(name)) { tts.setVoice(v); break; }
+                tts.setPitch(pitchOf(name));
+                if (name != null && !name.isEmpty() && !name.startsWith("pitch:")) for (Voice v : forLang(a, tts)) if (v.getName().equals(name)) { tts.setVoice(v); break; }
                 Bundle p = new Bundle();
                 p.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, Sounds.voiceVolume(a));
                 tts.setSpeechRate(0.9f);

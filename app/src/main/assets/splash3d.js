@@ -167,7 +167,8 @@
         if (!document.body.contains(sp)) { cleanup(); return; }
         requestAnimationFrame(frame);
         // M-089: while it fades out it keeps moving (no frozen moment), drawn the light way without the glow pass
-        if (sp.classList.contains('out') && T > 11) return; // fade is over
+        // M-090: during the fade the 3D layer fades away fast and stops drawing, so only the main screen uses the graphics chip
+        if (sp.classList.contains('out')) return;
         // M-057: start only once the page is ready (the go-signal exists), and run on our own clock so a slow frame never skips part of the show
         if (!t0) { if (!window.__spGo) return; t0 = now; last = now; window.__sp3d = true; window.__spGo(); }
         var dt = Math.min(0.1, (now - last) / 1000); last = now; T += dt;
