@@ -3032,7 +3032,7 @@
           "voiceDose": "להגיד גם את המינון",
           "st_notifications": "ההתראות של האפליקציה כבויות",
           "st_exact": "אין הרשאה לשעון מעורר מדויק",
-          "st_fullScreen": "אין הרשאה למסך תזכורת מלא",
+          "st_fullScreen": "אין הרשאה למסך תזכורת מלא", "st_overlay": "אין הרשאה להציג את התזכורת מעל אפליקציות אחרות",
           "st_battery": "חיסכון בסוללה עלול לעכב תזכורות",
           "fix": "תקן",
           "noVoice": "אין בטלפון קול בשפה הזו להקראה",
@@ -3102,7 +3102,7 @@
           "voiceDose": "ذكر الجرعة أيضًا",
           "st_notifications": "إشعارات التطبيق متوقفة",
           "st_exact": "لا يوجد إذن للمنبه الدقيق",
-          "st_fullScreen": "لا يوجد إذن لشاشة التذكير الكاملة",
+          "st_fullScreen": "لا يوجد إذن لشاشة التذكير الكاملة", "st_overlay": "لا يوجد إذن لعرض التذكير فوق التطبيقات الأخرى",
           "st_battery": "توفير البطارية قد يؤخر التذكيرات",
           "fix": "إصلاح",
           "noVoice": "لا يوجد صوت لهذه اللغة في الهاتف",
@@ -3172,7 +3172,7 @@
           "voiceDose": "Spune și doza",
           "st_notifications": "Notificările aplicației sunt oprite",
           "st_exact": "Lipsește permisiunea pentru alarmă exactă",
-          "st_fullScreen": "Lipsește permisiunea pentru memento pe tot ecranul",
+          "st_fullScreen": "Lipsește permisiunea pentru memento pe tot ecranul", "st_overlay": "Lipsește permisiunea de afișare peste alte aplicații",
           "st_battery": "Economisirea bateriei poate întârzia mementourile",
           "fix": "Repară",
           "noVoice": "Nu există voce pentru această limbă pe telefon",
@@ -3242,7 +3242,7 @@
           "voiceDose": "Dire aussi la dose",
           "st_notifications": "Les notifications de l'application sont désactivées",
           "st_exact": "Pas d'autorisation pour l'alarme exacte",
-          "st_fullScreen": "Pas d'autorisation pour le rappel plein écran",
+          "st_fullScreen": "Pas d'autorisation pour le rappel plein écran", "st_overlay": "Pas d'autorisation de superposition sur d'autres applis",
           "st_battery": "L'économiseur de batterie peut retarder les rappels",
           "fix": "Corriger",
           "noVoice": "Aucune voix pour cette langue sur le téléphone",
@@ -3312,7 +3312,7 @@
           "voiceDose": "Also say the dose",
           "st_notifications": "App notifications are off",
           "st_exact": "No permission for exact alarms",
-          "st_fullScreen": "No permission for full-screen reminders",
+          "st_fullScreen": "No permission for full-screen reminders", "st_overlay": "No permission to show the reminder over other apps",
           "st_battery": "Battery saver may delay reminders",
           "fix": "Fix",
           "noVoice": "No voice for this language on the phone",
@@ -3365,7 +3365,7 @@
             let st = {};
             try { st = JSON.parse(Native.getStatus()); } catch (e) { }
             let html = '';
-            ['notifications', 'exact', 'fullScreen', 'battery'].forEach(k => {
+            ['notifications', 'exact', 'fullScreen', 'overlay', 'battery'].forEach(k => {
                 if (st[k] === false) {
                     html += `<div class="status-line"><span>⚠️ ${t('st_' + k)}</span>` +
                         `<button onclick="window.mtPermGuide ? mtPermGuide('${k}') : MedTimeNative.openSettings('${k}')">${t('fix')}</button></div>`;

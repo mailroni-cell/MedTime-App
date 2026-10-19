@@ -252,6 +252,7 @@ public class NativeBridge {
             o.put("exact", Build.VERSION.SDK_INT < Build.VERSION_CODES.S || (am != null && am.canScheduleExactAlarms()));
             o.put("fullScreen", Build.VERSION.SDK_INT < 34 || (nm != null && nm.canUseFullScreenIntent()));
             o.put("battery", pm == null || pm.isIgnoringBatteryOptimizations(ctx.getPackageName()));
+            o.put("overlay", Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(ctx)); // M-094
             o.put("install", Build.VERSION.SDK_INT < 26 || ctx.getPackageManager().canRequestPackageInstalls()); // M-076
             o.put("tts", ctx.getSharedPreferences(ReminderService.PREFS_STATUS, Context.MODE_PRIVATE)
                     .getString(ReminderService.KEY_TTS_STATE, "unknown"));
@@ -274,6 +275,9 @@ public class NativeBridge {
                 i = Build.VERSION.SDK_INT >= 34
                         ? new Intent(Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT, Uri.parse("package:" + pkg))
                         : appDetails(pkg);
+                break;
+            case "overlay": // M-094
+                i = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + pkg));
                 break;
             case "battery":
                 i = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, Uri.parse("package:" + pkg));

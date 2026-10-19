@@ -56,6 +56,14 @@ public class ReminderService extends Service {
 
         boolean appt = Appointments.isAppt(intent); // M-036
         Notification n = appt ? Appointments.buildNotification(this, intent) : buildNotification(this, intent);
+        // M-094: the medicine reminder opens on top of everything (also while another app is in use) until taken / snoozed / skipped
+        if (!appt && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && android.provider.Settings.canDrawOverlays(this)) {
+            try {
+                Intent full = new Intent(this, AlarmActivity.class).putExtras(intent);
+                full.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(full);
+            } catch (Exception ignored) { }
+        }
         int nid = appt ? Appointments.notificationId(id) : notificationId(id);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             startForeground(nid, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK);

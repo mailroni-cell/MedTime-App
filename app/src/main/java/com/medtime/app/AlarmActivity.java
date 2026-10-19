@@ -268,4 +268,9 @@ public class AlarmActivity extends Activity {
         if (current.get() == this) current.clear();
         super.onDestroy();
     }
+
+    // M-094: the reminder stays until it is answered: the Back button does not close it
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onBackPressed() { }
 }

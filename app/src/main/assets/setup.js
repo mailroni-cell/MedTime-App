@@ -63,6 +63,12 @@
             q: ['לאפשר לאפליקציה לפעול תמיד ברקע?', 'السماح للتطبيق بالعمل دائمًا في الخلفية؟', 'Permiteți aplicației să ruleze mereu în fundal?', 'Autoriser l\'appli à toujours fonctionner en arrière-plan ?', 'Let the app always run in the background?'],
             yes: ['אישור', 'سماح', 'Permite', 'Autoriser', 'Allow'], no: ['דחייה', 'رفض', 'Refuză', 'Refuser', 'Deny']
         },
+        overlay: { // M-094
+            icon: '💊', kind: 'switch',
+            t: ['תזכורת מעל הכל', 'تذكير فوق كل شيء', 'Memento deasupra tuturor', 'Rappel au-dessus de tout', 'Reminder on top of everything'],
+            x: ['כדי שתזכורת התרופה תופיע מעל כל אפליקציה ותישאר עד שתלחצו "לקחתי", "דחה" או "דלג". במסך הבא הפעילו את המתג.', 'لكي يظهر تذكير الدواء فوق أي تطبيق ويبقى حتى تضغط "أخذته" أو "تأجيل" أو "تخطَّ". في الشاشة التالية فعّل المفتاح.', 'Ca mementoul să apară peste orice aplicație și să rămână până apăsați „Am luat”, „Amână” sau „Sari”. În ecranul următor porniți comutatorul.', 'Pour que le rappel s\'affiche par-dessus toute appli et reste jusqu\'à « Pris », « Reporter » ou « Passer ». Dans l\'écran suivant, activez l\'interrupteur.', 'So the medicine reminder shows on top of any app and stays until you tap "Taken", "Snooze" or "Skip". On the next screen turn the switch on.'],
+            q: ['הצגה מעל אפליקציות אחרות', 'العرض فوق التطبيقات الأخرى', 'Afișare peste alte aplicații', 'Superposition sur d\'autres applis', 'Display over other apps']
+        },
         install: {
             icon: '🔄', kind: 'switch',
             t: ['עדכונים מתוך האפליקציה', 'التحديثات من داخل التطبيق', 'Actualizări din aplicație', 'Mises à jour depuis l\'appli', 'Updates from inside the app'],
@@ -70,7 +76,7 @@
             q: ['התרת התקנה ממקור זה', 'السماح من هذا المصدر', 'Permite din această sursă', 'Autoriser cette source', 'Allow from this source']
         }
     };
-    const FIRST = ['notifications', 'exact', 'fullScreen', 'battery'];
+    const FIRST = ['notifications', 'exact', 'fullScreen', 'overlay', 'battery'];
 
     const status = () => { try { return JSON.parse(N.getStatus()) || {}; } catch (e) { return {}; } };
     const fill = (s, o) => s.replace(/\{(\w+)\}/g, (m, k) => (o && k in o) ? o[k] : m);
@@ -205,7 +211,19 @@
     const KEY = 'medtime_setup';
     let done = false;
     try { done = localStorage.getItem(KEY) === '1'; } catch (e) { }
-    if (done || !N || typeof N.getStatus !== 'function') return;
+    if (!N || typeof N.getStatus !== 'function') return;
+    if (done) {
+        // M-094: people who finished the setup before: ask once for "on top of everything"
+        let asked = false; try { asked = localStorage.getItem('medtime_overlay_asked') === '1'; } catch (e) { }
+        if (asked || status().overlay !== false) return;
+        const w2 = setInterval(() => {
+            if (document.getElementById('splash') || document.querySelector('.ob-bg,.mt-dlg-bg,.su-bg')) return;
+            clearInterval(w2);
+            try { localStorage.setItem('medtime_overlay_asked', '1'); } catch (e) { }
+            setTimeout(() => window.mtPermGuide('overlay'), 900);
+        }, 500);
+        return;
+    }
 
     function ready() {
         if (document.getElementById('splash')) return false;
