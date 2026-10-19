@@ -2265,6 +2265,10 @@
         /* M-084: smooth hand-over: only fade + a slight zoom (the full-screen blur made the last frames stutter) */
         #splash { will-change: opacity, transform; }
         #splash #sp3d { transition: opacity 0.45s ease-out; }
+        /* M-093: video opening (smooth like a film); title, capsule and credit are inside the video, the language line is live */
+        #splash #spv { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; background: #020617; }
+        #splash.sp-video .sp-stage, #splash.sp-video .sp-title, #splash.sp-video .sp-ecg, #splash.sp-video .sp-credit, #splash.sp-video .sp-star { display: none !important; }
+        #splash.sp-video .sp-tag { position: absolute !important; left: 0; right: 0; margin: 0 !important; text-align: center; z-index: 2; }
         #splash.out #sp3d { opacity: 0; }
         #splash.out { transition: opacity 1.1s cubic-bezier(.4, 0, .2, 1), transform 1.1s cubic-bezier(.4, 0, .2, 1) !important; transform: scale(1.06) !important; filter: none !important; }
         #splash .sp-credit { display: flex; flex-direction: column; align-items: center; gap: 2px; bottom: calc(5vh + env(safe-area-inset-bottom)) !important;
@@ -2574,7 +2578,8 @@
             }
             var done = false;
             window.endSplash = function () {
-                if (done) return; done = true; window.__splashEnd = performance.now();
+                if (done || window.__spCapture) return; // M-093: never end while the opening is being recorded
+                done = true; window.__splashEnd = performance.now();
                 sp.classList.add('out');
                 // M-090: hide when the fade ends; free its memory later, when the phone is idle (removing it at once caused a hiccup)
                 setTimeout(function () { sp.style.visibility = 'hidden'; }, 1150);

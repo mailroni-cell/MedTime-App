@@ -4,7 +4,10 @@
 (function () {
     'use strict';
     var sp = document.getElementById('splash');
-    if (!sp || !window.THREE) return;
+    if (!sp) return;
+    var CAP = !!window.__spCapture; // M-093: tools/splash-capture.js records this show frame by frame into splash.mp4
+    function start3d() {
+    if (!window.THREE) return;
     var canvas = document.createElement('canvas');
     canvas.id = 'sp3d';
     var renderer;
@@ -165,15 +168,18 @@
     function frame(now) {
         if (!alive) return;
         if (!document.body.contains(sp)) { cleanup(); return; }
-        requestAnimationFrame(frame);
+        if (!CAP) requestAnimationFrame(frame);
         // M-089: while it fades out it keeps moving (no frozen moment), drawn the light way without the glow pass
         // M-090: during the fade the 3D layer fades away fast and stops drawing, so only the main screen uses the graphics chip
         if (sp.classList.contains('out')) return;
         // M-057: start only once the page is ready (the go-signal exists), and run on our own clock so a slow frame never skips part of the show
         if (!t0) { if (!window.__spGo) return; t0 = now; last = now; window.__sp3d = true; window.__spGo(); }
-        var raw = Math.min(0.1, (now - last) / 1000); last = now;
-        // M-092: steady "film" motion: the step is smoothed, so one late frame does not make a jump
-        sdt += (raw - sdt) * 0.12; var dt = raw > 0.08 ? raw : sdt; T += dt;
+        var raw, dt;
+        if (CAP) { raw = dt = 1 / 60; } else {
+            raw = Math.min(0.1, (now - last) / 1000); last = now;
+            // M-092: steady "film" motion: the step is smoothed, so one late frame does not make a jump
+            sdt += (raw - sdt) * 0.12; dt = raw > 0.08 ? raw : sdt; T += dt;
+        }
         var t = T;
         // M-085: decide about the glow only once, in the first 0.5 s (before anything is on screen),
         // so the look never jumps in the middle of the show
@@ -238,7 +244,7 @@
         // M-078: end only after the whole show (finale ends 8.0 s, then the finished credit stays a moment);
         // on a slow phone this clock runs behind real time, so the CSS parts are surely finished too
         if (t >= 8.4) window.__spPrewarm = true; // M-089: main screen gets ready during the calm last second
-        if (t >= 9.3 && !ended) { ended = true; if (window.endSplash) window.endSplash(); }
+        if (t >= 9.3 && !ended && !CAP) { ended = true; if (window.endSplash) window.endSplash(); }
         camera.position.set(Math.sin(t * 0.3) * 0.6, Math.cos(t * 0.25) * 0.3, 12 - ease(t / 6) * 1.2);
         camera.lookAt(0, home.y * 0.6, 0);
         if (composer) composer.render(); else renderer.render(scene, camera);
@@ -253,5 +259,45 @@
         camera.aspect = W / H; camera.updateProjectionMatrix(); home.y = stageY() + 0.5;
         if (composer) composer.setSize(W, H);
     });
-    requestAnimationFrame(frame);
+    if (CAP) { t0 = 1; window.__spRender = function (tt) { T = tt; frame(0); }; }
+    else requestAnimationFrame(frame);
+    }
+
+    if (CAP || /[?&]novideo/.test(location.search)) { start3d(); return; }
+
+    // ---- M-093: the opening is a ready-made video (recorded from this same 3D show), so it plays smooth like a film
+    // on every phone; the language line under the title stays live text. If the video cannot play, the live 3D show runs.
+    var v = document.createElement('video');
+    v.id = 'spv'; v.muted = true; v.defaultMuted = true; v.playsInline = true; v.preload = 'auto';
+    v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); v.setAttribute('webkit-playsinline', '');
+    v.src = 'splash.mp4';
+    sp.insertBefore(v, sp.firstChild);
+    sp.classList.add('sp-video');
+    window.__sp3d = true; // the video ends the opening itself
+    var started = false, failed = false, endAt = 9.0;
+    function fail() {
+        if (failed || started) return;
+        failed = true; try { v.pause(); } catch (e) { }
+        v.remove(); sp.classList.remove('sp-video'); window.__sp3d = false;
+        start3d();
+    }
+    function go() { if (window.__spGo) window.__spGo(); else setTimeout(go, 16); }
+    function placeTag() {
+        // the language line sits where it was when the video was recorded (video fills the screen, edges may be cut)
+        var tag = document.getElementById('sp-tag'), f = window.SPLASH_TAG_Y || 0.665;
+        if (!tag || !v.videoWidth) return;
+        var sc = Math.max(innerWidth / v.videoWidth, innerHeight / v.videoHeight), h = v.videoHeight * sc;
+        tag.style.top = ((innerHeight - h) / 2 + f * h) + 'px';
+    }
+    v.addEventListener('error', fail);
+    v.addEventListener('loadedmetadata', placeTag);
+    window.addEventListener('resize', placeTag);
+    v.addEventListener('playing', function () { if (started) return; started = true; placeTag(); go(); });
+    v.addEventListener('timeupdate', function () {
+        if (v.currentTime >= 8.3) window.__spPrewarm = true; // main screen gets ready during the calm end
+        if (v.currentTime >= endAt && window.endSplash) window.endSplash(); // fade starts while the video still moves
+    });
+    v.addEventListener('ended', function () { if (window.endSplash) window.endSplash(); });
+    try { var pr = v.play(); if (pr && pr.catch) pr.catch(fail); } catch (e) { fail(); }
+    setTimeout(function () { if (!started) fail(); }, 3000);
 })();
