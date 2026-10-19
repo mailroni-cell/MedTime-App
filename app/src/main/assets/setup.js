@@ -31,8 +31,9 @@
         doneT: ['הכל מוכן! 🎉', 'كل شيء جاهز! 🎉', 'Totul e gata! 🎉', 'Tout est prêt ! 🎉', 'All set! 🎉'],
         doneX: ['מעכשיו MedTime יזכיר לכם בזמן, גם כשהאפליקציה סגורה.', 'من الآن سيذكّرك MedTime في الوقت، حتى والتطبيق مغلق.', 'De acum MedTime vă amintește la timp, chiar cu aplicația închisă.', 'Désormais MedTime vous rappelle à l\'heure, même appli fermée.', 'From now on MedTime reminds you on time, even when the app is closed.'],
         doneB: ['יוצאים לדרך', 'هيا بنا', 'Începem', 'C\'est parti', 'Let\'s go'],
-        back: ['ואז חזרו לכאן בכפתור "חזרה" ◁', 'ثم عُد إلى هنا بزر "رجوع" ◁', 'Apoi reveniți aici cu butonul „Înapoi” ◁', 'Puis revenez ici avec le bouton « Retour » ◁', 'Then come back here with the "Back" button ◁'],
-        tap: ['לחצו כאן', 'اضغط هنا', 'Apăsați aici', 'Appuyez ici', 'Tap here']
+        back: ['האפליקציה תחזור לכאן לבד ✨', 'سيعود التطبيق إلى هنا وحده ✨', 'Aplicația revine aici singură ✨', 'L’application revient ici toute seule ✨', 'The app comes back here by itself ✨'],
+        tap: ['לחצו כאן', 'اضغط هنا', 'Apăsați aici', 'Appuyez ici', 'Tap here'],
+        slide: ['הזיזו את המתג הזה', 'حرّك هذا المفتاح', 'Mutați acest comutator', 'Glissez cet interrupteur', 'Slide this switch']
     };
 
     // what each permission is for, and a picture of what Android shows
@@ -107,8 +108,14 @@
     .su-mock .b{flex:1;border-radius:999px;padding:9px 6px;text-align:center;font-weight:700;font-size:.98rem;background:#e2e8f0;color:#475569}
     .su-mock .b.yes{background:#0e7490;color:#fff;position:relative;animation:suPulse 1.6s infinite}
     .su-mock .sw{display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:700;font-size:1rem}
-    .su-mock .tg{flex:none;width:52px;height:30px;border-radius:999px;background:#0e7490;position:relative;animation:suPulse 1.6s infinite}
-    .su-mock .tg:after{content:'';position:absolute;top:4px;inset-inline-end:4px;width:22px;height:22px;border-radius:50%;background:#fff}
+    .su-mock .tg{flex:none;width:52px;height:30px;border-radius:999px;background:#94a3b8;position:relative;animation:suTg 2.4s infinite}
+    .su-mock .tg:after{content:'';position:absolute;top:4px;inset-inline-start:4px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);animation:suKnob 2.4s infinite}
+    .su-mock .tg:before{content:'👆';position:absolute;top:30px;inset-inline-start:10px;font-size:28px;line-height:1;animation:suHand 2.4s infinite;z-index:2}
+    @keyframes suTg{0%,35%{background:#94a3b8;box-shadow:none}55%,90%{background:#0e7490;box-shadow:0 0 0 6px rgba(14,116,144,.25)}100%{background:#94a3b8}}
+    @keyframes suKnob{0%,35%{transform:translateX(0)}55%,90%{transform:translateX(calc(22px * var(--su-dir,1)))}100%{transform:translateX(0)}}
+    @keyframes suHand{0%,30%{transform:translate(0,4px)}55%,90%{transform:translateX(calc(22px * var(--su-dir,1)))}100%{transform:translate(0,4px)}}
+    [dir=rtl] .su-mock .tg{--su-dir:-1}
+    .su-mock .sw{padding-bottom:30px}
     .su-mock .hand{display:block;text-align:center;margin-top:8px;font-size:.92rem;color:#0e7490;font-weight:700}
     .su-mock .bk{display:block;text-align:center;margin-top:10px;font-size:.92rem;color:#334155}
     @keyframes suPulse{0%{box-shadow:0 0 0 0 rgba(14,116,144,.6)}70%{box-shadow:0 0 0 12px rgba(14,116,144,0)}100%{box-shadow:0 0 0 0 rgba(14,116,144,0)}}
@@ -147,7 +154,7 @@
                 '<span class="hand">☝️ ' + esc(pick(T.tap)) + '</span></div>';
         }
         return '<div class="su-mock"><div class="sw"><span>' + esc(pick(s.q)) + '</span><span class="tg"></span></div>' +
-            '<span class="hand">☝️ ' + esc(pick(T.tap)) + '</span><span class="bk">' + esc(pick(T.back)) + '</span></div>';
+            '<span class="hand">' + esc(pick(T.slide)) + '</span><span class="bk">' + esc(pick(T.back)) + '</span></div>';
     }
     function dots(i, n) {
         if (!n) return '';
