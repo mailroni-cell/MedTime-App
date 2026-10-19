@@ -166,8 +166,8 @@
         if (!alive) return;
         if (!document.body.contains(sp)) { cleanup(); return; }
         requestAnimationFrame(frame);
-        // M-084: while it fades out, the last picture stays; the main screen gets the phone's full power
-        if (sp.classList.contains('out')) return;
+        // M-089: while it fades out it keeps moving (no frozen moment), drawn the light way without the glow pass
+        if (sp.classList.contains('out') && T > 11) return; // fade is over
         // M-057: start only once the page is ready (the go-signal exists), and run on our own clock so a slow frame never skips part of the show
         if (!t0) { if (!window.__spGo) return; t0 = now; last = now; window.__sp3d = true; window.__spGo(); }
         var dt = Math.min(0.1, (now - last) / 1000); last = now; T += dt;
@@ -234,6 +234,7 @@
         if (fin > 0) { cap.position.z += fin * 9; helix.position.z = cap.position.z; cap.rotation.y += fin * 4; helix.scale.multiplyScalar(1 + fin * 1.5); capGlow.material.opacity = 0.18 + fin * 0.6; }
         // M-078: end only after the whole show (finale ends 8.0 s, then the finished credit stays a moment);
         // on a slow phone this clock runs behind real time, so the CSS parts are surely finished too
+        if (t >= 8.4) window.__spPrewarm = true; // M-089: main screen gets ready during the calm last second
         if (t >= 9.3 && !ended) { ended = true; if (window.endSplash) window.endSplash(); }
         camera.position.set(Math.sin(t * 0.3) * 0.6, Math.cos(t * 0.25) * 0.3, 12 - ease(t / 6) * 1.2);
         camera.lookAt(0, home.y * 0.6, 0);

@@ -72,7 +72,13 @@
     .ob-play{flex:none;width:54px;height:54px;border-radius:50%;border:0;font-size:1.3rem;color:#fff;background:linear-gradient(135deg,#22c55e,#0d9488)}
     .ob-go{width:100%;border:0;border-radius:18px;padding:16px;font-size:1.25rem;font-weight:800;color:#042f2e;background:linear-gradient(135deg,#5eead4,#22d3ee);box-shadow:0 8px 24px rgba(34,211,238,.4)}
     .ob-skip{border:0;background:none;color:#cbd5e1;font-size:1.05rem;padding:10px;text-decoration:underline;margin-top:4px}
-    .hello-line{text-align:center;font-size:1.15rem;font-weight:700;color:#fff;margin:2px 0 6px;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+    /* M-089: greeting as a clear glass badge (readable on every background) */
+    .hello-line{display:table;margin:2px auto 8px;padding:8px 20px 9px;border-radius:999px;font-family:'MTUI','Rubik',sans-serif;
+      font-size:1.12rem;font-weight:700;letter-spacing:.01em;color:#fff;line-height:1.25;
+      background:linear-gradient(135deg,rgba(15,23,42,.82),rgba(30,27,75,.78)) padding-box,linear-gradient(135deg,#22d3ee,#a855f7,#f472b6) border-box;
+      border:2px solid transparent;box-shadow:0 6px 18px rgba(0,0,0,.45),0 0 14px rgba(34,211,238,.25)}
+    .hello-line .hl-ico{margin-inline-end:6px}
+    .hello-line b{font-weight:800;background:linear-gradient(90deg,#67e8f9,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent}
     .hello-line:empty{display:none}`;
     document.head.appendChild(css);
 
@@ -84,7 +90,7 @@
         if (N && typeof N.setUserName === 'function') try { N.setUserName(n); } catch (e) { }
         if (!n) { el.textContent = ''; return; }
         const h = new Date().getHours(), k = h >= 5 && h < 12 ? 0 : h >= 12 && h < 17 ? 1 : h >= 17 && h < 22 ? 2 : 3;
-        el.textContent = pick(T.g)[k] + ', ' + n + ' 👋';
+        el.innerHTML = '<span class="hl-ico">' + ['☀️', '🌤️', '🌆', '🌙'][k] + '</span>' + esc(pick(T.g)[k]) + ', <b>' + esc(n) + '</b>';
         el.dir = li() < 2 ? 'rtl' : 'ltr';
     }
     window.mtHello = hello;

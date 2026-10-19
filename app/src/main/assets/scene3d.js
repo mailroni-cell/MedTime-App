@@ -498,6 +498,7 @@
     // ---- loop with automatic quality control ----
     const clock = new THREE.Clock();
     let paused = false;
+    let prewarm = 0;
     let running = true, frames = 0, fpsTime = 0, lowQuality = false, quality = 2, sdt = 1 / 60, warm = 0;
     document.addEventListener('visibilitychange', () => {
         running = !document.hidden;
@@ -509,7 +510,14 @@
         requestAnimationFrame(loop);
         // M-053: while the opening screen covers everything, do not draw (the opening runs smoother)
         const spl = document.getElementById('splash');
-        if (spl && !spl.classList.contains('out')) { clock.getDelta(); return; }
+        if (spl && !spl.classList.contains('out')) {
+            clock.getDelta();
+            // M-089: get ready behind the opening (shaders, textures, first picture), so the hand-over does not freeze
+            if (prewarm === 0 && window.__spPrewarm) prewarm = 1;
+            if (prewarm !== 1) return;
+            prewarm = 2;
+            try { renderer.compile(scene, camera); } catch (e) { }
+        }
         const rawDt = Math.min(clock.getDelta(), 0.05);
         // M-084: measure speed only once the opening is gone and things settled (not during the hand-over)
         if (spl) { warm = 0; frames = 0; fpsTime = 0; } else if (warm < 2.5) { warm += rawDt; frames = 0; fpsTime = 0; }
