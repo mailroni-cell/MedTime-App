@@ -270,6 +270,7 @@
     var v = document.createElement('video');
     v.id = 'spv'; v.muted = true; v.defaultMuted = true; v.playsInline = true; v.preload = 'auto';
     v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); v.setAttribute('webkit-playsinline', '');
+    v.poster = 'splash0.jpg'; // M-095: first frame of the film, so no grey play icon shows before it starts
     v.src = 'splash.mp4';
     sp.insertBefore(v, sp.firstChild);
     sp.classList.add('sp-video');

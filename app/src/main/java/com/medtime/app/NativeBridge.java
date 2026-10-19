@@ -296,7 +296,35 @@ public class NativeBridge {
         } catch (Exception e) {
             try { activity.startActivity(appDetails(pkg)); } catch (Exception ignored) { }
         }
+        watchAndReturn(what);
     }
+
+    // M-095: while the user is in Android settings, check every 0.7 s; once the permission is on, come back to the app by itself.
+    private static int watchId = 0;
+    private static final android.os.Handler UI = new android.os.Handler(android.os.Looper.getMainLooper());
+
+    private void watchAndReturn(final String what) {
+        if (what == null || "tts".equals(what)) return;
+        final int id = ++watchId;
+        final long until = System.currentTimeMillis() + 3 * 60 * 1000L;
+        UI.postDelayed(new Runnable() {
+            @Override public void run() {
+                if (id != watchId || System.currentTimeMillis() > until) return;
+                boolean on = false;
+                try { on = new JSONObject(getStatus()).optBoolean(what, false); } catch (Exception ignored) { }
+                if (!on) { UI.postDelayed(this, 700); return; }
+                watchId++;
+                try {
+                    Intent back = new Intent(activity, MainActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    activity.getApplicationContext().startActivity(back);
+                } catch (Exception ignored) { }
+            }
+        }, 900);
+    }
+
+    /** The user came back to the app (any way): stop checking. */
+    static void stopWatch() { watchId++; }
 
     private static Intent appDetails(String pkg) {
         return new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + pkg));

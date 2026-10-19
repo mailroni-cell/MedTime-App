@@ -76,7 +76,7 @@
             q: ['התרת התקנה ממקור זה', 'السماح من هذا المصدر', 'Permite din această sursă', 'Autoriser cette source', 'Allow from this source']
         }
     };
-    const FIRST = ['notifications', 'exact', 'fullScreen', 'overlay', 'battery'];
+    const FIRST = ['overlay', 'notifications', 'exact', 'fullScreen', 'battery']; // M-095: overlay first, so after each later permission the app can come back by itself
 
     const status = () => { try { return JSON.parse(N.getStatus()) || {}; } catch (e) { return {}; } };
     const fill = (s, o) => s.replace(/\{(\w+)\}/g, (m, k) => (o && k in o) ? o[k] : m);

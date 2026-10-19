@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        NativeBridge.stopWatch(); // M-095
         Piper.ensure(this); // M-087: offline voices download once by themselves (Wi-Fi only)
         if (webView != null) webView.evaluateJavascript("window.mtResumed && mtResumed()", null);
     }
