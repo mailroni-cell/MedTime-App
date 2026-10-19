@@ -80,6 +80,8 @@
     function hello() {
         const el = document.getElementById('hello-line'); if (!el) return;
         const n = getName();
+        // M-088: the reminder voice starts with the name
+        if (N && typeof N.setUserName === 'function') try { N.setUserName(n); } catch (e) { }
         if (!n) { el.textContent = ''; return; }
         const h = new Date().getHours(), k = h >= 5 && h < 12 ? 0 : h >= 12 && h < 17 ? 1 : h >= 17 && h < 22 ? 2 : 3;
         el.textContent = pick(T.g)[k] + ', ' + n + ' 👋';
@@ -134,7 +136,7 @@
         inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); inp.blur(); bg.querySelector('.ob-go').click(); } });
         const b = await wait('.ob-go,.ob-skip');
         const v = b.classList.contains('ob-go') ? inp.value.replace(/[<>]/g, '').trim().slice(0, 24) : '';
-        try { if (v) localStorage.setItem(NAME_KEY, v); } catch (e) { }
+        try { if (v) localStorage.setItem(NAME_KEY, v); else localStorage.removeItem(NAME_KEY); } catch (e) { }
         if (v && N && typeof N.setUserName === 'function') try { N.setUserName(v); } catch (e) { }
         inp.blur();
     }
@@ -201,7 +203,7 @@
             '<button type="button" class="ob-go">' + esc(pick(T.next)) + '</button>');
         const mark = () => bg.querySelectorAll('.ob-opt').forEach(b => b.classList.toggle('sel', (b.dataset.v === '1') === vOn.checked));
         mark();
-        const say = () => { if (N && typeof N.previewVoice === 'function') try { N.previewVoice('', pick(T.sample)); } catch (e) { } };
+        const say = () => { if (N && typeof N.previewVoice === 'function') try { N.previewVoice('', (getName() ? getName() + ', ' : '') + pick(T.sample)); } catch (e) { } };
         bg.querySelector('.ob-play').onclick = () => { vib(); say(); };
         bg.querySelectorAll('.ob-opt').forEach(b => b.onclick = () => {
             vib();

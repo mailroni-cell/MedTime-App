@@ -78,6 +78,13 @@ public class NativeBridge {
     @JavascriptInterface
     public void installVoices() { Voices.install(activity); }
 
+    /** M-088: the user's name (from the welcome setup); the reminder voice starts with it. */
+    @JavascriptInterface
+    public void setUserName(String name) {
+        activity.getSharedPreferences(Reminders.PREFS, android.content.Context.MODE_PRIVATE).edit()
+                .putString("user_name", name == null ? "" : name.trim()).apply();
+    }
+
     /** M-080: "did I take it?" log (JSON array) and restoring it from a backup. */
     @JavascriptInterface
     public String getLog() { return MedLog.get(activity.getApplicationContext()); }

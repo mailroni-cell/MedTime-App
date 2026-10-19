@@ -102,7 +102,10 @@ public class ReminderService extends Service {
         }
     }
 
-    private void speak(final String text, final long delayMs) {
+    private void speak(String said, final long delayMs) {
+        // M-088: start with the user's name, e.g. "רוני, הגיע הזמן לקחת..."
+        String who = getSharedPreferences(Reminders.PREFS, MODE_PRIVATE).getString("user_name", "");
+        final String text = who.isEmpty() ? said : who + ", " + said;
         // M-087: an offline Piper voice chosen in settings speaks by itself; if it cannot, the phone voice speaks
         String pv = Voices.chosen(this);
         if (Piper.isPiper(pv) && Piper.ready(this, pv)) {

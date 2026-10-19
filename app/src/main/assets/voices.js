@@ -26,6 +26,8 @@
         sample: ['שלום, הגיע הזמן לקחת אקמול, כדור אחד.', 'مرحبًا، حان وقت تناول الدواء، حبة واحدة.', 'Bună, este timpul să luați medicamentul, o pastilă.', 'Bonjour, c\'est l\'heure de prendre votre médicament, un comprimé.', 'Hello, it is time to take your medicine, one tablet.']
     };
     const tx = k => T[k][li()];
+    // M-088: the sample starts with the user's name, like the real reminder
+    const sampleTx = () => { let n = ''; try { n = (localStorage.getItem('medtime_name') || '').trim(); } catch (e) { } return (n ? n + ', ' : '') + tx('sample'); };
 
     const css = document.createElement('style');
     css.textContent = `
@@ -69,10 +71,10 @@
             p.onclick = () => {
                 data.chosen = it.name; N.setVoice(it.name);
                 list.querySelectorAll('.vc-pick').forEach(x => x.classList.toggle('sel', x === p));
-                N.previewVoice(it.name, tx('sample'));
+                N.previewVoice(it.name, sampleTx());
                 if (navigator.vibrate) navigator.vibrate(10);
             };
-            r.querySelector('.vc-play').onclick = () => N.previewVoice(it.name, tx('sample'));
+            r.querySelector('.vc-play').onclick = () => N.previewVoice(it.name, sampleTx());
             list.appendChild(r);
         });
     }
