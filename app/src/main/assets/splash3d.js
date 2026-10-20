@@ -263,6 +263,12 @@
     else requestAnimationFrame(frame);
     }
 
+    // M-121: on the very first launch the language screen comes first; the opening starts after a language is chosen
+    var first = false;
+    try { first = !CAP && !localStorage.getItem('medtime_lang'); } catch (e) { }
+    if (first) { window.__spBegin = begin; return; }
+    begin();
+    function begin() {
     if (CAP || /[?&]novideo/.test(location.search)) { start3d(); return; }
 
     // ---- M-093: the opening is a ready-made video (recorded from this same 3D show), so it plays smooth like a film
@@ -303,4 +309,5 @@
     v.addEventListener('ended', function () { if (window.endSplash) window.endSplash(); });
     try { var pr = v.play(); if (pr && pr.catch) pr.catch(fail); } catch (e) { fail(); }
     setTimeout(function () { if (!started) fail(); }, 3000);
+    }
 })();

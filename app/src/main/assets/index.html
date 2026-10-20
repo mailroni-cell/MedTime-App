@@ -2626,6 +2626,7 @@
             var stored = null;
             try { stored = localStorage.getItem('medtime_lang'); } catch (e) { }
             var L = TX[stored] ? stored : 'he';
+            var first = !TX[stored]; // M-121: first launch: language screen first, then the opening in that language
             var sp = document.getElementById('splash');
             document.getElementById('sp-tag').textContent = TX[L].tag;
             var cr = document.getElementById('sp-credit');
@@ -2650,13 +2651,16 @@
                     var rm = function () { sp.remove(); };
                     if (window.requestIdleCallback) requestIdleCallback(rm, { timeout: 3000 }); else rm();
                 }, 4500);
-                if (!TX[stored]) showWelcome();
+                if (first && window.mtOnboard) setTimeout(window.mtOnboard, 700); // M-086 wizard, after the opening
             };
             // M-057: the timeline starts on the first real frame (splash3d.js adds .go and ends it at 7.6 s); safety net here
             window.__spGo = function () { if (sp.classList.contains('go')) return; sp.classList.add('go'); setTimeout(function () { if (!window.__sp3d) window.endSplash(); }, 9800); }; // M-078: with 3D, splash3d.js ends it after the finale on its own clock
-            setTimeout(function () { if (!window.THREE) window.__spGo(); }, 50);
-            setTimeout(window.__spGo, 4000); // no 3D frame yet: start the show anyway
-            setTimeout(window.endSplash, 20000);
+            function startShow() {
+                setTimeout(function () { if (!window.THREE) window.__spGo(); }, 50);
+                setTimeout(window.__spGo, 4000); // no 3D frame yet: start the show anyway
+                setTimeout(window.endSplash, 20000);
+            }
+            if (first) { sp.style.display = 'none'; showWelcome(); } else startShow();
 
             function showWelcome() {
                 var w = document.getElementById('welcome'), title = document.getElementById('wl-title'),
@@ -2686,9 +2690,13 @@
                     if (!chosen) return;
                     clearInterval(cyc);
                     try { localStorage.setItem('medtime_lang', chosen); } catch (e) { }
+                    // M-121: now the opening plays, in the chosen language; the setup wizard follows when it ends
+                    document.getElementById('sp-tag').textContent = TX[chosen].tag;
+                    sp.style.display = '';
+                    if (window.__spBegin) window.__spBegin();
+                    startShow();
                     w.classList.add('out');
                     setTimeout(function () { w.remove(); }, 500);
-                    if (window.mtOnboard) window.mtOnboard(); // M-086: first-install welcome wizard
                 });
             }
         })();
