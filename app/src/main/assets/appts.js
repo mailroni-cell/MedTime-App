@@ -513,7 +513,7 @@
                 const [, cd] = countdown(next);
                 sub = cd + ' ' + next.time;
             }
-            btn.innerHTML = `<span class="ab-ico">🩺</span><span class="ab-txt"><span class="ab-title"></span><span class="ab-sub"></span></span>${up.length ? `<span class="lb-count ab-count">${up.length}</span>` : ''}`;
+            btn.innerHTML = `<span class="ab-ico"><i>🩺</i></span><span class="ab-txt"><span class="ab-title"></span><span class="ab-sub"></span></span>${up.length ? `<span class="lb-count ab-count">${up.length}</span>` : ''}`;
             btn.querySelector('.ab-title').textContent = tt('apptBtn');
             btn.querySelector('.ab-sub').textContent = sub;
         }
