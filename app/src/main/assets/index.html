@@ -2665,10 +2665,11 @@
         html:not(.lowvision) #settings-page .set-grid .set-title { font-size: min(1rem, 3.9vw, 2vh) !important; }
         html:not(.lowvision) #settings-page .set-grid .set-sub { font-size: min(0.82rem, 3.2vw, 1.65vh) !important; -webkit-line-clamp: 2 !important;
             white-space: normal !important; display: -webkit-box !important; -webkit-box-orient: vertical !important; overflow: hidden !important; line-height: 1.15 !important; }
-        /* M-139: owner: ECG line on 'Add reminder' prettier and more visible, still delicate: white line with a soft rose glow (matches the red cross) */
-        .btn-med .ba-ecg { opacity: 0.8 !important; }
-        .btn-med .ba-ecg polyline { stroke: #fff7f8 !important; stroke-width: 2.2 !important;
-            filter: drop-shadow(0 0 2px #ffe4e6) drop-shadow(0 0 5px rgba(251, 113, 133, 0.75)) !important; }
+        /* M-142: owner: the ECG meant was the one under the title (M-139 button change undone). Title ECG: bright aqua line,
+           a white pulse with a soft cyan glow - more visible, still delicate; position and motion unchanged */
+        h1.mt-logo .lg-ecg .e-base { stroke: #67e8f9 !important; opacity: 0.62 !important; filter: drop-shadow(0 0 4px #22d3ee) !important; }
+        h1.mt-logo .lg-ecg .e-pulse { stroke: #ffffff !important; stroke-width: 3.4 !important;
+            filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 7px #67e8f9) drop-shadow(0 0 15px #06b6d4) !important; }
     </style>
 </head>
 <body>
