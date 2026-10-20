@@ -78,6 +78,13 @@ public class NativeBridge {
     @JavascriptInterface
     public void installVoices() { Voices.install(activity); }
 
+    /** M-118: animated guide reads its captions aloud (optional, set in the guide). */
+    @JavascriptInterface
+    public void speakGuide(String text) { Voices.speakGuide(activity, text); }
+
+    @JavascriptInterface
+    public void stopSpeech() { Voices.stopAll(); }
+
     /** M-088: the user's name (from the welcome setup); the reminder voice starts with it. */
     @JavascriptInterface
     public void setUserName(String name) {

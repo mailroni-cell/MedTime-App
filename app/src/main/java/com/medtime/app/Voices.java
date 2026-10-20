@@ -119,6 +119,15 @@ class Voices {
         });
     }
 
+    /** M-118: reads a guide caption aloud with the voice chosen in settings, in the app language. */
+    static void speakGuide(Activity a, String text) { preview(a, chosen(a.getApplicationContext()), text); }
+
+    /** M-118: stops any speech (phone voice and Piper). */
+    static void stopAll() {
+        Piper.stop();
+        if (tts != null) try { tts.stop(); } catch (Exception ignored) { }
+    }
+
     /** Opens the phone's "download voices" screen (Google speech services), else the speech settings. */
     static void install(Activity a) {
         a.runOnUiThread(() -> {

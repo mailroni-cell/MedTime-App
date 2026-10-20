@@ -42,6 +42,9 @@
         gSub: ['בחרו נושא, ויד על המסך תראה לכם איך עושים', 'اختر موضوعًا، ويد على الشاشة تريك كيف', 'Alegeți un subiect și o mână vă arată cum', 'Choisissez un sujet, une main vous montre comment', 'Pick a topic and a hand on the screen shows you how'],
         gMore: ['📖 רוצים הסבר מפורט בכתב? יש עזרה גם בתוך ההגדרות ⚙️', '📖 تريد شرحًا مكتوبًا مفصلًا؟ توجد مساعدة داخل الإعدادات ⚙️', '📖 Explicații scrise detaliate: Ajutor în setări ⚙️', '📖 Explications détaillées : Aide dans les réglages ⚙️', '📖 Want detailed written help? There is Help inside Settings ⚙️'],
         gOpenHelp: ['לפתוח עזרה מפורטת', 'افتح المساعدة المفصلة', 'Deschide ajutorul', "Ouvrir l'aide", 'Open detailed help'],
+        gVoice: ['🔊 הקראה קולית של ההסברים', '🔊 قراءة الشرح بصوت', '🔊 Citire cu voce a explicațiilor', '🔊 Lecture des explications à voix haute', '🔊 Read the explanations aloud'],
+        vOn: ['פועל', 'مفعّل', 'Pornit', 'Activé', 'On'],
+        vOff: ['כבוי', 'متوقف', 'Oprit', 'Désactivé', 'Off'],
         gClose: ['סגירה', 'إغلاق', 'Închide', 'Fermer', 'Close'],
         dAppt: ['🩺 תור לרופא', '🩺 موعد طبيب', '🩺 Programare la medic', '🩺 Rendez-vous médical', '🩺 Doctor appointment'],
         dLog: ['📒 יומן ודוח לרופא', '📒 السجل وتقرير للطبيب', '📒 Jurnal și raport', '📒 Journal et rapport', '📒 Log and report'],
@@ -75,7 +78,23 @@
     const tx = k => (T[k] || [k])[li()];
     const $ = id => document.getElementById(id);
     const PACE = 1.8; // M-111: owner found the demos too fast
-    const sleep = ms => new Promise(r => setTimeout(r, ms * PACE));
+    // M-118: optional voice that reads each caption aloud, in the app language, with the voice chosen in settings
+    const voiceOn = () => { try { return localStorage.getItem('medtime_guide_voice') === '1'; } catch (e) { return false; } };
+    const sleep = ms => new Promise(r => setTimeout(r, ms * (voiceOn() ? PACE * 1.15 : PACE)));
+    const LANGS = ['he-IL', 'ar', 'ro-RO', 'fr-FR', 'en-US'];
+    function speak(text) {
+        text = String(text || '').replace(/[\p{Extended_Pictographic}\uFE0F\u200D]/gu, '').replace(/["“”]/g, '').trim();
+        if (!text) return;
+        const N = window.MedTimeNative;
+        try {
+            if (N && typeof N.speakGuide === 'function') { N.speakGuide(text); return; }
+            if (window.speechSynthesis) { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = LANGS[li()] || 'he-IL'; u.rate = .95; speechSynthesis.speak(u); }
+        } catch (e) { }
+    }
+    function hush() {
+        const N = window.MedTimeNative;
+        try { if (N && typeof N.stopSpeech === 'function') N.stopSpeech(); else if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) { }
+    }
     const vib = p => { if (navigator.vibrate) try { navigator.vibrate(p); } catch (e) { } };
 
     const css = document.createElement('style');
@@ -149,6 +168,15 @@
     #mt-guide .g-x{position:absolute;top:12px;inset-inline-end:12px;width:42px;height:42px;border-radius:50%;border:0;background:radial-gradient(circle at 35% 30%,#fca5a5,#dc2626 50%,#7f1d1d);color:#fff;font-size:1.2rem;font-weight:900;box-shadow:0 4px 0 #450a0a}
     #mt-guide .g-t{font-size:1.5rem;font-weight:900;color:#e9d5ff;text-align:center;margin:4px 40px 4px}
     #mt-guide .g-s{text-align:center;opacity:.85;font-size:1rem;margin-bottom:14px}
+    #mt-guide .g-voice{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 14px;padding:13px 16px;border-radius:18px;border:2px solid rgba(125,211,252,.6);
+      background:linear-gradient(170deg,rgba(14,165,233,.35),rgba(30,58,138,.55));color:#fff;font-weight:900;font-size:1.12rem;text-align:start;box-shadow:0 4px 0 rgba(0,0,0,.35)}
+    #mt-guide .g-voice .gv-t{flex:1}
+    #mt-guide .g-voice .gv-sw{flex:none;position:relative;width:54px;height:30px;border-radius:999px;background:#475569;transition:background .25s}
+    #mt-guide .g-voice .gv-sw i{position:absolute;top:3px;inset-inline-start:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.4);transition:inset-inline-start .25s}
+    #mt-guide .g-voice.on .gv-sw{background:#22c55e}
+    #mt-guide .g-voice.on .gv-sw i{inset-inline-start:27px}
+    #mt-guide .g-voice .gv-st{flex:none;min-width:3.2em;text-align:center;color:#fde68a}
+    #mt-guide .g-voice.on{border-color:#86efac;background:linear-gradient(170deg,rgba(34,197,94,.4),rgba(20,83,45,.6))}
     #mt-guide .g-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     #mt-guide .g-grid button{padding:15px 8px;border-radius:18px;border:1.5px solid rgba(233,213,255,.45);background:linear-gradient(170deg,rgba(168,85,247,.45),rgba(59,7,100,.6));color:#fff;font-weight:800;font-size:1.05rem;
       box-shadow:inset 0 2px 0 rgba(255,255,255,.3),inset 0 -4px 8px rgba(0,0,0,.35),0 6px 0 rgba(0,0,0,.35),0 10px 18px rgba(0,0,0,.4)}
@@ -204,6 +232,7 @@
         ensure(); check();
         bubble.classList.remove('on'); await sleep(120);
         bubble.textContent = text; setSpot(hy, !bubble.dataset.shown); bubble.dataset.shown = '1'; bubble.classList.add('on');
+        if (voiceOn()) speak(text);
     }
     // scroll a far element into view while the hand "swipes" up
     async function bring(el) {
@@ -252,6 +281,7 @@
     function hideAll() {
         if (hand) { hand.classList.remove('on', 'bob', 'press'); }
         if (bubble) { bubble.classList.remove('on'); delete bubble.dataset.shown; }
+        hush();
         if (veil) { veil.remove(); veil = null; }
         if (stopBtn) { stopBtn.remove(); stopBtn = null; }
         document.querySelectorAll('.mt-flash').forEach(e => e.classList.remove('mt-flash'));
@@ -446,11 +476,19 @@
         if (sheet) return;
         sheet = document.createElement('div'); sheet.id = 'mt-guide';
         sheet.dir = li() < 2 ? 'rtl' : 'ltr';
-        sheet.innerHTML = '<div class="g-card"><button type="button" class="g-x" aria-label="close">✕</button><div class="g-t"></div><div class="g-s"></div><div class="g-grid"></div>' +
+        sheet.innerHTML = '<div class="g-card"><button type="button" class="g-x" aria-label="close">✕</button><div class="g-t"></div><div class="g-s"></div><button type="button" class="g-voice"><span class="gv-t"></span><span class="gv-sw"><i></i></span><b class="gv-st"></b></button><div class="g-grid"></div>' +
             '<div class="g-more"><div class="g-m"></div><button type="button" class="g-help"></button></div></div>';
         sheet.querySelector('.g-t').textContent = tx('gTitle');
         sheet.querySelector('.g-s').textContent = tx('gSub');
         sheet.querySelector('.g-m').textContent = tx('gMore');
+        const gv = sheet.querySelector('.g-voice');
+        const drawVoice = () => { const on = voiceOn(); gv.classList.toggle('on', on); gv.querySelector('.gv-t').textContent = tx('gVoice'); gv.querySelector('.gv-st').textContent = on ? tx('vOn') : tx('vOff'); };
+        drawVoice();
+        gv.onclick = () => {
+            vib(12); const on = !voiceOn();
+            try { localStorage.setItem('medtime_guide_voice', on ? '1' : '0'); } catch (e) { }
+            drawVoice(); if (on) speak(tx('gVoice') + '. ' + tx('vOn')); else hush();
+        };
         sheet.querySelector('.g-help').textContent = '📖 ' + tx('gOpenHelp');
         LIST.forEach(([k, l]) => {
             const b = document.createElement('button'); b.type = 'button'; b.textContent = tx(l);
