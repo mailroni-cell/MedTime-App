@@ -78,7 +78,11 @@
       background:linear-gradient(135deg,rgba(15,23,42,.82),rgba(30,27,75,.78)) padding-box,linear-gradient(135deg,#22d3ee,#a855f7,#f472b6) border-box;
       border:2px solid transparent;box-shadow:0 6px 18px rgba(0,0,0,.45),0 0 14px rgba(34,211,238,.25)}
     .hello-line .hl-ico{margin-inline-end:6px}
-    .hello-line b{font-weight:800;background:linear-gradient(90deg,#67e8f9,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent}
+    /* M-114: the name in a beautiful font, a bit bigger, glowing gold */
+    .hello-line b{font-family:'MTName','MTUI',sans-serif;font-weight:400;font-size:1.45em;line-height:1.1;letter-spacing:.5px;
+      background:linear-gradient(180deg,#fff7c2 0%,#fde047 45%,#f59e0b 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+      filter:drop-shadow(0 2px 0 rgba(120,53,15,.9)) drop-shadow(0 0 6px rgba(253,224,71,.45));vertical-align:-0.08em;margin-inline-start:2px;padding:0 2px}
+    html.lowvision .hello-line b{background:none;color:#fff;filter:none}
     .hello-line:empty{display:none}`;
     document.head.appendChild(css);
 
