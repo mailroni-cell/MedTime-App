@@ -7,6 +7,19 @@ $stamp = Join-Path $dir 'last_installed.txt'
 $adb   = 'C:\ApexDash3D\tools\platform-tools\adb.exe'; if (-not (Test-Path $adb)) { $adb = 'adb' }
 $pkg   = 'com.medtime.app'
 function Log($m) { Add-Content -Path $log -Value ((Get-Date -Format 'yyyy-MM-dd HH:mm:ss') + '  ' + $m) -Encoding UTF8 }
+# Permanent fix (owner 2026-10-21): adb install could hang forever (phone locked / question on the phone) and block everything.
+# Now every install has a time limit; on timeout adb is reset and the install is tried again a minute later.
+function AdbInstall($file, $sec) {
+  $o = Join-Path $dir 'adb_out.txt'; $e = Join-Path $dir 'adb_err.txt'
+  $p = Start-Process -FilePath $adb -ArgumentList @('install', '-r', '-d', ('"' + $file + '"')) -NoNewWindow -PassThru -RedirectStandardOutput $o -RedirectStandardError $e
+  if (-not $p.WaitForExit($sec * 1000)) {
+    try { $p.Kill() } catch { }
+    & $adb kill-server 2>&1 | Out-Null
+    return 'TIMEOUT'
+  }
+  return ((Get-Content $o -Raw -ErrorAction SilentlyContinue) + ' ' + (Get-Content $e -Raw -ErrorAction SilentlyContinue)).Trim()
+}
+$timedOut = ''
 # Only ONE copy may ever run: a second copy sees the lock and quits at once
 $mtx = New-Object System.Threading.Mutex($false, 'Global\MedTimeAutoInstall')
 $own = $false
@@ -74,13 +87,16 @@ while ($true) {
         if (-not $dev) {
           if ($waitedFor -ne $h) { Log 'new APK found - waiting for the phone (connect USB)'; $waitedFor = $h }
         } else {
-          $out = (& $adb install -r -d $apk 2>&1 | Out-String).Trim()
+          $out = AdbInstall $apk 240
           if ($out -match 'INSTALL_FAILED_UPDATE_INCOMPATIBLE|signatures do not match') {
             Log 'old app has a different signature - uninstalling it once and installing again'
             & $adb uninstall $pkg 2>&1 | Out-Null
-            $out = (& $adb install -r -d $apk 2>&1 | Out-String).Trim()
+            $out = AdbInstall $apk 240
           }
-          if ($out -match 'Success') {
+          if ($out -eq 'TIMEOUT') {
+            if ($timedOut -ne $h) { Log 'install took too long (phone locked or a question on the phone?) - unlock the phone, trying again every minute'; $timedOut = $h }
+            Start-Sleep -Seconds 50
+          } elseif ($out -match 'Success') {
             & $adb shell am force-stop $pkg 2>&1 | Out-Null
             & $adb shell am start -n "$pkg/.MainActivity" 2>&1 | Out-Null
             Set-Content -Path $stamp -Value $h
