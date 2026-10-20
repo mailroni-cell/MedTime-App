@@ -62,6 +62,9 @@
         l2: ['כאן רואים מה נלקח, מה נדחה ומה הוחמץ, יום אחרי יום', 'هنا ترى ما أُخذ وما أُجّل وما فات', 'Aici vedeți ce s-a luat și ce s-a ratat', 'On voit ce qui a été pris ou manqué', 'Here you see what was taken, skipped or missed, day by day'],
         l3: ['ובכפתור הזה: דוח שבועי יפה ב-PDF לשלוח לרופא או למשפחה', 'وهذا الزر: تقرير أسبوعي PDF للطبيب أو العائلة', 'Acest buton: raport PDF săptămânal', 'Ce bouton : un rapport PDF de la semaine', 'This button: a nice weekly PDF report for the doctor or family'],
         f1: ['בהגדרות ⚙️ יש "התראה למשפחה"', 'في الإعدادات ⚙️ "تنبيه العائلة"', 'În setări ⚙️: „Alertă familie”', 'Dans les réglages ⚙️ : « Alerte famille »', 'In Settings ⚙️ there is "Family alert"'],
+        f3: ['ומדליקים את המתג, וזה פועל', 'ثم شغّل المفتاح ليعمل التنبيه', 'Apoi porniți comutatorul', "Puis activez l'interrupteur", 'Then turn the switch on'],
+        f4: ['כאן שולחים הודעת ניסיון, לבדוק שהכל עובד', 'هنا ترسل رسالة تجربة للتأكد', 'Aici trimiteți un mesaj de probă', "Ici, envoyez un message d'essai", 'Here you send a test message to check it works'],
+        f5: ['או כותבים שם ומספר טלפון בעצמכם', 'أو اكتب الاسم ورقم الهاتف بنفسك', 'Sau scrieți numele și telefonul', 'Ou écrivez le nom et le numéro', 'Or type a name and phone number yourself'],
         f2: ['בוחרים איש קשר. אם תרופה לא נלקחה שעה, הוא מקבל SMS', 'اختر جهة اتصال. إذا لم يؤخذ الدواء ساعة يصله SMS', 'Alegeți un contact: primește SMS după o oră', 'Choisissez un contact : il reçoit un SMS après une heure', 'Pick a contact. If a dose is not taken for an hour, they get an SMS'],
         r1: ['במשקפיים 👓 בתחתית: הכל גדול וברור בלחיצה אחת', 'النظارة 👓 في الأسفل: كل شيء كبير بلمسة', 'Ochelarii 👓: totul mare dintr-o atingere', 'Les lunettes 👓 : tout en grand en un geste', 'The glasses 👓 at the bottom: everything big and clear in one tap'],
         r2: ['ובהגדרות "גודל הטקסט" בוחרים גודל שנוח לכם', 'وفي الإعدادات "حجم النص"', 'În setări: „Mărimea textului”', 'Dans les réglages : « Taille du texte »', 'And in Settings, "Text size" lets you choose'],
@@ -309,6 +312,7 @@
         check();
     }
 
+    function quiet() { if (bubble) { bubble.classList.remove('on', 'mv'); delete bubble.dataset.shown; } if (hand) hand.classList.remove('bob', 'press'); }
     function hideAll() {
         if (hand) { hand.classList.remove('on', 'bob', 'press'); }
         if (bubble) { bubble.classList.remove('on'); delete bubble.dataset.shown; }
@@ -329,7 +333,7 @@
         document.documentElement.append(veil, stopBtn);
         place(innerWidth / 2, innerHeight + 40, true);
         hand.classList.add('on');
-        try { await fn(); await sleep(900); } catch (e) { if (e && e.message !== 'stop') console.error(e); }
+        try { await fn(); await sleep(900); quiet(); await sleep(250); } catch (e) { if (e && e.message !== 'stop') console.error(e); }
         cleanUp();
         hideAll();
         running = false;
@@ -447,10 +451,14 @@
             if ($('af-doctor')) await type($('af-doctor'), tx('demoDoc'));
             await tap($('wz-next'), true); await sleep(500);
             await say(tx('p4'));
-            await tap($('af-tomorrow'), true);
-            await point($('tp-quick'), null, 1400);
+            await tap($('af-tomorrow'), true); await sleep(400);
+            await tap($('wz-next'), true); await sleep(600);
+            const tq = document.querySelectorAll('#tp-quick .af-chip');
+            if (tq.length) await tap(tq[Math.min(1, tq.length - 1)], true);
+            await sleep(900);
             await say(tx('p5'));
             await point($('wz-next'), null, 2600);
+            quiet(); await sleep(300);
             try { closeApptForm(); closeApptPage(); } catch (e) { }
         },
         async log() {
@@ -459,8 +467,11 @@
             await tap($('gear-btn'), () => openSettingsPage()); await sleep(700);
             const t = $('tile-log');
             await tap(t && t.querySelector('.set-ico'), () => openTileById('tile-log')); await sleep(700);
-            await point(t && t.querySelector('.set-body'), tx('l2'), 2400);
-            await point($('lg-pdf'), tx('l3'), 2600);
+            const sm = $('lg-sum'), pdf = $('lg-pdf');
+            await point(sm && sm.offsetHeight > 8 ? sm : $('lg-list'), tx('l2'), 2400);
+            if (pdf && pdf.offsetParent !== null) await point(pdf, tx('l3'), 2600);
+            else { await say(tx('l3')); await sleep(2400); }
+            quiet(); await sleep(300);
             try { closeTiles(); } catch (e) { }
         },
         async fam() {
@@ -469,7 +480,12 @@
             await tap($('gear-btn'), () => openSettingsPage()); await sleep(700);
             const t = $('tile-family');
             await tap(t && t.querySelector('.set-ico'), () => openTileById('tile-family')); await sleep(700);
-            await point(t && (t.querySelector('button') && t.querySelector('.set-body button')) || (t && t.querySelector('.set-body')), tx('f2'), 3000);
+            // M-131: step by step on the real controls (it used to aim at the panel's close ✕)
+            await point($('fm-pick'), tx('f2'), 2600);
+            await point($('fm-phone'), tx('f5'), 2200);
+            await point($('fm-sw'), tx('f3'), 2400);
+            await point($('fm-test'), tx('f4'), 2400);
+            quiet(); await sleep(300);
             try { closeTiles(); } catch (e) { }
         },
         async read() {
@@ -480,6 +496,7 @@
             const head = $('sub-lowVisionTitle') && $('sub-lowVisionTitle').closest('.set-tile');
             await tap(head && head.querySelector('.set-ico'), () => { const h = head.querySelector('.set-tile-head'); if (h) toggleTile(h); }); await sleep(700);
             await point(head && head.querySelector('.ts-row'), null, 2600);
+            quiet(); await sleep(300);
             try { closeTiles(); } catch (e) { }
         },
         async relax() {
