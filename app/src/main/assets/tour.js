@@ -546,7 +546,10 @@
     if (lsel) lsel.addEventListener('change', () => setTimeout(() => { drawDemoButtons(); guideLbl(); }, 250));
 
     // M-109: a word under the exit button
-    function exitLbl() { const e = $('exit-btn'); if (e && typeof t === 'function') e.dataset.lbl = t('exitShort'); }
+    function exitLbl() {
+        const e = $('exit-btn'); if (e && typeof t === 'function') e.dataset.lbl = t('exitShort');
+        const g = $('gear-btn'); if (g) g.dataset.lbl = ['הגדרות', 'الإعدادات', 'Setări', 'Réglages', 'Settings'][li()]; // M-127
+    }
     exitLbl(); if (lsel) lsel.addEventListener('change', () => setTimeout(exitLbl, 250));
 
     // ---------- hint mode (no blocking): the hand bobs over one control, then the next ----------
