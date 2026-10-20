@@ -32,8 +32,11 @@
         addMed: ['➕ להוסיף תרופה', '➕ إضافة دواء', '➕ Adaugă medicament', '➕ Ajouter un médicament', '➕ Add a medicine'],
         tapHint: ['נגיעה בשורה משנה אותה', 'المس سطرًا لتغييره', 'Atingeți un rând pentru a-l schimba', 'Touchez une ligne pour la modifier', 'Tap a line to change it'],
         // M-102: weekend mode - optional other time on Friday + Saturday
-        wkOff: ['🌴 סופ״ש (ו׳-ש׳): אותה שעה · לשינוי', '🌴 نهاية الأسبوع: نفس الساعة · للتغيير', '🌴 Weekend: aceeași oră · schimbă', '🌴 Week-end : même heure · changer', '🌴 Weekend: same time · change'],
-        wkOn: ['🌴 סופ״ש (ו׳-ש׳): ', '🌴 نهاية الأسبوع: ', '🌴 Weekend: ', '🌴 Week-end : ', '🌴 Weekend: '],
+        wkTitle: ['🌴 מצב סופ״ש', '🌴 وضع نهاية الأسبوع', '🌴 Mod weekend', '🌴 Mode week-end', '🌴 Weekend mode'],
+        wkSub: ['לא חובה: שעה אחרת לתזכורת הזו בשישי ושבת', 'اختياري: ساعة أخرى يومي الجمعة والسبت', 'Opțional: altă oră vineri și sâmbătă', 'Facultatif : autre heure le vendredi et samedi', 'Optional: another time on Friday and Saturday'],
+        wkPick: ['⏰ לבחור שעה לסופ״ש', '⏰ اختر ساعة لنهاية الأسبوع', '⏰ Alege ora de weekend', "⏰ Choisir l'heure du week-end", '⏰ Pick a weekend time'],
+        wkOn: ['🌴 בשישי-שבת: ', '🌴 الجمعة-السبت: ', '🌴 Vineri-sâmbătă: ', '🌴 Vendredi-samedi : ', '🌴 Fri-Sat: '],
+        wkCancel: ['✕ לבטל מצב סופ״ש', '✕ إلغاء', '✕ Anulează', '✕ Annuler', '✕ Turn off'],
         // M-103: one weekend shift for all reminders
         wkAll: ['🌴 בסופ״ש (ו׳-ש׳) כל התזכורות:', '🌴 في نهاية الأسبوع كل التذكيرات:', '🌴 În weekend toate mementourile:', '🌴 Le week-end, tous les rappels :', '🌴 On the weekend all reminders:'],
         wkSame: ['באותה שעה', 'نفس الساعة', 'Aceeași oră', 'Même heure', 'Same time'],
@@ -115,22 +118,25 @@
         };
         line('s-when mw-tap', '⏰ ' + ($('med-time').value || '--:--') + ' <i>✏️</i>', () => jump(4));
         line('s-when mw-tap', '📅 ' + escapeHtml(daysText(typeof selDays !== 'undefined' ? selDays : [])) + ' <i>✏️</i>', () => jump(5));
-        // M-102: weekend time (only when the reminder rings on Friday or Saturday)
+        // M-102/M-104: weekend time in its own clear box (optional), only when the reminder rings on Fri or Sat
         const sd = typeof selDays !== 'undefined' ? selDays : [];
+        let wkBox = null;
         if (!sd.length || sd.includes(5) || sd.includes(6)) {
-            const w = line('s-when mw-tap mw-wk', '', null);
-            const lbl = document.createElement('span');
+            wkBox = document.createElement('div'); wkBox.className = 'mw-wk-box';
+            const h = document.createElement('div'); h.className = 'wkb-h'; h.textContent = tx('wkTitle');
+            const sb = document.createElement('div'); sb.className = 'wkb-sub'; sb.textContent = tx('wkSub');
             const inp = document.createElement('input'); inp.type = 'time'; inp.className = 'mw-wk-in'; inp.value = window.mwWk || '';
+            const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'wkb-btn';
+            const x = document.createElement('button'); x.type = 'button'; x.className = 'wkb-off'; x.textContent = tx('wkCancel');
             const paint = () => {
-                lbl.textContent = window.mwWk ? tx('wkOn') + window.mwWk : tx('wkOff');
-                w.classList.toggle('on', !!window.mwWk);
+                btn.textContent = window.mwWk ? tx('wkOn') + window.mwWk + '  ✏️' : tx('wkPick');
+                wkBox.classList.toggle('on', !!window.mwWk);
                 x.style.display = window.mwWk ? '' : 'none';
             };
-            const x = document.createElement('button'); x.type = 'button'; x.className = 'mw-x'; x.textContent = '✕';
-            x.onclick = e => { e.stopPropagation(); vib(12); window.mwWk = ''; inp.value = ''; paint(); };
+            x.onclick = () => { vib(12); window.mwWk = ''; inp.value = ''; paint(); };
             inp.onchange = () => { window.mwWk = inp.value === $('med-time').value ? '' : inp.value; paint(); };
-            w.onclick = e => { if (e.target === x) return; vib(10); try { inp.showPicker(); } catch (er) { inp.focus(); inp.click(); } };
-            w.append(lbl, inp, x); paint();
+            btn.onclick = () => { vib(10); if (!inp.value) inp.value = window.mwWk || $('med-time').value || '09:00'; try { inp.showPicker(); } catch (er) { inp.focus(); inp.click(); } };
+            wkBox.append(h, sb, btn, x, inp); paint();
         }
         rows.forEach(r => {
             const n = r.querySelector('.it-name').value.trim(), d = r.querySelector('.it-dose').value.trim();
@@ -146,7 +152,8 @@
         add.onclick = () => { vib(12); window.mwAddMore(); };
         const hint = document.createElement('div'); hint.className = 'mw-hint'; hint.textContent = tx('tapHint');
         $('mw-summary').innerHTML = '';
-        $('mw-summary').append(box, add, hint);
+        $('mw-summary').append(box, hint, add);
+        if (wkBox) $('mw-summary').append(wkBox);
         if (sub) sub.textContent = tx(window.mwEditing ? 'saveEdit' : 'save');
     }
     function draw() {
@@ -292,7 +299,12 @@
     .mw-sum-edit .mw-med span{flex:1;overflow:hidden;text-overflow:ellipsis}
     .mw-sum-edit .mw-x{flex:none;width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(248,113,113,.7);background:rgba(127,29,29,.45);color:#fecaca;font-size:1rem;font-weight:800}
     .mw-add-med{display:block;width:100%;margin:12px 0 0;padding:13px;border-radius:16px;border:1.5px dashed rgba(103,232,249,.7);background:rgba(8,145,178,.18);color:#a5f3fc;font-size:1.1rem;font-weight:800}
-    .mw-sum-edit .mw-wk span{flex:1}.mw-sum-edit .mw-wk.on{color:#fde68a;font-weight:800}
+    .mw-wk-box{margin:16px 0 4px;padding:16px;border-radius:22px;text-align:center;background:linear-gradient(135deg,rgba(250,204,21,.18),rgba(234,88,12,.14));border:2.5px solid #fbbf24;box-shadow:0 0 22px rgba(251,191,36,.25)}
+    .mw-wk-box .wkb-h{font-size:1.35rem;font-weight:900;color:#fde68a}
+    .mw-wk-box .wkb-sub{font-size:.95rem;opacity:.85;margin:4px 0 12px}
+    .mw-wk-box .wkb-btn{width:100%;padding:14px;border-radius:999px;border:0;background:#fbbf24;color:#422006;font-size:1.2rem;font-weight:900}
+    .mw-wk-box.on .wkb-btn{background:#fde68a}
+    .mw-wk-box .wkb-off{margin-top:10px;background:none;border:0;color:#fca5a5;font-size:1rem;font-weight:700}
     .mw-wk-in{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
     #wk-bar{margin:0 14px 12px;padding:12px 14px;border-radius:18px;background:rgba(253,230,138,.08);border:1.5px solid rgba(253,230,138,.35)}
     #wk-bar .wk-h{font-weight:800;color:#fde68a;font-size:1.05rem;margin-bottom:8px}
