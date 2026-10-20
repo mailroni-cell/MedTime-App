@@ -129,9 +129,15 @@
         let dots = '';
         if (step > 0) { dots = '<div class="ob-dots">'; for (let i = 1; i <= 4; i++) dots += '<i class="' + (i === step ? 'on' : '') + '"></i>'; dots += '</div>'; }
         bg.innerHTML = '<div class="ob-card">' + dots + html + '</div>';
+        // M-107: the hand bobs over the choice of this step, then over "next"
+        if (window.mtHint) setTimeout(() => {
+            if (!bg) return;
+            const c = bg.querySelector('.ob-in') || bg.querySelector('.ob-ts button.sel, .ob-th button.sel') || bg.querySelector('.ob-ts button, .ob-th button, .ob-opt[data-v="1"]');
+            window.mtHint([c, bg.querySelector('.ob-go')]);
+        }, 80);
         return bg;
     }
-    function close() { if (!bg) return; const b = bg; bg = null; b.classList.remove('in'); setTimeout(() => b.remove(), 320); }
+    function close() { if (window.mtHintOff) window.mtHintOff(); if (!bg) return; const b = bg; bg = null; b.classList.remove('in'); setTimeout(() => b.remove(), 320); }
     const wait = sel => new Promise(res => bg.querySelectorAll(sel).forEach(b => b.addEventListener('click', () => { vib(); res(b); })));
 
     async function stepName() {

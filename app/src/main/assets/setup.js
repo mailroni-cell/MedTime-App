@@ -138,11 +138,13 @@
         }
         bg.dir = rtl() ? 'rtl' : 'ltr';
         bg.innerHTML = '<div class="su-card">' + html + '</div>';
+        if (window.mtHint) setTimeout(() => { if (bg) window.mtHint([bg.querySelector('.su-go')]); }, 60); // M-107: the hand shows what to press
         return bg;
     }
     function close() {
         if (!bg) return;
         const b = bg; bg = null; onBack = null;
+        if (window.mtHintOff) window.mtHintOff();
         b.classList.remove('in'); setTimeout(() => b.remove(), 320);
     }
     const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
