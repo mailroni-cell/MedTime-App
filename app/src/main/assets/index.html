@@ -2638,7 +2638,14 @@
         .home-card .lb-count { box-shadow: inset 0 2px 2px rgba(255,255,255,.6), inset 0 -3px 4px rgba(0,0,0,.35), 0 3px 0 rgba(0,0,0,.35), 0 5px 10px rgba(0,0,0,.4) !important; }
         /* M-136: owner: both symbols (red cross, stethoscope) at maximum size inside the button, identical medallions, in every screen mode */
         html .home-card .main-add .ba-cross, html .home-card #appt-btn .ab-ico { width: 60px !important; height: 60px !important; min-width: 60px !important; flex: 0 0 60px !important; box-sizing: border-box !important; }
-        html .home-card .main-add .ba-cross svg { width: 50px !important; height: 50px !important; }
+        html .home-card .main-add .ba-cross svg { width: 68px !important; height: 68px !important; flex: 0 0 68px; margin: -4px; } /* M-137: cross fills the circle */
+        html .home-card .main-add .ba-cross { overflow: visible !important; }
+        html .home-card .main-add .ba-cross svg { animation: mtFloat 5.5s ease-in-out infinite !important; }
+        @keyframes mtFloat { /* M-137: very gentle floating of its own inside the circle */
+            0%, 100% { transform: translate(0, 1.5px) rotate(-2deg); }
+            25% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(0, -2px) rotate(2deg); }
+            75% { transform: translate(-1px, 0) rotate(-1deg); } }
         html .home-card #appt-btn .ab-ico i { font-size: 40px !important; line-height: 1 !important; }
         html .home-card .main-add, html .home-card #appt-btn { padding-top: 6px !important; padding-bottom: 6px !important; min-height: 74px !important; }
         @media (prefers-reduced-motion: reduce) { .home-card .ab-ico i, .home-card .rb-ico i, .home-card .ba-cross svg { animation: none !important; } }
