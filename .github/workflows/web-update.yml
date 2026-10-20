@@ -1,0 +1,52 @@
+name: Quick web update (owner's phone)
+
+# M-140: a push that changes ONLY page files (html / js / css in app/src/main/assets) does not build an APK.
+# It publishes those files as web.zip on the "test" release; the PC watcher pushes them to the owner's phone
+# in seconds (the app uses them only on top of the exact APK they were made for).
+# A full APK build (and so every user) gets the changes only after the owner approves: run "Build Android APK" by hand.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'app/src/main/assets/**.html'
+      - 'app/src/main/assets/**.js'
+      - 'app/src/main/assets/**.css'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: web-update
+  cancel-in-progress: true
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 50
+
+      - name: Only page files changed?
+        id: chk
+        run: |
+          before="${{ github.event.before }}"
+          if ! git cat-file -e "$before" 2>/dev/null; then echo "only=no" >> $GITHUB_OUTPUT; exit 0; fi
+          other=$(git diff --name-only "$before" "${{ github.sha }}" | grep -vE '^app/src/main/assets/.*\.(html|js|css)$' | grep -vE '\.md$' || true)
+          if [ -n "$other" ]; then echo "Other files changed, the APK build handles it:"; echo "$other"; echo "only=no" >> $GITHUB_OUTPUT
+          else echo "only=yes" >> $GITHUB_OUTPUT; fi
+
+      - name: Publish web.zip on the test release
+        if: steps.chk.outputs.only == 'yes'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release download test -p build-info.txt -O build-info.txt
+          base=$(grep -oE 'run [0-9]+' build-info.txt | grep -oE '[0-9]+')
+          vc=$((100 + base))
+          cd app/src/main/assets
+          zip -q -r ../../../../web.zip . -i '*.html' '*.js' '*.css'
+          cd ../../../..
+          echo "web ${{ github.sha }} base $vc" > web-info.txt
+          gh release upload test web.zip web-info.txt --clobber
+          echo "::notice::Web update for APK versionCode $vc published"

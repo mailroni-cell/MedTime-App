@@ -55,7 +55,17 @@ public class MainActivity extends AppCompatActivity {
         // the app has its own text size setting (A / A / A) and low-vision mode instead.
         settings.setTextZoom(100);
 
-        webView.setWebViewClient(new WebViewClient());
+        // M-140: quick web updates on the owner's test phone. The PC watcher may push changed page files (html/js/css)
+        // to Android/data/com.medtime.app/files/web/ with base.txt = the versionCode they were made for.
+        // They replace the built-in files only for that exact installed version; a new APK ignores them.
+        webOverride = validWebOverride();
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public android.webkit.WebResourceResponse shouldInterceptRequest(WebView v, android.webkit.WebResourceRequest req) {
+                android.webkit.WebResourceResponse r = fromOverride(req.getUrl().toString());
+                return r != null ? r : super.shouldInterceptRequest(v, req);
+            }
+        });
         webView.setWebChromeClient(new WebChromeClient());
 
         // M-005: bridge so the page can book real Android alarms
@@ -81,6 +91,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private int lastKb = -1;
+
+    // ---------- M-140: quick web updates (owner's test phone only) ----------
+    private java.io.File webOverride;
+
+    private java.io.File validWebOverride() {
+        try {
+            java.io.File dir = getExternalFilesDir("web");
+            if (dir == null) return null;
+            java.io.File base = new java.io.File(dir, "base.txt");
+            if (!base.exists()) return null;
+            String want;
+            try (java.io.BufferedReader br = new java.io.BufferedReader(new java.io.FileReader(base))) { want = String.valueOf(br.readLine()).trim(); }
+            long vc = Build.VERSION.SDK_INT >= 28 ? getPackageManager().getPackageInfo(getPackageName(), 0).getLongVersionCode()
+                    : getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+            return want.equals(String.valueOf(vc)) ? dir : null;
+        } catch (Exception e) { return null; }
+    }
+
+    private android.webkit.WebResourceResponse fromOverride(String url) {
+        final String pre = "file:///android_asset/";
+        if (webOverride == null || url == null || !url.startsWith(pre)) return null;
+        String path = url.substring(pre.length());
+        int q = path.indexOf('?'); if (q >= 0) path = path.substring(0, q);
+        int h = path.indexOf('#'); if (h >= 0) path = path.substring(0, h);
+        if (path.contains("..")) return null;
+        String mime = path.endsWith(".html") ? "text/html" : path.endsWith(".js") ? "application/javascript"
+                : path.endsWith(".css") ? "text/css" : path.endsWith(".json") ? "application/json" : null;
+        if (mime == null) return null;
+        java.io.File f = new java.io.File(webOverride, path);
+        if (!f.isFile()) return null;
+        try { return new android.webkit.WebResourceResponse(mime, "UTF-8", new java.io.FileInputStream(f)); }
+        catch (Exception e) { return null; }
+    }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {

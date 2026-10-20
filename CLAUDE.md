@@ -20,6 +20,7 @@ Every new rule the owner sets is added here right away.
 - At ~80% usage: prepare a full handoff prompt from STATE.md + CHANGES.md.
 - HANDOFF FILE (owner rule 2026-10-20, for every project): after every batch of changes and at the end of every session, update `handoff/HANDOFF.md` (where we are, what is waiting for the owner, next steps, a ready start prompt in Hebrew) and `handoff/project-memory.md`, push, and copy HANDOFF.md to the owner's PC (`C:\Users\Roni\Downloads\MedTime\HANDOFF.md`). Purpose: if time runs out here, the owner continues from the same point in his second Claude account on the same PC.
 - Never ask the owner to paste API keys or passwords in chat.
+- QUICK WEB UPDATES (M-140, owner rule 2026-10-21): changes only in page files (app/src/main/assets *.html/*.js/*.css) are pushed alone: no APK build, web-update.yml publishes web.zip on release test and the PC watcher pushes it to the phone in seconds (log line 'WEB UPDATED'). Java/manifest/resources changes still need an APK build (push them in a separate commit). When the owner approves a round, run workflow 'Build Android APK' by hand (workflow_dispatch) so the APK contains everything; do this always BEFORE 'משחררים לכולם'. Keep native-call guards (has(...)) in JS so a web update never breaks on an older APK.
 - Fixes (owner rule 2026-10-21): small fixes are done quickly and collected into ONE push = one build; do not build again for every small fix, and do not spend long on checks for a fix. Docs-only commits use [skip ci].
 
 ## Communication

@@ -19,6 +19,9 @@ $waitedFor = ''
 $infoUrl = 'https://github.com/mailroni-cell/MedTime-App/releases/download/test/build-info.txt'
 $apkUrl  = 'https://github.com/mailroni-cell/MedTime-App/releases/download/test/MedTime-latest.apk'
 $built   = Join-Path $dir 'last_build.txt'
+$webInfoUrl = 'https://github.com/mailroni-cell/MedTime-App/releases/download/test/web-info.txt'   # M-140
+$webZipUrl  = 'https://github.com/mailroni-cell/MedTime-App/releases/download/test/web.zip'
+$webSeen    = Join-Path $dir 'last_web.txt'
 $nextCheck = Get-Date
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 while ($true) {
@@ -36,6 +39,30 @@ while ($true) {
           Move-Item -Force $tmp $apk
           Set-Content -Path $built -Value $info
           Log ('downloaded ' + $info)
+        }
+      } catch { }
+      # M-140: quick web update (page files only) - pushed straight into the app on the phone, no reinstall
+      try {
+        $winfo = (Invoke-WebRequest -Uri $webInfoUrl -UseBasicParsing -TimeoutSec 30).Content
+        if ($winfo -is [byte[]]) { $winfo = [Text.Encoding]::UTF8.GetString($winfo) }
+        $winfo = "$winfo".Trim()
+        $wseen = ''; if (Test-Path $webSeen) { $wseen = (Get-Content $webSeen -Raw).Trim() }
+        if ($winfo -match 'base (\d+)' -and $winfo -ne $wseen -and (& $adb devices 2>$null | Select-String "`tdevice$")) {
+          $base = $Matches[1]
+          $wz = Join-Path $dir 'web.zip'; $wd = Join-Path $dir 'web'
+          Invoke-WebRequest -Uri $webZipUrl -OutFile $wz -UseBasicParsing -TimeoutSec 120
+          if (Test-Path $wd) { Remove-Item -Recurse -Force $wd }
+          Expand-Archive -Path $wz -DestinationPath $wd -Force
+          [IO.File]::WriteAllText((Join-Path $wd 'base.txt'), $base)
+          $remote = "/sdcard/Android/data/$pkg/files/web"
+          & $adb shell rm -rf $remote 2>&1 | Out-Null
+          $pout = (& $adb push "$wd\." $remote 2>&1 | Out-String).Trim()
+          if ($LASTEXITCODE -eq 0) {
+            & $adb shell am force-stop $pkg 2>&1 | Out-Null
+            & $adb shell am start -n "$pkg/.MainActivity" 2>&1 | Out-Null
+            Set-Content -Path $webSeen -Value $winfo
+            Log ('WEB UPDATED + STARTED ' + $winfo)
+          } else { Log ('WEB UPDATE FAILED: ' + $pout) }
         }
       } catch { }
     }

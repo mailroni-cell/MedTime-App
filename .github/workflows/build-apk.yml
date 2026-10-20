@@ -9,6 +9,13 @@ on:
     paths-ignore:
       - 'release/**'
       - '.github/workflows/release-stable.yml'
+      # M-140: page-only pushes go to the owner's phone as a quick web update (web-update.yml), no APK build;
+      # docs-only pushes do not build either. A full build after the owner's approval: run this workflow by hand.
+      - 'app/src/main/assets/**.html'
+      - 'app/src/main/assets/**.js'
+      - 'app/src/main/assets/**.css'
+      - '**.md'
+      - '.github/workflows/web-update.yml'
   workflow_dispatch:
 
 # M-005: needed to publish the APK as the rolling "latest" release
