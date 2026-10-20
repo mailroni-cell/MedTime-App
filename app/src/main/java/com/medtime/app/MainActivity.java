@@ -71,7 +71,11 @@ public class MainActivity extends AppCompatActivity {
         // M-005: bridge so the page can book real Android alarms
         webView.addJavascriptInterface(new NativeBridge(this, webView), "MedTimeNative");
 
-        webView.loadUrl("file:///android_asset/index.html");
+        // M-146: with a quick web update the page is built from the updated files (changed scripts / styles inlined)
+        // on the same base address, so stored data stays; otherwise the built-in page as always
+        String upd = webOverride != null ? overridePage() : null;
+        if (upd != null) webView.loadDataWithBaseURL("file:///android_asset/index.html", upd, "text/html", "UTF-8", null);
+        else webView.loadUrl("file:///android_asset/index.html");
 
         // M-034: in full screen Android does not shrink the page for the keyboard, so the keyboard
         // covered the rest of the form. Measure the keyboard and tell the page, which makes room and scrolls.
@@ -107,6 +111,50 @@ public class MainActivity extends AppCompatActivity {
                     : getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
             return want.equals(String.valueOf(vc)) ? dir : null;
         } catch (Exception e) { return null; }
+    }
+
+    private static String readAll(java.io.InputStream in) throws java.io.IOException {
+        try (java.io.InputStream i = in) {
+            java.io.ByteArrayOutputStream o = new java.io.ByteArrayOutputStream();
+            byte[] b = new byte[65536]; int n;
+            while ((n = i.read(b)) > 0) o.write(b, 0, n);
+            return o.toString("UTF-8");
+        }
+    }
+
+    /** M-146: updated index.html; every script / stylesheet that differs from the built-in one is put inline. */
+    private String overridePage() {
+        try {
+            java.io.File idx = new java.io.File(webOverride, "index.html");
+            if (!idx.isFile()) return null;
+            String html = readAll(new java.io.FileInputStream(idx));
+            java.util.regex.Matcher m = java.util.regex.Pattern.compile(
+                    "<script src=\"([^\"]+)\"></script>|<link rel=\"stylesheet\" href=\"([^\"]+)\">").matcher(html);
+            StringBuffer sb = new StringBuffer();
+            int changed = 0;
+            while (m.find()) {
+                boolean js = m.group(1) != null;
+                String path = js ? m.group(1) : m.group(2);
+                String rep = m.group(0);
+                java.io.File f = new java.io.File(webOverride, path);
+                if (!path.contains("..") && f.isFile()) {
+                    String mine = readAll(new java.io.FileInputStream(f));
+                    String built = "";
+                    try { built = readAll(getAssets().open(path)); } catch (Exception ignored) { }
+                    if (!mine.equals(built)) {
+                        rep = js ? "<script>" + mine.replace("</script", "<\\/script") + "\n</script>" : "<style>" + mine.replace("</style", "<\\/style") + "\n</style>";
+                        changed++;
+                    }
+                }
+                m.appendReplacement(sb, java.util.regex.Matcher.quoteReplacement(rep));
+            }
+            m.appendTail(sb);
+            android.util.Log.i("MedTimeWeb", "quick web update in use, inlined files: " + changed);
+            return sb.toString();
+        } catch (Exception e) {
+            android.util.Log.w("MedTimeWeb", "quick web update failed: " + e);
+            return null;
+        }
     }
 
     private android.webkit.WebResourceResponse fromOverride(String url) {
