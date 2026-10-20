@@ -93,22 +93,23 @@
     #mt-hand .fb,#mt-hand .ft,#mt-hand .fi{transform-box:fill-box;transform-origin:50% 100%;transition:transform .45s cubic-bezier(.45,0,.25,1)}
     #mt-hand .nl{transition:opacity .35s ease}
     #mt-hand .pd{opacity:0;transition:opacity .35s ease}
-    #mt-hand .f-idx{animation:mtIdx 2.2s ease-in-out infinite}
-    #mt-hand .f-mid{animation:mtCurl 1.8s ease-in-out infinite}
-    #mt-hand .f-ring{animation:mtCurl 1.8s ease-in-out .25s infinite}
-    #mt-hand .f-pin{animation:mtCurl 1.8s ease-in-out .5s infinite}
-    #mt-hand .f-thb{transform-origin:80% 80%;animation:mtThumb 2.4s ease-in-out infinite}
+    #mt-hand .f-idx{animation:mtIdx 1.8s cubic-bezier(.45,0,.55,1) infinite}
+    #mt-hand .f-mid{animation:mtCurl 1.6s cubic-bezier(.45,0,.55,1) infinite}
+    #mt-hand .f-ring{animation:mtCurl 1.6s cubic-bezier(.45,0,.55,1) .2s infinite}
+    #mt-hand .f-pin{animation:mtCurl 1.6s cubic-bezier(.45,0,.55,1) .4s infinite}
+    #mt-hand .f-thb{transform-origin:80% 80%;animation:mtThumb 2s cubic-bezier(.45,0,.55,1) infinite}
     @keyframes mtFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-6px) rotate(3deg)}}
-    @keyframes mtIdx{0%,100%{transform:rotate(0)}50%{transform:rotate(-5deg)}}
-    @keyframes mtCurl{0%,100%{transform:translateY(0) scaleY(1)}50%{transform:translateY(-2px) scaleY(1.05)}}
-    @keyframes mtThumb{0%,100%{transform:rotate(0)}50%{transform:rotate(8deg)}}
+    /* M-117: bigger, clearly visible finger motion: a soft wave curl across the fingers, thumb sways, index wiggles */
+    @keyframes mtIdx{0%,100%{transform:rotate(-9deg)}50%{transform:rotate(7deg)}}
+    @keyframes mtCurl{0%,100%{transform:translateY(0) scaleY(1)}50%{transform:translateY(4px) scaleY(.66)}}
+    @keyframes mtThumb{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(22deg)}}
     /* tap: the finger bends and the hand dips */
     #mt-hand.press .hp{transform:perspective(260px) rotateX(16deg) translateY(6px) scale(.96)}
     #mt-hand.press .fb{transform:scaleY(.94)}
     #mt-hand.press .ft{transform:scaleY(.52)}
     #mt-hand.press .nl{opacity:.1}
     #mt-hand.press .pd{opacity:1}
-    #mt-hand.press .fi{transform:scaleY(.9)}
+    #mt-hand.press .fi{transform:scaleY(.8)}
     /* hint mode: floats and taps again and again */
     #mt-hand.bob .hd{animation:mtFloat 2.6s ease-in-out infinite}
     #mt-hand.bob .ft{animation:mtTapLoop 2.2s cubic-bezier(.45,0,.25,1) infinite}
@@ -186,14 +187,16 @@
     function setSpot(y, now) {
         const x = hx, w = bubble.offsetWidth || 300, h = bubble.offsetHeight || 80, H = innerHeight;
         y = Math.min(Math.max(y, 0), H);
-        let by = y + 112;
-        if (by + h > H - 10) by = y - 16 - h;
+        const r = curR && x >= curR.left - 5 && x <= curR.right + 5 && y >= curR.top - 5 && y <= curR.bottom + 5 ? curR : null;
+        let by = Math.max(y + 112, r ? r.bottom + 12 : 0);
+        if (by + h > H - 10) by = Math.min(y - 16, r ? r.top - 12 : y) - h;
         by = Math.max(10, Math.min(by, H - h - 10));
         const bx = Math.max(8, Math.min(x - w / 2, innerWidth - w - 8));
         if (now) { bubble.style.transition = 'none'; requestAnimationFrame(() => { bubble.style.transition = ''; }); }
         bubble.style.transform = 'translate(' + Math.round(bx) + 'px,' + Math.round(by) + 'px)';
     }
-    function centerOf(el) { const r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + Math.min(r.height / 2, 40)]; }
+    let curR = null; // M-117: rect of what the hand points at, so the caption never covers it
+    function centerOf(el) { const r = el.getBoundingClientRect(); curR = r; return [r.left + r.width / 2, r.top + Math.min(r.height / 2, 40)]; }
     function visible(el) { const r = el.getBoundingClientRect(); return r.width > 0 && r.top >= 4 && r.bottom <= innerHeight - 4; } // M-113: on screen = no swipe
     function check() { if (aborted) throw new Error('stop'); }
 
