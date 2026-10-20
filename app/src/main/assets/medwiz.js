@@ -31,6 +31,9 @@
         edit: ['✏️ עריכה', '✏️ تعديل', '✏️ Editează', '✏️ Modifier', '✏️ Edit'],
         addMed: ['➕ להוסיף תרופה', '➕ إضافة دواء', '➕ Adaugă medicament', '➕ Ajouter un médicament', '➕ Add a medicine'],
         tapHint: ['נגיעה בשורה משנה אותה', 'المس سطرًا لتغييره', 'Atingeți un rând pentru a-l schimba', 'Touchez une ligne pour la modifier', 'Tap a line to change it'],
+        // M-102: weekend mode - optional other time on Friday + Saturday
+        wkOff: ['🌴 סופ״ש (ו׳-ש׳): אותה שעה · לשינוי', '🌴 نهاية الأسبوع: نفس الساعة · للتغيير', '🌴 Weekend: aceeași oră · schimbă', '🌴 Week-end : même heure · changer', '🌴 Weekend: same time · change'],
+        wkOn: ['🌴 סופ״ש (ו׳-ש׳): ', '🌴 نهاية الأسبوع: ', '🌴 Weekend: ', '🌴 Week-end : ', '🌴 Weekend: '],
         qMorning: ['בוקר', 'صباح', 'Dimineața', 'Matin', 'Morning'], qNoon: ['צהריים', 'ظهر', 'Prânz', 'Midi', 'Noon'],
         qEvening: ['ערב', 'مساء', 'Seara', 'Soir', 'Evening'], qNight: ['לילה', 'ليل', 'Noaptea', 'Nuit', 'Night']
     };
@@ -106,6 +109,23 @@
         };
         line('s-when mw-tap', '⏰ ' + ($('med-time').value || '--:--') + ' <i>✏️</i>', () => jump(4));
         line('s-when mw-tap', '📅 ' + escapeHtml(daysText(typeof selDays !== 'undefined' ? selDays : [])) + ' <i>✏️</i>', () => jump(5));
+        // M-102: weekend time (only when the reminder rings on Friday or Saturday)
+        const sd = typeof selDays !== 'undefined' ? selDays : [];
+        if (!sd.length || sd.includes(5) || sd.includes(6)) {
+            const w = line('s-when mw-tap mw-wk', '', null);
+            const lbl = document.createElement('span');
+            const inp = document.createElement('input'); inp.type = 'time'; inp.className = 'mw-wk-in'; inp.value = window.mwWk || '';
+            const paint = () => {
+                lbl.textContent = window.mwWk ? tx('wkOn') + window.mwWk : tx('wkOff');
+                w.classList.toggle('on', !!window.mwWk);
+                x.style.display = window.mwWk ? '' : 'none';
+            };
+            const x = document.createElement('button'); x.type = 'button'; x.className = 'mw-x'; x.textContent = '✕';
+            x.onclick = e => { e.stopPropagation(); vib(12); window.mwWk = ''; inp.value = ''; paint(); };
+            inp.onchange = () => { window.mwWk = inp.value === $('med-time').value ? '' : inp.value; paint(); };
+            w.onclick = e => { if (e.target === x) return; vib(10); try { inp.showPicker(); } catch (er) { inp.focus(); inp.click(); } };
+            w.append(lbl, inp, x); paint();
+        }
         rows.forEach(r => {
             const n = r.querySelector('.it-name').value.trim(), d = r.querySelector('.it-dose').value.trim();
             const el = line('mw-tap mw-med', '<span>' + (TYPE_ICON[r.dataset.type] || '💊') + ' ' + escapeHtml(n) + (d ? ' · ' + escapeHtml(d) : '') +
@@ -187,6 +207,7 @@
         itemRows.innerHTML = '';
         $('med-time').value = '';
         if (typeof selDays !== 'undefined') selDays = [];
+        window.mwWk = '';
         if (typeof resetTimeBtn === 'function') resetTimeBtn();
     }
     window.mwEditing = null;
@@ -207,6 +228,7 @@
         });
         $('med-time').value = m.time || '';
         selDays = (m.days || []).slice();
+        window.mwWk = m.wk || '';
         window.mwEditing = m.id;
         if (typeof closeListPage === 'function') closeListPage();
         step = LAST;
@@ -243,6 +265,8 @@
     .mw-sum-edit .mw-med span{flex:1;overflow:hidden;text-overflow:ellipsis}
     .mw-sum-edit .mw-x{flex:none;width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(248,113,113,.7);background:rgba(127,29,29,.45);color:#fecaca;font-size:1rem;font-weight:800}
     .mw-add-med{display:block;width:100%;margin:12px 0 0;padding:13px;border-radius:16px;border:1.5px dashed rgba(103,232,249,.7);background:rgba(8,145,178,.18);color:#a5f3fc;font-size:1.1rem;font-weight:800}
+    .mw-sum-edit .mw-wk span{flex:1}.mw-sum-edit .mw-wk.on{color:#fde68a;font-weight:800}
+    .mw-wk-in{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
     .mw-hint{text-align:center;font-size:.9rem;opacity:.7;margin-top:8px}`;
     document.head.appendChild(css);
     // notes placed once

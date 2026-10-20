@@ -2985,9 +2985,16 @@
         function syncNative(meds) {
             if (!Native) return;
             try {
-                Native.syncReminders(JSON.stringify(meds.map(m => ({
-                    id: m.id, time: m.time, items: m.items, days: m.days || []
-                }))));
+                // M-102: a reminder with a weekend time becomes two alarms: Sun-Thu at its time, Fri-Sat at the weekend time
+                const out = [];
+                meds.forEach(m => {
+                    const days = m.days && m.days.length ? m.days : [0, 1, 2, 3, 4, 5, 6];
+                    if (!m.wk) { out.push({ id: m.id, time: m.time, items: m.items, days: m.days || [] }); return; }
+                    const wd = days.filter(d => d < 5), we = days.filter(d => d >= 5);
+                    if (wd.length) out.push({ id: m.id, time: m.time, items: m.items, days: wd });
+                    if (we.length) out.push({ id: m.id + 100000000, time: m.wk, items: m.items, days: we });
+                });
+                Native.syncReminders(JSON.stringify(out));
             } catch (e) { console.error(e); }
         }
 
@@ -3454,7 +3461,8 @@
             if (!meds.length) { btn.style.display = 'none'; return; }
             btn.style.display = '';
             const now = new Date(), cur = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
-            const next = (meds.find(m => m.time > cur) || meds[0]).time;
+            const wkDay = now.getDay() >= 5, tm = m => (wkDay && m.wk) || m.time; // M-102: weekend time on Fri/Sat
+            const times = meds.map(tm).sort(), next = times.find(x => x > cur) || times[0];
             btn.innerHTML = `<span class="lb-count">${meds.length}</span><span class="lb-title"></span><span class="lb-next">⏰ <span class="lb-nt"></span> ${next}</span>`;
             btn.querySelector('.lb-title').textContent = t('myReminders');
             btn.querySelector('.lb-nt').textContent = t('nextAt');
@@ -3472,7 +3480,7 @@
                 li.className = 'med-item';
                 li.innerHTML = `
                     <div class="med-info">
-                        <h3>⏰ ${m.time}${m.days && m.days.length && m.days.length < 7 ? ' <span class="med-days">📅 ' + escapeHtml(daysText(m.days)) + '</span>' : ''}</h3>
+                        <h3>⏰ ${m.time}${m.wk ? ' <span class="med-days">🌴 ' + m.wk + '</span>' : ''}${m.days && m.days.length && m.days.length < 7 ? ' <span class="med-days">📅 ' + escapeHtml(daysText(m.days)) + '</span>' : ''}</h3>
                         <ul>${m.items.map(it => `<li>${TYPE_ICON[it.type] || '💊'} ${escapeHtml(it.name)}` +
                             `${it.dose ? ' <span style="color:var(--text-muted)">· ' + t('dose') + ': ' + escapeHtml(it.dose) + '</span>' : ''}</li>`).join('')}</ul>
                     </div>
@@ -3850,8 +3858,10 @@
             const meds = loadMeds();
             // M-101: editing replaces the same reminder (same id), otherwise a new one is added
             const editId = window.mwEditing || null, at = editId ? meds.findIndex(m => m.id === editId) : -1;
-            if (at >= 0) meds[at] = { id: editId, time: timeInput.value, items, days: selDays.slice() };
-            else meds.push({ id: newId(), time: timeInput.value, items, days: selDays.slice() });
+            const rec = { id: at >= 0 ? editId : newId(), time: timeInput.value, items, days: selDays.slice() };
+            if (window.mwWk && window.mwWk !== rec.time && (!rec.days.length || rec.days.some(d => d >= 5))) rec.wk = window.mwWk; // M-102
+            if (at >= 0) meds[at] = rec; else meds.push(rec);
+            window.mwWk = '';
             window.mwEditing = null;
             selDays = [];
             meds.sort((a, b) => a.time.localeCompare(b.time));
