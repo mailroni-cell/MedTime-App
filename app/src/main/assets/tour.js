@@ -35,6 +35,40 @@
         s0: ['במסך הראשי לוחצים על גלגל השיניים ⚙️', 'اضغط على الترس ⚙️', 'Apăsați rotița ⚙️', 'Appuyez sur la roue ⚙️', 'Tap the gear ⚙️ on the main screen'],
         sEnd: ['נגיעה בכל ריבוע פותחת אותו. זהו!', 'المس أي مربع لفتحه!', 'Atingeți un pătrat pentru a-l deschide!', 'Touchez une case pour l\'ouvrir !', 'Tap any square to open it. That\'s it!'],
         swipe: ['גוללים למטה לעוד', 'مرّر للأسفل للمزيد', 'Derulați pentru mai mult', 'Faites défiler pour plus', 'Scroll down for more'],
+        // M-110: guide button on the main screen + more demos
+        guide: ['הדרכה', 'إرشاد', 'Ghid', 'Guide', 'Guide'],
+        gTitle: ['👆 הדרכה מונפשת', '👆 إرشاد متحرك', '👆 Ghid animat', '👆 Guide animé', '👆 Animated guide'],
+        gSub: ['בחרו נושא, ויד על המסך תראה לכם איך עושים', 'اختر موضوعًا، ويد على الشاشة تريك كيف', 'Alegeți un subiect și o mână vă arată cum', 'Choisissez un sujet, une main vous montre comment', 'Pick a topic and a hand on the screen shows you how'],
+        gMore: ['📖 רוצים הסבר מפורט בכתב? יש עזרה גם בתוך ההגדרות ⚙️', '📖 تريد شرحًا مكتوبًا مفصلًا؟ توجد مساعدة داخل الإعدادات ⚙️', '📖 Explicații scrise detaliate: Ajutor în setări ⚙️', '📖 Explications détaillées : Aide dans les réglages ⚙️', '📖 Want detailed written help? There is Help inside Settings ⚙️'],
+        gOpenHelp: ['לפתוח עזרה מפורטת', 'افتح المساعدة المفصلة', 'Deschide ajutorul', "Ouvrir l'aide", 'Open detailed help'],
+        gClose: ['סגירה', 'إغلاق', 'Închide', 'Fermer', 'Close'],
+        dAppt: ['🩺 תור לרופא', '🩺 موعد طبيب', '🩺 Programare la medic', '🩺 Rendez-vous médical', '🩺 Doctor appointment'],
+        dLog: ['📒 יומן ודוח לרופא', '📒 السجل وتقرير للطبيب', '📒 Jurnal și raport', '📒 Journal et rapport', '📒 Log and report'],
+        dFam: ['👨‍👩‍👧 התראה למשפחה', '👨‍👩‍👧 تنبيه العائلة', '👨‍👩‍👧 Alertă familie', '👨‍👩‍👧 Alerte famille', '👨‍👩‍👧 Family alert'],
+        dRead: ['🔠 קריאה נוחה', '🔠 قراءة مريحة', '🔠 Citire ușoară', '🔠 Lecture facile', '🔠 Easy reading'],
+        dRelax: ['🌙 מצב רגוע', '🌙 وضع هادئ', '🌙 Mod relaxare', '🌙 Mode calme', '🌙 Calm mode'],
+        dHome: ['🏠 המסך הראשי', '🏠 الشاشة الرئيسية', '🏠 Ecranul principal', "🏠 L'écran principal", '🏠 Main screen'],
+        p1: ['"תורים לרופא" פותח את רשימת התורים', '"مواعيد الطبيب" يفتح قائمة المواعيد', '„Programări” deschide lista', '« Rendez-vous » ouvre la liste', '"Doctor appointments" opens the list'],
+        p2: ['לוחצים "תור חדש"', 'اضغط "موعد جديد"', 'Apăsați „Programare nouă”', 'Appuyez sur « Nouveau rendez-vous »', 'Tap "New appointment"'],
+        p3: ['בוחרים סוג וכותבים שם רופא', 'اختر النوع واكتب اسم الطبيب', 'Alegeți tipul și scrieți medicul', 'Choisissez le type et le médecin', 'Pick a type and write the doctor'],
+        p4: ['בוחרים יום ושעה', 'اختر اليوم والساعة', 'Alegeți ziua și ora', 'Choisissez le jour et l\'heure', 'Pick the day and time'],
+        p5: ['אחר כך: מקום, טלפון, ניווט בוויז ותזכורת לפני. ובסוף שמירה', 'ثم: المكان، الهاتف، Waze وتذكير مسبق. ثم حفظ', 'Apoi: locul, telefonul, Waze și memento. Apoi salvați', 'Puis : lieu, téléphone, Waze et rappel. Puis enregistrer', 'Then: place, phone, Waze and a reminder before. Then save'],
+        demoDoc: ['ד״ר כהן', 'د. كوهين', 'Dr. Cohen', 'Dr Cohen', 'Dr. Cohen'],
+        l1: ['בהגדרות ⚙️ יש "יומן תרופות"', 'في الإعدادات ⚙️ يوجد "سجل الأدوية"', 'În setări ⚙️: „Jurnal”', 'Dans les réglages ⚙️ : « Journal »', 'In Settings ⚙️ there is the "Medicine log"'],
+        l2: ['כאן רואים מה נלקח, מה נדחה ומה הוחמץ, יום אחרי יום', 'هنا ترى ما أُخذ وما أُجّل وما فات', 'Aici vedeți ce s-a luat și ce s-a ratat', 'On voit ce qui a été pris ou manqué', 'Here you see what was taken, skipped or missed, day by day'],
+        l3: ['ובכפתור הזה: דוח שבועי יפה ב-PDF לשלוח לרופא או למשפחה', 'وهذا الزر: تقرير أسبوعي PDF للطبيب أو العائلة', 'Acest buton: raport PDF săptămânal', 'Ce bouton : un rapport PDF de la semaine', 'This button: a nice weekly PDF report for the doctor or family'],
+        f1: ['בהגדרות ⚙️ יש "התראה למשפחה"', 'في الإعدادات ⚙️ "تنبيه العائلة"', 'În setări ⚙️: „Alertă familie”', 'Dans les réglages ⚙️ : « Alerte famille »', 'In Settings ⚙️ there is "Family alert"'],
+        f2: ['בוחרים איש קשר. אם תרופה לא נלקחה שעה, הוא מקבל SMS', 'اختر جهة اتصال. إذا لم يؤخذ الدواء ساعة يصله SMS', 'Alegeți un contact: primește SMS după o oră', 'Choisissez un contact : il reçoit un SMS après une heure', 'Pick a contact. If a dose is not taken for an hour, they get an SMS'],
+        r1: ['במשקפיים 👓 בתחתית: הכל גדול וברור בלחיצה אחת', 'النظارة 👓 في الأسفل: كل شيء كبير بلمسة', 'Ochelarii 👓: totul mare dintr-o atingere', 'Les lunettes 👓 : tout en grand en un geste', 'The glasses 👓 at the bottom: everything big and clear in one tap'],
+        r2: ['ובהגדרות "גודל הטקסט" בוחרים גודל שנוח לכם', 'وفي الإعدادات "حجم النص"', 'În setări: „Mărimea textului”', 'Dans les réglages : « Taille du texte »', 'And in Settings, "Text size" lets you choose'],
+        q1: ['"רוגע" פותח מסך שקט עם צלילי טבע אמיתיים', '"هدوء" يفتح شاشة هادئة بأصوات الطبيعة', '„Relaxare”: sunete reale din natură', '« Calme » : de vrais sons de la nature', '"Calm" opens a quiet screen with real nature sounds'],
+        q2: ['טוב לפני השינה או כשצריך להירגע', 'جيد قبل النوم أو للاسترخاء', 'Bun înainte de somn', 'Idéal avant de dormir', 'Good before sleep or to relax'],
+        h1: ['כאן הברכה לפי השעה ביום', 'هنا التحية حسب الوقت', 'Aici salutul după oră', "Ici, le salut selon l'heure", 'Here is the greeting by time of day'],
+        h2: ['הוספת תזכורת חדשה', 'إضافة تذكير جديد', 'Adăugare memento', 'Ajouter un rappel', 'Add a new reminder'],
+        h3: ['כל התזכורות שלכם, והבאה בתור', 'كل تذكيراتك والتالي', 'Toate mementourile și următorul', 'Tous vos rappels et le prochain', 'All your reminders, and the next one'],
+        h4: ['תורים לרופא, עם ניווט', 'مواعيد الطبيب مع الملاحة', 'Programări cu navigare', 'Rendez-vous avec navigation', 'Doctor appointments, with navigation'],
+        h5: ['הגדרות', 'الإعدادات', 'Setări', 'Réglages', 'Settings'],
+        h6: ['ויציאה מהאפליקציה. התזכורות ימשיכו לעבוד גם כשהיא סגורה', 'والخروج. التذكيرات تعمل حتى والتطبيق مغلق', 'Ieșire. Mementourile merg și cu aplicația închisă', "Quitter. Les rappels marchent même l'appli fermée", 'And exit. Reminders keep working when the app is closed'],
         demoMed: ['אקמול', 'باراسيتامول', 'Paracetamol', 'Paracétamol', 'Tylenol']
     };
     const tx = k => (T[k] || [k])[li()];
@@ -62,7 +96,31 @@
     #mt-stop{position:fixed;left:12px;top:max(12px,env(safe-area-inset-top));z-index:2147483602;padding:12px 26px;border-radius:999px;border:0;
       background:#dc2626;color:#fff;font-weight:900;font-size:1.1rem;box-shadow:inset 0 2px 0 rgba(255,255,255,.35),0 6px 0 #7f1d1d,0 10px 20px rgba(0,0,0,.5)}
     .mt-flash{outline:3px solid #fde047!important;outline-offset:3px;border-radius:14px;transition:outline-color .3s}
+    .guide-btn{position:fixed;z-index:40;left:calc(25% + 21px);transform:translateX(-50%);bottom:calc(30px + env(safe-area-inset-bottom));width:60px;height:60px;border-radius:50%;border:0;
+      display:flex;align-items:center;justify-content:center;font-size:2rem;background:radial-gradient(circle at 35% 28%,#e9d5ff,#a855f7 45%,#581c87 85%);
+      box-shadow:inset 0 3px 4px rgba(255,255,255,.6),inset 0 -6px 10px rgba(59,7,100,.6),0 6px 0 #3b0764,0 12px 20px rgba(0,0,0,.55),0 0 0 3px rgba(233,213,255,.5),0 0 22px rgba(168,85,247,.85);animation:gbPulse 2.6s ease-in-out infinite}
+    .guide-btn span{display:block;filter:drop-shadow(0 2px 2px rgba(0,0,0,.5))}
+    .guide-btn:active{transform:translateX(-50%) translateY(4px)}
+    .guide-btn::after{content:attr(data-lbl);position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:9px;white-space:nowrap;font-size:.95rem;font-weight:900;color:#e9d5ff;text-shadow:0 1px 2px #000,0 0 8px rgba(0,0,0,.8)}
+    @keyframes gbPulse{0%,100%{box-shadow:inset 0 3px 4px rgba(255,255,255,.6),inset 0 -6px 10px rgba(59,7,100,.6),0 6px 0 #3b0764,0 12px 20px rgba(0,0,0,.55),0 0 0 3px rgba(233,213,255,.5),0 0 16px rgba(168,85,247,.6)}50%{box-shadow:inset 0 3px 4px rgba(255,255,255,.6),inset 0 -6px 10px rgba(59,7,100,.6),0 6px 0 #3b0764,0 12px 20px rgba(0,0,0,.55),0 0 0 5px rgba(233,213,255,.7),0 0 30px rgba(168,85,247,1)}}
+    html.relax-open .guide-btn,html.med-open .guide-btn,html:has(.settings-page.open) .guide-btn,html:has(.appt-page.open) .guide-btn,html:has(.appt-form-page.open) .guide-btn,html:has(.ob-bg) .guide-btn,html:has(.su-bg) .guide-btn,html:has(#mt-veil) .guide-btn{display:none!important}
+    #mt-guide{position:fixed;inset:0;z-index:2147483500;background:rgba(2,6,23,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity .25s}
+    #mt-guide.in{opacity:1}
+    #mt-guide .g-card{position:relative;width:100%;max-width:560px;max-height:88vh;overflow-y:auto;box-sizing:border-box;padding:22px 16px calc(18px + env(safe-area-inset-bottom));border-radius:28px 28px 0 0;
+      background:linear-gradient(170deg,#3b0764,#1e1b4b 55%,#0f172a);border-top:2px solid rgba(233,213,255,.5);box-shadow:0 -10px 40px rgba(0,0,0,.6);transform:translateY(40px);transition:transform .25s;color:#fff}
+    #mt-guide.in .g-card{transform:none}
+    #mt-guide .g-x{position:absolute;top:12px;inset-inline-end:12px;width:42px;height:42px;border-radius:50%;border:0;background:radial-gradient(circle at 35% 30%,#fca5a5,#dc2626 50%,#7f1d1d);color:#fff;font-size:1.2rem;font-weight:900;box-shadow:0 4px 0 #450a0a}
+    #mt-guide .g-t{font-size:1.5rem;font-weight:900;color:#e9d5ff;text-align:center;margin:4px 40px 4px}
+    #mt-guide .g-s{text-align:center;opacity:.85;font-size:1rem;margin-bottom:14px}
+    #mt-guide .g-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    #mt-guide .g-grid button{padding:15px 8px;border-radius:18px;border:1.5px solid rgba(233,213,255,.45);background:linear-gradient(170deg,rgba(168,85,247,.45),rgba(59,7,100,.6));color:#fff;font-weight:800;font-size:1.05rem;
+      box-shadow:inset 0 2px 0 rgba(255,255,255,.3),inset 0 -4px 8px rgba(0,0,0,.35),0 6px 0 rgba(0,0,0,.35),0 10px 18px rgba(0,0,0,.4)}
+    #mt-guide .g-grid button:active{transform:translateY(4px)}
+    #mt-guide .g-more{margin-top:16px;padding:14px;border-radius:18px;background:rgba(253,230,138,.12);border:1.5px solid rgba(253,230,138,.5);text-align:center}
+    #mt-guide .g-m{font-weight:700;color:#fde68a;margin-bottom:10px}
+    #mt-guide .g-help{width:100%;padding:13px;border-radius:999px;border:0;background:#fbbf24;color:#422006;font-weight:900;font-size:1.08rem;box-shadow:0 5px 0 #92400e}
     .help-demos{margin:0 0 14px}
+    .help-demos .hd-one{width:100%;padding:15px;border-radius:999px;border:0;font-weight:900;font-size:1.1rem;color:#fff;background:radial-gradient(circle at 35% 28%,#c084fc,#7e22ce 60%,#3b0764);box-shadow:0 5px 0 #3b0764,0 10px 18px rgba(0,0,0,.45)}
     .help-demos .hd-t{font-weight:900;font-size:1.1rem;color:#fde68a;margin:2px 4px 10px}
     .help-demos .hd-g{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .help-demos button{padding:14px 8px;border-radius:16px;border:1.5px solid rgba(253,230,138,.55);background:linear-gradient(170deg,rgba(253,230,138,.25),rgba(120,53,15,.35));
@@ -246,29 +304,137 @@
             try { const sp = $('settings-page'); sp.scrollTo ? sp.scrollTo({ top: 0, behavior: 'smooth' }) : 0; } catch (e) { }
         }
     };
+    function openTileById(id) { const t = $(id); const h = t && t.querySelector('.set-tile-head'); if (h && !t.classList.contains('open')) toggleTile(h); return t; }
+    function tileByTitle(word) { return [...document.querySelectorAll('#settings-page .set-tile')].find(t => ((t.querySelector('.set-title') || {}).textContent || '').includes(word)); }
+    Object.assign(demos, {
+        async home() {
+            home(); await sleep(450);
+            await point($('hello-line'), tx('h1'), 1800);
+            await point($('main-add'), tx('h2'), 1800);
+            await point($('list-btn'), tx('h3'), 1800);
+            await point($('appt-btn'), tx('h4'), 1800);
+            await point($('relax-btn'), tx('q1'), 1800);
+            await point($('lv-btn'), tx('r1'), 2000);
+            await point($('gear-btn'), tx('h5'), 1500);
+            await point($('exit-btn'), tx('h6'), 2600);
+        },
+        async appt() {
+            home(); await sleep(450);
+            await say(tx('p1'), true);
+            await tap($('appt-btn'), true); await sleep(600);
+            await say(tx('p2'), true);
+            await tap(document.querySelector('#appt-page .appt-new'), true); await sleep(700);
+            await say(tx('p3'));
+            await tap(document.querySelector('#af-types button, #af-types .af-chip'), true);
+            if ($('af-doctor')) await type($('af-doctor'), tx('demoDoc'));
+            await tap($('wz-next'), true); await sleep(500);
+            await say(tx('p4'));
+            await tap($('af-tomorrow'), true);
+            await point($('tp-quick'), null, 1400);
+            await say(tx('p5'));
+            await point($('wz-next'), null, 2600);
+            try { closeApptForm(); closeApptPage(); } catch (e) { }
+        },
+        async log() {
+            home(); await sleep(450);
+            await say(tx('l1'), true);
+            await tap($('gear-btn'), () => openSettingsPage()); await sleep(700);
+            const t = $('tile-log');
+            await tap(t && t.querySelector('.set-ico'), () => openTileById('tile-log')); await sleep(700);
+            await point(t && t.querySelector('.set-body'), tx('l2'), 2400);
+            await point($('lg-pdf'), tx('l3'), 2600);
+            try { closeTiles(); } catch (e) { }
+        },
+        async fam() {
+            home(); await sleep(450);
+            await say(tx('f1'), true);
+            await tap($('gear-btn'), () => openSettingsPage()); await sleep(700);
+            const t = $('tile-family');
+            await tap(t && t.querySelector('.set-ico'), () => openTileById('tile-family')); await sleep(700);
+            await point(t && (t.querySelector('button') && t.querySelector('.set-body button')) || (t && t.querySelector('.set-body')), tx('f2'), 3000);
+            try { closeTiles(); } catch (e) { }
+        },
+        async read() {
+            home(); await sleep(450);
+            await point($('lv-btn'), tx('r1'), 2400);
+            await say(tx('r2'), true);
+            await tap($('gear-btn'), () => openSettingsPage()); await sleep(700);
+            const head = $('sub-lowVisionTitle') && $('sub-lowVisionTitle').closest('.set-tile');
+            await tap(head && head.querySelector('.set-ico'), () => { const h = head.querySelector('.set-tile-head'); if (h) toggleTile(h); }); await sleep(700);
+            await point(head && head.querySelector('.ts-row'), null, 2600);
+            try { closeTiles(); } catch (e) { }
+        },
+        async relax() {
+            home(); await sleep(450);
+            await point($('relax-btn'), tx('q1'), 2600);
+            await say(tx('q2')); await sleep(2000);
+        }
+    });
     window.mtDemo = name => {
         const f = demos[name]; if (!f) return;
         run(f);
     };
 
-    // ---------- help tile: demo buttons ----------
+    // ---------- M-110: the guide sheet (from the button on the main screen) ----------
+    const LIST = [['home', 'dHome'], ['add', 'dAdd'], ['edit', 'dEdit'], ['wk', 'dWk'], ['appt', 'dAppt'], ['log', 'dLog'], ['fam', 'dFam'], ['read', 'dRead'], ['relax', 'dRelax'], ['settings', 'dSet']];
+    let sheet = null;
+    function closeGuide(fromBack) {
+        if (!sheet) return;
+        const s = sheet; sheet = null; s.classList.remove('in'); setTimeout(() => s.remove(), 250);
+        if (fromBack !== true) { try { if (history.state && history.state.guide) history.back(); } catch (e) { } }
+    }
+    window.addEventListener('popstate', () => { if (sheet) closeGuide(true); }); // phone back button closes the sheet
+    window.mtGuide = function () {
+        vib(12);
+        if (sheet) return;
+        sheet = document.createElement('div'); sheet.id = 'mt-guide';
+        sheet.dir = li() < 2 ? 'rtl' : 'ltr';
+        sheet.innerHTML = '<div class="g-card"><button type="button" class="g-x" aria-label="close">✕</button><div class="g-t"></div><div class="g-s"></div><div class="g-grid"></div>' +
+            '<div class="g-more"><div class="g-m"></div><button type="button" class="g-help"></button></div></div>';
+        sheet.querySelector('.g-t').textContent = tx('gTitle');
+        sheet.querySelector('.g-s').textContent = tx('gSub');
+        sheet.querySelector('.g-m').textContent = tx('gMore');
+        sheet.querySelector('.g-help').textContent = '📖 ' + tx('gOpenHelp');
+        LIST.forEach(([k, l]) => {
+            const b = document.createElement('button'); b.type = 'button'; b.textContent = tx(l);
+            b.onclick = () => { closeGuide(); setTimeout(() => window.mtDemo(k), 280); };
+            sheet.querySelector('.g-grid').appendChild(b);
+        });
+        sheet.querySelector('.g-x').onclick = () => { vib(10); closeGuide(); };
+        sheet.onclick = e => { if (e.target === sheet) closeGuide(); };
+        sheet.querySelector('.g-help').onclick = () => {
+            vib(12); closeGuide();
+            try { openSettingsPage(); setTimeout(() => { openTileById('tile-help'); }, 350); } catch (e) { }
+        };
+        document.documentElement.appendChild(sheet);
+        try { history.pushState({ guide: 1 }, ''); } catch (e) { }
+        requestAnimationFrame(() => sheet && sheet.classList.add('in'));
+    };
+    // back button closes the sheet first
+    window.mtGuideOpen = () => !!sheet;
+    window.mtGuideClose = closeGuide;
+
+    // the button on the main screen, with a word under it
+    const gb = document.createElement('button'); gb.type = 'button'; gb.id = 'guide-btn'; gb.className = 'guide-btn';
+    gb.innerHTML = '<span>👆</span>'; gb.onclick = () => window.mtGuide();
+    document.documentElement.appendChild(gb); // html, not body: body can be transformed, which moves fixed things
+    function guideLbl() { gb.dataset.lbl = tx('guide'); gb.setAttribute('aria-label', tx('guide')); }
+    guideLbl();
+
+    // in the Help tile: one button that opens the same guide
     function drawDemoButtons() {
         const list = $('help-list'); if (!list) return;
         let box = document.querySelector('.help-demos');
         if (!box) { box = document.createElement('div'); box.className = 'help-demos'; list.parentNode.insertBefore(box, list); }
-        box.innerHTML = '<div class="hd-t"></div><div class="hd-g"></div>';
-        box.querySelector('.hd-t').textContent = tx('demos');
-        [['add', 'dAdd'], ['edit', 'dEdit'], ['wk', 'dWk'], ['settings', 'dSet']].forEach(([k, l]) => {
-            const b = document.createElement('button'); b.type = 'button'; b.textContent = tx(l);
-            b.onclick = () => { vib(12); window.mtDemo(k); };
-            box.querySelector('.hd-g').appendChild(b);
-        });
+        box.innerHTML = '<button type="button" class="hd-one"></button>';
+        const b = box.querySelector('button'); b.textContent = tx('gTitle');
+        b.onclick = () => { vib(12); try { closeTiles(); closeSettingsPage(); } catch (e) { } setTimeout(() => window.mtGuide(), 300); };
     }
     drawDemoButtons();
     const xr = window.xRender;
     window.xRender = function () { if (xr) xr(); drawDemoButtons(); };
     const lsel = $('lang-select');
-    if (lsel) lsel.addEventListener('change', () => setTimeout(drawDemoButtons, 250));
+    if (lsel) lsel.addEventListener('change', () => setTimeout(() => { drawDemoButtons(); guideLbl(); }, 250));
 
     // M-109: a word under the exit button
     function exitLbl() { const e = $('exit-btn'); if (e && typeof t === 'function') e.dataset.lbl = t('exitShort'); }
