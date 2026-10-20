@@ -61,6 +61,14 @@
         l1: ['בהגדרות ⚙️ יש "יומן תרופות"', 'في الإعدادات ⚙️ يوجد "سجل الأدوية"', 'În setări ⚙️: „Jurnal”', 'Dans les réglages ⚙️ : « Journal »', 'In Settings ⚙️ there is the "Medicine log"'],
         l2: ['כאן רואים מה נלקח, מה נדחה ומה הוחמץ, יום אחרי יום', 'هنا ترى ما أُخذ وما أُجّل وما فات', 'Aici vedeți ce s-a luat și ce s-a ratat', 'On voit ce qui a été pris ou manqué', 'Here you see what was taken, skipped or missed, day by day'],
         l3: ['ובכפתור הזה: דוח שבועי יפה ב-PDF לשלוח לרופא או למשפחה', 'وهذا الزر: تقرير أسبوعي PDF للطبيب أو العائلة', 'Acest buton: raport PDF săptămânal', 'Ce bouton : un rapport PDF de la semaine', 'This button: a nice weekly PDF report for the doctor or family'],
+        dStock: ['📦 מלאי כדורים', '📦 مخزون الأدوية', '📦 Stoc pastile', '📦 Stock de médicaments', '📦 Pill stock'],
+        dWidget: ['📱 ווידג׳ט למסך הבית', '📱 أداة الشاشة الرئيسية', '📱 Widget pe ecran', "📱 Widget d'accueil", '📱 Home-screen widget'],
+        k1: ['בהגדרות ⚙️ יש "מלאי תרופות"', 'في الإعدادات ⚙️ "مخزون الأدوية"', 'În setări ⚙️: „Stoc medicamente”', 'Dans les réglages ⚙️ : « Stock de médicaments »', 'In Settings ⚙️ there is "Medicine stock"'],
+        k2: ['כותבים כמה יש בבית. כל "לקחתי" מוריד מהספירה', 'اكتب كم لديك. كل "تناولته" يُنقص العدد', 'Scrieți câte aveți. Fiecare „Am luat” scade', 'Indiquez combien il en reste. Chaque « Pris » le diminue', 'Write how many you have. Every "Taken" lowers the count'],
+        k3: ['קניתם חבילה? לחיצה אחת מוסיפה אותה', 'اشتريت علبة؟ ضغطة واحدة تضيفها', 'Ați cumpărat o cutie? O atingere o adaugă', 'Nouvelle boîte ? Un geste l\'ajoute', 'Bought a pack? One tap adds it'],
+        k4: ['וכשנשאר מעט, מקבלים תזכורת לקנות עוד', 'وعندما يتبقى القليل يصلك تذكير بالشراء', 'Când rămân puține, primiți un memento', 'Quand il en reste peu, un rappel arrive', 'When few are left, you get a reminder to buy more'],
+        y1: ['בהגדרות ⚙️ יש "ווידג׳ט למסך הבית"', 'في الإعدادات ⚙️ "أداة للشاشة الرئيسية"', 'În setări ⚙️: „Widget pe ecranul principal”', "Dans les réglages ⚙️ : « Widget sur l'écran d'accueil »", 'In Settings ⚙️ there is "Home-screen widget"'],
+        y2: ['לחיצה כאן שמה במסך הבית ריבוע עם התרופה הבאה', 'هذا الزر يضع مربعًا بالدواء التالي على الشاشة', 'Acest buton pune pe ecran următorul medicament', "Ce bouton place le prochain médicament sur l'écran d'accueil", 'This button puts a square with the next medicine on the home screen'],
         f1: ['בהגדרות ⚙️ יש "התראה למשפחה"', 'في الإعدادات ⚙️ "تنبيه العائلة"', 'În setări ⚙️: „Alertă familie”', 'Dans les réglages ⚙️ : « Alerte famille »', 'In Settings ⚙️ there is "Family alert"'],
         f3: ['ומדליקים את המתג, וזה פועל', 'ثم شغّل المفتاح ليعمل التنبيه', 'Apoi porniți comutatorul', "Puis activez l'interrupteur", 'Then turn the switch on'],
         f4: ['כאן שולחים הודעת ניסיון, לבדוק שהכל עובד', 'هنا ترسل رسالة تجربة للتأكد', 'Aici trimiteți un mesaj de probă', "Ici, envoyez un message d'essai", 'Here you send a test message to check it works'],
@@ -426,6 +434,15 @@
             try { const sp = $('settings-page'); sp.scrollTo ? sp.scrollTo({ top: 0, behavior: 'smooth' }) : 0; } catch (e) { }
         }
     };
+    // M-135: after a tile opens, the old caption goes and the hand moves to the panel title (not left on the ✕)
+    async function openTile(id) {
+        const t = $(id);
+        await tap(t && t.querySelector('.set-ico'), () => openTileById(id));
+        quiet(); await sleep(450);
+        const pt = t && t.querySelector('.p-title');
+        if (pt && t.classList.contains('open')) await moveTo(pt);
+        return t;
+    }
     function openTileById(id) { const t = $(id); const h = t && t.querySelector('.set-tile-head'); if (h && !t.classList.contains('open')) toggleTile(h); return t; }
     function tileByTitle(word) { return [...document.querySelectorAll('#settings-page .set-tile')].find(t => ((t.querySelector('.set-title') || {}).textContent || '').includes(word)); }
     Object.assign(demos, {
@@ -466,7 +483,7 @@
             await say(tx('l1'), true);
             await tap($('gear-btn'), () => openSettingsPage()); await sleep(700);
             const t = $('tile-log');
-            await tap(t && t.querySelector('.set-ico'), () => openTileById('tile-log')); await sleep(700);
+            await openTile('tile-log');
             const sm = $('lg-sum'), pdf = $('lg-pdf');
             await point(sm && sm.offsetHeight > 8 ? sm : $('lg-list'), tx('l2'), 2400);
             if (pdf && pdf.offsetParent !== null) await point(pdf, tx('l3'), 2600);
@@ -479,12 +496,36 @@
             await say(tx('f1'), true);
             await tap($('gear-btn'), () => openSettingsPage()); await sleep(700);
             const t = $('tile-family');
-            await tap(t && t.querySelector('.set-ico'), () => openTileById('tile-family')); await sleep(700);
+            await openTile('tile-family');
             // M-131: step by step on the real controls (it used to aim at the panel's close ✕)
             await point($('fm-pick'), tx('f2'), 2600);
             await point($('fm-phone'), tx('f5'), 2200);
             await point($('fm-sw'), tx('f3'), 2400);
             await point($('fm-test'), tx('f4'), 2400);
+            quiet(); await sleep(300);
+            try { closeTiles(); } catch (e) { }
+        },
+        async stock() { // M-132
+            home(); await sleep(450);
+            await say(tx('k1'), true);
+            await tap($('gear-btn'), () => openSettingsPage()); await sleep(700);
+            const t = $('tile-stock');
+            await openTile('tile-stock');
+            const card = t && t.querySelector('.st-card');
+            await point((card && (card.querySelector('.st-n') || card.querySelector('.mo-btn'))) || $('st-x'), tx('k2'), 2600);
+            const sm = card && card.querySelectorAll('.st-sm button');
+            if (sm && sm.length > 1) { await point(sm[0], tx('k3'), 2200); await point(sm[1], tx('k4'), 2400); }
+            else { await say(tx('k4')); await sleep(2400); }
+            quiet(); await sleep(300);
+            try { closeTiles(); } catch (e) { }
+        },
+        async widget() { // M-134
+            home(); await sleep(450);
+            await say(tx('y1'), true);
+            await tap($('gear-btn'), () => openSettingsPage()); await sleep(700);
+            const t = $('tile-widget');
+            await openTile('tile-widget');
+            await point($('wg-go'), tx('y2'), 3000);
             quiet(); await sleep(300);
             try { closeTiles(); } catch (e) { }
         },
@@ -494,7 +535,9 @@
             await say(tx('r2'), true);
             await tap($('gear-btn'), () => openSettingsPage()); await sleep(700);
             const head = $('sub-lowVisionTitle') && $('sub-lowVisionTitle').closest('.set-tile');
-            await tap(head && head.querySelector('.set-ico'), () => { const h = head.querySelector('.set-tile-head'); if (h) toggleTile(h); }); await sleep(700);
+            await tap(head && head.querySelector('.set-ico'), () => { const h = head.querySelector('.set-tile-head'); if (h) toggleTile(h); });
+            quiet(); await sleep(450);
+            if (head && head.querySelector('.p-title')) await moveTo(head.querySelector('.p-title'));
             await point(head && head.querySelector('.ts-row'), null, 2600);
             quiet(); await sleep(300);
             try { closeTiles(); } catch (e) { }
@@ -511,7 +554,7 @@
     };
 
     // ---------- M-110: the guide sheet (from the button on the main screen) ----------
-    const LIST = [['home', 'dHome'], ['add', 'dAdd'], ['edit', 'dEdit'], ['wk', 'dWk'], ['appt', 'dAppt'], ['log', 'dLog'], ['fam', 'dFam'], ['read', 'dRead'], ['relax', 'dRelax'], ['settings', 'dSet']];
+    const LIST = [['home', 'dHome'], ['add', 'dAdd'], ['edit', 'dEdit'], ['wk', 'dWk'], ['appt', 'dAppt'], ['log', 'dLog'], ['fam', 'dFam'], ['stock', 'dStock'], ['widget', 'dWidget'], ['read', 'dRead'], ['relax', 'dRelax'], ['settings', 'dSet']];
     let sheet = null;
     function closeGuide(fromBack) {
         if (!sheet) return;
