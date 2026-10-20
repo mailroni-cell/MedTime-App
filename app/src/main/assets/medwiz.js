@@ -24,6 +24,13 @@
         pickTime: ['בחרו שעה', 'اختر الساعة', 'Alegeți ora', "Choisissez l'heure", 'Pick a time'],
         needTime: ['בחרו שעה לתזכורת', 'اختر وقت التذكير', 'Alegeți ora', "Choisissez l'heure", 'Choose a time'],
         everyDayNote: ['בלי בחירה = כל יום', 'بدون اختيار = كل يوم', 'Fără alegere = zilnic', 'Sans choix = tous les jours', 'Nothing chosen = every day'],
+        // M-101: edit an existing reminder (add / remove medicines, change time or days)
+        editTitle: ['עריכת תזכורת', 'تعديل التذكير', 'Editează mementoul', 'Modifier le rappel', 'Edit reminder'],
+        saveEdit: ['שמירת השינויים', 'حفظ التغييرات', 'Salvează modificările', 'Enregistrer', 'Save changes'],
+        savedEdit: ['✅ השינויים נשמרו', '✅ تم حفظ التغييرات', '✅ Modificări salvate', '✅ Modifications enregistrées', '✅ Changes saved'],
+        edit: ['✏️ עריכה', '✏️ تعديل', '✏️ Editează', '✏️ Modifier', '✏️ Edit'],
+        addMed: ['➕ להוסיף תרופה', '➕ إضافة دواء', '➕ Adaugă medicament', '➕ Ajouter un médicament', '➕ Add a medicine'],
+        tapHint: ['נגיעה בשורה משנה אותה', 'المس سطرًا لتغييره', 'Atingeți un rând pentru a-l schimba', 'Touchez une ligne pour la modifier', 'Tap a line to change it'],
         qMorning: ['בוקר', 'صباح', 'Dimineața', 'Matin', 'Morning'], qNoon: ['צהריים', 'ظهر', 'Prânz', 'Midi', 'Noon'],
         qEvening: ['ערב', 'مساء', 'Seara', 'Soir', 'Evening'], qNight: ['לילה', 'ليل', 'Noaptea', 'Nuit', 'Night']
     };
@@ -88,19 +95,37 @@
         if (typeof renderDayRow === 'function') renderDayRow();
         $('mw-days-text').textContent = (typeof selDays !== 'undefined' && selDays.length ? '📅 ' + daysText(selDays) : tx('everyDayNote'));
     }
+    // M-101: every line of the summary can be changed: time, days, each medicine (✏️ / ✕), and "add a medicine"
     function drawSummary() {
         const rows = [...itemRows.querySelectorAll('.item-row')].filter(r => r.querySelector('.it-name').value.trim());
-        const lines = ['<div class="s-when">⏰ ' + ($('med-time').value || '--:--') + ' · 📅 ' + daysText(typeof selDays !== 'undefined' ? selDays : []) + '</div>'];
+        const box = document.createElement('div'); box.className = 'af-sum mw-sum-edit';
+        const line = (cls, html, onTap) => {
+            const d = document.createElement('div'); d.className = cls; d.innerHTML = html;
+            if (onTap) d.onclick = e => { if (!e.target.closest('.mw-x')) { vib(10); onTap(); } };
+            box.appendChild(d); return d;
+        };
+        line('s-when mw-tap', '⏰ ' + ($('med-time').value || '--:--') + ' <i>✏️</i>', () => jump(4));
+        line('s-when mw-tap', '📅 ' + escapeHtml(daysText(typeof selDays !== 'undefined' ? selDays : [])) + ' <i>✏️</i>', () => jump(5));
         rows.forEach(r => {
             const n = r.querySelector('.it-name').value.trim(), d = r.querySelector('.it-dose').value.trim();
-            lines.push('<div>' + (TYPE_ICON[r.dataset.type] || '💊') + ' ' + escapeHtml(n) + (d ? ' · ' + escapeHtml(d) : '') + '</div>');
+            const el = line('mw-tap mw-med', '<span>' + (TYPE_ICON[r.dataset.type] || '💊') + ' ' + escapeHtml(n) + (d ? ' · ' + escapeHtml(d) : '') +
+                '</span><i>✏️</i>' + (rows.length > 1 ? '<button type="button" class="mw-x" aria-label="remove">✕</button>' : ''), () => {
+                    const c = cur(); if (c && c !== r && c.querySelector('.it-name').value.trim()) collapseRow(c);
+                    expandRow(r); step = 1; draw();
+                });
+            const x = el.querySelector('.mw-x');
+            if (x) x.onclick = () => { vib([15, 30, 15]); r.remove(); numberRows(); draw(); };
         });
-        $('mw-summary').innerHTML = '<div class="af-sum">' + lines.join('') + '</div>';
-        if (sub) sub.textContent = tx('save');
+        const add = document.createElement('button'); add.type = 'button'; add.className = 'mw-add-med'; add.textContent = tx('addMed');
+        add.onclick = () => { vib(12); window.mwAddMore(); };
+        const hint = document.createElement('div'); hint.className = 'mw-hint'; hint.textContent = tx('tapHint');
+        $('mw-summary').innerHTML = '';
+        $('mw-summary').append(box, add, hint);
+        if (sub) sub.textContent = tx(window.mwEditing ? 'saveEdit' : 'save');
     }
     function draw() {
         page.dataset.s = step;
-        $('mw-title').textContent = tx('title');
+        $('mw-title').textContent = tx(window.mwEditing ? 'editTitle' : 'title');
         $('mw-step-title').textContent = tx('s' + step);
         const dots = $('mw-dots'); dots.innerHTML = '';
         for (let i = 0; i <= LAST; i++) {
@@ -158,7 +183,40 @@
         if (e.key === 'Enter' && step === 1 && e.target.matches && e.target.matches('#med-page .it-name')) { e.preventDefault(); e.stopPropagation(); mwGo(1); }
     }, true);
 
+    function clearForm() {
+        itemRows.innerHTML = '';
+        $('med-time').value = '';
+        if (typeof selDays !== 'undefined') selDays = [];
+        if (typeof resetTimeBtn === 'function') resetTimeBtn();
+    }
+    window.mwEditing = null;
+    window.mwEditLabel = () => tx('edit');
+    // M-101: open the wizard on the summary of an existing reminder, filled in
+    window.editMed = function (idx) {
+        const m = loadMeds()[idx];
+        if (!m) return;
+        clearForm();
+        (m.items || []).forEach(it => {
+            addItemRow();
+            const r = itemRows.lastElementChild;
+            r.dataset.type = it.type || 'pill';
+            r.querySelectorAll('.type-btn').forEach(b => b.classList.toggle('sel', b.dataset.type === r.dataset.type));
+            r.querySelector('.it-name').value = it.name || '';
+            r.querySelector('.it-dose').value = it.dose || '';
+            collapseRow(r);
+        });
+        $('med-time').value = m.time || '';
+        selDays = (m.days || []).slice();
+        window.mwEditing = m.id;
+        if (typeof closeListPage === 'function') closeListPage();
+        step = LAST;
+        page.classList.add('open'); document.documentElement.classList.add('med-open');
+        draw();
+        vib(12);
+    };
+
     window.openMedPage = function () {
+        if (window.mwEditing) { window.mwEditing = null; clearForm(); }
         step = 0;
         if (!itemRows.querySelector('.item-row')) addItemRow();
         page.classList.add('open'); document.documentElement.classList.add('med-open');
@@ -169,14 +227,24 @@
     };
     window.closeMedPage = function () {
         page.classList.remove('open'); document.documentElement.classList.remove('med-open');
+        if (window.mwEditing) { window.mwEditing = null; clearForm(); addItemRow(); } // edit closed without saving: nothing changes
         if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
     };
-    window.mwSaved = function () {
+    window.mwSaved = function (edited) {
         closeMedPage();
         const d = document.createElement('div');
-        d.className = 'mt-toast'; d.textContent = tx('saved');
+        d.className = 'mt-toast'; d.textContent = tx(edited ? 'savedEdit' : 'saved');
         document.body.appendChild(d); setTimeout(() => d.remove(), 2700);
     };
+    const css = document.createElement('style');
+    css.textContent = `.mw-sum-edit .mw-tap{display:flex;align-items:center;gap:8px;cursor:pointer;border-radius:12px;padding:6px 8px;margin:0 -8px;white-space:normal!important}
+    .mw-sum-edit .mw-tap:active{background:rgba(255,255,255,.12)}
+    .mw-sum-edit .mw-tap i{font-style:normal;font-size:.95rem;opacity:.75;margin-inline-start:auto}
+    .mw-sum-edit .mw-med span{flex:1;overflow:hidden;text-overflow:ellipsis}
+    .mw-sum-edit .mw-x{flex:none;width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(248,113,113,.7);background:rgba(127,29,29,.45);color:#fecaca;font-size:1rem;font-weight:800}
+    .mw-add-med{display:block;width:100%;margin:12px 0 0;padding:13px;border-radius:16px;border:1.5px dashed rgba(103,232,249,.7);background:rgba(8,145,178,.18);color:#a5f3fc;font-size:1.1rem;font-weight:800}
+    .mw-hint{text-align:center;font-size:.9rem;opacity:.7;margin-top:8px}`;
+    document.head.appendChild(css);
     // notes placed once
     const doseNote = document.createElement('div'); doseNote.id = 'mw-dose-note'; doseNote.className = 'af-opt mw-dose-note';
     const moreNote = document.createElement('div'); moreNote.id = 'mw-more-note'; moreNote.className = 'af-opt mw-more-note';
@@ -185,4 +253,5 @@
     const doneTxt = () => { const d = $('list-done-txt'); if (d) d.textContent = tx('done'); };
     doneTxt();
     window.mwRender = function () { doneTxt(); if (page.classList.contains('open')) draw(); };
+    if (typeof renderMeds === 'function') try { renderMeds(); } catch (e) { } // M-101: the list gets its ✏️ buttons
 })();

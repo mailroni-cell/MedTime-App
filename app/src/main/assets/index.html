@@ -593,6 +593,18 @@
             color: #ffe500;
         }
 
+        .med-btns { display: flex; flex-direction: column; gap: 8px; flex: none; } /* M-101 */
+        .btn-edit {
+            background: rgba(14, 165, 233, 0.15);
+            border: 1px solid #38bdf8;
+            color: #7dd3fc;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
         .btn-delete {
             background: transparent;
             border: 1px solid var(--danger);
@@ -3464,7 +3476,8 @@
                         <ul>${m.items.map(it => `<li>${TYPE_ICON[it.type] || '💊'} ${escapeHtml(it.name)}` +
                             `${it.dose ? ' <span style="color:var(--text-muted)">· ' + t('dose') + ': ' + escapeHtml(it.dose) + '</span>' : ''}</li>`).join('')}</ul>
                     </div>
-                    <button class="btn-delete" onclick="deleteMed(${idx})">${t('del')}</button>
+                    <div class="med-btns"><button class="btn-edit" onclick="editMed(${idx})">${window.mwEditLabel ? mwEditLabel() : '✏️'}</button>
+                    <button class="btn-delete" onclick="deleteMed(${idx})">${t('del')}</button></div>
                 `;
                 list.appendChild(li);
             });
@@ -3835,7 +3848,11 @@
             if (!timeInput.value) { openTimePicker(); return; }
 
             const meds = loadMeds();
-            meds.push({ id: newId(), time: timeInput.value, items, days: selDays.slice() });
+            // M-101: editing replaces the same reminder (same id), otherwise a new one is added
+            const editId = window.mwEditing || null, at = editId ? meds.findIndex(m => m.id === editId) : -1;
+            if (at >= 0) meds[at] = { id: editId, time: timeInput.value, items, days: selDays.slice() };
+            else meds.push({ id: newId(), time: timeInput.value, items, days: selDays.slice() });
+            window.mwEditing = null;
             selDays = [];
             meds.sort((a, b) => a.time.localeCompare(b.time));
             saveMeds(meds);
@@ -3847,7 +3864,7 @@
             addItemRow();
             timeInput.value = '';
             resetTimeBtn();
-            if (window.mwSaved) mwSaved(); // M-050
+            if (window.mwSaved) mwSaved(at >= 0); // M-050
         });
 
         // M-021: label sits inside the time button until a time is chosen
