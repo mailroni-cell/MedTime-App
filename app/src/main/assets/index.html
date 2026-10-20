@@ -2540,6 +2540,40 @@
             color: #e0e7ff; font: 700 1rem 'MTUI', sans-serif; text-shadow: 0 1px 6px #000; opacity: 0; transition: opacity 0.5s; }
         #relax .rx-lockmsg.show { opacity: 1; }
     </style>
+    <style id="m105-depth">
+        /* M-105: more volume for the inner screens: lit top edge, shaded bottom, deeper drop shadow, press-in on tap */
+        html:not(.lowvision) .settings-page .med-item,
+        html:not(.lowvision) .af-sum, html:not(.lowvision) #wk-bar, html:not(.lowvision) .mw-wk-box {
+            background: linear-gradient(170deg, rgba(var(--gA, 71, 85, 105), 0.38) 0%, rgba(30, 41, 59, 0.80) 42%, rgba(8, 12, 26, 0.90) 100%) !important;
+            border: 1px solid rgba(203, 213, 225, 0.30) !important;
+            border-bottom-color: rgba(0, 0, 0, 0.55) !important;
+            box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.28), inset 0 -6px 14px rgba(0, 0, 0, 0.45),
+                0 14px 28px rgba(0, 0, 0, 0.55), 0 4px 8px rgba(0, 0, 0, 0.4) !important;
+        }
+        html:not(.lowvision) .settings-page .med-item { border-right: 5px solid rgb(var(--gA, 56, 189, 248)) !important; }
+        html:not(.lowvision) .mw-wk-box {
+            background: linear-gradient(170deg, rgba(253, 224, 71, 0.30) 0%, rgba(180, 83, 9, 0.30) 60%, rgba(69, 26, 3, 0.55) 100%) !important;
+            border: 2.5px solid #fbbf24 !important; border-bottom-color: #92400e !important;
+        }
+        html:not(.lowvision) .type-btn, html:not(.lowvision) .mw-add-med, html:not(.lowvision) .af-chip,
+        html:not(.lowvision) .btn-edit, html:not(.lowvision) .btn-delete, html:not(.lowvision) .wkb-btn,
+        html:not(.lowvision) .wz-nav button, html:not(.lowvision) #mw-dots button, html:not(.lowvision) .vb-opt {
+            box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.30), inset 0 -4px 8px rgba(0, 0, 0, 0.40),
+                0 6px 0 rgba(0, 0, 0, 0.35), 0 10px 18px rgba(0, 0, 0, 0.45) !important;
+            transition: transform .12s ease, box-shadow .12s ease;
+        }
+        html:not(.lowvision) .type-btn:active, html:not(.lowvision) .mw-add-med:active, html:not(.lowvision) .af-chip:active,
+        html:not(.lowvision) .btn-edit:active, html:not(.lowvision) .btn-delete:active, html:not(.lowvision) .wkb-btn:active,
+        html:not(.lowvision) .wz-nav button:active, html:not(.lowvision) #mw-dots button:active, html:not(.lowvision) .vb-opt:active,
+        html:not(.lowvision) .settings-page .med-item:active {
+            transform: translateY(4px) scale(.985);
+            box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2), inset 0 -2px 6px rgba(0, 0, 0, 0.4), 0 2px 0 rgba(0, 0, 0, 0.35), 0 4px 8px rgba(0, 0, 0, 0.4) !important;
+        }
+        html:not(.lowvision) .type-btn.sel { box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.45), inset 0 -4px 10px rgba(0, 0, 0, 0.3), 0 0 0 2px rgba(56, 189, 248, .7), 0 6px 0 rgba(8, 47, 73, .8), 0 12px 22px rgba(14, 165, 233, .35) !important; }
+        html:not(.lowvision) .settings-page .med-item h3, html:not(.lowvision) .af-sum .s-when { text-shadow: 0 2px 0 rgba(0, 0, 0, .55), 0 4px 10px rgba(0, 0, 0, .35); }
+        html:not(.lowvision) .settings-page .set-tile { transition: transform .12s ease; }
+        html:not(.lowvision) .settings-page .set-tile:active { transform: translateY(3px) scale(.97); }
+    </style>
 </head>
 <body>
     <!-- M-032: opening animation on every launch (tap to skip), then language choice on the first launch -->
@@ -3972,7 +4006,7 @@
         // ---------- M-028: 30 display themes ----------
         function hexRgb(h) { const n = parseInt(h.slice(1), 16); return ((n >> 16) & 255) + ', ' + ((n >> 8) & 255) + ', ' + (n & 255); }
         // stored choice: a theme number, or 'auto' (M-029: changes with the time of day)
-        function storedTheme() { try { const v = localStorage.getItem('medtime_theme') || '0'; return v === 'auto' ? 'auto' : (parseInt(v, 10) || 0); } catch (e) { return 0; } }
+        function storedTheme() { try { const v = localStorage.getItem('medtime_theme') || 'auto'; /* M-106: default = changes with the time of day */ return v === 'auto' ? 'auto' : (parseInt(v, 10) || 0); } catch (e) { return 'auto'; } }
         function themeForNow() {
             const h = new Date().getHours();
             return h >= 5 && h < 10 ? 13 : h >= 10 && h < 16 ? 6 : h >= 16 && h < 19 ? 2 : h >= 19 && h < 22 ? 16 : 26;
@@ -3980,11 +4014,13 @@
         function curTheme() { const v = storedTheme(); return v === 'auto' ? themeForNow() : v; }
         window.medEffectiveTheme = curTheme;
         let autoShown = -1;
-        setInterval(() => {
+        const autoTick = () => {
             if (storedTheme() !== 'auto' || document.body.classList.contains('theme-preview')) return;
             const i = themeForNow();
             if (i !== autoShown) { autoShown = i; if (window.MedTime3D) MedTime3D.setTheme(i); applyThemeUI(i); }
-        }, 60000);
+        };
+        setInterval(autoTick, 60000);
+        document.addEventListener('visibilitychange', () => { if (!document.hidden) autoTick(); }); // M-106: right when the app comes back
         function themeName(th) { return th.n[LANG_IDX[LANG] - 1] || th.n[4]; }
         function applyThemeUI(i) {
             const th = (window.MED_THEMES || [])[i]; if (!th) return;

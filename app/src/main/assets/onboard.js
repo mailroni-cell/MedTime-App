@@ -88,14 +88,15 @@
         const n = getName();
         // M-088: the reminder voice starts with the name
         if (N && typeof N.setUserName === 'function') try { N.setUserName(n); } catch (e) { }
-        if (!n) { el.textContent = ''; return; }
+        // M-106: greet by the time of day always (with the name when there is one)
         const h = new Date().getHours(), k = h >= 5 && h < 12 ? 0 : h >= 12 && h < 17 ? 1 : h >= 17 && h < 22 ? 2 : 3;
-        el.innerHTML = '<span class="hl-ico">' + ['☀️', '🌤️', '🌆', '🌙'][k] + '</span>' + esc(pick(T.g)[k]) + ', <b>' + esc(n) + '</b>';
+        el.innerHTML = '<span class="hl-ico">' + ['☀️', '🌤️', '🌆', '🌙'][k] + '</span>' + esc(pick(T.g)[k]) + (n ? ', <b>' + esc(n) + '</b>' : '');
         el.dir = li() < 2 ? 'rtl' : 'ltr';
     }
     window.mtHello = hello;
     hello();
     setInterval(hello, 10 * 60 * 1000);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) hello(); });
     const lsel = document.getElementById('lang-select');
     if (lsel) lsel.addEventListener('change', () => setTimeout(hello, 200));
 
