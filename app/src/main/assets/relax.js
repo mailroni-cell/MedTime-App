@@ -6,8 +6,8 @@
     const L5 = ['he', 'ar', 'ro', 'fr', 'en'];
     // [he, ar, ro, fr, en]
     const TX = {
-        btn: ['רוגע', 'هدوء', 'Relaxare', 'Détente', 'Calm'],
-        title: ['🌙 רגע של רוגע', '🌙 لحظة هدوء', '🌙 Clipă de liniște', '🌙 Un moment de calme', '🌙 A calm moment'],
+        btn: ['שלווה', 'سكينة', 'Liniște', 'Sérénité', 'Serenity'],
+        title: ['🌙 רגע של שלווה', '🌙 لحظة سكينة', '🌙 Clipă de liniște', '🌙 Un moment de sérénité', '🌙 A moment of serenity'],
         scene: ['תצוגה', 'المشهد', 'Peisaj', 'Décor', 'Scene'],
         sound: ['צליל', 'الصوت', 'Sunet', 'Son', 'Sound'],
         timer: ['כיבוי אוטומטי', 'إيقاف تلقائي', 'Oprire automată', 'Arrêt automatique', 'Sleep timer'],

@@ -50,7 +50,7 @@
         dLog: ['📒 יומן ודוח לרופא', '📒 السجل وتقرير للطبيب', '📒 Jurnal și raport', '📒 Journal et rapport', '📒 Log and report'],
         dFam: ['👨‍👩‍👧 התראה למשפחה', '👨‍👩‍👧 تنبيه العائلة', '👨‍👩‍👧 Alertă familie', '👨‍👩‍👧 Alerte famille', '👨‍👩‍👧 Family alert'],
         dRead: ['🔠 קריאה נוחה', '🔠 قراءة مريحة', '🔠 Citire ușoară', '🔠 Lecture facile', '🔠 Easy reading'],
-        dRelax: ['🌙 מצב רגוע', '🌙 وضع هادئ', '🌙 Mod relaxare', '🌙 Mode calme', '🌙 Calm mode'],
+        dRelax: ['🌙 מצב שלווה', '🌙 وضع السكينة', '🌙 Mod liniște', '🌙 Mode sérénité', '🌙 Serenity mode'],
         dHome: ['🏠 המסך הראשי', '🏠 الشاشة الرئيسية', '🏠 Ecranul principal', "🏠 L'écran principal", '🏠 Main screen'],
         p1: ['"תורים לרופא" פותח את רשימת התורים', '"مواعيد الطبيب" يفتح قائمة المواعيد', '„Programări” deschide lista', '« Rendez-vous » ouvre la liste', '"Doctor appointments" opens the list'],
         p2: ['לוחצים "תור חדש"', 'اضغط "موعد جديد"', 'Apăsați „Programare nouă”', 'Appuyez sur « Nouveau rendez-vous »', 'Tap "New appointment"'],
@@ -65,7 +65,7 @@
         f2: ['בוחרים איש קשר. אם תרופה לא נלקחה שעה, הוא מקבל SMS', 'اختر جهة اتصال. إذا لم يؤخذ الدواء ساعة يصله SMS', 'Alegeți un contact: primește SMS după o oră', 'Choisissez un contact : il reçoit un SMS après une heure', 'Pick a contact. If a dose is not taken for an hour, they get an SMS'],
         r1: ['במשקפיים 👓 בתחתית: הכל גדול וברור בלחיצה אחת', 'النظارة 👓 في الأسفل: كل شيء كبير بلمسة', 'Ochelarii 👓: totul mare dintr-o atingere', 'Les lunettes 👓 : tout en grand en un geste', 'The glasses 👓 at the bottom: everything big and clear in one tap'],
         r2: ['ובהגדרות "גודל הטקסט" בוחרים גודל שנוח לכם', 'وفي الإعدادات "حجم النص"', 'În setări: „Mărimea textului”', 'Dans les réglages : « Taille du texte »', 'And in Settings, "Text size" lets you choose'],
-        q1: ['"רוגע" פותח מסך שקט עם צלילי טבע אמיתיים', '"هدوء" يفتح شاشة هادئة بأصوات الطبيعة', '„Relaxare”: sunete reale din natură', '« Calme » : de vrais sons de la nature', '"Calm" opens a quiet screen with real nature sounds'],
+        q1: ['"שלווה" פותח מסך שקט עם צלילי טבע אמיתיים', '"سكينة" يفتح شاشة هادئة بأصوات الطبيعة', '„Liniște”: sunete reale din natură', '« Sérénité » : de vrais sons de la nature', '"Serenity" opens a quiet screen with real nature sounds'],
         q2: ['טוב לפני השינה או כשצריך להירגע', 'جيد قبل النوم أو للاسترخاء', 'Bun înainte de somn', 'Idéal avant de dormir', 'Good before sleep or to relax'],
         h1: ['כאן הברכה לפי השעה ביום', 'هنا التحية حسب الوقت', 'Aici salutul după oră', "Ici, le salut selon l'heure", 'Here is the greeting by time of day'],
         h2: ['הוספת תזכורת חדשה', 'إضافة تذكير جديد', 'Adăugare memento', 'Ajouter un rappel', 'Add a new reminder'],
@@ -100,7 +100,7 @@
     const css = document.createElement('style');
     css.textContent = `
     /* M-113: a real-looking 3D hand (SVG), glowing halo, floating, fingers moving */
-    #mt-hand{position:fixed;left:0;top:0;z-index:2147483600;width:84px;height:110px;pointer-events:none;opacity:0;will-change:transform;
+    #mt-hand{position:fixed;left:0;top:0;z-index:2147483601;width:84px;height:110px;pointer-events:none;opacity:0;will-change:transform;
       transition:transform 1.3s cubic-bezier(.4,.1,.2,1),opacity .4s;
       filter:drop-shadow(0 0 5px rgba(125,249,255,.95)) drop-shadow(0 0 14px rgba(56,189,248,.7)) drop-shadow(0 14px 12px rgba(0,0,0,.5))}
     #mt-hand.on{opacity:1}
@@ -143,10 +143,11 @@
     @keyframes mtRip{to{transform:scale(4.5);opacity:0}}
     #mt-veil{position:fixed;inset:0;z-index:2147483590;background:transparent}
     /* M-116: the caption rides right next to the hand (under it, or above when there is no room), so eyes follow one spot */
-    #mt-bubble{position:fixed;left:0;top:0;transform:translate(-999px,-999px);will-change:transform;z-index:2147483601;width:min(84vw,340px);box-sizing:border-box;
+    #mt-bubble{position:fixed;left:0;top:0;transform:translate(-999px,-999px);will-change:transform;z-index:2147483600;width:min(84vw,340px);box-sizing:border-box;
       padding:12px 16px;border-radius:20px;background:#fff7cc;color:#1c1917;font-weight:900;font-size:1.35rem;line-height:1.3;text-align:center;
       border:4px solid #f59e0b;box-shadow:0 0 0 3px rgba(0,0,0,.55),0 12px 30px rgba(0,0,0,.6);opacity:0;transition:opacity .35s,transform 1.3s cubic-bezier(.4,.1,.2,1);pointer-events:none}
     #mt-bubble.on{opacity:1}
+    #mt-bubble.on.mv{opacity:0;transition:opacity .18s}
     #mt-stop{position:fixed;left:12px;top:max(12px,env(safe-area-inset-top));z-index:2147483602;padding:12px 26px;border-radius:999px;border:0;
       background:#dc2626;color:#fff;font-weight:900;font-size:1.1rem;box-shadow:inset 0 2px 0 rgba(255,255,255,.35),0 6px 0 #7f1d1d,0 10px 20px rgba(0,0,0,.5)}
     .mt-pressed{transform:scale(.95)!important;filter:brightness(1.15);transition:transform .35s cubic-bezier(.45,0,.25,1),filter .35s!important}
@@ -209,23 +210,43 @@
         hx = x; hy = y;
         if (now) { hand.style.transition = 'none'; requestAnimationFrame(() => { hand.style.transition = ''; }); }
         hand.style.transform = 'translate(' + (x - 40) + 'px,' + (y - 3) + 'px)'; // fingertip of the SVG hand
-        if (bubble) setSpot(y, now);
+        if (!bubble) return;
+        // M-129: the caption never travels across the screen (it covered things on the way): it fades out while the
+        // hand moves and comes back at the new spot when the hand arrives
+        if (!now && bubble.classList.contains('on')) {
+            bubble.classList.add('mv'); clearTimeout(mvT);
+            mvT = setTimeout(() => { setSpot(hy, true); bubble.classList.remove('mv'); }, 1350);
+        } else if (!bubble.classList.contains('mv')) setSpot(y, now);
     }
+    let mvT = 0;
+    // M-129: safety check while a caption shows: if the screen moved under it and it now covers the shown element
+    // or the fingertip, it jumps to a free spot
+    setInterval(() => {
+        if (!bubble || !bubble.classList.contains('on') || bubble.classList.contains('mv')) return;
+        const b = bubble.getBoundingClientRect(), hit = q => q.right > b.left && q.left < b.right && q.bottom > b.top && q.top < b.bottom;
+        const tip = { left: hx - 6, right: hx + 6, top: hy - 6, bottom: hy + 6 };
+        if (hit(tip) || (curEl && curEl.isConnected && hit(curEl.getBoundingClientRect()))) setSpot(hy, true);
+    }, 400);
     // hand high -> caption at the bottom; hand low (e.g. "Next") -> caption in the middle, so titles at the top stay visible
     // M-116: caption sits just under the hand (or just above the fingertip when the hand is low), centred on it
     function setSpot(y, now) {
         const x = hx, w = bubble.offsetWidth || 300, h = bubble.offsetHeight || 80, H = innerHeight;
         y = Math.min(Math.max(y, 0), H);
-        const r = curR && x >= curR.left - 5 && x <= curR.right + 5 && y >= curR.top - 5 && y <= curR.bottom + 5 ? curR : null;
-        let by = Math.max(y + 112, r ? r.bottom + 12 : 0);
-        if (by + h > H - 10) by = Math.min(y - 16, r ? r.top - 12 : y) - h;
+        // M-129: the live rect of the element being shown (it may have scrolled since)
+        let r = curEl && curEl.isConnected ? curEl.getBoundingClientRect() : null;
+        if (r && !(x >= r.left - 5 && x <= r.right + 5 && y >= r.top - 5 && y <= r.bottom + 5)) r = null;
+        const below = Math.max(y + 112, r ? r.bottom + 12 : 0), above = Math.min(y - 16, r ? r.top - 12 : y) - h;
+        let by;
+        if (below + h <= H - 10) by = below;
+        else if (above >= 10) by = above;
+        else by = (H - below) > above + h ? H - h - 10 : 10; // no clean room: the side with more space
         by = Math.max(10, Math.min(by, H - h - 10));
         const bx = Math.max(8, Math.min(x - w / 2, innerWidth - w - 8));
         if (now) { bubble.style.transition = 'none'; requestAnimationFrame(() => { bubble.style.transition = ''; }); }
         bubble.style.transform = 'translate(' + Math.round(bx) + 'px,' + Math.round(by) + 'px)';
     }
-    let curR = null; // M-117: rect of what the hand points at, so the caption never covers it
-    function centerOf(el) { const r = el.getBoundingClientRect(); curR = r; return [r.left + r.width / 2, r.top + Math.min(r.height / 2, 40)]; }
+    let curEl = null; // M-117/M-129: what the hand points at, so the caption never covers it
+    function centerOf(el) { const r = el.getBoundingClientRect(); curEl = el; return [r.left + r.width / 2, r.top + Math.min(r.height / 2, 40)]; }
     function visible(el) { const r = el.getBoundingClientRect(); return r.width > 0 && r.top >= 4 && r.bottom <= innerHeight - 4; } // M-113: on screen = no swipe
     function check() { if (aborted) throw new Error('stop'); }
 
