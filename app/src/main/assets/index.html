@@ -2624,7 +2624,7 @@
             filter: drop-shadow(0 1.5px 0 #7f1d1d) drop-shadow(0 3px 0 #991b1b) drop-shadow(0 4px 4px rgba(0,0,0,.45)); }
         .home-card .ba-cross path { fill: #ef4444; stroke: #fecaca; stroke-width: .6; }
         .home-card .main-add .ba-cross svg { width: 40px !important; height: 40px !important; } /* M-124: bigger cross inside the circle */
-        html.fit3 .home-card .main-add .ba-cross svg, html.fit2 .home-card .main-add .ba-cross svg { width: 34px !important; height: 34px !important; }
+        /* M-138: the old fit2/fit3 rule that shrank the cross to 34px on the phone was removed (it beat the M-137 size) */
         @keyframes mtTurn { 0%,100% { transform: rotateY(-28deg); } 50% { transform: rotateY(28deg); } }
         /* M-128: doctor appointments button: same text size and exactly the same frame as "Add reminder" */
         .home-card #appt-btn { min-height: 74px !important; border-radius: 999px !important; padding: 10px 18px !important;
@@ -2649,6 +2649,11 @@
         html .home-card #appt-btn .ab-ico i { font-size: 40px !important; line-height: 1 !important; }
         html .home-card .main-add, html .home-card #appt-btn { padding-top: 6px !important; padding-bottom: 6px !important; min-height: 74px !important; }
         @media (prefers-reduced-motion: reduce) { .home-card .ab-ico i, .home-card .rb-ico i, .home-card .ba-cross svg { animation: none !important; } }
+        /* M-138: owner: settings screen cut at the bottom and labels touching the next row. Each row is now as tall as its icon + full label,
+           more room between rows, and free space under the last row (above the phone's bottom bar) so the last tiles are fully seen */
+        html #settings-page .set-grid { grid-auto-rows: max-content !important; row-gap: 26px !important;
+            padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)) !important; scroll-padding-bottom: 90px; }
+        html #settings-page .set-grid > .set-tile { min-height: max-content !important; height: auto !important; }
     </style>
 </head>
 <body>

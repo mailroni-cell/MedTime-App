@@ -53,7 +53,7 @@
         stStart: ['➕ להתחיל לספור', '➕ ابدأ العدّ', '➕ Începe numărarea', '➕ Commencer à compter', '➕ Start counting'],
         stPack: ['🛒 קניתי חבילה (+{n})', '🛒 اشتريت علبة (+{n})', '🛒 Am cumpărat o cutie (+{n})', '🛒 J\'ai acheté une boîte (+{n})', '🛒 Bought a pack (+{n})'],
         stLow: ['🔔 תזכורת כשנשארים {n}', '🔔 تذكير عند بقاء {n}', '🔔 Memento la {n}', '🔔 Rappel à {n}', '🔔 Remind me at {n}'],
-        stStop: ['להפסיק לספור', 'إيقاف العدّ', 'Oprește numărarea', 'Arrêter de compter', 'Stop counting'],
+        stStop: ['⏹️ הפסק ספירה', '⏹️ أوقف العدّ', '⏹️ Oprește numărarea', '⏹️ Arrêter de compter', '⏹️ Stop counting'],
         stLowNow: ['⚠️ כדאי לקנות עוד', '⚠️ يُستحسن الشراء', '⚠️ Cumpărați mai mult', '⚠️ Pensez à racheter', '⚠️ Time to buy more'],
         wgT: ['📱 ווידג\'ט למסך הבית', '📱 أداة للشاشة الرئيسية', '📱 Widget pe ecranul principal', '📱 Widget sur l\'écran d\'accueil', '📱 Home-screen widget'],
         wgOn: ['מופיע במסך הבית ✅', 'ظاهر في الشاشة الرئيسية ✅', 'Pe ecranul principal ✅', 'Sur l\'écran d\'accueil ✅', 'On the home screen ✅'],
@@ -61,6 +61,8 @@
         wgX: ['ריבוע קטן במסך הבית של הטלפון שמראה מתי התרופה הבאה ואיזו, ומה עומד להיגמר. נגיעה בו פותחת את MedTime.', 'مربع صغير في الشاشة الرئيسية يعرض موعد الدواء التالي واسمه وما سينفد قريبًا. لمسه يفتح MedTime.', 'Un pătrat mic pe ecranul principal arată când și ce medicament urmează și ce se termină. Atingerea lui deschide MedTime.', 'Un petit carré sur l\'écran d\'accueil montre quand et quel est le prochain médicament, et ce qui va manquer. Le toucher ouvre MedTime.', 'A small square on the phone\'s home screen shows when the next medicine is and which one, and what is running low. Tapping it opens MedTime.'],
         wgGo: ['📱 הוספה למסך הבית', '📱 إضافة إلى الشاشة الرئيسية', '📱 Adaugă pe ecranul principal', '📱 Ajouter à l\'écran d\'accueil', '📱 Add to the home screen'],
         wgHow: ['אם לא נפתח חלון: לחיצה ארוכה על מקום ריק במסך הבית ← ווידג\'טים ← MedTime, וגוררים למסך.', 'إن لم تظهر نافذة: ضغطة طويلة على مكان فارغ ← الأدوات ← MedTime واسحبها.', 'Dacă nu apare nimic: apăsare lungă pe un loc gol ← Widgeturi ← MedTime și trageți-l.', 'Sinon : appui long sur un espace vide ← Widgets ← MedTime, puis faites-le glisser.', 'If no window opens: long-press an empty spot on the home screen → Widgets → MedTime, and drag it there.'],
+        autoNo: ['⏳ הגיבוי האוטומטי עוד לא נשמר', '⏳ لم يُحفظ النسخ التلقائي بعد', '⏳ Copia automată nu e salvată încă', '⏳ Sauvegarde auto pas encore faite', '⏳ Auto backup not saved yet'],
+        autoErr: ['⚠️ הגיבוי האוטומטי נכשל: {e}', '⚠️ فشل النسخ التلقائي: {e}', '⚠️ Copia automată a eșuat: {e}', '⚠️ Échec de la sauvegarde auto : {e}', '⚠️ Auto backup failed: {e}'],
         autoOn: ['גיבוי אוטומטי: {d}', 'نسخ تلقائي: {d}', 'Copie automată: {d}', 'Sauvegarde auto : {d}', 'Auto backup: {d}'],
         autoX: ['✅ מעכשיו הגיבוי נשמר לבד בכל שינוי, בתיקיית "הורדות" בטלפון (MedTime-auto-backup.json). הוא נשאר גם אם מוחקים את האפליקציה. כדי לשחזר: "שחזור מקובץ גיבוי" ובוחרים אותו.', '✅ من الآن تُحفظ النسخة تلقائيًا عند كل تغيير في مجلد "التنزيلات" (MedTime-auto-backup.json)، وتبقى حتى لو حُذف التطبيق. للاستعادة: "استعادة من ملف" واختره.', '✅ De acum copia se salvează singură la fiecare schimbare, în „Descărcări” (MedTime-auto-backup.json), și rămâne chiar dacă ștergeți aplicația. Restaurare: „Restaurează din fișier”.', '✅ Désormais la sauvegarde se fait seule à chaque changement, dans « Téléchargements » (MedTime-auto-backup.json), et reste même si l\'appli est supprimée. Pour restaurer : « Restaurer depuis un fichier ».', '✅ From now on the backup saves itself on every change, in the phone\'s Downloads folder (MedTime-auto-backup.json), and stays even if the app is removed. To restore: "Restore from a backup file" and pick it.'],
         bakT: ['💾 גיבוי ושחזור', '💾 نسخ احتياطي واستعادة', '💾 Copie de rezervă', '💾 Sauvegarde', '💾 Backup & restore'],
@@ -284,7 +286,7 @@
     .st-n{width:86px;text-align:center;font-size:1.7rem;font-weight:800;border-radius:14px;border:1.5px solid rgba(255,255,255,.3);background:rgba(0,0,0,.25);color:#fff;padding:6px 0}
     .st-sm{display:flex;gap:8px;margin-top:8px}
     .st-sm button{flex:1;border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;border-radius:12px;padding:10px 6px;font-size:.95rem;font-weight:700}
-    .st-off{display:block;margin:8px auto 0;border:0;background:none;color:rgba(255,255,255,.6);text-decoration:underline;font-size:.9rem}`;
+    .st-off{display:block;width:100%;margin:10px 0 0;padding:11px 12px;border-radius:14px;border:1.5px solid #fca5a5;background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;font-weight:800;font-size:1.02rem;box-shadow:0 3px 0 rgba(0,0,0,.3)}`;
     document.head.appendChild(stCss);
     const PACK = 30, LOWS = [3, 5, 7, 10, 14];
     const stKey = n => (n || '').trim().toLowerCase();
@@ -359,7 +361,7 @@
     // ---------------- 💾 backup ----------------
     const BK = 'medtime_lastbackup';
     const bak = tile('tile-bak', '💾', 'linear-gradient(135deg,#60a5fa,#1d4ed8)',
-        '<div class="mo-x" id="bk-x"></div><button type="button" class="mo-btn" id="bk-save"></button><button type="button" class="mo-btn alt" id="bk-load"></button>');
+        '<div class="mo-msg" id="bk-st"></div><div class="mo-x" id="bk-x"></div><button type="button" class="mo-btn" id="bk-save"></button><button type="button" class="mo-btn alt" id="bk-load"></button>');
     const fmtDate = ms => { try { return new Date(ms).toLocaleDateString(L5[li()], { day: 'numeric', month: 'numeric', year: 'numeric' }); } catch (e) { return ''; } };
     function drawBak() {
         let lastB = 0; try { lastB = +localStorage.getItem(BK) || 0; } catch (e) { }
@@ -368,6 +370,12 @@
             let d = ''; try { d = new Date(autoT).toLocaleString(L5[li()], { day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' }); } catch (e) { }
             heads(bak, 'bakT', fill(tx('autoOn'), { d: d }));
         } else heads(bak, 'bakT', fill(tx('bakSub'), { d: lastB ? fmtDate(lastB) : tx('never') }));
+        // M-138: status of the automatic backup also inside the open window: time, or the reason it failed
+        let er = autoJsErr; try { if (!er && has('autoBackupErr')) er = N.autoBackupErr(); } catch (e) { }
+        let dd = ''; try { if (autoT) dd = new Date(autoT).toLocaleString(L5[li()], { day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' }); } catch (e) { }
+        const st = document.getElementById('bk-st');
+        st.style.display = autoOk ? '' : 'none';
+        st.textContent = er ? fill(tx('autoErr'), { e: er }) : autoT ? '✅ ' + fill(tx('autoOn'), { d: dd }) : tx('autoNo');
         document.getElementById('bk-x').textContent = autoOk ? tx('autoX') + '\n\n' + tx('bakX') : tx('bakX');
         document.getElementById('bk-save').textContent = tx('bakGo');
         document.getElementById('bk-load').textContent = tx('resGo');
@@ -383,17 +391,19 @@
         return { app: 'MedTime', v: 1, created: now, data: data, log: readLog(), stock: has('getStock') ? stGet() : {} };
     }
     // M-133: automatic backup on every change (when leaving the app and at start); native skips it if nothing changed
-    let autoT = 0;
+    let autoT = 0, autoJsErr = '';
     function autoBackup() {
         if (!has('autoBackup')) return;
         try {
             const f = backupFile(Date.now());
             const sig = JSON.stringify([f.data, f.log, f.stock]);
             autoT = +N.autoBackup(sig, JSON.stringify(f)) || autoT;
-        } catch (e) { }
+            autoJsErr = '';
+        } catch (e) { autoJsErr = String(e && e.message || e); }
     }
     document.addEventListener('visibilitychange', () => { if (document.hidden) autoBackup(); });
     setTimeout(() => { autoBackup(); drawBak(); }, 6000);
+    bak.querySelector('.set-tile-head').addEventListener('click', () => { autoBackup(); drawBak(); }); // M-138: fresh status when opened
     document.getElementById('bk-save').onclick = () => {
         vib();
         const now = Date.now();

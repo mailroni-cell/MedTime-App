@@ -428,6 +428,7 @@ public class NativeBridge {
         int h = sig == null ? 0 : sig.hashCode();
         if (json == null || json.isEmpty() || (p.getInt("h", 1) == h && p.getLong("t", 0) > 0)) return String.valueOf(p.getLong("t", 0));
         boolean ok = false;
+        String err = "";
         byte[] data;
         try { data = json.getBytes("UTF-8"); } catch (Exception e) { return String.valueOf(p.getLong("t", 0)); }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -449,7 +450,7 @@ public class NativeBridge {
                         try (java.io.OutputStream o = cr.openOutputStream(u, "wt")) { if (o != null) { o.write(data); ok = true; } }
                         if (ok) p.edit().putString("uri", u.toString()).apply();
                     }
-                } catch (Exception ignored) { }
+                } catch (Exception e) { err = "Downloads: " + e.getClass().getSimpleName() + (e.getMessage() != null ? " " + e.getMessage() : ""); }
             }
         }
         if (!ok) {
@@ -457,11 +458,19 @@ public class NativeBridge {
                 java.io.File dir = c.getExternalFilesDir(null);
                 if (dir == null) dir = c.getFilesDir();
                 try (java.io.OutputStream o = new java.io.FileOutputStream(new java.io.File(dir, "MedTime-auto-backup.json"))) { o.write(data); ok = true; }
-            } catch (Exception ignored) { }
+                if (ok) err = "";
+            } catch (Exception e) { err = err + (err.isEmpty() ? "" : " / ") + "App folder: " + e.getClass().getSimpleName(); }
         }
         // a copy inside the app too (part of Android's own Google backup)
         try (java.io.OutputStream o = new java.io.FileOutputStream(new java.io.File(c.getFilesDir(), "MedTime-auto-backup.json"))) { o.write(data); } catch (Exception ignored) { }
-        if (ok) p.edit().putInt("h", h).putLong("t", System.currentTimeMillis()).apply();
+        if (ok) p.edit().putInt("h", h).putLong("t", System.currentTimeMillis()).putString("err", "").apply();
+        else p.edit().putString("err", err.isEmpty() ? "unknown" : err).apply();
         return String.valueOf(p.getLong("t", 0));
+    }
+
+    /** M-138: reason of the last failed automatic backup ("" when the last one worked). */
+    @JavascriptInterface
+    public String autoBackupErr() {
+        return activity.getApplicationContext().getSharedPreferences("medtime_autobak", Context.MODE_PRIVATE).getString("err", "");
     }
 }
