@@ -87,7 +87,12 @@
     #mt-hand.on{opacity:1}
     #mt-hand .hd{display:block;width:100%;height:100%;transform-origin:46% 8%;animation:mtFloat 2.6s ease-in-out infinite}
     #mt-hand svg{width:100%;height:100%;overflow:visible}
-    #mt-hand .fg{transform-box:fill-box;transform-origin:50% 100%;transition:transform .18s ease}
+    #mt-hand .hp{display:block;width:100%;height:100%;transform-origin:50% 12%;transition:transform .45s cubic-bezier(.45,0,.25,1)}
+    #mt-hand .fg{transform-box:fill-box;transform-origin:50% 100%}
+    /* M-115: smooth, round finger bend: the tip folds at the knuckle, a fingertip pad shows, everything eases in and out */
+    #mt-hand .fb,#mt-hand .ft,#mt-hand .fi{transform-box:fill-box;transform-origin:50% 100%;transition:transform .45s cubic-bezier(.45,0,.25,1)}
+    #mt-hand .nl{transition:opacity .35s ease}
+    #mt-hand .pd{opacity:0;transition:opacity .35s ease}
     #mt-hand .f-idx{animation:mtIdx 2.2s ease-in-out infinite}
     #mt-hand .f-mid{animation:mtCurl 1.8s ease-in-out infinite}
     #mt-hand .f-ring{animation:mtCurl 1.8s ease-in-out .25s infinite}
@@ -98,13 +103,22 @@
     @keyframes mtCurl{0%,100%{transform:translateY(0) scaleY(1)}50%{transform:translateY(-2px) scaleY(1.05)}}
     @keyframes mtThumb{0%,100%{transform:rotate(0)}50%{transform:rotate(8deg)}}
     /* tap: the finger bends and the hand dips */
-    #mt-hand.press .hd{animation:none;transform:translateY(7px) scale(.95)}
-    #mt-hand.press .f-idx{animation:none;transform:scaleY(.78)}
-    #mt-hand.press .f-mid,#mt-hand.press .f-ring,#mt-hand.press .f-pin{animation:none;transform:scaleY(.9)}
+    #mt-hand.press .hp{transform:perspective(260px) rotateX(16deg) translateY(6px) scale(.96)}
+    #mt-hand.press .fb{transform:scaleY(.94)}
+    #mt-hand.press .ft{transform:scaleY(.52)}
+    #mt-hand.press .nl{opacity:.1}
+    #mt-hand.press .pd{opacity:1}
+    #mt-hand.press .fi{transform:scaleY(.9)}
     /* hint mode: floats and taps again and again */
     #mt-hand.bob .hd{animation:mtFloat 2.6s ease-in-out infinite}
-    #mt-hand.bob .f-idx{animation:mtTapLoop 2s ease-in-out infinite}
-    @keyframes mtTapLoop{0%,60%,100%{transform:scaleY(1)}75%{transform:scaleY(.78)}}
+    #mt-hand.bob .ft{animation:mtTapLoop 2.2s cubic-bezier(.45,0,.25,1) infinite}
+    #mt-hand.bob .pd{animation:mtPad 2.2s ease-in-out infinite}
+    #mt-hand.bob .nl{animation:mtNail 2.2s ease-in-out infinite}
+    #mt-hand.bob .hp{animation:mtTilt 2.2s cubic-bezier(.45,0,.25,1) infinite}
+    @keyframes mtTapLoop{0%,50%,100%{transform:scaleY(1)}72%{transform:scaleY(.52)}}
+    @keyframes mtPad{0%,50%,100%{opacity:0}72%{opacity:1}}
+    @keyframes mtNail{0%,50%,100%{opacity:1}72%{opacity:.1}}
+    @keyframes mtTilt{0%,50%,100%{transform:none}72%{transform:perspective(260px) rotateX(16deg) translateY(6px) scale(.96)}}
     .mt-ripple{position:fixed;z-index:2147483599;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;border:3px solid #fde047;pointer-events:none;animation:mtRip .6s ease-out forwards}
     @keyframes mtRip{to{transform:scale(4.5);opacity:0}}
     #mt-veil{position:fixed;inset:0;z-index:2147483590;background:transparent}
@@ -156,7 +170,7 @@
     let hx = innerWidth / 2, hy = innerHeight * 0.75;
     function ensure() {
         if (hand) return;
-        hand = document.createElement('div'); hand.id = 'mt-hand'; hand.innerHTML = '<span class="hd"><svg viewBox="0 0 100 130" aria-hidden="true"><defs><linearGradient id="mtSk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffe9d2"/><stop offset=".45" stop-color="#f8c99c"/><stop offset="1" stop-color="#d4925f"/></linearGradient><linearGradient id="mtSk2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffdcb8"/><stop offset="1" stop-color="#e0a372"/></linearGradient><radialGradient id="mtHi" cx=".35" cy=".3" r=".7"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient><linearGradient id="mtCuff" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#38bdf8"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs><g stroke="#9a5f38" stroke-width="1.6" stroke-linejoin="round"><rect x="44" y="104" width="46" height="22" rx="7" fill="url(#mtCuff)" stroke="#1e3a8a"/><rect x="36" y="56" width="58" height="54" rx="20" fill="url(#mtSk)"/><g class="fg f-pin"><rect x="82" y="60" width="13" height="24" rx="6.5" fill="url(#mtSk2)"/></g><g class="fg f-ring"><rect x="70" y="52" width="15" height="28" rx="7.5" fill="url(#mtSk2)"/></g><g class="fg f-mid"><rect x="56" y="47" width="16" height="31" rx="8" fill="url(#mtSk2)"/></g><g class="fg f-idx"><rect x="38" y="3" width="19" height="68" rx="9.5" fill="url(#mtSk)"/><rect x="42" y="6" width="11" height="12" rx="5" fill="#ffe4e6" stroke="#c98a6a" stroke-width="1"/><path d="M41 34 q6 3 13 0 M41 50 q6 3 13 0" fill="none" stroke="#b97a52" stroke-width="1.2"/></g><g class="fg f-thb"><rect x="18" y="64" width="20" height="38" rx="10" fill="url(#mtSk)" transform="rotate(-38 28 83)"/></g></g><rect x="36" y="56" width="58" height="54" rx="20" fill="url(#mtHi)"/><rect x="38" y="3" width="19" height="40" rx="9.5" fill="url(#mtHi)"/></svg></span>';
+        hand = document.createElement('div'); hand.id = 'mt-hand'; hand.innerHTML = '<span class="hd"><span class="hp"><svg viewBox="0 0 100 130" aria-hidden="true"><defs><linearGradient id="mtSk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffe9d2"/><stop offset=".45" stop-color="#f8c99c"/><stop offset="1" stop-color="#d4925f"/></linearGradient><linearGradient id="mtSk2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffdcb8"/><stop offset="1" stop-color="#e0a372"/></linearGradient><radialGradient id="mtHi" cx=".35" cy=".3" r=".7"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient><radialGradient id="mtPad" cx=".45" cy=".35" r=".7"><stop offset="0" stop-color="#ffe6cf"/><stop offset=".6" stop-color="#f4bd91"/><stop offset="1" stop-color="#d48c5c"/></radialGradient><linearGradient id="mtCuff" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#38bdf8"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs><g stroke="#9a5f38" stroke-width="1.6" stroke-linejoin="round"><rect x="44" y="104" width="46" height="22" rx="7" fill="url(#mtCuff)" stroke="#1e3a8a"/><rect x="36" y="56" width="58" height="54" rx="20" fill="url(#mtSk)"/><g class="fg f-pin"><g class="fi"><rect x="82" y="60" width="13" height="24" rx="6.5" fill="url(#mtSk2)"/></g></g><g class="fg f-ring"><g class="fi"><rect x="70" y="52" width="15" height="28" rx="7.5" fill="url(#mtSk2)"/></g></g><g class="fg f-mid"><g class="fi"><rect x="56" y="47" width="16" height="31" rx="8" fill="url(#mtSk2)"/></g></g><g class="fg f-idx"><g class="fb"><rect x="38" y="32" width="19" height="39" rx="9.5" fill="url(#mtSk)"/><path d="M41 50 q6 3 13 0" fill="none" stroke="#b97a52" stroke-width="1.2"/><g class="ft"><rect x="38" y="3" width="19" height="40" rx="9.5" fill="url(#mtSk)"/><rect class="nl" x="42" y="6" width="11" height="12" rx="5" fill="#ffe4e6" stroke="#c98a6a" stroke-width="1"/><path d="M41 34 q6 3 13 0" fill="none" stroke="#b97a52" stroke-width="1.2"/><rect x="38" y="3" width="19" height="36" rx="9.5" fill="url(#mtHi)" stroke="none"/><ellipse class="pd" cx="47.5" cy="11" rx="8.6" ry="7.5" fill="url(#mtPad)" stroke="#b97a52" stroke-width="1"/></g></g></g><g class="fg f-thb"><g class="fi"><rect x="18" y="64" width="20" height="38" rx="10" fill="url(#mtSk)" transform="rotate(-38 28 83)"/></g></g></g><rect x="36" y="56" width="58" height="54" rx="20" fill="url(#mtHi)"/></svg></span></span>';
         bubble = document.createElement('div'); bubble.id = 'mt-bubble';
         document.documentElement.append(hand, bubble);
         place(hx, hy, true);
