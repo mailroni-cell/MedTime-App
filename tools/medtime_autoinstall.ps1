@@ -37,7 +37,7 @@ $webZipUrl  = 'https://github.com/mailroni-cell/MedTime-App/releases/download/te
 $webSeen    = Join-Path $dir 'last_web.txt'
 $nextCheck = Get-Date
 $nextWeb = Get-Date
-$hashFor = ''; $hashVal = ''
+$hashFor = ''; $hashVal = ''; $lastWebErr = ''
 $myTime = (Get-Item $PSCommandPath).LastWriteTime
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 while ($true) {
@@ -66,7 +66,7 @@ while ($true) {
         $winfo = (Invoke-WebRequest -Uri $webInfoUrl -UseBasicParsing -TimeoutSec 30).Content
         if ($winfo -is [byte[]]) { $winfo = [Text.Encoding]::UTF8.GetString($winfo) }
         $winfo = "$winfo".Trim()
-        $wseen = ''; if (Test-Path $webSeen) { $wseen = (Get-Content $webSeen -Raw).Trim() }
+        $wseen = ''; if (Test-Path $webSeen) { $wseen = "$(Get-Content $webSeen -Raw)".Trim() }
         if ($winfo -match 'base (\d+)' -and $winfo -ne $wseen -and (& $adb devices 2>$null | Select-String "`tdevice$")) {
           $base = $Matches[1]
           $wz = Join-Path $dir 'web.zip'; $wd = Join-Path $dir 'web'
@@ -78,13 +78,17 @@ while ($true) {
           & $adb shell rm -rf $remote 2>&1 | Out-Null
           $pout = (& $adb push "$wd\." $remote 2>&1 | Out-String).Trim()
           if ($LASTEXITCODE -eq 0) {
+            # M-145: files pushed by adb belong to the shell user; let the app read them
+            & $adb shell chmod -R a+rX $remote 2>&1 | Out-Null
+            $chk = (& $adb shell run-as $pkg cat "$remote/base.txt" 2>&1 | Out-String).Trim()
+            Log ('web check (app reads base.txt): ' + $chk)
             & $adb shell am force-stop $pkg 2>&1 | Out-Null
             & $adb shell am start -n "$pkg/.MainActivity" 2>&1 | Out-Null
             Set-Content -Path $webSeen -Value $winfo
             Log ('WEB UPDATED + STARTED ' + $winfo)
           } else { Log ('WEB UPDATE FAILED: ' + $pout) }
         }
-      } catch { }
+      } catch { $we = "$_"; if ($we -ne $lastWebErr) { Log ('WEB ERROR: ' + $we); $lastWebErr = $we } }
     }
     if ((Test-Path $apk) -and (((Get-Date) - (Get-Item $apk).LastWriteTime).TotalSeconds -gt 5)) {
       # M-144: hash the 100 MB file only when it changed (was every 10 s)
