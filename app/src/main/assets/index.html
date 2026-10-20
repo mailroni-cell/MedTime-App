@@ -2654,6 +2654,21 @@
         html #settings-page .set-grid { grid-auto-rows: max-content !important; row-gap: 26px !important;
             padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)) !important; scroll-padding-bottom: 90px; }
         html #settings-page .set-grid > .set-tile { min-height: max-content !important; height: auto !important; }
+        /* M-139: owner: the whole settings screen without scrolling. 5 equal rows share the free height; icon and labels scale with the screen,
+           title and value max 2 lines each; still scrolls only as a last resort on a very small screen */
+        html:not(.lowvision) #settings-page .set-grid { grid-auto-rows: auto !important; grid-template-rows: repeat(5, minmax(0, 1fr)) !important;
+            row-gap: 6px !important; padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px)) !important; align-content: stretch !important; }
+        html:not(.lowvision) #settings-page .set-grid > .set-tile { min-height: 0 !important; }
+        html:not(.lowvision) #settings-page .set-grid .set-tile-head { gap: 3px !important; padding: 2px 1px 0 !important; }
+        html:not(.lowvision) #settings-page .set-grid .set-ico { width: min(19vw, 7.4vh, 84px) !important; height: min(19vw, 7.4vh, 84px) !important;
+            font-size: min(9vw, 3.7vh, 2.4rem) !important; margin-top: 0 !important; }
+        html:not(.lowvision) #settings-page .set-grid .set-title { font-size: min(1rem, 3.9vw, 2vh) !important; }
+        html:not(.lowvision) #settings-page .set-grid .set-sub { font-size: min(0.82rem, 3.2vw, 1.65vh) !important; -webkit-line-clamp: 2 !important;
+            white-space: normal !important; display: -webkit-box !important; -webkit-box-orient: vertical !important; overflow: hidden !important; line-height: 1.15 !important; }
+        /* M-139: owner: ECG line on 'Add reminder' prettier and more visible, still delicate: white line with a soft rose glow (matches the red cross) */
+        .btn-med .ba-ecg { opacity: 0.8 !important; }
+        .btn-med .ba-ecg polyline { stroke: #fff7f8 !important; stroke-width: 2.2 !important;
+            filter: drop-shadow(0 0 2px #ffe4e6) drop-shadow(0 0 5px rgba(251, 113, 133, 0.75)) !important; }
     </style>
 </head>
 <body>
