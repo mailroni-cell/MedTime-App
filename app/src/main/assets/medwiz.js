@@ -34,6 +34,12 @@
         // M-102: weekend mode - optional other time on Friday + Saturday
         wkOff: ['🌴 סופ״ש (ו׳-ש׳): אותה שעה · לשינוי', '🌴 نهاية الأسبوع: نفس الساعة · للتغيير', '🌴 Weekend: aceeași oră · schimbă', '🌴 Week-end : même heure · changer', '🌴 Weekend: same time · change'],
         wkOn: ['🌴 סופ״ש (ו׳-ש׳): ', '🌴 نهاية الأسبوع: ', '🌴 Weekend: ', '🌴 Week-end : ', '🌴 Weekend: '],
+        // M-103: one weekend shift for all reminders
+        wkAll: ['🌴 בסופ״ש (ו׳-ש׳) כל התזכורות:', '🌴 في نهاية الأسبوع كل التذكيرات:', '🌴 În weekend toate mementourile:', '🌴 Le week-end, tous les rappels :', '🌴 On the weekend all reminders:'],
+        wkSame: ['באותה שעה', 'نفس الساعة', 'Aceeași oră', 'Même heure', 'Same time'],
+        wkMin: ['30 דק׳', '30 د', '30 min', '30 min', '30 min'], wkH1: ['שעה', 'ساعة', '1 oră', '1 h', '1 h'],
+        wkH15: ['שעה וחצי', 'ساعة ونصف', '1,5 ore', '1 h 30', '1.5 h'], wkH2: ['שעתיים', 'ساعتين', '2 ore', '2 h', '2 h'],
+        wkNote: ['תזכורת עם שעת סופ״ש משלה (✏️) נשארת כמו שקבעתם', 'التذكير بوقت خاص به يبقى كما هو', 'Mementourile cu oră proprie rămân la fel', 'Un rappel avec sa propre heure reste ainsi', 'A reminder with its own weekend time keeps it'],
         qMorning: ['בוקר', 'صباح', 'Dimineața', 'Matin', 'Morning'], qNoon: ['צהריים', 'ظهر', 'Prânz', 'Midi', 'Noon'],
         qEvening: ['ערב', 'مساء', 'Seara', 'Soir', 'Evening'], qNight: ['לילה', 'ليل', 'Noaptea', 'Nuit', 'Night']
     };
@@ -210,6 +216,27 @@
         window.mwWk = '';
         if (typeof resetTimeBtn === 'function') resetTimeBtn();
     }
+    // M-103: weekend shift bar at the top of the reminders list
+    window.drawWkBar = function () {
+        const list = $('med-list'); if (!list) return;
+        let bar = $('wk-bar');
+        if (!bar) { bar = document.createElement('div'); bar.id = 'wk-bar'; list.parentNode.insertBefore(bar, list); }
+        let cur = 0; try { cur = parseInt(localStorage.getItem('medtime_wkshift') || '0', 10) || 0; } catch (e) { }
+        bar.innerHTML = '';
+        const h = document.createElement('div'); h.className = 'wk-h'; h.textContent = tx('wkAll');
+        const row = document.createElement('div'); row.className = 'wk-row';
+        [[0, tx('wkSame')], [30, '+' + tx('wkMin')], [60, '+' + tx('wkH1')], [90, '+' + tx('wkH15')], [120, '+' + tx('wkH2')]].forEach(([v, l]) => {
+            const b = document.createElement('button'); b.type = 'button'; b.className = 'af-chip' + (v === cur ? ' sel' : ''); b.textContent = l;
+            b.onclick = () => {
+                vib(12);
+                try { localStorage.setItem('medtime_wkshift', String(v)); } catch (e) { }
+                if (typeof saveMeds === 'function') saveMeds(loadMeds()); // re-book alarms + redraw
+            };
+            row.appendChild(b);
+        });
+        const n = document.createElement('div'); n.className = 'wk-note'; n.textContent = tx('wkNote');
+        bar.append(h, row, n);
+    };
     window.mwEditing = null;
     window.mwEditLabel = () => tx('edit');
     // M-101: open the wizard on the summary of an existing reminder, filled in
@@ -267,6 +294,12 @@
     .mw-add-med{display:block;width:100%;margin:12px 0 0;padding:13px;border-radius:16px;border:1.5px dashed rgba(103,232,249,.7);background:rgba(8,145,178,.18);color:#a5f3fc;font-size:1.1rem;font-weight:800}
     .mw-sum-edit .mw-wk span{flex:1}.mw-sum-edit .mw-wk.on{color:#fde68a;font-weight:800}
     .mw-wk-in{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+    #wk-bar{margin:0 14px 12px;padding:12px 14px;border-radius:18px;background:rgba(253,230,138,.08);border:1.5px solid rgba(253,230,138,.35)}
+    #wk-bar .wk-h{font-weight:800;color:#fde68a;font-size:1.05rem;margin-bottom:8px}
+    #wk-bar .wk-row{display:flex;flex-wrap:wrap;gap:8px}
+    #wk-bar .af-chip{padding:8px 12px;border-radius:999px;border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06);color:#fff;font-weight:700;font-size:.95rem}
+    #wk-bar .af-chip.sel{background:#fde68a;color:#422006;border-color:#fde68a}
+    #wk-bar .wk-note{font-size:.82rem;opacity:.7;margin-top:8px}
     .mw-hint{text-align:center;font-size:.9rem;opacity:.7;margin-top:8px}`;
     document.head.appendChild(css);
     // notes placed once
