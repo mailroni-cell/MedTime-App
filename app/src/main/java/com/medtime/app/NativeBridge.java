@@ -387,4 +387,81 @@ public class NativeBridge {
     private static Intent appDetails(String pkg) {
         return new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + pkg));
     }
+
+    // ---------- M-132: pill stock ----------
+    @JavascriptInterface
+    public String getStock() { return Stock.get(activity.getApplicationContext()); }
+
+    @JavascriptInterface
+    public void setStock(String json) { Stock.set(activity.getApplicationContext(), json); }
+
+    // ---------- M-134: widget ----------
+    /** Asks the launcher to put the "next medicine" widget on the home screen (Android 8+). */
+    @JavascriptInterface
+    public boolean pinWidget() {
+        try {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return false;
+            android.appwidget.AppWidgetManager m = activity.getSystemService(android.appwidget.AppWidgetManager.class);
+            if (m == null || !m.isRequestPinAppWidgetSupported()) return false;
+            return m.requestPinAppWidget(new android.content.ComponentName(activity, Widget.class), null, null);
+        } catch (Exception e) { return false; }
+    }
+
+    @JavascriptInterface
+    public boolean hasWidget() {
+        try {
+            int[] ids = android.appwidget.AppWidgetManager.getInstance(activity)
+                    .getAppWidgetIds(new android.content.ComponentName(activity, Widget.class));
+            return ids != null && ids.length > 0;
+        } catch (Exception e) { return false; }
+    }
+
+    // ---------- M-133: automatic backup ----------
+    /**
+     * Saves the backup file by itself to Downloads/MedTime/MedTime-auto-backup.json (stays after uninstall),
+     * only when something changed (sig). Returns the time of the last automatic backup (ms), 0 if none.
+     */
+    @JavascriptInterface
+    public String autoBackup(String sig, String json) {
+        Context c = activity.getApplicationContext();
+        android.content.SharedPreferences p = c.getSharedPreferences("medtime_autobak", Context.MODE_PRIVATE);
+        int h = sig == null ? 0 : sig.hashCode();
+        if (json == null || json.isEmpty() || (p.getInt("h", 1) == h && p.getLong("t", 0) > 0)) return String.valueOf(p.getLong("t", 0));
+        boolean ok = false;
+        byte[] data;
+        try { data = json.getBytes("UTF-8"); } catch (Exception e) { return String.valueOf(p.getLong("t", 0)); }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            android.content.ContentResolver cr = c.getContentResolver();
+            String saved = p.getString("uri", "");
+            if (!saved.isEmpty()) {
+                try (java.io.OutputStream o = cr.openOutputStream(Uri.parse(saved), "wt")) {
+                    if (o != null) { o.write(data); ok = true; }
+                } catch (Exception ignored) { }
+            }
+            if (!ok) {
+                try {
+                    android.content.ContentValues v = new android.content.ContentValues();
+                    v.put(android.provider.MediaStore.MediaColumns.DISPLAY_NAME, "MedTime-auto-backup.json");
+                    v.put(android.provider.MediaStore.MediaColumns.MIME_TYPE, "application/json");
+                    v.put(android.provider.MediaStore.MediaColumns.RELATIVE_PATH, android.os.Environment.DIRECTORY_DOWNLOADS + "/MedTime");
+                    Uri u = cr.insert(android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI, v);
+                    if (u != null) {
+                        try (java.io.OutputStream o = cr.openOutputStream(u, "wt")) { if (o != null) { o.write(data); ok = true; } }
+                        if (ok) p.edit().putString("uri", u.toString()).apply();
+                    }
+                } catch (Exception ignored) { }
+            }
+        }
+        if (!ok) {
+            try {
+                java.io.File dir = c.getExternalFilesDir(null);
+                if (dir == null) dir = c.getFilesDir();
+                try (java.io.OutputStream o = new java.io.FileOutputStream(new java.io.File(dir, "MedTime-auto-backup.json"))) { o.write(data); ok = true; }
+            } catch (Exception ignored) { }
+        }
+        // a copy inside the app too (part of Android's own Google backup)
+        try (java.io.OutputStream o = new java.io.FileOutputStream(new java.io.File(c.getFilesDir(), "MedTime-auto-backup.json"))) { o.write(data); } catch (Exception ignored) { }
+        if (ok) p.edit().putInt("h", h).putLong("t", System.currentTimeMillis()).apply();
+        return String.valueOf(p.getLong("t", 0));
+    }
 }

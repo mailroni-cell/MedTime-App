@@ -33,6 +33,8 @@ public class ActionReceiver extends BroadcastReceiver {
         if (ACTION_TAKEN.equals(act) || ACTION_SKIP.equals(act)) {
             Reminders.cancel(ctx, id, false);
             MedLog.record(ctx, intent, ACTION_TAKEN.equals(act) ? "taken" : "skipped");
+            if (ACTION_TAKEN.equals(act)) Stock.taken(ctx, intent.getStringExtra(Reminders.EXTRA_ITEMS)); // M-132
+            Widget.refresh(ctx); // M-134
         }
         if (ACTION_SNOOZE.equals(intent.getAction())) {
             Reminders.snooze(ctx,

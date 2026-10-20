@@ -60,6 +60,15 @@ public class I18n {
         put("appt_call", "📞 התקשר", "📞 اتصل", "📞 Sună", "📞 Appeler", "📞 Call");
         put("appt_ok", "👍 הבנתי", "👍 فهمت", "👍 Am înțeles", "👍 Compris", "👍 Got it");
         put("appt_maps", "🗺️ מפות", "🗺️ خرائط", "🗺️ Hărți", "🗺️ Cartes", "🗺️ Maps");
+        // M-132: pill stock / M-134: widget
+        put("stock_title", "📦 תרופה עומדת להיגמר", "📦 دواء على وشك النفاد", "📦 Medicament pe terminate", "📦 Médicament bientôt fini", "📦 Medicine running low");
+        put("stock_low", "נשארו {n} של {m}. כדאי לקנות עוד.", "تبقّى {n} من {m}. يُستحسن شراء المزيد.", "Au mai rămas {n} din {m}. Cumpărați mai mult.", "Il reste {n} de {m}. Pensez à en racheter.", "{n} left of {m}. Time to buy more.");
+        put("stock_out", "{m} נגמר. כדאי לקנות עוד.", "نفد {m}. يُستحسن شراء المزيد.", "{m} s-a terminat. Cumpărați mai mult.", "{m} est fini. Pensez à en racheter.", "{m} has run out. Time to buy more.");
+        put("w_next", "התרופה הבאה", "الدواء التالي", "Următorul medicament", "Prochain médicament", "Next medicine");
+        put("w_today", "היום", "اليوم", "azi", "aujourd'hui", "today");
+        put("w_tomorrow", "מחר", "غدًا", "mâine", "demain", "tomorrow");
+        put("w_none", "אין תזכורות. לחצו להוספה", "لا توجد تذكيرات. اضغط للإضافة", "Niciun memento. Atingeți pentru a adăuga", "Aucun rappel. Touchez pour ajouter", "No reminders. Tap to add one");
+        put("w_low", "📦 להשלים: {m}", "📦 للشراء: {m}", "📦 De cumpărat: {m}", "📦 À racheter : {m}", "📦 Buy more: {m}");
         put("type_pill", "כדור", "حبة", "pastilă", "comprimé", "pill");
         put("type_injection", "זריקה", "حقنة", "injecție", "injection", "injection");
         put("type_drops", "טיפות", "قطرات", "picături", "gouttes", "drops");

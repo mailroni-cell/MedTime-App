@@ -43,6 +43,26 @@
         famNoPhone: ['חסר מספר טלפון', 'رقم الهاتف ناقص', 'Lipsește numărul', 'Numéro manquant', 'Phone number missing'],
         famFail: ['ההודעה לא נשלחה. בדקו את המספר ושיש קליטה.', 'لم تُرسل الرسالة. تحقق من الرقم والتغطية.', 'Nu s-a trimis. Verificați numărul și semnalul.', 'Non envoyé. Vérifiez le numéro et le réseau.', 'Not sent. Check the number and the signal.'],
         repHead: ['דוח לקיחת תרופות מ-MedTime (30 יום אחרונים)', 'تقرير تناول الأدوية من MedTime (آخر 30 يومًا)', 'Raport MedTime (ultimele 30 de zile)', 'Rapport MedTime (30 derniers jours)', 'MedTime medicine report (last 30 days)'],
+        stT: ['📦 מלאי תרופות', '📦 مخزون الأدوية', '📦 Stoc medicamente', '📦 Stock de médicaments', '📦 Medicine stock'],
+        stSub: ['עומד להיגמר: {n}', 'على وشك النفاد: {n}', 'Pe terminate: {n}', 'Bientôt fini : {n}', 'Running low: {n}'],
+        stSubOk: ['ספירה פעילה: {n}', 'العدّ مفعّل: {n}', 'Numărare activă: {n}', 'Comptage actif : {n}', 'Counting: {n}'],
+        stSubOff: ['כמה כדורים נשארו בבית', 'كم حبة تبقّت في البيت', 'Câte pastile mai sunt acasă', 'Combien il en reste à la maison', 'How many are left at home'],
+        stX: ['כתבו כמה יש מכל תרופה. כל לחיצה על "לקחתי" מורידה מהספירה, וכשנשאר מעט מקבלים תזכורת לקנות עוד.', 'اكتب كم لديك من كل دواء. كل ضغطة على "تناولته" تُنقص العدد، وعندما يتبقى القليل يصلك تذكير بالشراء.', 'Scrieți câte aveți din fiecare. Fiecare „Am luat” scade numărul, iar când rămân puține primiți un memento să cumpărați.', 'Indiquez combien il vous en reste. Chaque « Pris » diminue le compte et, quand il en reste peu, un rappel vous invite à en racheter.', 'Write how many you have of each medicine. Every "Taken" lowers the count, and when few are left you get a reminder to buy more.'],
+        stNone: ['עוד אין תזכורות. אחרי שתוסיפו תזכורת, התרופות יופיעו כאן.', 'لا توجد تذكيرات بعد. بعد إضافة تذكير ستظهر الأدوية هنا.', 'Încă nu sunt mementouri. După ce adăugați unul, medicamentele apar aici.', 'Pas encore de rappels. Après en avoir ajouté un, les médicaments apparaîtront ici.', 'No reminders yet. After you add one, its medicines show up here.'],
+        stLeft: ['נשארו', 'تبقّى', 'Rămase', 'Reste', 'Left'],
+        stStart: ['➕ להתחיל לספור', '➕ ابدأ العدّ', '➕ Începe numărarea', '➕ Commencer à compter', '➕ Start counting'],
+        stPack: ['🛒 קניתי חבילה (+{n})', '🛒 اشتريت علبة (+{n})', '🛒 Am cumpărat o cutie (+{n})', '🛒 J\'ai acheté une boîte (+{n})', '🛒 Bought a pack (+{n})'],
+        stLow: ['🔔 תזכורת כשנשארים {n}', '🔔 تذكير عند بقاء {n}', '🔔 Memento la {n}', '🔔 Rappel à {n}', '🔔 Remind me at {n}'],
+        stStop: ['להפסיק לספור', 'إيقاف العدّ', 'Oprește numărarea', 'Arrêter de compter', 'Stop counting'],
+        stLowNow: ['⚠️ כדאי לקנות עוד', '⚠️ يُستحسن الشراء', '⚠️ Cumpărați mai mult', '⚠️ Pensez à racheter', '⚠️ Time to buy more'],
+        wgT: ['📱 ווידג\'ט למסך הבית', '📱 أداة للشاشة الرئيسية', '📱 Widget pe ecranul principal', '📱 Widget sur l\'écran d\'accueil', '📱 Home-screen widget'],
+        wgOn: ['מופיע במסך הבית ✅', 'ظاهر في الشاشة الرئيسية ✅', 'Pe ecranul principal ✅', 'Sur l\'écran d\'accueil ✅', 'On the home screen ✅'],
+        wgOff: ['התרופה הבאה במסך הבית', 'الدواء التالي على الشاشة', 'Următorul medicament pe ecran', 'Prochain médicament à l\'écran', 'Next medicine on the home screen'],
+        wgX: ['ריבוע קטן במסך הבית של הטלפון שמראה מתי התרופה הבאה ואיזו, ומה עומד להיגמר. נגיעה בו פותחת את MedTime.', 'مربع صغير في الشاشة الرئيسية يعرض موعد الدواء التالي واسمه وما سينفد قريبًا. لمسه يفتح MedTime.', 'Un pătrat mic pe ecranul principal arată când și ce medicament urmează și ce se termină. Atingerea lui deschide MedTime.', 'Un petit carré sur l\'écran d\'accueil montre quand et quel est le prochain médicament, et ce qui va manquer. Le toucher ouvre MedTime.', 'A small square on the phone\'s home screen shows when the next medicine is and which one, and what is running low. Tapping it opens MedTime.'],
+        wgGo: ['📱 הוספה למסך הבית', '📱 إضافة إلى الشاشة الرئيسية', '📱 Adaugă pe ecranul principal', '📱 Ajouter à l\'écran d\'accueil', '📱 Add to the home screen'],
+        wgHow: ['אם לא נפתח חלון: לחיצה ארוכה על מקום ריק במסך הבית ← ווידג\'טים ← MedTime, וגוררים למסך.', 'إن لم تظهر نافذة: ضغطة طويلة على مكان فارغ ← الأدوات ← MedTime واسحبها.', 'Dacă nu apare nimic: apăsare lungă pe un loc gol ← Widgeturi ← MedTime și trageți-l.', 'Sinon : appui long sur un espace vide ← Widgets ← MedTime, puis faites-le glisser.', 'If no window opens: long-press an empty spot on the home screen → Widgets → MedTime, and drag it there.'],
+        autoOn: ['גיבוי אוטומטי: {d}', 'نسخ تلقائي: {d}', 'Copie automată: {d}', 'Sauvegarde auto : {d}', 'Auto backup: {d}'],
+        autoX: ['✅ מעכשיו הגיבוי נשמר לבד בכל שינוי, בתיקיית "הורדות" בטלפון (MedTime-auto-backup.json). הוא נשאר גם אם מוחקים את האפליקציה. כדי לשחזר: "שחזור מקובץ גיבוי" ובוחרים אותו.', '✅ من الآن تُحفظ النسخة تلقائيًا عند كل تغيير في مجلد "التنزيلات" (MedTime-auto-backup.json)، وتبقى حتى لو حُذف التطبيق. للاستعادة: "استعادة من ملف" واختره.', '✅ De acum copia se salvează singură la fiecare schimbare, în „Descărcări” (MedTime-auto-backup.json), și rămâne chiar dacă ștergeți aplicația. Restaurare: „Restaurează din fișier”.', '✅ Désormais la sauvegarde se fait seule à chaque changement, dans « Téléchargements » (MedTime-auto-backup.json), et reste même si l\'appli est supprimée. Pour restaurer : « Restaurer depuis un fichier ».', '✅ From now on the backup saves itself on every change, in the phone\'s Downloads folder (MedTime-auto-backup.json), and stays even if the app is removed. To restore: "Restore from a backup file" and pick it.'],
         bakT: ['💾 גיבוי ושחזור', '💾 نسخ احتياطي واستعادة', '💾 Copie de rezervă', '💾 Sauvegarde', '💾 Backup & restore'],
         bakSub: ['גיבוי אחרון: {d}', 'آخر نسخة: {d}', 'Ultima copie: {d}', 'Dernière : {d}', 'Last backup: {d}'],
         never: ['עוד לא גובה', 'لم يُنسخ بعد', 'niciodată', 'jamais', 'never'],
@@ -84,7 +104,8 @@
     .lg-row .it{flex:1;line-height:1.3}
     .lg-row .st{font-weight:700;white-space:nowrap}
     .lg-row.taken .st{color:#4ade80}.lg-row.skipped .st{color:#fbbf24}.lg-row.missed .st{color:#f87171}
-    .lg-list{max-height:46vh;overflow:auto}`;
+    .lg-list{max-height:46vh;overflow:auto}
+    #bk-x{white-space:pre-line}`;
     document.head.appendChild(css);
 
     function tile(id, ico, grad, bodyHtml) {
@@ -250,6 +271,91 @@
     const prevRes = window.mtResumed;
     window.mtResumed = function () { if (typeof prevRes === 'function') try { prevRes(); } catch (e) { } drawFam(); };
 
+    // ---------------- 📦 pill stock (M-132) ----------------
+    const stk = tile('tile-stock', '📦', 'linear-gradient(135deg,#fbbf24,#c2410c)', '<div class="mo-x" id="st-x"></div><div id="st-list"></div>');
+    const stCss = document.createElement('style');
+    stCss.textContent = `.st-card{background:rgba(255,255,255,.07);border-radius:16px;padding:10px 12px;margin:10px 0}
+    .st-card.low{background:rgba(251,191,36,.16);box-shadow:inset 0 0 0 2px rgba(251,191,36,.6)}
+    .st-name{font-weight:800;font-size:1.12rem;margin-bottom:6px}
+    .st-warn{color:#fde047;font-weight:800;font-size:.95rem;margin:2px 0 6px}
+    .st-row{display:flex;align-items:center;gap:10px;justify-content:center}
+    .st-row .lb{font-size:1rem;opacity:.85}
+    .st-pm{width:54px;height:54px;border-radius:50%;border:0;font-size:1.8rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#0ea5e9,#6366f1);box-shadow:inset 0 2px 1px rgba(255,255,255,.35),0 4px 10px rgba(0,0,0,.4)}
+    .st-n{width:86px;text-align:center;font-size:1.7rem;font-weight:800;border-radius:14px;border:1.5px solid rgba(255,255,255,.3);background:rgba(0,0,0,.25);color:#fff;padding:6px 0}
+    .st-sm{display:flex;gap:8px;margin-top:8px}
+    .st-sm button{flex:1;border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;border-radius:12px;padding:10px 6px;font-size:.95rem;font-weight:700}
+    .st-off{display:block;margin:8px auto 0;border:0;background:none;color:rgba(255,255,255,.6);text-decoration:underline;font-size:.9rem}`;
+    document.head.appendChild(stCss);
+    const PACK = 30, LOWS = [3, 5, 7, 10, 14];
+    const stKey = n => (n || '').trim().toLowerCase();
+    const stGet = () => { try { return JSON.parse(N.getStock()) || {}; } catch (e) { return {}; } };
+    const stSave = o => { try { N.setStock(JSON.stringify(o)); } catch (e) { } };
+    function medNames() {
+        const out = [], seen = {};
+        try {
+            (JSON.parse(localStorage.getItem('medtime_list') || '[]') || []).forEach(m => (m.items && m.items.length ? m.items : [{ name: m.name }]).forEach(it => {
+                const n = (it && it.name || '').trim(); if (n && !seen[stKey(n)]) { seen[stKey(n)] = 1; out.push(n); }
+            }));
+        } catch (e) { }
+        return out;
+    }
+    const nfmt = v => String(Math.round(v * 10) / 10);
+    function drawStock() {
+        if (!has('getStock')) { stk.style.display = 'none'; return; }
+        const all = stGet(), names = medNames();
+        const counted = names.filter(n => all[stKey(n)] && 'left' in all[stKey(n)]);
+        const low = counted.filter(n => all[stKey(n)].left <= (all[stKey(n)].low || 5));
+        heads(stk, 'stT', low.length ? fill(tx('stSub'), { n: low.join(', ') }) : counted.length ? fill(tx('stSubOk'), { n: counted.length }) : tx('stSubOff'));
+        document.getElementById('st-x').textContent = names.length ? tx('stX') : tx('stNone');
+        const box = document.getElementById('st-list');
+        box.innerHTML = '';
+        names.forEach(n => {
+            const k = stKey(n), s = all[k];
+            const c = document.createElement('div'); c.className = 'st-card';
+            const h = document.createElement('div'); h.className = 'st-name'; h.textContent = '💊 ' + n; c.appendChild(h);
+            if (!s || !('left' in s)) {
+                const b = document.createElement('button'); b.type = 'button'; b.className = 'mo-btn alt'; b.textContent = tx('stStart');
+                b.onclick = () => { vib(); const o = stGet(); o[k] = { n: n, left: PACK, low: 5 }; stSave(o); drawStock(); };
+                c.appendChild(b); box.appendChild(c); return;
+            }
+            const lowLv = s.low || 5;
+            if (s.left <= lowLv) { c.classList.add('low'); const w = document.createElement('div'); w.className = 'st-warn'; w.textContent = tx('stLowNow'); c.appendChild(w); }
+            const r = document.createElement('div'); r.className = 'st-row';
+            r.innerHTML = '<span class="lb"></span><button type="button" class="st-pm">−</button><input class="st-n" type="number" inputmode="decimal" min="0"><button type="button" class="st-pm">+</button>';
+            r.querySelector('.lb').textContent = tx('stLeft');
+            const inp = r.querySelector('.st-n'); inp.value = nfmt(s.left);
+            const put = v => { const o = stGet(); if (!o[k]) return; o[k].left = Math.max(0, v); delete o[k].w; stSave(o); drawStock(); };
+            const pm = r.querySelectorAll('.st-pm');
+            pm[0].onclick = () => { vib(); put((+inp.value || 0) - 1); };
+            pm[1].onclick = () => { vib(); put((+inp.value || 0) + 1); };
+            inp.addEventListener('change', () => put(parseFloat(String(inp.value).replace(',', '.')) || 0));
+            c.appendChild(r);
+            const sm = document.createElement('div'); sm.className = 'st-sm';
+            const pk = document.createElement('button'); pk.type = 'button'; pk.textContent = fill(tx('stPack'), { n: PACK });
+            pk.onclick = () => { vib(); put((+inp.value || 0) + PACK); };
+            const lw = document.createElement('button'); lw.type = 'button'; lw.textContent = fill(tx('stLow'), { n: lowLv });
+            lw.onclick = () => { vib(); const o = stGet(); if (!o[k]) return; const i = LOWS.indexOf(o[k].low || 5); o[k].low = LOWS[(i + 1) % LOWS.length]; delete o[k].w; stSave(o); drawStock(); };
+            sm.appendChild(pk); sm.appendChild(lw); c.appendChild(sm);
+            const off = document.createElement('button'); off.type = 'button'; off.className = 'st-off'; off.textContent = tx('stStop');
+            off.onclick = () => { vib(); const o = stGet(); delete o[k]; stSave(o); drawStock(); };
+            c.appendChild(off);
+            box.appendChild(c);
+        });
+    }
+    stk.querySelector('.set-tile-head').addEventListener('click', drawStock);
+
+    // ---------------- 📱 widget (M-134) ----------------
+    const wg = tile('tile-widget', '📱', 'linear-gradient(135deg,#a78bfa,#4338ca)', '<div class="mo-x" id="wg-x"></div><button type="button" class="mo-btn" id="wg-go"></button><div class="mo-x" id="wg-how" style="margin-top:10px;opacity:.75"></div>');
+    function drawWidget() {
+        if (!has('pinWidget')) { wg.style.display = 'none'; return; }
+        let on = false; try { on = N.hasWidget(); } catch (e) { }
+        heads(wg, 'wgT', on ? tx('wgOn') : tx('wgOff'));
+        document.getElementById('wg-x').textContent = tx('wgX');
+        document.getElementById('wg-go').textContent = tx('wgGo');
+        document.getElementById('wg-how').textContent = tx('wgHow');
+    }
+    document.getElementById('wg-go').onclick = () => { vib(); let ok = false; try { ok = N.pinWidget(); } catch (e) { } if (!ok && window.mtAlert) mtAlert(tx('wgHow')); };
+
     // ---------------- 💾 backup ----------------
     const BK = 'medtime_lastbackup';
     const bak = tile('tile-bak', '💾', 'linear-gradient(135deg,#60a5fa,#1d4ed8)',
@@ -257,22 +363,41 @@
     const fmtDate = ms => { try { return new Date(ms).toLocaleDateString(L5[li()], { day: 'numeric', month: 'numeric', year: 'numeric' }); } catch (e) { return ''; } };
     function drawBak() {
         let lastB = 0; try { lastB = +localStorage.getItem(BK) || 0; } catch (e) { }
-        heads(bak, 'bakT', fill(tx('bakSub'), { d: lastB ? fmtDate(lastB) : tx('never') }));
-        document.getElementById('bk-x').textContent = tx('bakX');
+        const autoOk = has('autoBackup');
+        if (autoOk && autoT) {
+            let d = ''; try { d = new Date(autoT).toLocaleString(L5[li()], { day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' }); } catch (e) { }
+            heads(bak, 'bakT', fill(tx('autoOn'), { d: d }));
+        } else heads(bak, 'bakT', fill(tx('bakSub'), { d: lastB ? fmtDate(lastB) : tx('never') }));
+        document.getElementById('bk-x').textContent = autoOk ? tx('autoX') + '\n\n' + tx('bakX') : tx('bakX');
         document.getElementById('bk-save').textContent = tx('bakGo');
         document.getElementById('bk-load').textContent = tx('resGo');
         document.getElementById('bk-save').style.display = has('exportBackup') ? '' : 'none';
         document.getElementById('bk-load').style.display = has('pickBackup') ? '' : 'none';
     }
-    document.getElementById('bk-save').onclick = () => {
-        vib();
+    function backupFile(now) {
         const data = {};
         for (let i = 0; i < localStorage.length; i++) {
             const k = localStorage.key(i);
             if (k && k.indexOf('medtime') === 0 && k !== BK) data[k] = localStorage.getItem(k);
         }
+        return { app: 'MedTime', v: 1, created: now, data: data, log: readLog(), stock: has('getStock') ? stGet() : {} };
+    }
+    // M-133: automatic backup on every change (when leaving the app and at start); native skips it if nothing changed
+    let autoT = 0;
+    function autoBackup() {
+        if (!has('autoBackup')) return;
+        try {
+            const f = backupFile(Date.now());
+            const sig = JSON.stringify([f.data, f.log, f.stock]);
+            autoT = +N.autoBackup(sig, JSON.stringify(f)) || autoT;
+        } catch (e) { }
+    }
+    document.addEventListener('visibilitychange', () => { if (document.hidden) autoBackup(); });
+    setTimeout(() => { autoBackup(); drawBak(); }, 6000);
+    document.getElementById('bk-save').onclick = () => {
+        vib();
         const now = Date.now();
-        const file = { app: 'MedTime', v: 1, created: now, data: data, log: readLog() };
+        const file = backupFile(now);
         const name = 'MedTime-backup-' + dayKey(new Date(now)) + '.json';
         if (N.exportBackup(name, JSON.stringify(file))) { try { localStorage.setItem(BK, String(now)); } catch (e) { } drawBak(); }
     };
@@ -287,6 +412,7 @@
             Object.keys(localStorage).filter(k => k.indexOf('medtime') === 0 && k !== BK && k !== 'medtime_setup').forEach(k => localStorage.removeItem(k));
             Object.keys(f.data).forEach(k => { if (k.indexOf('medtime') === 0 && typeof f.data[k] === 'string') localStorage.setItem(k, f.data[k]); });
             if (Array.isArray(f.log) && has('setLog')) N.setLog(JSON.stringify(f.log));
+            if (f.stock && typeof f.stock === 'object' && has('setStock')) N.setStock(JSON.stringify(f.stock)); // M-132
             const done = window.mtAlert ? mtAlert(tx('resDone'), '✅') : Promise.resolve();
             Promise.resolve(done).then(() => location.reload());
         });
@@ -305,6 +431,8 @@
     }
     document.getElementById('sh-go').onclick = () => { vib(); N.shareText(shareMsg()); };
 
-    window.moreRender = function () { drawLog(); drawFam(); drawBak(); drawShare(); };
+    window.moreRender = function () { drawLog(); drawFam(); drawStock(); drawWidget(); drawBak(); drawShare(); };
+    const prevRes2 = window.mtResumed;
+    window.mtResumed = function () { if (typeof prevRes2 === 'function') try { prevRes2(); } catch (e) { } drawWidget(); drawStock(); };
     moreRender();
 })();

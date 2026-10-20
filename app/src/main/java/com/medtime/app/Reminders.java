@@ -48,6 +48,7 @@ public class Reminders {
         }
         prefs.edit().putString(KEY_LIST, json == null ? "[]" : json).apply();
         scheduleAll(ctx);
+        Widget.refresh(ctx); // M-134
     }
 
     /** Schedule the next alarm of every saved reminder (used after sync and after reboot). */

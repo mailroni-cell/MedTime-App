@@ -419,7 +419,7 @@
                 const sub = (t.querySelector('.set-sub') || {}).textContent || '';
                 if (!visible(t)) await say(tx('swipe'));
                 await point(t.querySelector('.set-ico') || t, (t.querySelector('.set-ico') ? t.querySelector('.set-ico').textContent.trim() + ' ' : '') + title + (sub ? ': ' + sub : ''), 1500);
-                if (++n >= 12) break;
+                if (++n >= 14) break;
             }
             await say(tx('sEnd'));
             await sleep(1800);
