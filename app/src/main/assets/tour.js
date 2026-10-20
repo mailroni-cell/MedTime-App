@@ -37,6 +37,7 @@
         swipe: ['גוללים למטה לעוד', 'مرّر للأسفل للمزيد', 'Derulați pentru mai mult', 'Faites défiler pour plus', 'Scroll down for more'],
         // M-110: guide button on the main screen + more demos
         guide: ['הדרכה', 'إرشاد', 'Ghid', 'Guide', 'Guide'],
+        gLine: ['הדרכה מונפשת: איך משתמשים', 'إرشاد متحرك: كيف تستخدم', 'Ghid animat: cum se folosește', 'Guide animé : comment faire', 'Animated guide: how to use'],
         gTitle: ['👆 הדרכה מונפשת', '👆 إرشاد متحرك', '👆 Ghid animat', '👆 Guide animé', '👆 Animated guide'],
         gSub: ['בחרו נושא, ויד על המסך תראה לכם איך עושים', 'اختر موضوعًا، ويد على الشاشة تريك كيف', 'Alegeți un subiect și o mână vă arată cum', 'Choisissez un sujet, une main vous montre comment', 'Pick a topic and a hand on the screen shows you how'],
         gMore: ['📖 רוצים הסבר מפורט בכתב? יש עזרה גם בתוך ההגדרות ⚙️', '📖 تريد شرحًا مكتوبًا مفصلًا؟ توجد مساعدة داخل الإعدادات ⚙️', '📖 Explicații scrise detaliate: Ajutor în setări ⚙️', '📖 Explications détaillées : Aide dans les réglages ⚙️', '📖 Want detailed written help? There is Help inside Settings ⚙️'],
@@ -73,13 +74,14 @@
     };
     const tx = k => (T[k] || [k])[li()];
     const $ = id => document.getElementById(id);
-    const sleep = ms => new Promise(r => setTimeout(r, ms));
+    const PACE = 1.8; // M-111: owner found the demos too fast
+    const sleep = ms => new Promise(r => setTimeout(r, ms * PACE));
     const vib = p => { if (navigator.vibrate) try { navigator.vibrate(p); } catch (e) { } };
 
     const css = document.createElement('style');
     css.textContent = `
     #mt-hand{position:fixed;left:0;top:0;z-index:2147483600;width:70px;height:70px;font-size:62px;line-height:70px;text-align:center;pointer-events:none;
-      filter:drop-shadow(0 8px 10px rgba(0,0,0,.55)) drop-shadow(0 0 2px #fff);transition:transform .75s cubic-bezier(.4,.1,.2,1),opacity .3s;opacity:0;will-change:transform}
+      filter:drop-shadow(0 8px 10px rgba(0,0,0,.55)) drop-shadow(0 0 2px #fff);transition:transform 1.3s cubic-bezier(.4,.1,.2,1),opacity .4s;opacity:0;will-change:transform}
     #mt-hand.on{opacity:1}
     #mt-hand .hd{display:block;transform-origin:50% 10%;transition:transform .16s}
     #mt-hand.press .hd{transform:scale(.82) translateY(4px)}
@@ -96,14 +98,16 @@
     #mt-stop{position:fixed;left:12px;top:max(12px,env(safe-area-inset-top));z-index:2147483602;padding:12px 26px;border-radius:999px;border:0;
       background:#dc2626;color:#fff;font-weight:900;font-size:1.1rem;box-shadow:inset 0 2px 0 rgba(255,255,255,.35),0 6px 0 #7f1d1d,0 10px 20px rgba(0,0,0,.5)}
     .mt-flash{outline:3px solid #fde047!important;outline-offset:3px;border-radius:14px;transition:outline-color .3s}
-    .guide-btn{position:fixed;z-index:40;left:calc(25% + 21px);transform:translateX(-50%);bottom:calc(30px + env(safe-area-inset-bottom));width:60px;height:60px;border-radius:50%;border:0;
-      display:flex;align-items:center;justify-content:center;font-size:2rem;background:radial-gradient(circle at 35% 28%,#e9d5ff,#a855f7 45%,#581c87 85%);
-      box-shadow:inset 0 3px 4px rgba(255,255,255,.6),inset 0 -6px 10px rgba(59,7,100,.6),0 6px 0 #3b0764,0 12px 20px rgba(0,0,0,.55),0 0 0 3px rgba(233,213,255,.5),0 0 22px rgba(168,85,247,.85);animation:gbPulse 2.6s ease-in-out infinite}
-    .guide-btn span{display:block;filter:drop-shadow(0 2px 2px rgba(0,0,0,.5))}
-    .guide-btn:active{transform:translateX(-50%) translateY(4px)}
-    .guide-btn::after{content:attr(data-lbl);position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:9px;white-space:nowrap;font-size:.95rem;font-weight:900;color:#e9d5ff;text-shadow:0 1px 2px #000,0 0 8px rgba(0,0,0,.8)}
-    @keyframes gbPulse{0%,100%{box-shadow:inset 0 3px 4px rgba(255,255,255,.6),inset 0 -6px 10px rgba(59,7,100,.6),0 6px 0 #3b0764,0 12px 20px rgba(0,0,0,.55),0 0 0 3px rgba(233,213,255,.5),0 0 16px rgba(168,85,247,.6)}50%{box-shadow:inset 0 3px 4px rgba(255,255,255,.6),inset 0 -6px 10px rgba(59,7,100,.6),0 6px 0 #3b0764,0 12px 20px rgba(0,0,0,.55),0 0 0 5px rgba(233,213,255,.7),0 0 30px rgba(168,85,247,1)}}
-    html.relax-open .guide-btn,html.med-open .guide-btn,html:has(.settings-page.open) .guide-btn,html:has(.appt-page.open) .guide-btn,html:has(.appt-form-page.open) .guide-btn,html:has(.ob-bg) .guide-btn,html:has(.su-bg) .guide-btn,html:has(#mt-veil) .guide-btn{display:none!important}
+    .guide-line{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;box-sizing:border-box;margin-top:10px;padding:7px 12px;white-space:nowrap;overflow:hidden;border-radius:999px;cursor:pointer;
+      background:rgba(6,40,30,.35);border:2px solid #4ade80;color:#bbf7d0;font-weight:800;font-size:1rem;letter-spacing:.2px;
+      text-shadow:0 0 6px rgba(74,222,128,.9),0 0 14px rgba(74,222,128,.6);
+      box-shadow:0 0 8px rgba(74,222,128,.75),0 0 22px rgba(74,222,128,.45),inset 0 0 12px rgba(74,222,128,.35);animation:glPulse 3s ease-in-out infinite}
+    .guide-line .gl-t{overflow:hidden;text-overflow:ellipsis}
+    .guide-line .gl-h{font-size:1.2rem;filter:drop-shadow(0 0 6px rgba(187,247,208,.9));animation:glTap 3s ease-in-out infinite}
+    .guide-line:active{transform:scale(.98)}
+    @keyframes glPulse{50%{box-shadow:0 0 14px rgba(74,222,128,1),0 0 34px rgba(74,222,128,.7),inset 0 0 16px rgba(74,222,128,.5);border-color:#86efac}}
+    @keyframes glTap{0%,70%,100%{transform:translateY(0)}80%{transform:translateY(4px) scale(.9)}}
+    html.lowvision .guide-line{background:#000!important;color:#fff!important;text-shadow:none!important;border-color:#fff!important;animation:none}
     #mt-guide{position:fixed;inset:0;z-index:2147483500;background:rgba(2,6,23,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity .25s}
     #mt-guide.in{opacity:1}
     #mt-guide .g-card{position:relative;width:100%;max-width:560px;max-height:88vh;overflow-y:auto;box-sizing:border-box;padding:22px 16px calc(18px + env(safe-area-inset-bottom));border-radius:28px 28px 0 0;
@@ -157,11 +161,13 @@
     async function bring(el) {
         if (!el || visible(el)) return;
         ensure();
-        place(innerWidth / 2, innerHeight * 0.72); await sleep(500); check();
+        // M-111: short swipe up from where the hand already is (no trip back to a start point)
+        const sy = Math.min(Math.max(hy, innerHeight * 0.45), innerHeight * 0.75);
+        if (Math.abs(sy - hy) > 4) { place(hx, sy); await sleep(450); check(); }
         hand.classList.add('press');
         el.scrollIntoView({ block: 'center', behavior: 'smooth' });
-        place(innerWidth / 2, innerHeight * 0.32);
-        await sleep(800); hand.classList.remove('press'); await sleep(250); check();
+        place(hx, sy - 150);
+        await sleep(700); hand.classList.remove('press'); await sleep(200); check();
     }
     async function moveTo(el) {
         ensure(); check();
@@ -224,8 +230,11 @@
         try { if ($('med-page') && $('med-page').classList.contains('open')) { if (window.mwEditing === undefined) window.mwEditing = null; closeMedPage(); } } catch (e) { }
         try { if (typeof itemRows !== 'undefined' && !window.mwEditing) { itemRows.innerHTML = ''; addItemRow(); if (typeof resetTimeBtn === 'function') resetTimeBtn(); const t = $('med-time'); if (t) t.value = ''; selDays = []; window.mwWk = ''; } } catch (e) { }
         try { closeListPage(); } catch (e) { }
+        home(); // M-111: always end on the main screen
     }
     function home() {
+        try { closeApptForm(); } catch (e) { }
+        try { closeApptPage(); } catch (e) { }
         try { closeTiles(); } catch (e) { }
         try { closeSettingsPage(); } catch (e) { }
         try { closeListPage(); } catch (e) { }
@@ -414,11 +423,15 @@
     window.mtGuideOpen = () => !!sheet;
     window.mtGuideClose = closeGuide;
 
-    // the button on the main screen, with a word under it
-    const gb = document.createElement('button'); gb.type = 'button'; gb.id = 'guide-btn'; gb.className = 'guide-btn';
-    gb.innerHTML = '<span>👆</span>'; gb.onclick = () => window.mtGuide();
-    document.documentElement.appendChild(gb); // html, not body: body can be transformed, which moves fixed things
-    function guideLbl() { gb.dataset.lbl = tx('guide'); gb.setAttribute('aria-label', tx('guide')); }
+    // M-111: a glowing line under the main menu (instead of a round button)
+    const gb = document.createElement('button'); gb.type = 'button'; gb.id = 'guide-btn'; gb.className = 'guide-line';
+    gb.onclick = () => window.mtGuide();
+    const card = document.querySelector('.home-card');
+    if (card) card.appendChild(gb); else document.body.appendChild(gb);
+    if (typeof fitMain === 'function') setTimeout(fitMain, 50);
+    function guideLbl() { gb.innerHTML = '<span class="gl-h">👆</span><span class="gl-t"></span>'; gb.querySelector('.gl-t').textContent = tx('gLine');
+        // narrow screen or big text: the short name only
+        requestAnimationFrame(() => { const t = gb.querySelector('.gl-t'); if (t && t.scrollWidth > t.clientWidth + 1) t.textContent = tx('gTitle').replace(/^\S+\s/, ''); }); }
     guideLbl();
 
     // in the Help tile: one button that opens the same guide
@@ -443,9 +456,9 @@
     // ---------- hint mode (no blocking): the hand bobs over one control, then the next ----------
     let hintTimer = null;
     window.mtHint = function (targets) {
-        window.mtHintOff();
+        if (hintTimer) { clearInterval(hintTimer); hintTimer = null; } // keep the hand where it is: it glides to the next control
         const list = (targets || []).filter(Boolean);
-        if (!list.length) return;
+        if (!list.length) { window.mtHintOff(); return; }
         ensure();
         let i = 0;
         const go = () => {
@@ -456,7 +469,7 @@
             place(x, y);
             i++;
         };
-        place(innerWidth / 2, innerHeight + 40, true);
+        if (!hand.classList.contains('on')) place(innerWidth / 2, innerHeight + 40, true); // first time only
         setTimeout(go, 700); // after the card has slid in
         hintTimer = setInterval(go, list.length > 1 ? 2600 : 1500); // also follows the control if the layout moves
     };

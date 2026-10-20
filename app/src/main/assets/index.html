@@ -4200,7 +4200,10 @@
             const html = document.documentElement;
             if (html.classList.contains('kb-open') || document.querySelector('.settings-page.open')) return;
             html.classList.remove('fit1', 'fit2', 'fit3');
-            const over = () => document.body.scrollHeight > window.innerHeight + 2;
+            // M-111: also "over" when the last line of the menu reaches the bottom buttons
+            const ex = document.getElementById('exit-btn'), gl = document.getElementById('guide-btn');
+            const over = () => document.body.scrollHeight > window.innerHeight + 2 ||
+                (ex && gl && gl.offsetParent && gl.getBoundingClientRect().bottom > ex.getBoundingClientRect().top - 10);
             for (const c of ['fit1', 'fit2', 'fit3']) { if (!over()) break; html.classList.add(c); }
         }
         window.addEventListener('resize', () => setTimeout(fitMain, 80));
