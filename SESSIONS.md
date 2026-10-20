@@ -40,3 +40,6 @@
 
 ## 2026-10-19 (thread 3, morning)
 - Builds 96-105: M-088 name in voice, M-089 greeting badge, M-091 Piper voices inside APK (PC watcher now downloads from GitHub), M-092/M-093 opening as a pre-recorded video, M-094 reminder over other apps, M-095 auto-return after permission + no play icon + animated switch hint, M-096 credit flicker fixed (recorder waits for each frame) + fade-in, M-097 reminder comes back on top after Home/recents + calm 1.5 s logo ending. Owner: "הכל פיקס" on build 105.
+
+## 2026-10-20 (thread 📌 MedTime – כאן עובדים)
+- Got build 109 installed after owner restarted the PC watcher. Built M-101..M-110 (edit reminder, weekend modes, depth, time-of-day default, animated help hand + guide button, cut-border fix, exit button). Builds 110-115.
