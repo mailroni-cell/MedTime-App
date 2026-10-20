@@ -15,6 +15,12 @@ on:
 permissions:
   contents: write
 
+# M-123: two quick pushes built side by side and the older one finished last, so the phone got the older build.
+# Now a newer push cancels the build still running, and only the newest one publishes.
+concurrency:
+  group: build-apk
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
