@@ -122,12 +122,11 @@
     .mt-ripple{position:fixed;z-index:2147483599;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;border:3px solid #fde047;pointer-events:none;animation:mtRip .6s ease-out forwards}
     @keyframes mtRip{to{transform:scale(4.5);opacity:0}}
     #mt-veil{position:fixed;inset:0;z-index:2147483590;background:transparent}
-    #mt-bubble{position:fixed;left:50%;top:max(64px,calc(env(safe-area-inset-top) + 64px));transform:translateX(-50%) translateY(-16px);z-index:2147483601;width:92vw;max-width:520px;box-sizing:border-box;
-      padding:16px 18px;border-radius:22px;background:#fff7cc;color:#1c1917;font-weight:900;font-size:1.5rem;line-height:1.3;text-align:center;
-      border:4px solid #f59e0b;box-shadow:0 0 0 3px rgba(0,0,0,.55),0 12px 30px rgba(0,0,0,.6);opacity:0;transition:opacity .35s,transform .35s,top .45s,bottom .45s;pointer-events:none}
-    #mt-bubble.on{opacity:1;transform:translateX(-50%) translateY(0)}
-    #mt-bubble.mid{top:38%}
-    #mt-bubble.low{top:auto;bottom:max(22px,calc(env(safe-area-inset-bottom) + 22px))}
+    /* M-116: the caption rides right next to the hand (under it, or above when there is no room), so eyes follow one spot */
+    #mt-bubble{position:fixed;left:0;top:0;transform:translate(-999px,-999px);will-change:transform;z-index:2147483601;width:min(84vw,340px);box-sizing:border-box;
+      padding:12px 16px;border-radius:20px;background:#fff7cc;color:#1c1917;font-weight:900;font-size:1.35rem;line-height:1.3;text-align:center;
+      border:4px solid #f59e0b;box-shadow:0 0 0 3px rgba(0,0,0,.55),0 12px 30px rgba(0,0,0,.6);opacity:0;transition:opacity .35s,transform 1.3s cubic-bezier(.4,.1,.2,1);pointer-events:none}
+    #mt-bubble.on{opacity:1}
     #mt-stop{position:fixed;left:12px;top:max(12px,env(safe-area-inset-top));z-index:2147483602;padding:12px 26px;border-radius:999px;border:0;
       background:#dc2626;color:#fff;font-weight:900;font-size:1.1rem;box-shadow:inset 0 2px 0 rgba(255,255,255,.35),0 6px 0 #7f1d1d,0 10px 20px rgba(0,0,0,.5)}
     .mt-flash{outline:3px solid #fde047!important;outline-offset:3px;border-radius:14px;transition:outline-color .3s}
@@ -180,13 +179,19 @@
         hx = x; hy = y;
         if (now) { hand.style.transition = 'none'; requestAnimationFrame(() => { hand.style.transition = ''; }); }
         hand.style.transform = 'translate(' + (x - 40) + 'px,' + (y - 3) + 'px)'; // fingertip of the SVG hand
-        // M-112: the caption moves to the other half of the screen, so it never hides what the hand shows
-        if (bubble && y > -1 && y < innerHeight + 1) setSpot(y);
+        if (bubble) setSpot(y, now);
     }
     // hand high -> caption at the bottom; hand low (e.g. "Next") -> caption in the middle, so titles at the top stay visible
-    function setSpot(y) {
-        bubble.classList.toggle('low', y < innerHeight * 0.5);
-        bubble.classList.toggle('mid', y > innerHeight * 0.75);
+    // M-116: caption sits just under the hand (or just above the fingertip when the hand is low), centred on it
+    function setSpot(y, now) {
+        const x = hx, w = bubble.offsetWidth || 300, h = bubble.offsetHeight || 80, H = innerHeight;
+        y = Math.min(Math.max(y, 0), H);
+        let by = y + 112;
+        if (by + h > H - 10) by = y - 16 - h;
+        by = Math.max(10, Math.min(by, H - h - 10));
+        const bx = Math.max(8, Math.min(x - w / 2, innerWidth - w - 8));
+        if (now) { bubble.style.transition = 'none'; requestAnimationFrame(() => { bubble.style.transition = ''; }); }
+        bubble.style.transform = 'translate(' + Math.round(bx) + 'px,' + Math.round(by) + 'px)';
     }
     function centerOf(el) { const r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + Math.min(r.height / 2, 40)]; }
     function visible(el) { const r = el.getBoundingClientRect(); return r.width > 0 && r.top >= 4 && r.bottom <= innerHeight - 4; } // M-113: on screen = no swipe
@@ -195,7 +200,7 @@
     async function say(text, low) {
         ensure(); check();
         bubble.classList.remove('on'); await sleep(120);
-        bubble.textContent = text; setSpot(hy); bubble.classList.add('on');
+        bubble.textContent = text; setSpot(hy, !bubble.dataset.shown); bubble.dataset.shown = '1'; bubble.classList.add('on');
     }
     // scroll a far element into view while the hand "swipes" up
     async function bring(el) {
@@ -243,7 +248,7 @@
 
     function hideAll() {
         if (hand) { hand.classList.remove('on', 'bob', 'press'); }
-        if (bubble) bubble.classList.remove('on');
+        if (bubble) { bubble.classList.remove('on'); delete bubble.dataset.shown; }
         if (veil) { veil.remove(); veil = null; }
         if (stopBtn) { stopBtn.remove(); stopBtn = null; }
         document.querySelectorAll('.mt-flash').forEach(e => e.classList.remove('mt-flash'));
