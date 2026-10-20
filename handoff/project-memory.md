@@ -16,3 +16,4 @@
 - Roni (2026-10-19): gets confused by the split view (project board + thread side by side); wants to work in ONE window/thread. Keep work in the current thread, avoid sending him to other threads.
 - Google Play parked (2026-10-19): Roni gathering 12 real testers; reminder scheduled 2026-10-22. Start on "מתחילים Google Play" (see STATE.md for needed app changes).
 - 2026-10-20: builds 109-115 (M-101..M-110: edit reminder, weekend modes, depth, auto theme, tour.js animated hand + purple 👆 guide button with 10 demos). Watcher doesn't start after PC reboot; Claude can't start it (admin window ignores clicks), Roni runs Start-ScheduledTask himself. Roni wants: features prominent, everything in 5 languages, animated guidance.
+- 2026-10-20 night: Roni tested M-111..M-137 on the phone, all works (✅). Only gated items remain (release to all, Google Play, installer autostart fix, Orly).
