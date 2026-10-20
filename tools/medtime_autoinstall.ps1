@@ -36,6 +36,9 @@ $webInfoUrl = 'https://github.com/mailroni-cell/MedTime-App/releases/download/te
 $webZipUrl  = 'https://github.com/mailroni-cell/MedTime-App/releases/download/test/web.zip'
 $webSeen    = Join-Path $dir 'last_web.txt'
 $nextCheck = Get-Date
+$nextWeb = Get-Date
+$hashFor = ''; $hashVal = ''
+$myTime = (Get-Item $PSCommandPath).LastWriteTime
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 while ($true) {
   try {
@@ -54,6 +57,10 @@ while ($true) {
           Log ('downloaded ' + $info)
         }
       } catch { }
+    }
+    # M-144: quick web updates are checked every 15 seconds (APK builds stay every 60 s)
+    if ((Get-Date) -ge $nextWeb) {
+      $nextWeb = (Get-Date).AddSeconds(15)
       # M-140: quick web update (page files only) - pushed straight into the app on the phone, no reinstall
       try {
         $winfo = (Invoke-WebRequest -Uri $webInfoUrl -UseBasicParsing -TimeoutSec 30).Content
@@ -80,7 +87,10 @@ while ($true) {
       } catch { }
     }
     if ((Test-Path $apk) -and (((Get-Date) - (Get-Item $apk).LastWriteTime).TotalSeconds -gt 5)) {
-      $h = (Get-FileHash $apk -Algorithm MD5).Hash
+      # M-144: hash the 100 MB file only when it changed (was every 10 s)
+      $stampKey = (Get-Item $apk).LastWriteTime.Ticks.ToString() + ':' + (Get-Item $apk).Length
+      if ($stampKey -ne $hashFor) { $hashVal = (Get-FileHash $apk -Algorithm MD5).Hash; $hashFor = $stampKey }
+      $h = $hashVal
       $last = ''; if (Test-Path $stamp) { $last = (Get-Content $stamp -Raw).Trim() }
       if ($h -ne $last) {
         $dev = & $adb devices 2>$null | Select-String "`tdevice$"
@@ -109,5 +119,10 @@ while ($true) {
       }
     }
   } catch { Log ('ERROR: ' + $_) }
-  Start-Sleep -Seconds 10
+  # M-144: when Claude copies a newer watcher to the PC, this copy starts the new one and quits (no action needed from the owner)
+  try { if ((Get-Item $PSCommandPath).LastWriteTime -ne $myTime) {
+    Log 'watcher updated - restarting'; $mtx.ReleaseMutex()
+    Start-Process powershell.exe -WindowStyle Hidden -ArgumentList ('-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "' + $PSCommandPath + '"')
+    exit } } catch { }
+  Start-Sleep -Seconds 5
 }
