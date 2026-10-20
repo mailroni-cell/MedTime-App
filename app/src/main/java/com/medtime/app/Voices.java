@@ -114,7 +114,9 @@ class Voices {
                 Bundle p = new Bundle();
                 p.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, Sounds.voiceVolume(a));
                 tts.setSpeechRate(0.9f);
-                tts.speak(text, TextToSpeech.QUEUE_FLUSH, p, "preview");
+                // M-120: a short silence first, so the first word is not cut off
+                tts.playSilentUtterance(300, TextToSpeech.QUEUE_FLUSH, "lead");
+                tts.speak(text, TextToSpeech.QUEUE_ADD, p, "preview");
             } catch (Exception ignored) { }
         });
     }

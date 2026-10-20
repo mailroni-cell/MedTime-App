@@ -149,6 +149,7 @@
     #mt-bubble.on{opacity:1}
     #mt-stop{position:fixed;left:12px;top:max(12px,env(safe-area-inset-top));z-index:2147483602;padding:12px 26px;border-radius:999px;border:0;
       background:#dc2626;color:#fff;font-weight:900;font-size:1.1rem;box-shadow:inset 0 2px 0 rgba(255,255,255,.35),0 6px 0 #7f1d1d,0 10px 20px rgba(0,0,0,.5)}
+    .mt-pressed{transform:scale(.95)!important;filter:brightness(1.15);transition:transform .35s cubic-bezier(.45,0,.25,1),filter .35s!important}
     .mt-flash{outline:3px solid #fde047!important;outline-offset:3px;border-radius:14px;transition:outline-color .3s}
     .guide-line{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;box-sizing:border-box;margin-top:10px;padding:7px 12px;white-space:nowrap;overflow:hidden;border-radius:999px;cursor:pointer;
       background:rgba(6,40,30,.35);border:2px solid #4ade80;color:#bbf7d0;font-weight:800;font-size:1rem;letter-spacing:.2px;
@@ -253,12 +254,21 @@
         const [x, y] = centerOf(el);
         place(x, y); await sleep(800); check();
     }
-    async function tap(el, doClick) {
-        if (el) await moveTo(el);
+    // M-119: a clear press: the finger bends down, the button sinks a little and a ripple shows, then both come back
+    const wait = ms => new Promise(r => setTimeout(r, ms));
+    async function press(el) {
         hand.classList.add('press'); vib(10);
+        if (el) { el.classList.add('mt-pressed'); }
+        await wait(420);
         const r = document.createElement('div'); r.className = 'mt-ripple'; r.style.left = hx + 'px'; r.style.top = hy + 'px';
         document.documentElement.appendChild(r); setTimeout(() => r.remove(), 700);
-        await sleep(180); hand.classList.remove('press');
+        await wait(180);
+        hand.classList.remove('press'); if (el) el.classList.remove('mt-pressed');
+        await wait(260); check();
+    }
+    async function tap(el, doClick) {
+        if (el) await moveTo(el);
+        await press(el);
         if (el && doClick) { if (typeof doClick === 'function') doClick(); else el.click(); }
         await sleep(650); check();
     }
@@ -272,7 +282,7 @@
     async function point(el, text, ms) {
         if (text) await say(text);
         await moveTo(el);
-        if (el) el.classList.add('mt-flash');
+        if (el) { el.classList.add('mt-flash'); await press(el); }
         await sleep(ms || 1600);
         if (el) el.classList.remove('mt-flash');
         check();

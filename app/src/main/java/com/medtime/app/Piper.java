@@ -175,8 +175,10 @@ class Piper {
     static void play(Context c, GeneratedAudio a) {
         if (a == null || a.getSamples().length == 0) return;
         float[] s = a.getSamples();
-        short[] pcm = new short[s.length];
-        for (int i = 0; i < s.length; i++) pcm[i] = (short) (Math.max(-1f, Math.min(1f, s[i])) * 32767);
+        // M-120: 0.3 s of silence first, so the audio output wakes up before the first word (it was cut off)
+        int pad = a.getSampleRate() * 3 / 10;
+        short[] pcm = new short[pad + s.length];
+        for (int i = 0; i < s.length; i++) pcm[pad + i] = (short) (Math.max(-1f, Math.min(1f, s[i])) * 32767);
         stop();
         AudioTrack t = new AudioTrack.Builder()
                 .setAudioAttributes(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ALARM)
