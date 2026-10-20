@@ -191,10 +191,49 @@ public class MainActivity extends AppCompatActivity {
     // M-080: backup file chosen in the picker -> the page restores it
     static final int REQ_RESTORE = 77;
     static final int REQ_CONTACT = 78; // M-100
+    static final int REQ_PHOTO = 79; // M-148
+
+    // ---------- M-148: photo of a medicine: camera or gallery ----------
+    private String photoFor;
+    private java.io.File camFile;
+
+    void pickPhoto(String name) {
+        photoFor = name;
+        try {
+            java.io.File d = new java.io.File(getCacheDir(), "photos");
+            if (!d.exists()) d.mkdirs();
+            camFile = new java.io.File(d, "cam.jpg");
+            if (camFile.exists()) camFile.delete();
+            android.net.Uri out = androidx.core.content.FileProvider.getUriForFile(this, getPackageName() + ".updates", camFile);
+            android.content.Intent cam = new android.content.Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            cam.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, out);
+            cam.addFlags(android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION | android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            cam.setClipData(android.content.ClipData.newRawUri("", out));
+            android.content.Intent gal = new android.content.Intent(android.content.Intent.ACTION_GET_CONTENT);
+            gal.setType("image/*");
+            gal.addCategory(android.content.Intent.CATEGORY_OPENABLE);
+            android.content.Intent chooser = android.content.Intent.createChooser(gal, "📷");
+            chooser.putExtra(android.content.Intent.EXTRA_INITIAL_INTENTS, new android.content.Intent[]{cam});
+            startActivityForResult(chooser, REQ_PHOTO);
+        } catch (Exception e) {
+            webView.evaluateJavascript("window.mtPhotoDone && mtPhotoDone(false)", null);
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, android.content.Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQ_PHOTO) { // M-148
+            boolean ok = false;
+            if (resultCode == RESULT_OK && photoFor != null) {
+                android.net.Uri u = data != null && data.getData() != null ? data.getData()
+                        : (camFile != null && camFile.length() > 0 ? android.net.Uri.fromFile(camFile) : null);
+                ok = Photos.save(this, photoFor, u);
+            }
+            if (camFile != null) camFile.delete();
+            webView.evaluateJavascript("window.mtPhotoDone && mtPhotoDone(" + ok + ")", null);
+            return;
+        }
         if (requestCode == REQ_CONTACT) { // M-100
             if (resultCode != RESULT_OK || data == null || data.getData() == null) return;
             try (android.database.Cursor c = getContentResolver().query(data.getData(), new String[]{

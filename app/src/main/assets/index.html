@@ -3652,6 +3652,7 @@
                     <button class="btn-delete" onclick="deleteMed(${idx})">${t('del')}</button></div>
                 `;
                 list.appendChild(li);
+                if (window.mtCardExtras) try { mtCardExtras(li, m); } catch (e) { console.error(e); } // M-147 / M-148
             });
         }
 
@@ -4452,6 +4453,7 @@
     <script src="setup.js"></script>
     <script src="vibe.js"></script>
     <script src="more.js"></script>
+    <script src="plus.js"></script>
     <script src="voices.js"></script>
     <script src="meds.js"></script>
     <script src="themes.js"></script>

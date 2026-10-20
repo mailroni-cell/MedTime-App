@@ -206,7 +206,8 @@
             rtl: li() <= 1, title: tx('pdfT'), sub: (who ? fill(tx('pdfFor'), { n: who }) + '   ·   ' : '') + range,
             stats: [[tx('pdfAdh'), pct + '%', pct >= 90 ? '#16a34a' : pct >= 70 ? '#d97706' : '#dc2626'],
                 [tx('taken'), String(c('taken')), '#16a34a'], [tx('skipped'), String(c('skipped')), '#d97706'], [tx('missed'), String(c('missed')), '#dc2626']],
-            medsHead: tx('pdfMeds'), meds: meds, daysHead: tx('pdfDays'), days: days, foot: tx('pdfFoot')
+            medsHead: tx('pdfMeds'), meds: meds, daysHead: tx('pdfDays'), days: days, foot: tx('pdfFoot'),
+            vitalsHead: window.mtVitalsPdf && mtVitalsPdf(since) ? mtVitalsPdf(since).head : '', vitals: window.mtVitalsPdf && mtVitalsPdf(since) ? mtVitalsPdf(since).days : [] // M-149
         };
         let ok = false;
         try { ok = N.shareReportPdf('MedTime-report-' + dayKey(new Date()) + '.pdf', JSON.stringify(model)); } catch (e) { }

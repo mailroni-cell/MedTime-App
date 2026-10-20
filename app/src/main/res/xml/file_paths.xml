@@ -4,4 +4,6 @@
     <cache-path name="updates" path="updates/" />
     <!-- M-080: backup file shared to Drive / WhatsApp / mail -->
     <cache-path name="backup" path="backup/" />
+    <!-- M-148: camera photo of a medicine (made small and kept inside the app) -->
+    <cache-path name="photos" path="photos/" />
 </paths>

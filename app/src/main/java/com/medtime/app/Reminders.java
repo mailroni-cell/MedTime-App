@@ -189,6 +189,57 @@ public class Reminders {
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
+    // ---------- M-147: "taken early" - today's alarm of this reminder stays quiet ----------
+    static final String KEY_EARLY = "early_";
+
+    static String today() {
+        return new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).format(new java.util.Date());
+    }
+
+    static boolean isToday(long at) {
+        return new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).format(new java.util.Date(at)).equals(today());
+    }
+
+    /** Marks today's next alarm of the reminder (or its weekend twin) as already taken. Returns its time, or "" if none is left today. */
+    static String takenEarly(Context ctx, int baseId) {
+        SharedPreferences prefs = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        JSONArray list = parse(prefs.getString(KEY_LIST, "[]"));
+        for (int i = 0; i < list.length(); i++) {
+            JSONObject r = list.optJSONObject(i);
+            if (r == null) continue;
+            int id = r.optInt("id");
+            if (id != baseId && id != baseId + 100000000) continue;
+            String time = r.optString("time", "");
+            long at = nextOccurrence(time, daysOf(r));
+            if (at <= 0 || !isToday(at) || today().equals(prefs.getString(KEY_EARLY + id, ""))) continue;
+            prefs.edit().putString(KEY_EARLY + id, today()).apply();
+            String items = itemsOf(r).toString();
+            Intent src = new Intent();
+            src.putExtra(EXTRA_ID, id);
+            src.putExtra(EXTRA_ITEMS, items);
+            src.putExtra(EXTRA_TIME, time);
+            MedLog.record(ctx, src, "taken");
+            Stock.taken(ctx, items);
+            Widget.refresh(ctx);
+            return time;
+        }
+        return "";
+    }
+
+    static boolean earlyToday(Context ctx, int baseId) {
+        SharedPreferences p = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        String t = today();
+        return t.equals(p.getString(KEY_EARLY + baseId, "")) || t.equals(p.getString(KEY_EARLY + (baseId + 100000000), ""));
+    }
+
+    /** Called when the alarm fires: true (and cleared) if it was already taken early today. */
+    static boolean consumeEarly(Context ctx, int id) {
+        SharedPreferences p = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        if (!today().equals(p.getString(KEY_EARLY + id, ""))) return false;
+        p.edit().remove(KEY_EARLY + id).apply();
+        return true;
+    }
+
     // ---------- M-006: several medicines / injections in one reminder ----------
 
     /** Items of a saved reminder; older entries had a single name + dose. */

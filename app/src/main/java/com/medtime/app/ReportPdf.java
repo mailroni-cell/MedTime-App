@@ -44,6 +44,7 @@ class ReportPdf {
         p.stats(r.optJSONArray("stats"));
         p.meds(r.optString("medsHead"), r.optJSONArray("meds"));
         p.days(r.optString("daysHead"), r.optJSONArray("days"));
+        if (r.optJSONArray("vitals") != null && r.optJSONArray("vitals").length() > 0) p.days(r.optString("vitalsHead"), r.optJSONArray("vitals")); // M-149
         p.finishPage();
         try (FileOutputStream o = new FileOutputStream(out)) { p.doc.writeTo(o); }
         p.doc.close();

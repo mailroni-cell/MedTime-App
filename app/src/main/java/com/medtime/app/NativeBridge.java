@@ -473,4 +473,23 @@ public class NativeBridge {
     public String autoBackupErr() {
         return activity.getApplicationContext().getSharedPreferences("medtime_autobak", Context.MODE_PRIVATE).getString("err", "");
     }
+
+    // ---------- M-147: taken early ----------
+    @JavascriptInterface
+    public String takenEarly(int id) { return Reminders.takenEarly(activity.getApplicationContext(), id); }
+
+    @JavascriptInterface
+    public boolean isTakenEarly(int id) { return Reminders.earlyToday(activity.getApplicationContext(), id); }
+
+    // ---------- M-148: medicine photos ----------
+    @JavascriptInterface
+    public void pickPhoto(String name) {
+        if (activity instanceof MainActivity) activity.runOnUiThread(() -> ((MainActivity) activity).pickPhoto(name));
+    }
+
+    @JavascriptInterface
+    public String getPhoto(String name) { return Photos.dataUrl(activity.getApplicationContext(), name); }
+
+    @JavascriptInterface
+    public void deletePhoto(String name) { Photos.delete(activity.getApplicationContext(), name); }
 }

@@ -73,7 +73,22 @@ public class AlarmActivity extends Activity {
         // M-011: low-vision mode = bigger text, yellow on black
         lowVision = Sounds.lowVision(this);
         if (lowVision) root.setBackgroundColor(Color.BLACK);
-        root.addView(text("💊", 72, "#38bdf8"));
+        // M-148: the medicine's photo (if one was added) instead of the pill symbol
+        android.graphics.Bitmap photo = Photos.firstOf(this, src.getStringExtra(Reminders.EXTRA_ITEMS));
+        if (photo != null) {
+            android.widget.ImageView iv = new android.widget.ImageView(this);
+            iv.setImageBitmap(photo);
+            iv.setScaleType(android.widget.ImageView.ScaleType.CENTER_CROP);
+            iv.setClipToOutline(true);
+            GradientDrawable bg = new GradientDrawable();
+            bg.setCornerRadius(dp(28));
+            bg.setStroke(dp(3), Color.parseColor("#38bdf8"));
+            iv.setBackground(bg);
+            iv.setPadding(dp(3), dp(3), dp(3), dp(3));
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dp(200), dp(200));
+            lp.bottomMargin = dp(12);
+            root.addView(iv, lp);
+        } else root.addView(text("💊", 72, "#38bdf8"));
         root.addView(text(I18n.t(this, lines.length > 1 ? "screen_many" : "screen_one"), 22, "#94a3b8"));
         int size = lines.length > 3 ? 22 : (lines.length > 1 ? 28 : 34);
         for (String l : lines) root.addView(text(l, size, lowVision ? "#FFE500" : "#f8fafc"));

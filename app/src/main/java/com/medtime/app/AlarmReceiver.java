@@ -20,6 +20,8 @@ public class AlarmReceiver extends BroadcastReceiver {
             long next = Reminders.nextOccurrence(time, days == null ? "" : days);
             if (next > 0) Reminders.schedule(ctx, id, items, time, next, true, days == null ? "" : days);
         }
+        // M-147: already taken early today -> no reminder this time (tomorrow's is booked above)
+        if (daily && !Appointments.isAppt(intent) && Reminders.consumeEarly(ctx, id)) { Widget.refresh(ctx); return; }
 
         Intent svc = new Intent(ctx, ReminderService.class);
         svc.putExtras(intent);
