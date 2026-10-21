@@ -24,6 +24,16 @@
         form: ['⚠️ אותו חומר פעיל, אבל צורה או אופן שחרור שונים. זו לא בהכרח חלופה מלאה.', '⚠️ نفس المادة الفعالة لكن الشكل أو طريقة الإطلاق مختلفة. ليس بالضرورة بديلًا كاملًا.', '⚠️ Aceeași substanță, dar formă sau eliberare diferită. Nu e neapărat un înlocuitor complet.', '⚠️ Même principe actif, mais forme ou libération différente. Pas forcément un substitut complet.', '⚠️ Same active ingredient, but a different form or release. Not necessarily a full substitute.'],
         dose: ['⚠️ אותו חומר פעיל אבל מינון שונה. ייתכן שצריך לקחת כמות אחרת.', '⚠️ نفس المادة الفعالة لكن بجرعة مختلفة. قد تحتاج كمية مختلفة.', '⚠️ Aceeași substanță, dar doză diferită. Poate fi nevoie de altă cantitate.', '⚠️ Même principe actif mais dose différente. Il faudra peut-être une autre quantité.', '⚠️ Same active ingredient but a different dose. You may need a different amount.'],
         diff: ['❌ חומר פעיל שונה. זו לא אותה תרופה.', '❌ مادة فعالة مختلفة. هذا ليس نفس الدواء.', '❌ Substanță activă diferită. Nu este același medicament.', '❌ Principe actif différent. Ce n\'est pas le même médicament.', '❌ Different active ingredient. This is not the same medicine.'],
+        tFull: ['חלופה מלאה', 'بديل كامل', 'Înlocuitor complet', 'Substitut complet', 'Full substitute'],
+        tNear: ['כמעט זהה', 'شبه مطابق', 'Aproape identic', 'Presque identique', 'Almost identical'],
+        tForm: ['צורה שונה', 'شكل مختلف', 'Formă diferită', 'Forme différente', 'Different form'],
+        tDose: ['מינון שונה', 'جرعة مختلفة', 'Doză diferită', 'Dose différente', 'Different dose'],
+        tDiff: ['תרופה אחרת', 'دواء مختلف', 'Alt medicament', 'Autre médicament', 'Different medicine'],
+        wFull: ['ההבדל הוא רק בשם המסחרי וביצרן. החומר שפועל בגוף זהה, ולכן ההשפעה אמורה להיות זהה.', 'الفرق فقط في الاسم التجاري والشركة المصنعة. المادة التي تعمل في الجسم هي نفسها، لذا يجب أن يكون التأثير نفسه.', 'Diferă doar numele comercial și producătorul. Substanța care acționează în corp este aceeași, deci efectul ar trebui să fie același.', 'Seuls le nom commercial et le fabricant changent. La substance qui agit dans le corps est la même, l\'effet devrait donc être le même.', 'Only the brand name and the maker differ. The substance that acts in the body is the same, so the effect should be the same.'],
+        wNear: ['טבליה וכמוסה משחררות את התרופה כמעט תמיד באותו אופן. אם קשה לך לבלוע, שאל את הרוקח.', 'القرص والكبسولة يطلقان الدواء دائمًا تقريبًا بنفس الطريقة. إذا كان البلع صعبًا عليك، اسأل الصيدلي.', 'Comprimatul și capsula eliberează medicamentul aproape mereu la fel. Dacă înghițitul e greu pentru tine, întreabă farmacistul.', 'Comprimé et gélule libèrent le médicament presque toujours de la même façon. Si avaler est difficile, demandez au pharmacien.', 'Tablets and capsules almost always release the medicine the same way. If swallowing is hard for you, ask the pharmacist.'],
+        wForm: ['תרופה בשחרור מושהה פועלת לאורך זמן ארוך יותר, ולכן לפעמים משתנה מספר הפעמים ביום. אל תשנה לבד, שאל את הרוקח.', 'الدواء ممتد المفعول يعمل لفترة أطول، لذلك قد يتغير عدد المرات في اليوم. لا تغيّر بنفسك، اسأل الصيدلي.', 'Un medicament cu eliberare prelungită acționează mai mult timp, așa că uneori se schimbă numărul de doze pe zi. Nu schimba singur, întreabă farmacistul.', 'Un médicament à libération prolongée agit plus longtemps, le nombre de prises par jour peut donc changer. Ne changez rien seul, demandez au pharmacien.', 'An extended-release medicine works over a longer time, so the number of doses a day can change. Don\'t change it yourself, ask the pharmacist.'],
+        wDose: ['השווה את המספרים בשתי השורות למעלה. ייתכן שצריך יותר או פחות כדורים כדי לקבל את אותה כמות. בדוק עם הרוקח לפני שלוקחים.', 'قارن الأرقام في السطرين أعلاه. قد تحتاج أقراصًا أكثر أو أقل للحصول على نفس الكمية. تحقق مع الصيدلي قبل التناول.', 'Compară cifrele din cele două rânduri de mai sus. Poate fi nevoie de mai multe sau mai puține comprimate pentru aceeași cantitate. Verifică cu farmacistul înainte.', 'Comparez les chiffres des deux lignes ci-dessus. Il faudra peut-être plus ou moins de comprimés pour la même quantité. Vérifiez avec le pharmacien avant.', 'Compare the numbers in the two lines above. You may need more or fewer pills to get the same amount. Check with the pharmacist before taking it.'],
+        wDiff: ['החומר הפעיל הוא מה שעושה את העבודה בגוף. כאן הוא שונה, ולכן אל תיקח את התרופה הזו במקום המקורית. חזור לבית המרקחת.', 'المادة الفعالة هي ما يعمل في الجسم. هنا هي مختلفة، لذا لا تتناول هذا الدواء بدل الأصلي. ارجع إلى الصيدلية.', 'Substanța activă este cea care acționează în corp. Aici este diferită, deci nu lua acest medicament în locul celui original. Întoarce-te la farmacie.', 'Le principe actif est ce qui agit dans le corps. Ici il est différent : ne prenez pas ce médicament à la place de l\'original. Retournez à la pharmacie.', 'The active ingredient is what does the work in the body. Here it is different, so don\'t take this medicine instead of the original. Go back to the pharmacy.'],
         pharm: ['כדאי לוודא עם הרוקח.', 'يُفضّل التأكد مع الصيدلي.', 'Verifică și cu farmacistul.', 'Vérifiez avec le pharmacien.', 'Please confirm with the pharmacist.'],
         was: ['רשם הרופא', 'وصفة الطبيب', 'Prescris', 'Prescrit', 'Prescribed'],
         got: ['קיבלת', 'استلمت', 'Primit', 'Reçu', 'You got'],
@@ -135,6 +145,27 @@
     .sb-src{color:#94a3b8;font-size:.8rem;margin:4px 0 10px}
     .sb-btns{display:flex;gap:10px;margin-top:8px}
     .sb-btns button{flex:1;min-height:52px;border-radius:14px;font-size:1.1rem;font-weight:800;border:none;color:#fff;background:#334155}
+    .sb-top{flex:1 1 auto;overflow:auto;min-height:60px}
+    .sb-verd{position:relative;margin:6px 0 4px;padding:12px 14px 10px;border-radius:22px;text-align:center;background:linear-gradient(180deg,rgba(var(--vc),.22),rgba(var(--vc),.08));border:2px solid rgba(var(--vc),.85);animation:sbUp .45s cubic-bezier(.2,.9,.3,1.2) both}
+    .sb-verd.v-full,.sb-verd.v-near{--vc:52,211,153;--vh:#34d399;--vd:#047857}
+    .sb-verd.v-form,.sb-verd.v-dose{--vc:251,191,36;--vh:#fbbf24;--vd:#b45309}
+    .sb-verd.v-diff{--vc:248,113,113;--vh:#f87171;--vd:#b91c1c}
+    @keyframes sbUp{from{transform:translateY(60%);opacity:0}to{transform:none;opacity:1}}
+    .sb-orb3{position:relative;width:92px;height:104px;margin:0 auto;perspective:300px}
+    .sb-orb{position:absolute;left:6px;top:0;width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;will-change:transform;
+      background:radial-gradient(circle at 34% 28%,#fff 0,var(--vh) 22%,var(--vd) 78%,#111 120%);box-shadow:inset -8px -10px 18px rgba(0,0,0,.45),inset 6px 6px 12px rgba(255,255,255,.35),0 0 18px var(--vh);
+      animation:sbFloat 2.4s ease-in-out infinite}
+    .sb-orb span{font-size:2.9rem;font-weight:900;color:#fff;line-height:1;text-shadow:0 2px 0 rgba(0,0,0,.35),0 4px 6px rgba(0,0,0,.4);transform:translateZ(20px)}
+    .sb-halo{position:absolute;left:-8px;top:-14px;width:108px;height:108px;border-radius:50%;background:radial-gradient(circle,var(--vh) 0,rgba(var(--vc),.35) 40%,transparent 68%);will-change:opacity,transform;animation:sbBlink 1.1s ease-in-out infinite}
+    .sb-shd{position:absolute;left:18px;bottom:0;width:56px;height:10px;border-radius:50%;background:rgba(0,0,0,.55);will-change:transform,opacity;animation:sbShd 2.4s ease-in-out infinite}
+    @keyframes sbFloat{0%,100%{transform:translateY(0) rotateY(-22deg) rotateX(8deg)}50%{transform:translateY(-12px) rotateY(22deg) rotateX(-6deg)}}
+    @keyframes sbBlink{0%,100%{opacity:.25;transform:scale(.85)}50%{opacity:1;transform:scale(1.08)}}
+    @keyframes sbShd{0%,100%{transform:scale(1);opacity:.55}50%{transform:scale(.65);opacity:.25}}
+    .sb-vt{font-size:2rem;font-weight:900;color:var(--vh);margin:4px 0 2px;text-shadow:0 0 1px #000,0 2px 3px #000}
+    .sb-verd .sb-res{font-size:1.15rem;margin:2px 0 6px}
+    .sb-why{font-size:1.02rem;line-height:1.5;color:#e2e8f0;margin-bottom:6px}
+    .sb-verd .pharm{font-size:1.02rem;font-weight:800;color:#fde68a}
+    .sb-verd .sb-src{margin:4px 0 0}
     .sb-btns .ok{background:linear-gradient(135deg,#7c3aed,#5b21b6)}
     `;
     document.head.appendChild(css);
@@ -205,12 +236,17 @@
         return new Promise(res => {
             const lv = compare(orig, got);
             s.onBack = () => { res('back'); return true; };
-            s.sh.innerHTML = `<div class="sb-res"></div>
+            // M-165 (owner): the answer opens big at the bottom, with a floating, blinking 3D sign and a clear explanation
+            const K = lv.charAt(0).toUpperCase() + lv.slice(1);
+            s.sh.innerHTML = `<div class="sb-top">
                 <div class="sb-row"><b></b><span class="n1"></span><small class="i1"></small></div>
-                <div class="sb-row"><b></b><span class="n2"></span><small class="i2"></small></div>
-                <div class="sb-res pharm" style="font-size:1.05rem;color:#fde68a"></div><div class="sb-src"></div>
+                <div class="sb-row"><b></b><span class="n2"></span><small class="i2"></small></div></div>
+                <div class="sb-verd v-${lv}"><div class="sb-orb3"><i class="sb-halo"></i><div class="sb-orb"><span>${({ full: '✓', near: '≈', form: '!', dose: '!', diff: '✕' })[lv]}</span></div><i class="sb-shd"></i></div>
+                <div class="sb-vt"></div><div class="sb-res"></div><div class="sb-why"></div><div class="pharm"></div><div class="sb-src"></div></div>
                 <div class="sb-btns"><button type="button" class="pv"></button><button type="button" class="cl"></button>${lv === 'diff' ? '' : '<button type="button" class="ok"></button>'}</div>`;
-            s.sh.querySelector('.sb-res').textContent = tx(lv);
+            s.sh.querySelector('.sb-vt').textContent = tx('t' + K);
+            s.sh.querySelector('.sb-res').textContent = tx(lv).replace(/^\S+\s+/, '').replace(/^[^:.]+\s*:\s*/, '').replace(/^./, c => c.toUpperCase());
+            s.sh.querySelector('.sb-why').textContent = tx('w' + K);
             const bs = s.sh.querySelectorAll('.sb-row b'); bs[0].textContent = tx('was'); bs[1].textContent = tx('got');
             s.sh.querySelector('.n1').textContent = nameOf(orig); s.sh.querySelector('.i1').textContent = ingText(orig) + ' · ' + formOf(orig);
             s.sh.querySelector('.n2').textContent = nameOf(got); s.sh.querySelector('.i2').textContent = ingText(got) + ' · ' + formOf(got);

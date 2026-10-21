@@ -10,7 +10,7 @@
         color: var(--mtc, #ffffff) !important;
         -webkit-text-stroke: 0.4px rgba(0,0,0,.7);
         font-weight: 800 !important;
-        text-shadow: 0 0 1px #000, 0 0 2px #000, 0 1px 2px #000, 0 0 6px var(--mtg, #67e8f9), 0 0 14px var(--mtg, #67e8f9), 0 0 24px var(--mtg, #67e8f9) !important;
+        text-shadow: 0 0 2px #000, 0 1px 2px #000, 0 0 9px var(--mtg, #67e8f9) !important; /* M-165: 3 light layers, smooth on the phone */
     }
     /* second lines: in the fluorescent colour itself, with the dark outline */
     :is(${SEL}) :is(.set-sub, .ab-sub, .lb-next, .lb-nt), :is(${SEL}) .set-sub *, :is(#mt-x, .set-tile-head) .set-sub, :is(#mt-x, .set-tile-head) .set-sub * {
