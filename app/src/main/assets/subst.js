@@ -13,6 +13,11 @@
         q2: ['מה קיבלת בבית המרקחת?', 'ماذا استلمت من الصيدلية؟', 'Ce ai primit la farmacie?', 'Qu\'avez-vous reçu à la pharmacie ?', 'What did you get at the pharmacy?'],
         hint: ['מקלידים את השם כמו על האריזה, ובוחרים מהרשימה', 'اكتب الاسم كما على العلبة واختر من القائمة', 'Scrie numele ca pe cutie și alege din listă', 'Tapez le nom comme sur la boîte et choisissez dans la liste', 'Type the name as on the box and pick from the list'],
         none: ['לא נמצא במאגר משרד הבריאות. נסו לכתוב את השם כמו על האריזה.', 'غير موجود في سجل وزارة الصحة. جرّب كتابة الاسم كما على العلبة.', 'Nu există în registrul Ministerului Sănătății. Scrie numele ca pe cutie.', 'Introuvable dans le registre du ministère de la Santé. Tapez le nom comme sur la boîte.', 'Not found in the Ministry of Health registry. Type the name as on the box.'],
+        prev: ['→ חזרה', '→ رجوع', '← Înapoi', '← Retour', '← Back'],
+        scan: ['📷 סריקה', '📷 مسح', '📷 Scanează', '📷 Scanner', '📷 Scan'],
+        hintScan: ['מקלידים את השם כמו על האריזה, או 📷 מצלמים את הברקוד שעל הקופסה', 'اكتب الاسم كما على العلبة أو 📷 صوّر الباركود', 'Scrie numele ca pe cutie sau 📷 fotografiază codul de bare', 'Tapez le nom comme sur la boîte ou 📷 photographiez le code-barres', 'Type the name as on the box, or 📷 photograph the barcode on the box'],
+        noRead: ['לא הצלחתי לקרוא ברקוד בתמונה. צלמו מקרוב את הברקוד, באור טוב, או הקלידו את השם.', 'تعذرت قراءة الباركود. صوّره عن قرب وبإضاءة جيدة أو اكتب الاسم.', 'Codul nu a putut fi citit. Fotografiază-l de aproape, la lumină bună, sau scrie numele.', 'Code illisible. Photographiez-le de près, avec une bonne lumière, ou tapez le nom.', 'Could not read a barcode. Photograph it up close in good light, or type the name.'],
+        noCode: ['הברקוד נקרא, אבל הוא לא במאגר משרד הבריאות. הקלידו את השם.', 'تمت قراءة الباركود لكنه غير موجود في السجل. اكتب الاسم.', 'Codul a fost citit, dar nu e în registru. Scrie numele.', 'Code lu, mais absent du registre. Tapez le nom.', 'Barcode read, but it is not in the registry. Please type the name.'],
         loading: ['טוען את מאגר התרופות...', 'جارٍ تحميل سجل الأدوية...', 'Se încarcă registrul de medicamente...', 'Chargement du registre des médicaments...', 'Loading the medicine registry...'],
         full: ['✅ חלופה מלאה: אותו חומר פעיל, אותו מינון ואותה צורה.', '✅ بديل كامل: نفس المادة الفعالة والجرعة والشكل.', '✅ Înlocuitor complet: aceeași substanță activă, aceeași doză și formă.', '✅ Substitut complet : même principe actif, même dose et même forme.', '✅ Full substitute: same active ingredient, same dose and same form.'],
         near: ['🟢 אותו חומר פעיל ואותו מינון, רק צורה מעט שונה (טבליה / כמוסה). בדרך כלל זו חלופה.', '🟢 نفس المادة الفعالة والجرعة، فقط الشكل مختلف قليلًا (قرص / كبسولة). عادةً هذا بديل.', '🟢 Aceeași substanță și doză, doar forma diferă puțin (comprimat / capsulă). De obicei e un înlocuitor.', '🟢 Même principe actif et même dose, seule la forme diffère un peu (comprimé / gélule). C\'est en général un substitut.', '🟢 Same active ingredient and dose, only a slightly different form (tablet / capsule). Usually a substitute.'],
@@ -116,6 +121,9 @@
     .sb-t{font-size:1.35rem;font-weight:800;margin:2px 0 4px}
     .sb-h{color:#c7d2fe;font-size:.95rem;margin-bottom:10px}
     .sb-in{width:100%;box-sizing:border-box;font-size:1.25rem;padding:12px 14px;border-radius:14px;border:2px solid #a78bfa;background:#0b1024;color:#fff;outline:none}
+    .sb-inrow{display:flex;gap:8px;align-items:stretch}
+    .sb-inrow .sb-in{flex:1;min-width:0}
+    .sb-scan{flex:0 0 auto;border:none;border-radius:14px;padding:0 14px;font-size:1.05rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#0ea5e9,#0369a1)}
     .sb-list{overflow:auto;margin-top:10px;flex:1;min-height:120px}
     .sb-it{display:block;width:100%;text-align:start;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;color:#fff;padding:10px 12px;margin-bottom:8px;font-size:1.05rem;font-weight:800}
     .sb-it small{display:block;font-weight:500;color:#a5b4fc;font-size:.85rem;margin-top:2px;direction:ltr;text-align:start}
@@ -140,21 +148,30 @@
         if (vv) { vv.addEventListener('resize', fit); vv.addEventListener('scroll', fit); }
         window.addEventListener('resize', fit);
         document.body.appendChild(bg);
-        const close = () => { if (vv) { vv.removeEventListener('resize', fit); vv.removeEventListener('scroll', fit); } window.removeEventListener('resize', fit); bg.remove(); };
-        return { bg, sh, close };
+        const o = { bg, sh, onBack: null };
+        const unBack = window.mtBackPush ? mtBackPush(() => (o.onBack ? o.onBack() : (close(), false))) : null; // M-163: phone back = one step back
+        const close = () => { if (vv) { vv.removeEventListener('resize', fit); vv.removeEventListener('scroll', fit); } window.removeEventListener('resize', fit); bg.remove(); if (unBack) unBack(); };
+        o.close = close;
+        return o;
     }
-    // one step: type a name, pick a registry entry
-    function pickStep(s, title, start) {
+    // one step: type a name (or scan the box), pick a registry entry. Resolves an entry, 'back' or null (close).
+    function pickStep(s, title, start, canBack) {
         return new Promise(res => {
-            s.sh.innerHTML = `<div class="sb-t"></div><div class="sb-h"></div><input class="sb-in" type="text" autocomplete="off"><div class="sb-list"></div><div class="sb-btns"><button type="button"></button></div>`;
+            s.sh.innerHTML = `<div class="sb-t"></div><div class="sb-h"></div><div class="sb-inrow"><input class="sb-in" type="text" autocomplete="off"></div><div class="sb-list"></div><div class="sb-btns"></div>`;
             s.sh.querySelector('.sb-t').textContent = title;
-            s.sh.querySelector('.sb-h').textContent = tx('hint');
-            const inp = s.sh.querySelector('.sb-in'), list = s.sh.querySelector('.sb-list'), cancel = s.sh.querySelector('.sb-btns button');
-            cancel.textContent = tx('back'); cancel.onclick = () => { s.close(); res(null); };
-            const draw = () => {
-                const r = search(inp.value, 30);
+            s.sh.querySelector('.sb-h').textContent = tx(canScan() ? 'hintScan' : 'hint');
+            const inp = s.sh.querySelector('.sb-in'), list = s.sh.querySelector('.sb-list'), btns = s.sh.querySelector('.sb-btns');
+            s.onBack = () => { res(canBack ? 'back' : null); return canBack; };
+            if (canScan()) {
+                const sc = document.createElement('button'); sc.type = 'button'; sc.className = 'sb-scan'; sc.textContent = tx('scan');
+                sc.onclick = () => scan().then(r => { if (r && r.length === 1) res(r[0]); else if (r) show(r, r.length ? '' : tx('noCode')); else show([], tx('noRead')); });
+                s.sh.querySelector('.sb-inrow').appendChild(sc);
+            }
+            if (canBack) { const bb = document.createElement('button'); bb.type = 'button'; bb.textContent = tx('prev'); bb.onclick = () => res('back'); btns.appendChild(bb); }
+            const cancel = document.createElement('button'); cancel.type = 'button'; cancel.textContent = tx('back'); cancel.onclick = () => res(null); btns.appendChild(cancel);
+            const show = (r, msg) => {
                 list.innerHTML = '';
-                if (!r.length) { if (inp.value.trim()) { const m = document.createElement('div'); m.className = 'sb-msg'; m.textContent = tx('none'); list.appendChild(m); } return; }
+                if (msg) { const m = document.createElement('div'); m.className = 'sb-msg'; m.textContent = msg; list.appendChild(m); }
                 r.forEach(d => {
                     const b = document.createElement('button'); b.type = 'button'; b.className = 'sb-it';
                     b.innerHTML = esc(nameOf(d)) + `<small>${esc(ingText(d))} · ${esc(formOf(d))}</small>`;
@@ -162,8 +179,9 @@
                     list.appendChild(b);
                 });
             };
+            const draw = () => { const r = search(inp.value, 30); show(r, !r.length && inp.value.trim() ? tx('none') : ''); };
             inp.value = start || ''; inp.oninput = draw; draw();
-            setTimeout(() => { try { inp.focus(); } catch (e) { } }, 50);
+            if (!start) setTimeout(() => { try { inp.focus(); } catch (e) { } }, 50);
         });
     }
     function chooseItem(m) {
@@ -171,6 +189,7 @@
         if (items.length <= 1) return Promise.resolve(items[0] || null);
         return new Promise(res => {
             const s = sheet();
+            s.onBack = () => { s.close(); res(null); return false; };
             s.sh.innerHTML = `<div class="sb-t"></div><div class="sb-list"></div><div class="sb-btns"><button type="button"></button></div>`;
             s.sh.querySelector('.sb-t').textContent = tx('which');
             const list = s.sh.querySelector('.sb-list');
@@ -182,36 +201,117 @@
             const c = s.sh.querySelector('.sb-btns button'); c.textContent = tx('back'); c.onclick = () => { s.close(); res(null); };
         });
     }
+    function resultStep(s, m, it, orig, got) {
+        return new Promise(res => {
+            const lv = compare(orig, got);
+            s.onBack = () => { res('back'); return true; };
+            s.sh.innerHTML = `<div class="sb-res"></div>
+                <div class="sb-row"><b></b><span class="n1"></span><small class="i1"></small></div>
+                <div class="sb-row"><b></b><span class="n2"></span><small class="i2"></small></div>
+                <div class="sb-res pharm" style="font-size:1.05rem;color:#fde68a"></div><div class="sb-src"></div>
+                <div class="sb-btns"><button type="button" class="pv"></button><button type="button" class="cl"></button>${lv === 'diff' ? '' : '<button type="button" class="ok"></button>'}</div>`;
+            s.sh.querySelector('.sb-res').textContent = tx(lv);
+            const bs = s.sh.querySelectorAll('.sb-row b'); bs[0].textContent = tx('was'); bs[1].textContent = tx('got');
+            s.sh.querySelector('.n1').textContent = nameOf(orig); s.sh.querySelector('.i1').textContent = ingText(orig) + ' · ' + formOf(orig);
+            s.sh.querySelector('.n2').textContent = nameOf(got); s.sh.querySelector('.i2').textContent = ingText(got) + ' · ' + formOf(got);
+            s.sh.querySelector('.pharm').textContent = tx('pharm');
+            s.sh.querySelector('.sb-src').textContent = tx('src');
+            const pv = s.sh.querySelector('.pv'); pv.textContent = tx('prev'); pv.onclick = () => res('back');
+            const cl = s.sh.querySelector('.cl'); cl.textContent = tx('close'); cl.onclick = () => res(null);
+            const ok = s.sh.querySelector('.ok');
+            if (ok) {
+                ok.textContent = tx('keep');
+                ok.onclick = () => {
+                    const o = loadS(); o[m.id + '|' + it.name] = { n: nameOf(got), o: nameOf(orig), lv: lv };
+                    saveS(o); res(null); if (typeof renderMeds === 'function') renderMeds();
+                };
+            }
+            if (navigator.vibrate) try { navigator.vibrate(lv === 'full' ? 20 : [15, 40, 15]); } catch (e) { }
+        });
+    }
     async function start(m) {
         vib();
         const it = await chooseItem(m); if (!it) return;
         const s = sheet();
         s.sh.innerHTML = `<div class="sb-t">${esc(tx('loading'))}</div>`;
         await loadDb();
-        const orig = await pickStep(s, tx('q1'), it.name); if (!orig) return;
-        const got = await pickStep(s, tx('q2'), ''); if (!got) return;
-        const lv = compare(orig, got);
-        s.sh.innerHTML = `<div class="sb-res"></div>
-            <div class="sb-row"><b></b><span class="n1"></span><small class="i1"></small></div>
-            <div class="sb-row"><b></b><span class="n2"></span><small class="i2"></small></div>
-            <div class="sb-res pharm" style="font-size:1.05rem;color:#fde68a"></div><div class="sb-src"></div>
-            <div class="sb-btns"><button type="button" class="cl"></button>${lv === 'diff' ? '' : '<button type="button" class="ok"></button>'}</div>`;
-        s.sh.querySelector('.sb-res').textContent = tx(lv);
-        const bs = s.sh.querySelectorAll('.sb-row b'); bs[0].textContent = tx('was'); bs[1].textContent = tx('got');
-        s.sh.querySelector('.n1').textContent = nameOf(orig); s.sh.querySelector('.i1').textContent = ingText(orig) + ' · ' + formOf(orig);
-        s.sh.querySelector('.n2').textContent = nameOf(got); s.sh.querySelector('.i2').textContent = ingText(got) + ' · ' + formOf(got);
-        s.sh.querySelector('.pharm').textContent = tx('pharm');
-        s.sh.querySelector('.sb-src').textContent = tx('src');
-        const cl = s.sh.querySelector('.cl'); cl.textContent = tx('close'); cl.onclick = s.close;
-        const ok = s.sh.querySelector('.ok');
-        if (ok) {
-            ok.textContent = tx('keep');
-            ok.onclick = () => {
-                const o = loadS(); o[m.id + '|' + it.name] = { n: nameOf(got), o: nameOf(orig), lv: lv };
-                saveS(o); s.close(); if (typeof renderMeds === 'function') renderMeds();
-            };
+        let step = 0, orig = null, got = null;
+        for (;;) {
+            if (step === 0) {
+                const r = await pickStep(s, tx('q1'), orig ? nameOf(orig) : it.name, false);
+                if (!r || r === 'back') break; orig = r; step = 1;
+            } else if (step === 1) {
+                const r = await pickStep(s, tx('q2'), '', true);
+                if (r === 'back') { step = 0; continue; } if (!r) break; got = r; step = 2;
+            } else {
+                const r = await resultStep(s, m, it, orig, got);
+                if (r === 'back') { step = 1; continue; } break;
+            }
         }
-        if (navigator.vibrate) try { navigator.vibrate(lv === 'full' ? 20 : [15, 40, 15]); } catch (e) { }
+        s.close();
+    }
+
+    // ---------- M-163: scan the box (barcode / DataMatrix on the package) ----------
+    const N = window.MedTimeNative;
+    const canScan = () => !!(N && typeof N.pickPhoto === 'function' && typeof N.getPhoto === 'function');
+    let scanRes = null;
+    const prevDone = window.mtPhotoDone;
+    window.mtPhotoDone = function (ok) {
+        if (!scanRes) return prevDone ? prevDone(ok) : undefined;
+        const r = scanRes; scanRes = null;
+        let src = ''; try { src = ok ? N.getPhoto('__scan__') : ''; } catch (e) { }
+        try { N.deletePhoto && N.deletePhoto('__scan__'); } catch (e) { }
+        r(src);
+    };
+    function loadZx() {
+        if (window.ZXing) return Promise.resolve();
+        return new Promise(res => { const s = document.createElement('script'); s.src = 'lib/zxing.min.js'; s.onload = res; s.onerror = res; document.head.appendChild(s); });
+    }
+    function gtinToEans(t) {
+        const out = new Set(); t = String(t || '');
+        const m = t.match(/(?:^|\x1d|\u001d)?01(\d{14})/); // GS1 DataMatrix: (01) + 14-digit GTIN
+        const d = m ? m[1] : t.replace(/\D/g, '');
+        if (d) { out.add(d); out.add(d.replace(/^0+/, '')); if (d.length === 14) out.add(d.slice(1)); }
+        return [...out].filter(x => x.length >= 8);
+    }
+    async function decode(src) {
+        const img = await new Promise(r => { const i = new Image(); i.onload = () => r(i); i.onerror = () => r(null); i.src = src; });
+        if (!img) return [];
+        const found = [];
+        if ('BarcodeDetector' in window) {
+            try { (await new BarcodeDetector().detect(img)).forEach(b => found.push(b.rawValue)); } catch (e) { }
+        }
+        if (!found.length) {
+            await loadZx();
+            if (window.ZXing) {
+                const Z = window.ZXing, hints = new Map();
+                hints.set(Z.DecodeHintType.TRY_HARDER, true);
+                hints.set(Z.DecodeHintType.POSSIBLE_FORMATS, [Z.BarcodeFormat.EAN_13, Z.BarcodeFormat.EAN_8, Z.BarcodeFormat.DATA_MATRIX, Z.BarcodeFormat.CODE_128, Z.BarcodeFormat.UPC_A, Z.BarcodeFormat.QR_CODE]);
+                for (const rot of [0, 90]) {
+                    try {
+                        const c = document.createElement('canvas'), w = img.naturalWidth, h = img.naturalHeight;
+                        c.width = rot ? h : w; c.height = rot ? w : h;
+                        const g = c.getContext('2d'); if (rot) { g.translate(h, 0); g.rotate(Math.PI / 2); } g.drawImage(img, 0, 0);
+                        const lum = new Z.HTMLCanvasElementLuminanceSource(c);
+                        const r = new Z.MultiFormatReader(); r.setHints(hints);
+                        found.push(r.decode(new Z.BinaryBitmap(new Z.HybridBinarizer(lum))).getText()); break;
+                    } catch (e) { }
+                }
+            }
+        }
+        return found;
+    }
+    // resolves: list of registry entries (maybe empty = code not in the registry), or null = no code could be read
+    function scan() {
+        return new Promise(res => {
+            scanRes = async src => {
+                if (!src) return res(null);
+                const codes = await decode(src); if (!codes.length) return res(null);
+                const keys = new Set(); codes.forEach(c => gtinToEans(c).forEach(k => keys.add(k)));
+                res(DB.filter(d => d.b.some(b => keys.has(String(b).replace(/\D/g, '')))));
+            };
+            vib(); N.pickPhoto('__scan__');
+        });
     }
 
     // ---------- cards ----------
