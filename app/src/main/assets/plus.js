@@ -47,8 +47,8 @@
     .pl-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
     .pl-early{border:1.5px solid #86efac!important;background:linear-gradient(135deg,#16a34a,#15803d)!important;color:#fff!important;border-radius:999px!important;padding:9px 14px!important;font-weight:800!important;font-size:1rem!important}
     .pl-on{display:inline-block;padding:8px 12px;border-radius:999px;background:rgba(34,197,94,.18);color:#86efac;font-weight:800}
-    .pl-cam{border:1px solid rgba(255,255,255,.3)!important;background:rgba(255,255,255,.08)!important;color:#fff!important;border-radius:999px!important;padding:2px 9px!important;font-size:.85rem!important;margin-inline-start:6px;vertical-align:middle}
-    .pl-th{width:46px;height:46px;border-radius:12px;object-fit:cover;vertical-align:middle;margin-inline-end:8px;border:2px solid #38bdf8;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+    .pl-cam{display:inline-flex!important;align-items:center;gap:8px;border:1.5px solid #7dd3fc!important;background:linear-gradient(135deg,#0ea5e9,#0369a1)!important;color:#fff!important;border-radius:999px!important;padding:8px 14px!important;font-size:.98rem!important;font-weight:800!important;min-height:44px}
+    .pl-th{width:52px;height:52px;border-radius:12px;object-fit:cover;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.4);margin:-4px 0 -4px -6px}
     .vt-tabs{display:flex;gap:6px;margin:4px 0 10px}
     .vt-tabs button{flex:1;border:1.5px solid rgba(255,255,255,.25)!important;background:rgba(255,255,255,.07)!important;color:#fff!important;border-radius:14px!important;padding:10px 4px!important;font-weight:700!important;font-size:.95rem!important}
     .vt-tabs button.sel{background:linear-gradient(135deg,#f472b6,#db2777)!important;border-color:#fbcfe8!important}
@@ -81,16 +81,22 @@
 
     window.mtCardExtras = function (li, m) {
         if (!li || !m) return;
-        // M-148: photo per medicine (optional)
+        // M-148 / M-150: photo per medicine (optional) - its own clear row under the medicines:
+        // a thumbnail when there is a photo (tap: new photo / delete), else a big "📷 Photo: <name>" button
+        const info = li.querySelector('.med-info') || li;
         if (has('pickPhoto')) {
-            li.querySelectorAll('.med-info ul > li').forEach((row, i) => {
-                const it = (m.items || [])[i];
+            const prow = document.createElement('div'); prow.className = 'pl-row';
+            (m.items || []).forEach(it => {
                 if (!it || !it.name) return;
                 const src = photoOf(it.name);
+                const b = document.createElement('button');
+                b.type = 'button'; b.className = 'pl-cam';
                 if (src) {
                     const img = document.createElement('img');
                     img.className = 'pl-th'; img.src = src; img.alt = '';
-                    img.onclick = () => {
+                    b.appendChild(img);
+                    b.appendChild(document.createTextNode(it.name));
+                    b.onclick = () => {
                         vib();
                         mtDialog({ title: fill(tx('photoQ'), { n: it.name }), icon: '📷', ok: tx('photoNew'), cancel: tx('photoDel') }).then(v => {
                             if (v) { pick(it.name); return; }
@@ -101,18 +107,16 @@
                             });
                         });
                     };
-                    row.insertBefore(img, row.firstChild);
                 } else {
-                    const b = document.createElement('button');
-                    b.type = 'button'; b.className = 'pl-cam'; b.textContent = tx('photoAdd');
+                    b.textContent = tx('photoAdd') + ': ' + it.name;
                     b.onclick = () => pick(it.name);
-                    row.appendChild(b);
                 }
+                prow.appendChild(b);
             });
+            if (prow.children.length) info.appendChild(prow);
         }
         // M-147: taken early
         if (has('takenEarly')) {
-            const info = li.querySelector('.med-info');
             const box = document.createElement('div'); box.className = 'pl-row';
             let on = false; try { on = N.isTakenEarly(m.id); } catch (e) { }
             if (on) { const s = document.createElement('span'); s.className = 'pl-on'; s.textContent = tx('earlyOn'); box.appendChild(s); }
@@ -230,6 +234,43 @@
         store(arr); draw();
     };
     s.querySelector('.set-tile-head').addEventListener('click', draw);
+
+    // M-150: owner: vitals as a separate button on the main screen (next to Serenity), not inside settings
+    const home = document.getElementById('relax-btn');
+    if (home && home.parentNode) {
+        const vb = document.createElement('button');
+        vb.type = 'button'; vb.id = 'vt-btn'; vb.className = 'relax-btn vt-btn';
+        vb.innerHTML = '<span class="rb-ico"><i>🌡️</i></span><span class="rb-txt"></span>';
+        const pair = document.createElement('div'); pair.className = 'home-pair';
+        home.parentNode.insertBefore(pair, home);
+        pair.appendChild(home); pair.appendChild(vb);
+        let fromHome = false;
+        vb.onclick = () => {
+            vib();
+            document.body.classList.add('vt-solo');
+            openSettingsPage();
+            setTimeout(() => { closeTiles(); s.classList.add('open'); document.getElementById('set-backdrop').classList.add('open'); draw(); fromHome = true; }, 30);
+        };
+        const ct = window.closeTiles;
+        window.closeTiles = function () {
+            ct.apply(this, arguments);
+            if (fromHome) { fromHome = false; document.body.classList.remove('vt-solo'); if (window.closeSettingsPage) closeSettingsPage(); }
+        };
+        const lab = () => { vb.querySelector('.rb-txt').textContent = tx('vT').replace(/^\S+\s/, ''); };
+        lab();
+        const prevL = window.moreRender;
+        window.moreRender = function () { if (prevL) prevL(); lab(); };
+        const st = document.createElement('style');
+        st.textContent = `
+        #tile-vitals:not(.open){display:none!important}
+        #tile-vitals > .set-tile-head{display:none!important}
+        .home-pair{display:flex;gap:10px;width:100%}
+        .home-pair > .relax-btn{flex:1 1 0!important;min-width:0!important;width:auto!important;margin-left:0!important;margin-right:0!important}
+        .home-card #vt-btn{background:linear-gradient(135deg,#ec4899,#9d174d)!important;border-color:rgba(251,207,232,.7)!important}
+        .home-card #vt-btn .rb-ico{background:radial-gradient(circle at 35% 30%,#fce7f3,#f472b6 55%,#9d174d)!important}
+        body.vt-solo #settings-page .set-grid > .set-tile:not(#tile-vitals), body.vt-solo #settings-page .settings-hero{visibility:hidden}`;
+        document.head.appendChild(st);
+    }
     heads();
     const prev = window.moreRender;
     window.moreRender = function () { if (prev) prev(); heads(); };
