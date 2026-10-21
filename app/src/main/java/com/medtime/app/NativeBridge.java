@@ -86,6 +86,10 @@ public class NativeBridge {
     @JavascriptInterface
     public void speakCalm(String text) { Voices.speakCalm(activity, text); }
 
+    /** M-176: calm mode speaks with its own chosen voice. */
+    @JavascriptInterface
+    public void speakCalmVoice(String name, String text) { Voices.speakCalmVoice(activity, name, text); }
+
     @JavascriptInterface
     public void stopSpeech() { Voices.stopAll(); }
 

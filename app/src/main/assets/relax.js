@@ -34,6 +34,9 @@
             ['Expirez lentement par la bouche… {n} secondes', 'Laissez sortir toute la tension', 'Lentement… jusqu\'au bout', 'Le corps se détend et s\'alourdit'],
             ['Breathe out slowly through your mouth… {n} seconds', 'Let all the tension go', 'Slowly… all the way out', 'Your body relaxes and feels heavy'],
             ['Медленный выдох через рот… {n} секунд', 'Отпустите всё напряжение', 'Медленно… до конца', 'Тело расслабляется и тяжелеет']],
+        vOff: ['ללא קול', 'بدون صوت', 'Fără voce', 'Sans voix', 'No voice', 'Без голоса'],
+        vPhone: ['קול הטלפון', 'صوت الهاتف', 'Vocea telefonului', 'Voix du téléphone', 'Phone voice', 'Голос телефона'],
+        vSample: ['נושמים עמוק… ומשחררים לאט', 'تنفس بعمق… وأخرج الهواء ببطء', 'Respiră adânc… și expiră încet', 'Respirez profondément… et relâchez lentement', 'Breathe in deeply… and let go slowly', 'Глубокий вдох… и медленный выдох'],
         bVoice: ['🗣️ הנחיה קולית', '🗣️ إرشاد صوتي', '🗣️ Ghid vocal', '🗣️ Guide vocal', '🗣️ Voice guide', '🗣️ Голосовые подсказки'],
         exhale: ['נשיפה…', 'زفير…', 'Expiră…', 'Expirez…', 'Breathe out…', 'Выдох…'],
         off: ['ללא', 'بدون', 'Fără', 'Non', 'Off', 'Выкл.'],
@@ -80,7 +83,7 @@
     const SCENES = [['aurora', '🌌'], ['ocean', '🌊'], ['galaxy', '🌀'], ['lanterns', '🏮'], ['orb', '🔮'], ['snow', '🌲'], ['jelly', '🪼'], ['fireflies', '✨'], ['sunset', '🌅'], ['nebula', '☁️']];
     const SOUNDS = [['none', '🔇'], ['bowls', '🔔'], ['drone', '🕉️'], ['chimes', '🎐'], ['zen', '🎋'], ['rain', '🌧️'], ['ocean', '🌊'], ['forest', '🌲'], ['night', '🦗'], ['fire', '🔥'], ['wind', '🍃'], ['storm', '⛈️'], ['underwater', '🫧'], ['space', '🪐'], ['synth', '🎹']];
     const TIMERS = [0, 10, 20, 30, 45, 60];
-    const BREATH = { inh: 4, hold: 4, exh: 6 }; // seconds; M-175: 4 in / 4 hold / 6 out
+    const BREATH = { inh: 5, hold: 4, exh: 7 }; // seconds; M-176: slower and calmer, 5 in / 4 hold / 7 out
     const BP = BREATH.inh + BREATH.hold + BREATH.exh;
 
     // M-074: calm mode always opens fresh (quiet, nothing pre-chosen); "Last mode" brings back the last choices
@@ -90,7 +93,7 @@
     let last = { scene: st.scene, sound: st.sound, timer: st.timer }, chosen = {};
     // only what was really chosen this time replaces the stored "last mode"
     const save = () => { try {
-        const sv = JSON.parse(localStorage.getItem('medtime_relax') || '{}'); sv.vol = st.vol; sv.breath = st.breath; sv.bvoice = st.bvoice;
+        const sv = JSON.parse(localStorage.getItem('medtime_relax') || '{}'); sv.vol = st.vol; sv.breath = st.breath; sv.bvoice = st.bvoice; sv.bvname = st.bvname;
         ['scene', 'sound', 'timer'].forEach(k => { if (chosen[k]) sv[k] = st[k]; });
         localStorage.setItem('medtime_relax', JSON.stringify(sv));
     } catch (e) { } };
@@ -159,12 +162,17 @@
     #relax.rx-orb .rx-breath { top: 50% !important; }
     #relax .rx-ring { border: none !important; background: radial-gradient(circle, rgba(224,242,254,.5) 0, rgba(125,211,252,.28) 38%, rgba(99,102,241,.12) 58%, rgba(99,102,241,0) 70%) !important;
         box-shadow: none !important; will-change: transform; }
-    #relax .rx-btext { font: 600 3.1rem 'MTSoft', 'MTUI', sans-serif !important; letter-spacing: .02em; color: #f0fdff !important; will-change: transform;
-        text-shadow: 0 1px 0 #a5f3fc, 0 2px 0 #67e8f9, 0 3px 0 #22d3ee, 0 4px 0 #0891b2, 0 8px 14px rgba(0,0,0,.55), 0 0 26px rgba(125,211,252,.85) !important;
+    #relax .rx-btext { font: 400 3.4rem 'MTCalm', 'MTUI', sans-serif !important; letter-spacing: .04em; color: #f0fdff !important; will-change: transform, opacity;
+        text-shadow: 0 1px 0 rgba(165,243,252,.9), 0 2px 0 rgba(103,232,249,.7), 0 3px 0 rgba(34,211,238,.5), 0 6px 12px rgba(0,0,0,.45), 0 0 30px rgba(125,211,252,.75) !important;
         animation: rxBFloat 7s ease-in-out infinite; }
     #relax .rx-breath > * { transform-style: preserve-3d; }
     #relax .rx-bsub { position: absolute; left: 50%; top: calc(100% - 26px); width: min(340px, 90vw); transform: translateX(-50%); text-align: center;
-        font: 600 1.25rem/1.4 'MTSoft', 'MTUI', sans-serif; color: #e0f2fe; text-shadow: 0 1px 2px #000, 0 0 12px rgba(125,211,252,.7); }
+        font: 400 1.35rem/1.5 'MTCalm', 'MTUI', sans-serif; letter-spacing: .02em; color: #e0f2fe; will-change: transform, opacity;
+        text-shadow: 0 1px 3px rgba(0,0,0,.8), 0 0 16px rgba(125,211,252,.55); }
+    #relax[data-sec="voice"] .rx-panel { transform: translate(-50%, -50%) !important; opacity: 1 !important; visibility: visible !important; }
+    #relax[data-sec="voice"] .rx-sec[data-t="voice"] { display: block !important; margin: 0; }
+    #relax[data-sec="voice"] .rx-bar, #relax[data-sec="voice"] .rx-head { opacity: 0 !important; pointer-events: none !important; }
+    #relax[data-sec="voice"] .rx-bar { transform: translate(-50%, -46%) scale(.86) !important; }
     #relax .rx-bar button[data-s="bvoice"] { --c1: #c4b5fd; --c2: #6d28d9; --c3: #3b0764; }
     #relax .rx-bar button[data-s="bvoice"].on { box-shadow: inset 0 2px 1px rgba(255,255,255,.5), 0 6px 0 var(--c3), 0 0 0 3px #ddd6fe, 0 0 22px rgba(196,181,253,.9) !important; }
     @keyframes rxBFloat { 0%,100% { translate: 0 0; } 50% { translate: 0 -10px; } }
@@ -199,7 +207,7 @@
             '<div class="rx-panel">' +
             '<div class="rx-title"></div>' +
             '<div class="rx-scroll">' +
-            ['scene', 'sound', 'timer'].map((t, i) => '<section class="rx-sec" data-t="' + t + '"><div class="rx-h"><span class="rx-hn">' + (i + 1) + '</span><b></b><small></small></div>' +
+            ['scene', 'sound', 'timer', 'voice'].map((t, i) => '<section class="rx-sec" data-t="' + t + '"><div class="rx-h"><span class="rx-hn">' + (i + 1) + '</span><b></b><small></small></div>' +
                 '<div class="rx-grid"></div></section>').join('') +
             '<div class="rx-line"><span data-k="vol"></span><input type="range" class="vol" id="rx-vol" min="0" max="100" step="5"></div>' +
             '<label class="rx-line"><span data-k="breath"></span><input type="checkbox" id="rx-br" class="toggle"></label>' +
@@ -231,7 +239,7 @@
                 if (b.dataset.s === 'lock') { lockOn(); return; }
                 if (b.dataset.s === 'go') { hidePanel(); return; }
                 if (b.dataset.s === 'breath') { st.breath = !st.breath; save(); drawBreath(); drawPanel(); poke(); bPh = ''; if (!st.breath) hush(); return; }
-                if (b.dataset.s === 'bvoice') { st.bvoice = !st.bvoice; save(); drawPanel(); poke(); bPh = ''; if (!st.bvoice) hush(); return; }
+                if (b.dataset.s === 'bvoice') { setSec(sec === 'voice' ? '' : 'voice'); loadVoices(); poke(); return; } // M-176: its own voice list
                 setSec(sec === b.dataset.s ? '' : b.dataset.s); poke();
             });
         });
@@ -285,6 +293,10 @@
             if (sec && box) box.scrollTo({ top: sec.offsetTop - box.offsetTop - 4, behavior: 'smooth' });
         }, 350);
         const done = () => setTimeout(() => setSec(''), 380);
+        grid('voice', voiceItems(), st.bvoice ? (st.bvname || '') : '__off', k => voiceLabel(k), k => {
+            if (k === '__off') { st.bvoice = false; hush(); } else { st.bvoice = true; st.bvname = k; calmSay(tx('vSample')); }
+            save(); bPh = ''; drawPanel();
+        });
         grid('scene', SCENES, chosen.scene ? st.scene : '', k => tx('s_' + k), k => { st.scene = k; chosen.scene = 1; save(); setScene(k); drawPanel(); done(); });
         grid('sound', SOUNDS, chosen.sound ? st.sound : '', k => tx('a_' + k), k => { st.sound = k; chosen.sound = 1; save(); playSound(k); drawPanel(); });
         grid('timer', TIMERS.map(m => [String(m), m ? '⏳' : '♾️']), chosen.timer ? String(st.timer) : '', k => +k ? k + ' ' + tx('min') : tx('off'),
@@ -294,7 +306,7 @@
             if (t === 'last') { b.querySelector('.rx-bi').textContent = '↺'; b.querySelector('small').textContent = tx('last'); b.hidden = !!(chosen.scene || chosen.sound || chosen.timer); return; }
             if (t === 'lock') { b.querySelector('.rx-bi').textContent = '🔓'; b.querySelector('small').textContent = tx('lock'); return; }
             if (t === 'breath') { b.querySelector('.rx-bi').textContent = '🫁'; b.querySelector('small').textContent = tx('breath').replace(/^\S+\s/, '') + (st.breath ? ' ✓' : ''); b.classList.toggle('on', !!st.breath); return; }
-            if (t === 'bvoice') { b.hidden = !st.breath; b.querySelector('.rx-bi').textContent = '🗣️'; b.querySelector('small').textContent = tx('bVoice').replace(/^\S+\s/, '') + (st.bvoice ? ' ✓' : ''); b.classList.toggle('on', !!st.bvoice); return; }
+            if (t === 'bvoice') { b.hidden = !st.breath; b.querySelector('.rx-bi').textContent = '🗣️'; b.querySelector('small').textContent = tx('bVoice').replace(/^\S+\s/, '') + ': ' + voiceName(); b.classList.toggle('on', !!st.bvoice); return; }
             if (t === 'go') { b.querySelector('.rx-bi').textContent = '✓'; b.querySelector('small').textContent = tx('go').replace(/^\S+\s/, ''); return; }
             b.querySelector('.rx-bi').textContent = !chosen[t] ? (t === 'scene' ? '🖼️' : t === 'sound' ? '🎵' : '⏳')
                 : t === 'scene' ? (SCENES.find(x => x[0] === st.scene) || [])[1] : t === 'sound' ? (SOUNDS.find(x => x[0] === st.sound) || [])[1] : (+st.timer ? '⏳' : '♾️');
@@ -903,31 +915,56 @@
         if (world) world.update(t, dt);
         renderer.render(scene, camera);
         if (st.breath) {
+            // M-176 (owner): everything moves with the calm breath: the word and its line fade in and out at the phase edges,
+            // grow and shrink with the air; the line stays still for the whole phase (no ticking numbers)
             const [k, ph] = breathK(t);
-            const ring = root.querySelector('.rx-ring'), txt = root.querySelector('.rx-btext');
-            ring.style.transform = 'scale(' + (0.55 + 0.45 * k).toFixed(3) + ')';
-            txt.style.transform = 'translateZ(0) rotateX(' + (8 - 8 * k).toFixed(2) + 'deg) scale(' + (0.72 + 0.5 * k).toFixed(3) + ')'; // M-172: the word breathes too
-            const w = tx(ph); if (txt.textContent !== w) txt.textContent = w;
-            // M-175: a changing human line under the word, seconds counting down; read aloud in a calm voice if chosen
             const x = t % BP, cyc = Math.floor(t / BP);
-            const left = Math.ceil(ph === 'inhale' ? BREATH.inh - x : ph === 'hold' ? BREATH.inh + BREATH.hold - x : BP - x);
+            const start = ph === 'inhale' ? 0 : ph === 'hold' ? BREATH.inh : BREATH.inh + BREATH.hold;
+            const total = ph === 'inhale' ? BREATH.inh : ph === 'hold' ? BREATH.hold : BREATH.exh;
+            const u = Math.min(1, Math.max(0, (x - start) / total));
+            let e = Math.max(0, Math.min(1, u / 0.2, (1 - u) / 0.2)); e = e * e * (3 - 2 * e);
+            const ring = root.querySelector('.rx-ring'), txt = root.querySelector('.rx-btext'), sub = root.querySelector('.rx-bsub');
+            ring.style.transform = 'scale(' + (0.6 + 0.4 * k).toFixed(3) + ')';
             if (ph !== bPh) {
                 bPh = ph;
                 const set = TX[ph === 'inhale' ? 'gIn' : ph === 'hold' ? 'gHold' : 'gOut'];
                 const list = set[li()] || set[4];
-                bLine = list[cyc % list.length];
-                const total = ph === 'inhale' ? BREATH.inh : ph === 'hold' ? BREATH.hold : BREATH.exh;
-                if (st.bvoice) calmSay(bLine.replace('{n}', total));
+                bLine = list[cyc % list.length].replace('{n}', total);
+                txt.textContent = tx(ph); sub.textContent = bLine;
+                if (st.bvoice) calmSay(bLine);
             }
-            const sub = root.querySelector('.rx-bsub'), line = bLine.replace('{n}', left) + (bLine.includes('{n}') ? '' : '  ·  ' + left);
-            if (sub.textContent !== line) sub.textContent = line;
+            txt.style.opacity = (0.25 + 0.75 * e).toFixed(3);
+            txt.style.transform = 'rotateX(' + ((1 - k) * 10).toFixed(2) + 'deg) scale(' + (0.8 + 0.32 * k).toFixed(3) + ')';
+            sub.style.opacity = e.toFixed(3);
+            sub.style.transform = 'translate(-50%, ' + ((1 - e) * 10).toFixed(1) + 'px) scale(' + (0.97 + 0.04 * k).toFixed(3) + ')';
         }
     }
     let bPh = '', bLine = '';
+    // M-176 (owner): calm mode has its own voice choice, separate from the reminder voice
+    let vList = null;
+    function voiceItems() {
+        const it = [['__off', '🔕'], ['', '🗣️']];
+        (vList || []).forEach(v => it.push([v.name, v.g === 'f' ? '👩' : '👨']));
+        return it;
+    }
+    function voiceLabel(k) { if (k === '__off') return tx('vOff'); if (!k) return tx('vPhone'); const v = (vList || []).find(x => x.name === k); return v ? v.label : k; }
+    function voiceName() { return st.bvoice ? voiceLabel(st.bvname || '') : tx('vOff'); }
+    function loadVoices() {
+        const N = window.MedTimeNative;
+        if (!N || typeof N.listVoices !== 'function') return;
+        const prev = window.mtVoices;
+        window.mtVoices = o => {
+            window.mtVoices = prev; try { prev && prev(o); } catch (e) { }
+            vList = ((o && o.voices) || []).filter(v => v.piper && v.ready);
+            if (open) drawPanel();
+        };
+        try { N.listVoices(); } catch (e) { window.mtVoices = prev; }
+    }
     function calmSay(text) {
         const N = window.MedTimeNative;
         try {
-            if (N && typeof N.speakCalm === 'function') N.speakCalm(text.replace(/…/g, ', '));
+            if (N && typeof N.speakCalmVoice === 'function') N.speakCalmVoice(st.bvname || '', text.replace(/…/g, ', '));
+            else if (N && typeof N.speakCalm === 'function') N.speakCalm(text.replace(/…/g, ', '));
             else if (N && typeof N.speakGuide === 'function') N.speakGuide(text.replace(/…/g, ', '));
             else if (window.speechSynthesis) { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = ['he-IL', 'ar', 'ro-RO', 'fr-FR', 'en-US', 'ru-RU'][li()]; u.rate = 0.75; u.pitch = 0.9; speechSynthesis.speak(u); }
         } catch (e) { }

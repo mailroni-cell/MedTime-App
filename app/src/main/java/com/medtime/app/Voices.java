@@ -103,6 +103,9 @@ class Voices {
     /** M-175: breathing guidance in a calm voice: slower and a little lower. */
     static void speakCalm(Activity a, String text) { preview(a, chosen(a.getApplicationContext()), text, 0.72f, 0.92f); }
 
+    /** M-176: calm mode has its own voice ('' = phone voice). */
+    static void speakCalmVoice(Activity a, String name, String text) { preview(a, name == null ? "" : name, text, 0.72f, 0.92f); }
+
     static void preview(Activity a, String name, String text, float rate, float pitchMul) {
         if (Piper.isPiper(name)) { if (tts != null) try { tts.stop(); } catch (Exception ignored) { } Piper.preview(a.getApplicationContext(), name, text); return; }
         Piper.stop();
