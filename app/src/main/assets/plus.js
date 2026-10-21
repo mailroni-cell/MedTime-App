@@ -37,7 +37,8 @@
         empty: ['עוד אין מדידות. מקלידים מספר ולוחצים "שמירה".', 'لا توجد قياسات بعد.', 'Încă nu sunt măsurători.', 'Pas encore de mesures.', 'No measurements yet.'],
         note: ['הצבעים הם הכוונה כללית בלבד. מה תקין עבורכם קובע הרופא.', 'الألوان للإرشاد العام فقط. الطبيب يحدد ما هو طبيعي لك.', 'Culorile sunt doar orientative. Medicul stabilește ce e normal pentru tine.', 'Les couleurs sont indicatives. Votre médecin décide de ce qui est normal pour vous.', 'Colours are only a general guide. Your doctor decides what is normal for you.'],
         del: ['🗑️', '🗑️', '🗑️', '🗑️', '🗑️'],
-        pdfV: ['מדדים', 'القياسات', 'Măsurători', 'Mesures', 'Vitals']
+        pdfV: ['מדדים', 'القياسات', 'Măsurători', 'Mesures', 'Vitals'],
+        done: ['✓ סיום', '✓ إنهاء', '✓ Gata', '✓ Terminé', '✓ Done']
     };
     const tx = k => (T[k] || [])[li()] || (T[k] || [])[0] || k;
     const fill = (s, o) => s.replace(/\{(\w+)\}/g, (m, k) => (k in o ? o[k] : m));
@@ -169,8 +170,10 @@
         '<button type="button" class="p-close" aria-label="close">✕</button></div>' +
         '<div class="vt-tabs"></div><div class="vt-in"></div><button type="button" class="mo-btn" id="vt-save"></button>' +
         '<svg class="vt-chart" viewBox="0 0 300 150" preserveAspectRatio="none"></svg><div class="mo-x" id="vt-cap"></div>' +
-        '<div class="vt-list"></div><div class="mo-x" id="vt-note" style="opacity:.6;font-size:.85rem"></div></div>';
+        '<div class="vt-list"></div><div class="mo-x" id="vt-note" style="opacity:.6;font-size:.85rem"></div>' +
+        '<button type="button" class="page-done" id="vt-done" style="margin-top:14px"></button></div>';
     s.querySelector('.p-close').onclick = () => closeTiles();
+    s.querySelector('#vt-done').onclick = () => { vib(); closeTiles(); }; // M-152: finish -> back to the main screen
     s.querySelector('.p-ico').style.setProperty('--g', 'linear-gradient(135deg,#f472b6,#be185d)');
     grid.appendChild(s);
     let kind = 'bp';
@@ -199,7 +202,7 @@
         const lbl = inp.querySelectorAll('label > span');
         if (kind === 'bp') { lbl[0].textContent = tx('sys'); lbl[1].textContent = tx('dia'); } else lbl[0].textContent = tx('val') + unit(kind);
         document.getElementById('vt-save').textContent = tx('save');
-        document.getElementById('vt-note').textContent = tx('note');
+        document.getElementById('vt-note').textContent = tx('note'); document.getElementById('vt-done').textContent = tx('done');
         const since = Date.now() - 30 * 864e5;
         const rows = load().filter(e => e.k === kind && e.at >= since);
         chart(rows);

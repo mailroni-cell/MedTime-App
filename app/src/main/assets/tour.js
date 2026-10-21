@@ -191,6 +191,18 @@
     #mt-guide .g-voice .gv-st{flex:none;min-width:3.2em;text-align:center;color:#fde68a}
     #mt-guide .g-voice.on{border-color:#86efac;background:linear-gradient(170deg,rgba(34,197,94,.4),rgba(20,83,45,.6))}
     #mt-guide .g-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    /* M-152 (owner): the guide sheet fills the whole screen, top to bottom, with no scrolling */
+    #mt-guide .g-card{height:100vh;height:100dvh;max-height:none;overflow:hidden;display:flex;flex-direction:column;border-radius:0;padding-top:calc(14px + env(safe-area-inset-top))}
+    #mt-guide .g-grid{flex:1 1 auto;min-height:0;grid-auto-rows:1fr;gap:8px}
+    #mt-guide .g-grid button{padding:4px 8px;min-height:0;line-height:1.15;font-size:min(1.05rem,2.4vh)}
+    #mt-guide .g-more{flex:none;margin-top:10px}
+    #tile-help .help-list{display:grid!important;grid-template-columns:1fr 1fr;gap:7px}
+    #tile-help .help-demos{margin-bottom:8px}
+    #tile-help .help-item[open]{grid-column:1/-1}
+    #tile-help .help-item summary{padding:9px 10px!important;font-size:.95rem!important;gap:6px!important;line-height:1.2}
+    #tile-help .help-item .h-ico{font-size:1.15rem!important}
+    #tile-help .help-item:not([open]) .h-chev{display:none}
+    #tile-help.open .set-body{top:0!important;max-height:none!important;height:100vh;height:100dvh;border-radius:0!important;padding-top:calc(10px + env(safe-area-inset-top))!important}
     #mt-guide .g-grid button{padding:15px 8px;border-radius:18px;border:1.5px solid rgba(233,213,255,.45);background:linear-gradient(170deg,rgba(168,85,247,.45),rgba(59,7,100,.6));color:#fff;font-weight:800;font-size:1.05rem;
       box-shadow:inset 0 2px 0 rgba(255,255,255,.3),inset 0 -4px 8px rgba(0,0,0,.35),0 6px 0 rgba(0,0,0,.35),0 10px 18px rgba(0,0,0,.4)}
     #mt-guide .g-grid button:active{transform:translateY(4px)}
