@@ -2,7 +2,7 @@
 # Output in data-cache/: drugs_probe.json (raw samples, to learn the format), drugs.json (compact list), drugs_log.json.
 import json, os, urllib.request, time, itertools, string
 os.makedirs('data-cache', exist_ok=True)
-H = {'User-Agent': 'Mozilla/5.0 (MedTime data fetch)', 'Content-Type': 'application/json', 'Accept': 'application/json'}
+H = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36', 'Content-Type': 'application/json', 'Accept': 'application/json, text/plain, */*', 'Origin': 'https://israeldrugs.health.gov.il', 'Referer': 'https://israeldrugs.health.gov.il/', 'Accept-Language': 'he-IL,he;q=0.9,en;q=0.8'}
 BASE = 'https://israeldrugs.health.gov.il/GovServiceList/IDRServer/'
 log, probe = {}, {}
 def call(url, body=None):
@@ -21,6 +21,13 @@ try:
     probe['datagov'] = [{'name': p.get('name'), 'title': p.get('title'), 'res': [(r.get('id'), r.get('name'), r.get('format')) for r in p.get('resources', [])]} for p in d['result']['results']]
 except Exception as e:
     probe['datagov_err'] = str(e)
+# 2b) can we reach the site at all? (403 = blocked outside Israel)
+for u in ['https://israeldrugs.health.gov.il/', 'https://www.health.gov.il/']:
+    try:
+        with urllib.request.urlopen(urllib.request.Request(u, headers={'User-Agent': H['User-Agent']}), timeout=30) as r:
+            probe['home_' + u] = r.status
+    except Exception as e:
+        probe['home_' + u] = str(e)
 # 2) registry search API sample
 def search(val, page=1):
     return call(BASE + 'SearchByName', {'val': val, 'prescription': False, 'healthServices': False, 'pageIndex': page, 'orderBy': 0})
