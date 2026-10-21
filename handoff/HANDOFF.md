@@ -34,6 +34,11 @@
 - אחרי זה: Closed testing ← Testers (testers.csv) ← Create new release ← העלאת MedTime-play.aab ← Send for review.
 - עוד לא אושר: בדיקת בנייה 146 בטלפון (כפתור חזור, מסך תזכורת), GitHub Pages פעיל.
 
+## עדכון 2026-10-21 17:25 (שיחה חדשה)
+- רוני ממלא את רשימת "Set up your app" (11 משימות). קיבל הוראות לכל אחת וטקסטים לדף החנות.
+- נוצרו אייקון 512x512 ותמונה ראשית 1024x500 (עיצוב A מ־tools/icons.js): בתיקיית הפרויקט medtime-play/images/. ⏳ רוני מעלה אותם ומצלם 2 עד 4 צילומי מסך מהטלפון.
+- הבא: Closed testing ← Testers (testers.csv) ← Create new release ← MedTime-play.aab (versionCode 102) ← Send for review.
+
 ## להדבקה בחשבון השני
 ```
 ממשיכים את פרויקט MedTime בדיוק מהנקודה שעצרנו. עונים רק בעברית.
