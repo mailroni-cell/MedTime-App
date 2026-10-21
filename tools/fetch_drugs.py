@@ -38,12 +38,12 @@ try:
     home = gett(HOME)
     probe['home_head'] = home[:3000]
     found = {}
-    for src in re.findall(r'src="([^"]+\.js)"', home):
-        u = src if src.startswith('http') else urllib.parse.urljoin(HOME + '/', src)
+    for src in re.findall(r'src="([^"]+[.]js)"', home):
+        u = src if src.startswith('http') else urllib.parse.urljoin('https://registries.health.gov.il/', src)
         try:
-            js = gett(u)
-            found[u] = sorted(set(re.findall(r'[\w/.:-]*(?:IDRServer|GovServiceList|api|Api|/Medicines)[\w/.:-]*', js)))[:80]
-            found[u + '#ctx'] = [js[max(0, m.start() - 200): m.start() + 300] for m in re.finditer(r'[Ss]earch[A-Za-z]*\\(|fetch\\(|axios|HttpClient|\\.post\\(', js)][:12]
+            js = gett(u); found[u] = len(js)
+            if 'main' in src:
+                open('data-cache/drugs_main.js', 'w', encoding='utf-8').write(js)
         except Exception as e:
             found[u] = str(e)
     probe['scripts'] = found
