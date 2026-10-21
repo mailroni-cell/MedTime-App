@@ -1,7 +1,7 @@
 // M-082: choose the reading voice, inside the 🔊 voice tile. Each voice has ▶ to hear a sample.
 (function () {
     'use strict';
-    const L5 = ['he', 'ar', 'ro', 'fr', 'en'];
+    const L5 = ['he', 'ar', 'ro', 'fr', 'en', 'ru'];
     const li = () => Math.max(0, L5.indexOf(typeof LANG === 'string' ? LANG : 'he'));
     const N = window.MedTimeNative;
     const anchor = document.getElementById('v-on');
@@ -9,25 +9,25 @@
     const body = anchor.closest('.set-body');
 
     const T = {
-        title: ['🗣️ בחירת קול', '🗣️ اختيار الصوت', '🗣️ Alegeți vocea', '🗣️ Choix de la voix', '🗣️ Choose the voice'],
-        note: ['לחצו ▶ כדי לשמוע, ועל השם כדי לבחור', 'اضغط ▶ للاستماع وعلى الاسم للاختيار', 'Apăsați ▶ ca să ascultați și numele ca să alegeți', '▶ pour écouter, le nom pour choisir', 'Tap ▶ to listen, the name to choose'],
-        def: ['ברירת המחדל של הטלפון', 'الافتراضي في الهاتف', 'Implicită a telefonului', 'Par défaut du téléphone', 'Phone default'],
-        voice: ['קול', 'صوت', 'Voce', 'Voix', 'Voice'],
+        title: ['🗣️ בחירת קול', '🗣️ اختيار الصوت', '🗣️ Alegeți vocea', '🗣️ Choix de la voix', '🗣️ Choose the voice', '🗣️ Выбор голоса'],
+        note: ['לחצו ▶ כדי לשמוע, ועל השם כדי לבחור', 'اضغط ▶ للاستماع وعلى الاسم للاختيار', 'Apăsați ▶ ca să ascultați și numele ca să alegeți', '▶ pour écouter, le nom pour choisir', 'Tap ▶ to listen, the name to choose', 'Нажмите ▶, чтобы послушать, на имя — чтобы выбрать'],
+        def: ['ברירת המחדל של הטלפון', 'الافتراضي في الهاتف', 'Implicită a telefonului', 'Par défaut du téléphone', 'Phone default', 'Голос телефона по умолчанию'],
+        voice: ['קול', 'صوت', 'Voce', 'Voix', 'Voice', 'Голос'],
         // M-082b: every voice gets a friendly name (unisex names: Android does not say if a voice is a man or a woman)
         names: [['נועם', 'טל', 'שי', 'עדי', 'אורי', 'יובל', 'גל', 'עומר'], ['نور', 'سلام', 'رضا', 'إيمان', 'وفاء', 'جهاد', 'صباح', 'هدى'],
             ['Alex', 'Andrei', 'Ioana', 'Dani', 'Cristi', 'Vali', 'Sasha', 'Mihai'], ['Camille', 'Dominique', 'Claude', 'Lou', 'Sacha', 'Maxime', 'Alix', 'Eden'],
-            ['Alex', 'Sam', 'Jordan', 'Robin', 'Taylor', 'Jamie', 'Casey', 'Riley']],
-        net: ['🌐 צריך אינטרנט', '🌐 يحتاج إنترنت', '🌐 necesită internet', '🌐 Internet requis', '🌐 needs internet'],
-        man: ['גבר', 'رجل', 'bărbat', 'homme', 'man'],
-        woman: ['אישה', 'امرأة', 'femeie', 'femme', 'woman'],
-        offline: ['✨ קולות חדשים, עובדים בלי אינטרנט', '✨ أصوات جديدة تعمل بدون إنترنت', '✨ Voci noi, fără internet', '✨ Nouvelles voix, sans Internet', '✨ New voices, work offline'],
-        dl: ['⏳ יורד לבד בפעם הראשונה ב-Wi-Fi', '⏳ يُنزَّل تلقائيًا أول مرة عبر Wi-Fi', '⏳ Se descarcă singur prima dată pe Wi-Fi', '⏳ Se télécharge seul la première fois en Wi-Fi', '⏳ Downloads by itself once, on Wi-Fi'],
-        low: ['קול נמוך', 'صوت منخفض', 'voce joasă', 'voix grave', 'low voice'],
-        high: ['קול גבוה', 'صوت عالٍ', 'voce înaltă', 'voix aiguë', 'high voice'],
-        pitch: [['אבי', 'מיכל'], ['سامي', 'ليلى'], ['Andrei', 'Ioana'], ['Louis', 'Claire'], ['David', 'Emma']],
-        noHe: ['בעברית יש רק את קול הטלפון. הקולות המובנים באפליקציה (בלי אינטרנט) קיימים בערבית, רומנית, צרפתית ואנגלית.', '', '', '', ''],
-        loading: ['טוען קולות…', 'جارٍ التحميل…', 'Se încarcă…', 'Chargement…', 'Loading voices…'],
-        sample: ['שלום, הגיע הזמן לקחת אקמול, כדור אחד.', 'مرحبًا، حان وقت تناول الدواء، حبة واحدة.', 'Bună, este timpul să luați medicamentul, o pastilă.', 'Bonjour, c\'est l\'heure de prendre votre médicament, un comprimé.', 'Hello, it is time to take your medicine, one tablet.']
+            ['Alex', 'Sam', 'Jordan', 'Robin', 'Taylor', 'Jamie', 'Casey', 'Riley'], ['Саша', 'Женя', 'Валя', 'Слава', 'Никита', 'Шура', 'Лера', 'Миша']],
+        net: ['🌐 צריך אינטרנט', '🌐 يحتاج إنترنت', '🌐 necesită internet', '🌐 Internet requis', '🌐 needs internet', '🌐 нужен интернет'],
+        man: ['גבר', 'رجل', 'bărbat', 'homme', 'man', 'мужчина'],
+        woman: ['אישה', 'امرأة', 'femeie', 'femme', 'woman', 'женщина'],
+        offline: ['✨ קולות חדשים, עובדים בלי אינטרנט', '✨ أصوات جديدة تعمل بدون إنترنت', '✨ Voci noi, fără internet', '✨ Nouvelles voix, sans Internet', '✨ New voices, work offline', '✨ Новые голоса, работают без интернета'],
+        dl: ['⏳ יורד לבד בפעם הראשונה ב-Wi-Fi', '⏳ يُنزَّل تلقائيًا أول مرة عبر Wi-Fi', '⏳ Se descarcă singur prima dată pe Wi-Fi', '⏳ Se télécharge seul la première fois en Wi-Fi', '⏳ Downloads by itself once, on Wi-Fi', '⏳ Скачивается сам один раз, по Wi-Fi'],
+        low: ['קול נמוך', 'صوت منخفض', 'voce joasă', 'voix grave', 'low voice', 'низкий голос'],
+        high: ['קול גבוה', 'صوت عالٍ', 'voce înaltă', 'voix aiguë', 'high voice', 'высокий голос'],
+        pitch: [['אבי', 'מיכל'], ['سامي', 'ليلى'], ['Andrei', 'Ioana'], ['Louis', 'Claire'], ['David', 'Emma'], ['Иван', 'Анна']],
+        noHe: ['בעברית יש רק את קול הטלפון. הקולות המובנים באפליקציה (בלי אינטרנט) קיימים בערבית, רומנית, צרפתית ואנגלית.', '', '', '', '', 'Для русского языка используется голос телефона. Встроенные голоса без интернета есть для арабского, румынского, французского и английского.'],
+        loading: ['טוען קולות…', 'جارٍ التحميل…', 'Se încarcă…', 'Chargement…', 'Loading voices…', 'Загрузка голосов…'],
+        sample: ['שלום, הגיע הזמן לקחת אקמול, כדור אחד.', 'مرحبًا، حان وقت تناول الدواء، حبة واحدة.', 'Bună, este timpul să luați medicamentul, o pastilă.', 'Bonjour, c\'est l\'heure de prendre votre médicament, un comprimé.', 'Hello, it is time to take your medicine, one tablet.', 'Здравствуйте, пора принять лекарство, одну таблетку.']
     };
     const tx = k => T[k][li()];
     // M-088: the sample starts with the user's name, like the real reminder

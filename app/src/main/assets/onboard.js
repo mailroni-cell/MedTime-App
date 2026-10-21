@@ -2,7 +2,7 @@
 // name, reading comfort (text size + 👓), look (theme), voice readout. Then a personal greeting on the home screen.
 (function () {
     'use strict';
-    const L5 = ['he', 'ar', 'ro', 'fr', 'en'];
+    const L5 = ['he', 'ar', 'ro', 'fr', 'en', 'ru'];
     const li = () => Math.max(0, L5.indexOf(typeof LANG === 'string' ? LANG : 'he'));
     const pick = a => a[li()] || a[0];
     const N = window.MedTimeNative;
@@ -12,35 +12,35 @@
     const getName = () => { try { return (localStorage.getItem(NAME_KEY) || '').trim(); } catch (e) { return ''; } };
 
     const T = {
-        hiT: ['נעים להכיר! 👋', 'تشرّفنا! 👋', 'Încântat de cunoștință! 👋', 'Enchanté ! 👋', 'Nice to meet you! 👋'],
-        hiX: ['כמה שאלות קצרות, ו-MedTime יותאם בדיוק בשבילכם.', 'بعض الأسئلة القصيرة ليتلاءم MedTime معك تمامًا.', 'Câteva întrebări scurte și MedTime se potrivește exact pentru dvs.', 'Quelques questions rapides et MedTime sera fait pour vous.', 'A few quick questions, and MedTime will fit you just right.'],
-        start: ['בואו נתחיל', 'لنبدأ', 'Să începem', 'Commençons', 'Let\'s start'],
-        next: ['המשך', 'متابعة', 'Continuă', 'Continuer', 'Continue'],
-        skip: ['דלג', 'تخطَّ', 'Sari peste', 'Passer', 'Skip'],
-        nameT: ['איך קוראים לך?', 'ما اسمك؟', 'Cum vă numiți?', 'Comment vous appelez-vous ?', 'What is your name?'],
-        nameX: ['ככה נוכל לפנות אליך בשם.', 'هكذا نناديك باسمك.', 'Așa vă putem spune pe nume.', 'Ainsi nous pourrons vous appeler par votre prénom.', 'So we can greet you by name.'],
-        namePh: ['השם שלך', 'اسمك', 'Numele dvs.', 'Votre prénom', 'Your name'],
-        readT: ['מה נוח לך לקרוא?', 'ما الحجم المريح للقراءة؟', 'Ce mărime vă e comodă?', 'Quelle taille vous convient ?', 'What is comfortable to read?'],
-        readX: ['בחרו גודל כתב. אפשר לשנות בכל עת בהגדרות ⚙️.', 'اختر حجم الخط. يمكن تغييره دائمًا في الإعدادات ⚙️.', 'Alegeți mărimea textului. Se poate schimba oricând din Setări ⚙️.', 'Choisissez la taille du texte. Modifiable à tout moment dans Réglages ⚙️.', 'Pick a text size. You can change it any time in Settings ⚙️.'],
-        ts: [['רגיל', 'גדול', 'גדול מאוד'], ['عادي', 'كبير', 'كبير جدًا'], ['Normal', 'Mare', 'Foarte mare'], ['Normal', 'Grand', 'Très grand'], ['Normal', 'Large', 'Extra large']],
-        lv: ['👓 כפתורים גדולים במיוחד', '👓 أزرار كبيرة جدًا', '👓 Butoane foarte mari', '👓 Très gros boutons', '👓 Extra big buttons'],
-        lookT: ['איזה עיצוב אוהבים?', 'أي تصميم تحب؟', 'Ce aspect vă place?', 'Quel style aimez-vous ?', 'Which look do you like?'],
-        lookX: ['לחצו כדי לראות ברקע. יש עוד 30 עיצובים בהגדרות.', 'اضغط لترى في الخلفية. يوجد 30 تصميمًا آخر في الإعدادات.', 'Apăsați ca să vedeți în fundal. Mai sunt 30 în Setări.', 'Appuyez pour voir en fond. 30 autres styles dans Réglages.', 'Tap to see it behind. 30 more looks in Settings.'],
-        auto: ['🌅🌙 לפי שעות היום', '🌅🌙 حسب ساعات اليوم', '🌅🌙 După ora zilei', '🌅🌙 Selon l\'heure', '🌅🌙 By time of day'],
-        voiceT: ['להקריא את התזכורת בקול?', 'قراءة التذكير بصوت عالٍ؟', 'Citim mementoul cu voce tare?', 'Lire le rappel à voix haute ?', 'Read the reminder out loud?'],
-        voiceX: ['בזמן התזכורת הטלפון יגיד את שם התרופה והמינון. לחצו ▶ כדי לשמוע.', 'وقت التذكير يقول الهاتف اسم الدواء والجرعة. اضغط ▶ للاستماع.', 'La memento telefonul spune numele medicamentului și doza. Apăsați ▶.', 'Au rappel, le téléphone dit le nom du médicament et la dose. Appuyez ▶.', 'At reminder time the phone says the medicine name and dose. Tap ▶ to hear.'],
-        yes: ['🔊 כן, להקריא', '🔊 نعم، اقرأ', '🔊 Da, citește', '🔊 Oui, lire', '🔊 Yes, read it'],
-        no: ['🔕 בלי קול', '🔕 بدون صوت', '🔕 Fără voce', '🔕 Sans voix', '🔕 No voice'],
-        sample: ['הגיע הזמן לקחת אקמול, כדור אחד.', 'حان وقت تناول الدواء، حبة واحدة.', 'Este timpul pentru medicament, o pastilă.', 'C\'est l\'heure du médicament, un comprimé.', 'It is time to take your medicine, one tablet.'],
-        doneT: ['שלום {n}! הכל מוכן 🎉', 'أهلًا {n}! كل شيء جاهز 🎉', 'Bună, {n}! Totul e gata 🎉', 'Bonjour {n} ! Tout est prêt 🎉', 'Hi {n}! All set 🎉'],
-        doneT0: ['הכל מוכן 🎉', 'كل شيء جاهز 🎉', 'Totul e gata 🎉', 'Tout est prêt 🎉', 'All set 🎉'],
-        doneX: ['עכשיו נאשר לטלפון לשלוח תזכורות, ואז מוסיפים את התרופה הראשונה ➕.', 'الآن نسمح للهاتف بإرسال التذكيرات، ثم نضيف أول دواء ➕.', 'Acum permitem telefonului să trimită mementouri, apoi adăugăm primul medicament ➕.', 'Autorisons maintenant les rappels, puis ajoutons le premier médicament ➕.', 'Now let the phone send reminders, then add your first medicine ➕.'],
-        again: ['✨ אשף הפתיחה מההתחלה (שם, כתב, עיצוב, קול)', '✨ معالج البداية من جديد (الاسم، الخط، التصميم، الصوت)', '✨ Asistentul de început din nou', '✨ Relancer l\'assistant de bienvenue', '✨ Run the welcome setup again'],
-        doneB: ['יוצאים לדרך', 'هيا بنا', 'Începem', 'C\'est parti', 'Let\'s go'],
+        hiT: ['נעים להכיר! 👋', 'تشرّفنا! 👋', 'Încântat de cunoștință! 👋', 'Enchanté ! 👋', 'Nice to meet you! 👋', 'Приятно познакомиться! 👋'],
+        hiX: ['כמה שאלות קצרות, ו-MedTime יותאם בדיוק בשבילכם.', 'بعض الأسئلة القصيرة ليتلاءم MedTime معك تمامًا.', 'Câteva întrebări scurte și MedTime se potrivește exact pentru dvs.', 'Quelques questions rapides et MedTime sera fait pour vous.', 'A few quick questions, and MedTime will fit you just right.', 'Несколько коротких вопросов, и MedTime будет удобен именно вам.'],
+        start: ['בואו נתחיל', 'لنبدأ', 'Să începem', 'Commençons', 'Let\'s start', 'Начнём'],
+        next: ['המשך', 'متابعة', 'Continuă', 'Continuer', 'Continue', 'Продолжить'],
+        skip: ['דלג', 'تخطَّ', 'Sari peste', 'Passer', 'Skip', 'Пропустить'],
+        nameT: ['איך קוראים לך?', 'ما اسمك؟', 'Cum vă numiți?', 'Comment vous appelez-vous ?', 'What is your name?', 'Как вас зовут?'],
+        nameX: ['ככה נוכל לפנות אליך בשם.', 'هكذا نناديك باسمك.', 'Așa vă putem spune pe nume.', 'Ainsi nous pourrons vous appeler par votre prénom.', 'So we can greet you by name.', 'Чтобы обращаться к вам по имени.'],
+        namePh: ['השם שלך', 'اسمك', 'Numele dvs.', 'Votre prénom', 'Your name', 'Ваше имя'],
+        readT: ['מה נוח לך לקרוא?', 'ما الحجم المريح للقراءة؟', 'Ce mărime vă e comodă?', 'Quelle taille vous convient ?', 'What is comfortable to read?', 'Какой текст удобно читать?'],
+        readX: ['בחרו גודל כתב. אפשר לשנות בכל עת בהגדרות ⚙️.', 'اختر حجم الخط. يمكن تغييره دائمًا في الإعدادات ⚙️.', 'Alegeți mărimea textului. Se poate schimba oricând din Setări ⚙️.', 'Choisissez la taille du texte. Modifiable à tout moment dans Réglages ⚙️.', 'Pick a text size. You can change it any time in Settings ⚙️.', 'Выберите размер текста. Его можно изменить в любое время в Настройках ⚙️.'],
+        ts: [['רגיל', 'גדול', 'גדול מאוד'], ['عادي', 'كبير', 'كبير جدًا'], ['Normal', 'Mare', 'Foarte mare'], ['Normal', 'Grand', 'Très grand'], ['Normal', 'Large', 'Extra large'], ['Обычный', 'Крупный', 'Очень крупный']],
+        lv: ['👓 כפתורים גדולים במיוחד', '👓 أزرار كبيرة جدًا', '👓 Butoane foarte mari', '👓 Très gros boutons', '👓 Extra big buttons', '👓 Очень крупные кнопки'],
+        lookT: ['איזה עיצוב אוהבים?', 'أي تصميم تحب؟', 'Ce aspect vă place?', 'Quel style aimez-vous ?', 'Which look do you like?', 'Какой вид вам нравится?'],
+        lookX: ['לחצו כדי לראות ברקע. יש עוד 30 עיצובים בהגדרות.', 'اضغط لترى في الخلفية. يوجد 30 تصميمًا آخر في الإعدادات.', 'Apăsați ca să vedeți în fundal. Mai sunt 30 în Setări.', 'Appuyez pour voir en fond. 30 autres styles dans Réglages.', 'Tap to see it behind. 30 more looks in Settings.', 'Нажмите, чтобы увидеть его на фоне. Ещё 30 вариантов в Настройках.'],
+        auto: ['🌅🌙 לפי שעות היום', '🌅🌙 حسب ساعات اليوم', '🌅🌙 După ora zilei', '🌅🌙 Selon l\'heure', '🌅🌙 By time of day', '🌅🌙 По времени суток'],
+        voiceT: ['להקריא את התזכורת בקול?', 'قراءة التذكير بصوت عالٍ؟', 'Citim mementoul cu voce tare?', 'Lire le rappel à voix haute ?', 'Read the reminder out loud?', 'Зачитывать напоминание вслух?'],
+        voiceX: ['בזמן התזכורת הטלפון יגיד את שם התרופה והמינון. לחצו ▶ כדי לשמוע.', 'وقت التذكير يقول الهاتف اسم الدواء والجرعة. اضغط ▶ للاستماع.', 'La memento telefonul spune numele medicamentului și doza. Apăsați ▶.', 'Au rappel, le téléphone dit le nom du médicament et la dose. Appuyez ▶.', 'At reminder time the phone says the medicine name and dose. Tap ▶ to hear.', 'Во время напоминания телефон произносит название лекарства и дозу. Нажмите ▶, чтобы послушать.'],
+        yes: ['🔊 כן, להקריא', '🔊 نعم، اقرأ', '🔊 Da, citește', '🔊 Oui, lire', '🔊 Yes, read it', '🔊 Да, зачитывать'],
+        no: ['🔕 בלי קול', '🔕 بدون صوت', '🔕 Fără voce', '🔕 Sans voix', '🔕 No voice', '🔕 Без голоса'],
+        sample: ['הגיע הזמן לקחת אקמול, כדור אחד.', 'حان وقت تناول الدواء، حبة واحدة.', 'Este timpul pentru medicament, o pastilă.', 'C\'est l\'heure du médicament, un comprimé.', 'It is time to take your medicine, one tablet.', 'Пора принять лекарство, одну таблетку.'],
+        doneT: ['שלום {n}! הכל מוכן 🎉', 'أهلًا {n}! كل شيء جاهز 🎉', 'Bună, {n}! Totul e gata 🎉', 'Bonjour {n} ! Tout est prêt 🎉', 'Hi {n}! All set 🎉', 'Привет, {n}! Всё готово 🎉'],
+        doneT0: ['הכל מוכן 🎉', 'كل شيء جاهز 🎉', 'Totul e gata 🎉', 'Tout est prêt 🎉', 'All set 🎉', 'Всё готово 🎉'],
+        doneX: ['עכשיו נאשר לטלפון לשלוח תזכורות, ואז מוסיפים את התרופה הראשונה ➕.', 'الآن نسمح للهاتف بإرسال التذكيرات، ثم نضيف أول دواء ➕.', 'Acum permitem telefonului să trimită mementouri, apoi adăugăm primul medicament ➕.', 'Autorisons maintenant les rappels, puis ajoutons le premier médicament ➕.', 'Now let the phone send reminders, then add your first medicine ➕.', 'Теперь разрешите телефону присылать напоминания, затем добавьте первое лекарство ➕.'],
+        again: ['✨ אשף הפתיחה מההתחלה (שם, כתב, עיצוב, קול)', '✨ معالج البداية من جديد (الاسم، الخط، التصميم، الصوت)', '✨ Asistentul de început din nou', '✨ Relancer l\'assistant de bienvenue', '✨ Run the welcome setup again', '✨ Пройти начальную настройку снова'],
+        doneB: ['יוצאים לדרך', 'هيا بنا', 'Începem', 'C\'est parti', 'Let\'s go', 'Поехали'],
         // home greeting by time of day
         g: [['בוקר טוב', 'צהריים טובים', 'ערב טוב', 'לילה טוב'], ['صباح الخير', 'نهارك سعيد', 'مساء الخير', 'تصبح على خير'],
             ['Bună dimineața', 'Bună ziua', 'Bună seara', 'Noapte bună'], ['Bonjour', 'Bon après-midi', 'Bonsoir', 'Bonne nuit'],
-            ['Good morning', 'Good afternoon', 'Good evening', 'Good night']]
+            ['Good morning', 'Good afternoon', 'Good evening', 'Good night'], ['Доброе утро', 'Добрый день', 'Добрый вечер', 'Доброй ночи']]
     };
 
     const css = document.createElement('style');

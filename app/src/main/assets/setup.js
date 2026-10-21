@@ -4,7 +4,7 @@
 // window.mtPermGuide(key) -> Promise<boolean>  (key: notifications / exact / fullScreen / battery / install)
 (function () {
     'use strict';
-    const L5 = ['he', 'ar', 'ro', 'fr', 'en'];
+    const L5 = ['he', 'ar', 'ro', 'fr', 'en', 'ru'];
     const li = () => Math.max(0, L5.indexOf(typeof LANG === 'string' ? LANG : 'he'));
     const N = window.MedTimeNative;
     const has = f => !!(N && typeof N[f] === 'function');
@@ -12,69 +12,69 @@
     const rtl = () => li() < 2;
 
     const T = {
-        introT: ['ברוכים הבאים ל-MedTime 👋', 'مرحبًا بك في MedTime 👋', 'Bun venit în MedTime 👋', 'Bienvenue dans MedTime 👋', 'Welcome to MedTime 👋'],
+        introT: ['ברוכים הבאים ל-MedTime 👋', 'مرحبًا بك في MedTime 👋', 'Bun venit în MedTime 👋', 'Bienvenue dans MedTime 👋', 'Welcome to MedTime 👋', 'Добро пожаловать в MedTime 👋'],
         introX: ['כדי שהתזכורות יגיעו בזמן, גם כשהאפליקציה סגורה, צריך לאשר לטלפון {n} דברים קטנים. זה לוקח פחות מדקה, ואני אראה לכם בדיוק על מה ללחוץ.',
             'لكي تصل التذكيرات في وقتها حتى والتطبيق مغلق، يجب السماح للهاتف بـ {n} أمور صغيرة. يستغرق ذلك أقل من دقيقة، وسأريك بالضبط أين تضغط.',
             'Ca mementourile să vină la timp, chiar cu aplicația închisă, telefonul trebuie să permită {n} lucruri mici. Durează sub un minut și vă arăt exact unde să apăsați.',
             'Pour que les rappels arrivent à l\'heure, même appli fermée, le téléphone doit autoriser {n} petites choses. Moins d\'une minute, et je vous montre exactement où appuyer.',
-            'So reminders arrive on time, even when the app is closed, the phone needs to allow {n} small things. It takes less than a minute, and I will show you exactly what to tap.'],
-        safe: ['🔒 זה בטוח. הנתונים שלכם נשמרים רק בטלפון ולא נשלחים לשום מקום.', '🔒 هذا آمن. بياناتك تبقى في الهاتف فقط ولا تُرسل إلى أي مكان.', '🔒 Este sigur. Datele rămân doar în telefon și nu sunt trimise nicăieri.', '🔒 C\'est sûr. Vos données restent dans le téléphone et ne sont envoyées nulle part.', '🔒 It is safe. Your data stays on the phone and is not sent anywhere.'],
-        start: ['בואו נתחיל', 'لنبدأ', 'Să începem', 'Commençons', 'Let\'s start'],
-        later: ['אחר כך', 'لاحقًا', 'Mai târziu', 'Plus tard', 'Later'],
-        go: ['הבנתי, המשך', 'فهمت، متابعة', 'Am înțeles, continuă', 'Compris, continuer', 'Got it, continue'],
-        skip: ['דלג', 'تخطَّ', 'Sari peste', 'Passer', 'Skip'],
-        retry: ['נסה שוב', 'حاول مجددًا', 'Încearcă din nou', 'Réessayer', 'Try again'],
-        step: ['שלב {i} מתוך {n}', 'الخطوة {i} من {n}', 'Pasul {i} din {n}', 'Étape {i} sur {n}', 'Step {i} of {n}'],
-        wait: ['ממתין לאישור שלכם במסך של אנדרואיד…', 'بانتظار موافقتك في شاشة أندرويد…', 'Se așteaptă aprobarea în ecranul Android…', 'En attente de votre accord dans l\'écran Android…', 'Waiting for your OK on the Android screen…'],
-        okT: ['מעולה! ✓', 'ممتاز! ✓', 'Perfect! ✓', 'Parfait ! ✓', 'Great! ✓'],
-        notYet: ['זה עוד לא אושר. לא נורא, אפשר לנסות שוב או לדלג ולסדר אחר כך בהגדרות ⚙️.', 'لم تتم الموافقة بعد. لا بأس، حاول مجددًا أو تخطَّ وأصلح لاحقًا في الإعدادات ⚙️.', 'Încă nu e aprobat. Nu-i nimic: încercați din nou sau săriți și reparați mai târziu din Setări ⚙️.', 'Pas encore autorisé. Pas grave : réessayez ou passez, et réglez plus tard dans Réglages ⚙️.', 'Not allowed yet. No problem: try again, or skip and fix it later in Settings ⚙️.'],
-        doneT: ['הכל מוכן! 🎉', 'كل شيء جاهز! 🎉', 'Totul e gata! 🎉', 'Tout est prêt ! 🎉', 'All set! 🎉'],
-        doneX: ['מעכשיו MedTime יזכיר לכם בזמן, גם כשהאפליקציה סגורה.', 'من الآن سيذكّرك MedTime في الوقت، حتى والتطبيق مغلق.', 'De acum MedTime vă amintește la timp, chiar cu aplicația închisă.', 'Désormais MedTime vous rappelle à l\'heure, même appli fermée.', 'From now on MedTime reminds you on time, even when the app is closed.'],
-        doneB: ['יוצאים לדרך', 'هيا بنا', 'Începem', 'C\'est parti', 'Let\'s go'],
-        back: ['האפליקציה תחזור לכאן לבד ✨', 'سيعود التطبيق إلى هنا وحده ✨', 'Aplicația revine aici singură ✨', 'L’application revient ici toute seule ✨', 'The app comes back here by itself ✨'],
-        tap: ['לחצו כאן', 'اضغط هنا', 'Apăsați aici', 'Appuyez ici', 'Tap here'],
-        slide: ['הזיזו את המתג הזה', 'حرّك هذا المفتاح', 'Mutați acest comutator', 'Glissez cet interrupteur', 'Slide this switch']
+            'So reminders arrive on time, even when the app is closed, the phone needs to allow {n} small things. It takes less than a minute, and I will show you exactly what to tap.', 'Чтобы напоминания приходили вовремя, даже когда приложение закрыто, телефон должен разрешить {n} небольших вещи. Это займёт меньше минуты, и я покажу, куда именно нажать.'],
+        safe: ['🔒 זה בטוח. הנתונים שלכם נשמרים רק בטלפון ולא נשלחים לשום מקום.', '🔒 هذا آمن. بياناتك تبقى في الهاتف فقط ولا تُرسل إلى أي مكان.', '🔒 Este sigur. Datele rămân doar în telefon și nu sunt trimise nicăieri.', '🔒 C\'est sûr. Vos données restent dans le téléphone et ne sont envoyées nulle part.', '🔒 It is safe. Your data stays on the phone and is not sent anywhere.', '🔒 Это безопасно. Ваши данные остаются на телефоне и никуда не отправляются.'],
+        start: ['בואו נתחיל', 'لنبدأ', 'Să începem', 'Commençons', 'Let\'s start', 'Начнём'],
+        later: ['אחר כך', 'لاحقًا', 'Mai târziu', 'Plus tard', 'Later', 'Позже'],
+        go: ['הבנתי, המשך', 'فهمت، متابعة', 'Am înțeles, continuă', 'Compris, continuer', 'Got it, continue', 'Понятно, продолжить'],
+        skip: ['דלג', 'تخطَّ', 'Sari peste', 'Passer', 'Skip', 'Пропустить'],
+        retry: ['נסה שוב', 'حاول مجددًا', 'Încearcă din nou', 'Réessayer', 'Try again', 'Попробовать снова'],
+        step: ['שלב {i} מתוך {n}', 'الخطوة {i} من {n}', 'Pasul {i} din {n}', 'Étape {i} sur {n}', 'Step {i} of {n}', 'Шаг {i} из {n}'],
+        wait: ['ממתין לאישור שלכם במסך של אנדרואיד…', 'بانتظار موافقتك في شاشة أندرويد…', 'Se așteaptă aprobarea în ecranul Android…', 'En attente de votre accord dans l\'écran Android…', 'Waiting for your OK on the Android screen…', 'Ждём вашего подтверждения на экране Android…'],
+        okT: ['מעולה! ✓', 'ممتاز! ✓', 'Perfect! ✓', 'Parfait ! ✓', 'Great! ✓', 'Отлично! ✓'],
+        notYet: ['זה עוד לא אושר. לא נורא, אפשר לנסות שוב או לדלג ולסדר אחר כך בהגדרות ⚙️.', 'لم تتم الموافقة بعد. لا بأس، حاول مجددًا أو تخطَّ وأصلح لاحقًا في الإعدادات ⚙️.', 'Încă nu e aprobat. Nu-i nimic: încercați din nou sau săriți și reparați mai târziu din Setări ⚙️.', 'Pas encore autorisé. Pas grave : réessayez ou passez, et réglez plus tard dans Réglages ⚙️.', 'Not allowed yet. No problem: try again, or skip and fix it later in Settings ⚙️.', 'Пока не разрешено. Не страшно: попробуйте снова или пропустите и исправьте позже в Настройках ⚙️.'],
+        doneT: ['הכל מוכן! 🎉', 'كل شيء جاهز! 🎉', 'Totul e gata! 🎉', 'Tout est prêt ! 🎉', 'All set! 🎉', 'Всё готово! 🎉'],
+        doneX: ['מעכשיו MedTime יזכיר לכם בזמן, גם כשהאפליקציה סגורה.', 'من الآن سيذكّرك MedTime في الوقت، حتى والتطبيق مغلق.', 'De acum MedTime vă amintește la timp, chiar cu aplicația închisă.', 'Désormais MedTime vous rappelle à l\'heure, même appli fermée.', 'From now on MedTime reminds you on time, even when the app is closed.', 'Теперь MedTime будет напоминать вовремя, даже когда приложение закрыто.'],
+        doneB: ['יוצאים לדרך', 'هيا بنا', 'Începem', 'C\'est parti', 'Let\'s go', 'Поехали'],
+        back: ['האפליקציה תחזור לכאן לבד ✨', 'سيعود التطبيق إلى هنا وحده ✨', 'Aplicația revine aici singură ✨', 'L’application revient ici toute seule ✨', 'The app comes back here by itself ✨', 'Приложение само вернётся сюда ✨'],
+        tap: ['לחצו כאן', 'اضغط هنا', 'Apăsați aici', 'Appuyez ici', 'Tap here', 'Нажмите здесь'],
+        slide: ['הזיזו את המתג הזה', 'حرّك هذا المفتاح', 'Mutați acest comutator', 'Glissez cet interrupteur', 'Slide this switch', 'Сдвиньте этот переключатель']
     };
 
     // what each permission is for, and a picture of what Android shows
     const S = {
         notifications: {
             icon: '🔔', kind: 'dialog',
-            t: ['התראות', 'الإشعارات', 'Notificări', 'Notifications', 'Notifications'],
-            x: ['כדי שנוכל להזכיר לכם לקחת תרופה ולהגיע לתור. בחלון הבא לחצו על "אישור".', 'لنذكّرك بتناول الدواء والوصول إلى الموعد. في النافذة التالية اضغط "سماح".', 'Ca să vă putem aminti de medicament și de programări. În fereastra următoare apăsați „Permite”.', 'Pour vous rappeler vos médicaments et rendez-vous. Dans la fenêtre suivante, appuyez sur « Autoriser ».', 'So we can remind you to take medicine and go to appointments. In the next window tap "Allow".'],
-            q: ['לאפשר ל-MedTime לשלוח לך התראות?', 'السماح لـ MedTime بإرسال إشعارات إليك؟', 'Permiteți MedTime să vă trimită notificări?', 'Autoriser MedTime à vous envoyer des notifications ?', 'Allow MedTime to send you notifications?'],
-            yes: ['אישור', 'سماح', 'Permite', 'Autoriser', 'Allow'], no: ['אין אישור', 'عدم السماح', 'Nu permite', 'Ne pas autoriser', 'Don\'t allow']
+            t: ['התראות', 'الإشعارات', 'Notificări', 'Notifications', 'Notifications', 'Уведомления'],
+            x: ['כדי שנוכל להזכיר לכם לקחת תרופה ולהגיע לתור. בחלון הבא לחצו על "אישור".', 'لنذكّرك بتناول الدواء والوصول إلى الموعد. في النافذة التالية اضغط "سماح".', 'Ca să vă putem aminti de medicament și de programări. În fereastra următoare apăsați „Permite”.', 'Pour vous rappeler vos médicaments et rendez-vous. Dans la fenêtre suivante, appuyez sur « Autoriser ».', 'So we can remind you to take medicine and go to appointments. In the next window tap "Allow".', 'Чтобы мы могли напоминать о лекарствах и приёмах. В следующем окне нажмите «Разрешить».'],
+            q: ['לאפשר ל-MedTime לשלוח לך התראות?', 'السماح لـ MedTime بإرسال إشعارات إليك؟', 'Permiteți MedTime să vă trimită notificări?', 'Autoriser MedTime à vous envoyer des notifications ?', 'Allow MedTime to send you notifications?', 'Разрешить приложению MedTime отправлять вам уведомления?'],
+            yes: ['אישור', 'سماح', 'Permite', 'Autoriser', 'Allow', 'Разрешить'], no: ['אין אישור', 'عدم السماح', 'Nu permite', 'Ne pas autoriser', 'Don\'t allow', 'Не разрешать']
         },
         exact: {
             icon: '⏰', kind: 'switch',
-            t: ['שעון מעורר מדויק', 'منبّه دقيق', 'Alarmă exactă', 'Alarme exacte', 'Exact alarms'],
-            x: ['כדי שהתזכורת תגיע בדיוק בשעה שבחרתם, לא כמה דקות אחר כך. במסך הבא הפעילו את המתג.', 'لكي يصل التذكير في الساعة التي اخترتها بالضبط. في الشاشة التالية فعّل المفتاح.', 'Ca mementoul să vină exact la ora aleasă. În ecranul următor porniți comutatorul.', 'Pour que le rappel arrive à l\'heure exacte choisie. Dans l\'écran suivant, activez l\'interrupteur.', 'So the reminder comes at exactly the time you chose. On the next screen turn the switch on.'],
-            q: ['אפשר הגדרת התראות ותזכורות', 'السماح بضبط المنبهات والتذكيرات', 'Permite setarea alarmelor și mementourilor', 'Autoriser les alarmes et rappels', 'Allow setting alarms and reminders']
+            t: ['שעון מעורר מדויק', 'منبّه دقيق', 'Alarmă exactă', 'Alarme exacte', 'Exact alarms', 'Точные будильники'],
+            x: ['כדי שהתזכורת תגיע בדיוק בשעה שבחרתם, לא כמה דקות אחר כך. במסך הבא הפעילו את המתג.', 'لكي يصل التذكير في الساعة التي اخترتها بالضبط. في الشاشة التالية فعّل المفتاح.', 'Ca mementoul să vină exact la ora aleasă. În ecranul următor porniți comutatorul.', 'Pour que le rappel arrive à l\'heure exacte choisie. Dans l\'écran suivant, activez l\'interrupteur.', 'So the reminder comes at exactly the time you chose. On the next screen turn the switch on.', 'Чтобы напоминание приходило точно в выбранное время. На следующем экране включите переключатель.'],
+            q: ['אפשר הגדרת התראות ותזכורות', 'السماح بضبط المنبهات والتذكيرات', 'Permite setarea alarmelor și mementourilor', 'Autoriser les alarmes et rappels', 'Allow setting alarms and reminders', 'Разрешить установку будильников и напоминаний']
         },
         fullScreen: {
             icon: '📱', kind: 'switch',
-            t: ['תזכורת על כל המסך', 'تذكير بملء الشاشة', 'Memento pe tot ecranul', 'Rappel plein écran', 'Full-screen reminder'],
-            x: ['כדי שהתזכורת תופיע גדולה וברורה גם כשהטלפון נעול. במסך הבא הפעילו את המתג.', 'لكي يظهر التذكير كبيرًا وواضحًا حتى والهاتف مقفل. في الشاشة التالية فعّل المفتاح.', 'Ca mementoul să apară mare și clar chiar cu telefonul blocat. În ecranul următor porniți comutatorul.', 'Pour que le rappel s\'affiche en grand même téléphone verrouillé. Dans l\'écran suivant, activez l\'interrupteur.', 'So the reminder shows big and clear even when the phone is locked. On the next screen turn the switch on.'],
-            q: ['אפשר התראות במסך מלא', 'السماح بالإشعارات بملء الشاشة', 'Permite notificări pe tot ecranul', 'Autoriser les notifications plein écran', 'Allow full-screen notifications']
+            t: ['תזכורת על כל המסך', 'تذكير بملء الشاشة', 'Memento pe tot ecranul', 'Rappel plein écran', 'Full-screen reminder', 'Полноэкранное напоминание'],
+            x: ['כדי שהתזכורת תופיע גדולה וברורה גם כשהטלפון נעול. במסך הבא הפעילו את המתג.', 'لكي يظهر التذكير كبيرًا وواضحًا حتى والهاتف مقفل. في الشاشة التالية فعّل المفتاح.', 'Ca mementoul să apară mare și clar chiar cu telefonul blocat. În ecranul următor porniți comutatorul.', 'Pour que le rappel s\'affiche en grand même téléphone verrouillé. Dans l\'écran suivant, activez l\'interrupteur.', 'So the reminder shows big and clear even when the phone is locked. On the next screen turn the switch on.', 'Чтобы напоминание показывалось крупно и чётко, даже когда телефон заблокирован. На следующем экране включите переключатель.'],
+            q: ['אפשר התראות במסך מלא', 'السماح بالإشعارات بملء الشاشة', 'Permite notificări pe tot ecranul', 'Autoriser les notifications plein écran', 'Allow full-screen notifications', 'Разрешить полноэкранные уведомления']
         },
         battery: {
             icon: '🔋', kind: 'dialog',
-            t: ['פעולה ברקע', 'العمل في الخلفية', 'Funcționare în fundal', 'Fonctionnement en arrière-plan', 'Running in the background'],
-            x: ['חיסכון הסוללה של הטלפון עלול "להרדים" את התזכורות. בחלון הבא לחצו על "אישור". זה כמעט לא משפיע על הסוללה.', 'قد يؤدي توفير البطارية إلى "تنويم" التذكيرات. في النافذة التالية اضغط "سماح". التأثير على البطارية ضئيل جدًا.', 'Economisirea bateriei poate „adormi” mementourile. În fereastra următoare apăsați „Permite”. Bateria aproape nu e afectată.', 'L\'économiseur de batterie peut « endormir » les rappels. Dans la fenêtre suivante, appuyez sur « Autoriser ». Presque aucun effet sur la batterie.', 'The phone\'s battery saver may "put reminders to sleep". In the next window tap "Allow". It barely affects the battery.'],
-            q: ['לאפשר לאפליקציה לפעול תמיד ברקע?', 'السماح للتطبيق بالعمل دائمًا في الخلفية؟', 'Permiteți aplicației să ruleze mereu în fundal?', 'Autoriser l\'appli à toujours fonctionner en arrière-plan ?', 'Let the app always run in the background?'],
-            yes: ['אישור', 'سماح', 'Permite', 'Autoriser', 'Allow'], no: ['דחייה', 'رفض', 'Refuză', 'Refuser', 'Deny']
+            t: ['פעולה ברקע', 'العمل في الخلفية', 'Funcționare în fundal', 'Fonctionnement en arrière-plan', 'Running in the background', 'Работа в фоне'],
+            x: ['חיסכון הסוללה של הטלפון עלול "להרדים" את התזכורות. בחלון הבא לחצו על "אישור". זה כמעט לא משפיע על הסוללה.', 'قد يؤدي توفير البطارية إلى "تنويم" التذكيرات. في النافذة التالية اضغط "سماح". التأثير على البطارية ضئيل جدًا.', 'Economisirea bateriei poate „adormi” mementourile. În fereastra următoare apăsați „Permite”. Bateria aproape nu e afectată.', 'L\'économiseur de batterie peut « endormir » les rappels. Dans la fenêtre suivante, appuyez sur « Autoriser ». Presque aucun effet sur la batterie.', 'The phone\'s battery saver may "put reminders to sleep". In the next window tap "Allow". It barely affects the battery.', 'Экономия батареи может «усыпить» напоминания. В следующем окне нажмите «Разрешить». На батарею это почти не влияет.'],
+            q: ['לאפשר לאפליקציה לפעול תמיד ברקע?', 'السماح للتطبيق بالعمل دائمًا في الخلفية؟', 'Permiteți aplicației să ruleze mereu în fundal?', 'Autoriser l\'appli à toujours fonctionner en arrière-plan ?', 'Let the app always run in the background?', 'Разрешить приложению всегда работать в фоне?'],
+            yes: ['אישור', 'سماح', 'Permite', 'Autoriser', 'Allow', 'Разрешить'], no: ['דחייה', 'رفض', 'Refuză', 'Refuser', 'Deny', 'Запретить']
         },
         overlay: { // M-094
             icon: '💊', kind: 'switch',
-            t: ['תזכורת מעל הכל', 'تذكير فوق كل شيء', 'Memento deasupra tuturor', 'Rappel au-dessus de tout', 'Reminder on top of everything'],
-            x: ['כדי שתזכורת התרופה תופיע מעל כל אפליקציה ותישאר עד שתלחצו "לקחתי", "דחה" או "דלג". במסך הבא הפעילו את המתג.', 'لكي يظهر تذكير الدواء فوق أي تطبيق ويبقى حتى تضغط "أخذته" أو "تأجيل" أو "تخطَّ". في الشاشة التالية فعّل المفتاح.', 'Ca mementoul să apară peste orice aplicație și să rămână până apăsați „Am luat”, „Amână” sau „Sari”. În ecranul următor porniți comutatorul.', 'Pour que le rappel s\'affiche par-dessus toute appli et reste jusqu\'à « Pris », « Reporter » ou « Passer ». Dans l\'écran suivant, activez l\'interrupteur.', 'So the medicine reminder shows on top of any app and stays until you tap "Taken", "Snooze" or "Skip". On the next screen turn the switch on.'],
-            q: ['הצגה מעל אפליקציות אחרות', 'العرض فوق التطبيقات الأخرى', 'Afișare peste alte aplicații', 'Superposition sur d\'autres applis', 'Display over other apps']
+            t: ['תזכורת מעל הכל', 'تذكير فوق كل شيء', 'Memento deasupra tuturor', 'Rappel au-dessus de tout', 'Reminder on top of everything', 'Напоминание поверх всего'],
+            x: ['כדי שתזכורת התרופה תופיע מעל כל אפליקציה ותישאר עד שתלחצו "לקחתי", "דחה" או "דלג". במסך הבא הפעילו את המתג.', 'لكي يظهر تذكير الدواء فوق أي تطبيق ويبقى حتى تضغط "أخذته" أو "تأجيل" أو "تخطَّ". في الشاشة التالية فعّل المفتاح.', 'Ca mementoul să apară peste orice aplicație și să rămână până apăsați „Am luat”, „Amână” sau „Sari”. În ecranul următor porniți comutatorul.', 'Pour que le rappel s\'affiche par-dessus toute appli et reste jusqu\'à « Pris », « Reporter » ou « Passer ». Dans l\'écran suivant, activez l\'interrupteur.', 'So the medicine reminder shows on top of any app and stays until you tap "Taken", "Snooze" or "Skip". On the next screen turn the switch on.', 'Чтобы напоминание о лекарстве показывалось поверх любого приложения и оставалось, пока вы не нажмёте «Принято», «Отложить» или «Пропустить». На следующем экране включите переключатель.'],
+            q: ['הצגה מעל אפליקציות אחרות', 'العرض فوق التطبيقات الأخرى', 'Afișare peste alte aplicații', 'Superposition sur d\'autres applis', 'Display over other apps', 'Показывать поверх других приложений']
         },
         install: {
             icon: '🔄', kind: 'switch',
-            t: ['עדכונים מתוך האפליקציה', 'التحديثات من داخل التطبيق', 'Actualizări din aplicație', 'Mises à jour depuis l\'appli', 'Updates from inside the app'],
-            x: ['פעם אחת בלבד: אנדרואיד שואל אם מותר ל-MedTime להתקין את הגרסאות החדשות שלו. במסך הבא הפעילו את המתג. התזכורות שלכם נשמרות.', 'مرة واحدة فقط: يسأل أندرويد إن كان مسموحًا لـ MedTime تثبيت إصداراته الجديدة. في الشاشة التالية فعّل المفتاح. تذكيراتك محفوظة.', 'O singură dată: Android întreabă dacă MedTime își poate instala versiunile noi. În ecranul următor porniți comutatorul. Mementourile rămân.', 'Une seule fois : Android demande si MedTime peut installer ses nouvelles versions. Dans l\'écran suivant, activez l\'interrupteur. Vos rappels restent.', 'Only once: Android asks whether MedTime may install its own new versions. On the next screen turn the switch on. Your reminders stay.'],
-            q: ['התרת התקנה ממקור זה', 'السماح من هذا المصدر', 'Permite din această sursă', 'Autoriser cette source', 'Allow from this source']
+            t: ['עדכונים מתוך האפליקציה', 'التحديثات من داخل التطبيق', 'Actualizări din aplicație', 'Mises à jour depuis l\'appli', 'Updates from inside the app', 'Обновления из приложения'],
+            x: ['פעם אחת בלבד: אנדרואיד שואל אם מותר ל-MedTime להתקין את הגרסאות החדשות שלו. במסך הבא הפעילו את המתג. התזכורות שלכם נשמרות.', 'مرة واحدة فقط: يسأل أندرويد إن كان مسموحًا لـ MedTime تثبيت إصداراته الجديدة. في الشاشة التالية فعّل المفتاح. تذكيراتك محفوظة.', 'O singură dată: Android întreabă dacă MedTime își poate instala versiunile noi. În ecranul următor porniți comutatorul. Mementourile rămân.', 'Une seule fois : Android demande si MedTime peut installer ses nouvelles versions. Dans l\'écran suivant, activez l\'interrupteur. Vos rappels restent.', 'Only once: Android asks whether MedTime may install its own new versions. On the next screen turn the switch on. Your reminders stay.', 'Только один раз: Android спросит, может ли MedTime устанавливать свои новые версии. На следующем экране включите переключатель. Ваши напоминания сохранятся.'],
+            q: ['התרת התקנה ממקור זה', 'السماح من هذا المصدر', 'Permite din această sursă', 'Autoriser cette source', 'Allow from this source', 'Разрешить установку из этого источника']
         }
     };
     const FIRST = ['overlay', 'notifications', 'exact', 'fullScreen', 'battery']; // M-095: overlay first, so after each later permission the app can come back by itself

@@ -2704,6 +2704,7 @@
             <button type="button" data-lang="ro"><span class="flag">🇷🇴</span>Română</button>
             <button type="button" data-lang="fr"><span class="flag">🇫🇷</span>Français</button>
             <button type="button" data-lang="en"><span class="flag">🇬🇧</span>English</button>
+            <button type="button" data-lang="ru"><span class="flag">🇷🇺</span>Русский</button>
         </div>
         <div class="wl-note" id="wl-note"></div>
         <button type="button" class="wl-go" id="wl-go"></button>
@@ -2716,7 +2717,8 @@
                 ar: { tag: 'أدويتك في وقتها', credit: '© روني 2026', pick: 'اختر اللغة', note: 'يمكن تغيير اللغة في أي وقت من الإعدادات ⚙️', go: 'متابعة ✓', dir: 'rtl' },
                 ro: { tag: 'Medicamentele tale, la timp', credit: '© Roni Schneider 2026', pick: 'Alegeți limba', note: 'Puteți schimba limba oricând din Setări ⚙️', go: 'Continuă ✓', dir: 'ltr' },
                 fr: { tag: 'Vos médicaments, à l’heure', credit: '© Roni Schneider 2026', pick: 'Choisissez la langue', note: 'Vous pouvez changer la langue à tout moment dans les Réglages ⚙️', go: 'Continuer ✓', dir: 'ltr' },
-                en: { tag: 'Your medicines, on time', credit: '© Roni Schneider 2026', pick: 'Choose your language', note: 'You can change the language any time in Settings ⚙️', go: 'Continue ✓', dir: 'ltr' }
+                en: { tag: 'Your medicines, on time', credit: '© Roni Schneider 2026', pick: 'Choose your language', note: 'You can change the language any time in Settings ⚙️', go: 'Continue ✓', dir: 'ltr' },
+                ru: { tag: 'Ваши лекарства — вовремя', credit: '© Roni Schneider 2026', pick: 'Выберите язык', note: 'Язык можно изменить в любое время в Настройках ⚙️', go: 'Продолжить ✓', dir: 'ltr' }
             };
             var stored = null;
             try { stored = localStorage.getItem('medtime_lang'); } catch (e) { }
@@ -2760,7 +2762,7 @@
             function showWelcome() {
                 var w = document.getElementById('welcome'), title = document.getElementById('wl-title'),
                     note = document.getElementById('wl-note'), go = document.getElementById('wl-go');
-                var order = ['he', 'ar', 'ro', 'fr', 'en'], k = 0, chosen = null;
+                var order = ['he', 'ar', 'ro', 'fr', 'en', 'ru'], k = 0, chosen = null;
                 w.classList.add('show');
                 // Title changes language every 1.6 s until one is chosen
                 var cyc = setInterval(function () {
@@ -2960,13 +2962,14 @@
                 <span class="set-chev">⌄</span>
             </button>
             <div class="set-body">
-                <div class="lang-grid"><button type="button" class="lang-btn" data-lang="he"><span class="flag">🇮🇱</span>עברית</button><button type="button" class="lang-btn" data-lang="ar"><span class="flag">🌙</span>العربية</button><button type="button" class="lang-btn" data-lang="ro"><span class="flag">🇷🇴</span>Română</button><button type="button" class="lang-btn" data-lang="fr"><span class="flag">🇫🇷</span>Français</button><button type="button" class="lang-btn" data-lang="en"><span class="flag">🇬🇧</span>English</button></div>
+                <div class="lang-grid"><button type="button" class="lang-btn" data-lang="he"><span class="flag">🇮🇱</span>עברית</button><button type="button" class="lang-btn" data-lang="ar"><span class="flag">🌙</span>العربية</button><button type="button" class="lang-btn" data-lang="ro"><span class="flag">🇷🇴</span>Română</button><button type="button" class="lang-btn" data-lang="fr"><span class="flag">🇫🇷</span>Français</button><button type="button" class="lang-btn" data-lang="en"><span class="flag">🇬🇧</span>English</button><button type="button" class="lang-btn" data-lang="ru"><span class="flag">🇷🇺</span>Русский</button></div>
                 <select id="lang-select" class="lang-select" aria-label="Language" hidden>
                     <option value="he">עברית</option>
                     <option value="ar">العربية</option>
                     <option value="ro">Română</option>
                     <option value="fr">Français</option>
                     <option value="en">English</option>
+                    <option value="ru">Русский</option>
                 </select>
             </div>
         </section>
@@ -3518,6 +3521,76 @@
           "type_syrup": "Syrup",
           "type_cream": "Cream",
           "type_inhaler": "Inhaler"
+         },
+         "ru": {
+          "on": "Вкл.",
+          "off": "Выкл.",
+          "namesShort": "названия",
+          "doseShort": "доза",
+          "tapToChange": "Нажмите, чтобы изменить",
+          "statusOk": "Всё в порядке",
+          "statusProblem": "Нужно кое-что исправить",
+          "settings": "Настройки",
+          "close": "Закрыть",
+          "langTitle": "🌐 Язык",
+          "soundTitle": "🔔 Звук напоминания",
+          "soundDefault": "Стандартный будильник телефона",
+          "soundNone": "Без звука (только вибрация и голос)",
+          "soundAlarm": "Звуки будильника",
+          "soundNotif": "Звуки уведомлений",
+          "preview": "▶ Слушать",
+          "lowVisionTitle": "👓 Режим для слабого зрения",
+          "lowVisionOn": "Крупный текст и высокий контраст",
+          "statusTitle": "✅ Статус напоминаний",
+          "problemMain": "⚠️ Одна настройка может задерживать напоминания",
+          "openSettings": "Настройки",
+          "item": "Пункт",
+          "typeLabel": "Тип",
+          "nameLabel": "Название лекарства",
+          "namePh": "напр. Парацетамол",
+          "doseLabel": "Доза",
+          "dosePh": "напр. 1 таблетка, 10 единиц",
+          "timeLabel": "Время напоминания",
+          "ok": "ОК",
+          "cancel": "Отмена",
+          "hours": "Час",
+          "minutes": "Минуты",
+          "addMore": "➕ Ещё лекарство / укол в то же время",
+          "myReminders": "Мои напоминания", "nextAt": "Следующее", "noReminders": "Пока нет напоминаний",
+          "typeManually": "⌨ Ввести вручную", "qMorning": "Утро", "qNoon": "Полдень", "qEvening": "Вечер", "qNight": "Ночь",
+          "soundMedTime": "✨ Особые звуки MedTime",
+          "themeTitle": "🎨 Оформление",
+          "themeAuto": "🕒 Авто по времени суток", "themeChoose": "✓ Выбрать", "themeBack": "↩ Назад",
+          "closeApp": "Закрыть приложение", "exitShort": "Выход", "everyDay": "Каждый день", "repeatOn": "Повтор:", "textSize": "🔠 Размер текста", "volAlert": "🔔 Громкость сигнала", "volVoice": "🗣️ Громкость голоса", "volAmbient": "🔊 Громкость фонового звука", "volNote": "Относительно громкости будильника телефона", "ambientOn": "🎵 Фоновый звук",
+          "addReminder": "Добавить напоминание",
+          "voiceTitle": "🔊 Чтение вслух",
+          "voiceOn": "Читать вслух",
+          "voiceNames": "Называть лекарства",
+          "voiceDose": "Называть и дозу",
+          "st_notifications": "Уведомления приложения выключены",
+          "st_exact": "Нет разрешения на точные будильники",
+          "st_fullScreen": "Нет разрешения на полноэкранные напоминания", "st_overlay": "Нет разрешения показывать напоминание поверх других приложений",
+          "st_battery": "Экономия батареи может задерживать напоминания",
+          "fix": "Исправить",
+          "noVoice": "На телефоне нет голоса для этого языка",
+          "voiceSettings": "Настройки голоса",
+          "allOk": "✅ Напоминания работают, даже когда приложение закрыто",
+          "test": "🔔 Тестовое напоминание через 1 минуту",
+          "testName1": "Тестовое лекарство",
+          "testName2": "Тестовый инсулин",
+          "testDose2": "10 единиц",
+          "testAlert": "Тестовое напоминание появится через минуту. Можно закрыть приложение и заблокировать экран.",
+          "dose": "Доза",
+          "del": "Удалить",
+          "name": "Имя",
+          "remove": "Убрать",
+          "needName": "Введите хотя бы одно название лекарства",
+          "type_pill": "Таблетка",
+          "type_injection": "Укол",
+          "type_drops": "Капли",
+          "type_syrup": "Сироп",
+          "type_cream": "Крем",
+          "type_inhaler": "Ингалятор"
          }
         };
         const RTL_LANGS = ['he', 'ar'];
@@ -3751,7 +3824,8 @@
             en: [['מק"ג', 'mcg'], ['מ"ג', 'mg'], ['יחידות', 'units'], ['טיפות', 'drops'], ['טיפה', 'drop'], ['שאיפות', 'puffs'], ['התזות', 'sprays'], ['כדור', 'tablet'], ['כמוסה', 'capsule']],
             fr: [['מק"ג', 'µg'], ['מ"ג', 'mg'], ['יחידות', 'unités'], ['טיפות', 'gouttes'], ['טיפה', 'goutte'], ['שאיפות', 'bouffées'], ['התזות', 'pulvérisations'], ['כדור', 'comprimé'], ['כמוסה', 'gélule']],
             ro: [['מק"ג', 'mcg'], ['מ"ג', 'mg'], ['יחידות', 'unități'], ['טיפות', 'picături'], ['טיפה', 'picătură'], ['שאיפות', 'pufuri'], ['התזות', 'pulverizări'], ['כדור', 'comprimat'], ['כמוסה', 'capsulă']],
-            ar: [['מק"ג', 'ميكروغرام'], ['מ"ג', 'ملغ'], ['יחידות', 'وحدات'], ['טיפות', 'قطرات'], ['טיפה', 'قطرة'], ['שאיפות', 'بخات'], ['התזות', 'رشات'], ['כדור', 'حبة'], ['כמוסה', 'كبسولة']]
+            ar: [['מק"ג', 'ميكروغرام'], ['מ"ג', 'ملغ'], ['יחידות', 'وحدات'], ['טיפות', 'قطرات'], ['טיפה', 'قطرة'], ['שאיפות', 'بخات'], ['התזות', 'رشات'], ['כדור', 'حبة'], ['כמוסה', 'كبسولة']],
+            ru: [['מק"ג', 'мкг'], ['מ"ג', 'мг'], ['יחידות', 'ед.'], ['טיפות', 'капли'], ['טיפה', 'капля'], ['שאיפות', 'вдохи'], ['התזות', 'впрыскивания'], ['כדור', 'таблетка'], ['כמוסה', 'капсула']]
         };
         function doseText(d) {
             if (!d) return '';
@@ -3770,7 +3844,8 @@
             en: { 'מ"ג': 'mg', 'כדור': 'tablet', 'חצי כדור': 'half tablet', 'כמוסה': 'capsule', 'יחידות': 'units', 'מ"ל': 'ml', 'טיפות': 'drops', 'טיפה בכל עין': 'drop in each eye', 'כפית': 'teaspoon', 'כף': 'tablespoon', 'שכבה דקה': 'thin layer', 'גרם': 'g', 'פעמיים ביום': 'twice a day', 'שאיפות': 'puffs', 'התזות': 'sprays' },
             fr: { 'מ"ג': 'mg', 'כדור': 'comprimé', 'חצי כדור': 'demi-comprimé', 'כמוסה': 'gélule', 'יחידות': 'unités', 'מ"ל': 'ml', 'טיפות': 'gouttes', 'טיפה בכל עין': 'goutte dans chaque œil', 'כפית': 'cuillère à café', 'כף': 'cuillère à soupe', 'שכבה דקה': 'couche fine', 'גרם': 'g', 'פעמיים ביום': 'deux fois par jour', 'שאיפות': 'bouffées', 'התזות': 'pulvérisations' },
             ro: { 'מ"ג': 'mg', 'כדור': 'comprimat', 'חצי כדור': 'jumătate de comprimat', 'כמוסה': 'capsulă', 'יחידות': 'unități', 'מ"ל': 'ml', 'טיפות': 'picături', 'טיפה בכל עין': 'o picătură în fiecare ochi', 'כפית': 'linguriță', 'כף': 'lingură', 'שכבה דקה': 'strat subțire', 'גרם': 'g', 'פעמיים ביום': 'de două ori pe zi', 'שאיפות': 'pufuri', 'התזות': 'pulverizări' },
-            ar: { 'מ"ג': 'ملغ', 'כדור': 'حبة', 'חצי כדור': 'نصف حبة', 'כמוסה': 'كبسولة', 'יחידות': 'وحدات', 'מ"ל': 'مل', 'טיפות': 'قطرات', 'טיפה בכל עין': 'قطرة في كل عين', 'כפית': 'ملعقة صغيرة', 'כף': 'ملعقة كبيرة', 'שכבה דקה': 'طبقة رقيقة', 'גרם': 'غ', 'פעמיים ביום': 'مرتين يوميا', 'שאיפות': 'بخات', 'התזות': 'رشات' }
+            ar: { 'מ"ג': 'ملغ', 'כדור': 'حبة', 'חצי כדור': 'نصف حبة', 'כמוסה': 'كبسولة', 'יחידות': 'وحدات', 'מ"ל': 'مل', 'טיפות': 'قطرات', 'טיפה בכל עין': 'قطرة في كل عين', 'כפית': 'ملعقة صغيرة', 'כף': 'ملعقة كبيرة', 'שכבה דקה': 'طبقة رقيقة', 'גרם': 'غ', 'פעמיים ביום': 'مرتين يوميا', 'שאיפות': 'بخات', 'התזות': 'رشات' },
+            ru: { 'מ"ג': 'мг', 'כדור': 'таблетка', 'חצי כדור': 'половина таблетки', 'כמוסה': 'капсула', 'יחידות': 'единиц', 'מ"ל': 'мл', 'טיפות': 'капли', 'טיפה בכל עין': 'по капле в каждый глаз', 'כפית': 'чайная ложка', 'כף': 'столовая ложка', 'שכבה דקה': 'тонкий слой', 'גרם': 'г', 'פעמיים ביום': 'два раза в день', 'שאיפות': 'вдохи', 'התזות': 'впрыскивания' }
         };
         const unitText = u => (UNIT_TR[LANG] && UNIT_TR[LANG][u]) || u;
         function attachUnits(row) {
@@ -3830,7 +3905,7 @@
             renderDose();
             document.getElementById('dose-sheet').classList.add('open');
         }
-        const fmtNum = n => String(n).replace('.', LANG === 'fr' || LANG === 'ro' ? ',' : '.');
+        const fmtNum = n => String(n).replace('.', LANG === 'fr' || LANG === 'ro' || LANG === 'ru' ? ',' : '.');
         function doseValue() {
             const q = QTY[dsUnit];
             return q ? fmtNum(q[0][dsIdx]) + ' ' + unitText(dsUnit) : unitText(dsUnit);
@@ -3869,7 +3944,7 @@
         }
         // ---------- M-038: reminder on chosen week days (e.g. once a week) ----------
         let selDays = []; // 0 = Sunday ... 6 = Saturday; empty = every day
-        const LOCALES = { he: 'he-IL', ar: 'ar', ro: 'ro-RO', fr: 'fr-FR', en: 'en-GB' };
+        const LOCALES = { he: 'he-IL', ar: 'ar', ro: 'ro-RO', fr: 'fr-FR', en: 'en-GB', ru: 'ru-RU' };
         function dayName(d) { return new Date(2023, 0, 1 + d).toLocaleDateString(LOCALES[LANG] || 'he-IL', { weekday: 'short' }); }
         function daysText(days) {
             if (!days || !days.length || days.length >= 7) return t('everyDay');
@@ -4348,8 +4423,8 @@
         }
 
         // M-027: names of MedTime's own sounds [icon, he, ar, ro, fr, en]
-        const SOUND_NAMES = {"space_ping": ["🛰️", "פינג חללי", "رنين فضائي", "Ping spațial", "Ping spatial", "Space ping"], "nebula": ["🌌", "ערפילית", "سديم", "Nebuloasă", "Nébuleuse", "Nebula"], "orbit": ["🪐", "מסלול", "مدار", "Orbită", "Orbite", "Orbit"], "starfall": ["🌠", "מטר כוכבים", "شهب", "Ploaie de stele", "Pluie d’étoiles", "Starfall"], "warp": ["🚀", "קפיצת חלל", "قفزة فضائية", "Salt warp", "Saut spatial", "Warp jump"], "sonar": ["📡", "סונאר", "سونار", "Sonar", "Sonar", "Sonar"], "bird_chirp": ["🐦", "ציוץ ציפור", "زقزقة عصفور", "Ciripit", "Gazouillis", "Bird chirp"], "morning_birds": ["🌅", "ציפורי בוקר", "طيور الصباح", "Păsări de dimineață", "Oiseaux du matin", "Morning birds"], "nightingale": ["🎶", "זמיר", "عندليب", "Privighetoare", "Rossignol", "Nightingale"], "cuckoo": ["🕰️", "קוקייה", "وقواق", "Cuc", "Coucou", "Cuckoo"], "owl": ["🦉", "ינשוף", "بومة", "Bufniță", "Hibou", "Owl"], "crystal_bells": ["💎", "פעמוני קריסטל", "أجراس كريستال", "Clopoței de cristal", "Cloches de cristal", "Crystal bells"], "wind_chimes": ["🎐", "פעמוני רוח", "أجراس الرياح", "Clopoței de vânt", "Carillon à vent", "Wind chimes"], "tibetan_bowl": ["🥣", "קערה טיבטית", "وعاء تبتي", "Bol tibetan", "Bol tibétain", "Tibetan bowl"], "marimba": ["🪘", "מרימבה", "ماريمبا", "Marimbă", "Marimba", "Marimba"], "harp": ["🪕", "נבל", "قيثارة", "Harpă", "Harpe", "Harp"], "music_box": ["🎁", "תיבת נגינה", "صندوق موسيقى", "Cutie muzicală", "Boîte à musique", "Music box"], "piano_rise": ["🎹", "פסנתר עולה", "بيانو صاعد", "Pian ascendent", "Piano montant", "Rising piano"], "kalimba": ["🎵", "קלימבה", "كاليمبا", "Kalimba", "Kalimba", "Kalimba"], "glass": ["🥂", "כוס זכוכית", "كأس زجاج", "Pahar de cristal", "Verre", "Glass"], "water_drops": ["💧", "טיפות מים", "قطرات ماء", "Picături de apă", "Gouttes d’eau", "Water drops"], "bubbles": ["🫧", "בועות", "فقاعات", "Bule", "Bulles", "Bubbles"], "ocean": ["🌊", "גלי ים", "أمواج البحر", "Valuri", "Vagues", "Ocean waves"], "rain": ["🌧️", "גשם קל", "مطر خفيف", "Ploaie ușoară", "Pluie légère", "Light rain"], "gong": ["🔔", "גונג", "غونغ", "Gong", "Gong", "Gong"], "sunrise": ["☀️", "זריחה", "شروق", "Răsărit", "Lever du soleil", "Sunrise"], "fairy": ["🧚", "אבק פיות", "غبار الجنيات", "Praf de zâne", "Poussière de fée", "Fairy dust"], "arcade": ["👾", "ארקייד", "أركيد", "Arcade", "Arcade", "Arcade"], "digital": ["⌚", "דיגיטלי", "رقمي", "Digital", "Numérique", "Digital"], "heartbeat": ["💓", "פעימות לב", "نبضات القلب", "Bătăi de inimă", "Battements de cœur", "Heartbeat"], "fanfare": ["🎺", "תרועה", "فانفار", "Fanfară", "Fanfare", "Fanfare"], "zen": ["🧘", "זן", "زن", "Zen", "Zen", "Zen"], "magic_wand": ["🪄", "שרביט קסמים", "عصا سحرية", "Baghetă magică", "Baguette magique", "Magic wand"], "scanner": ["🔦", "סורק חללי", "ماسح فضائي", "Scaner", "Scanner", "Scanner"], "robot": ["🤖", "רובוט", "روبوت", "Robot", "Robot", "Robot"], "dolphin": ["🐬", "דולפין", "دلفين", "Delfin", "Dauphin", "Dolphin"], "frog": ["🐸", "צפרדע", "ضفدع", "Broască", "Grenouille", "Frog"], "crickets": ["🦗", "צרצרים", "صراصير الليل", "Greieri", "Grillons", "Crickets"], "church_bells": ["⛪", "פעמוני מגדל", "أجراس البرج", "Clopote", "Cloches", "Tower bells"], "xylophone": ["🎼", "קסילופון", "إكسيليفون", "Xilofon", "Xylophone", "Xylophone"], "steel_drum": ["🥁", "תוף פלדה", "طبل فولاذي", "Tobă de oțel", "Steel drum", "Steel drum"], "flute": ["🪈", "חליל", "ناي", "Flaut", "Flûte", "Flute"], "ukulele": ["🎸", "יוקלילי", "يوكوليلي", "Ukulele", "Ukulélé", "Ukulele"], "synth_pluck": ["🎛️", "סינתי", "سينث", "Synth", "Synthé", "Synth pluck"], "retro_phone": ["☎️", "טלפון ישן", "هاتف قديم", "Telefon retro", "Téléphone rétro", "Retro phone"], "doorbell": ["🚪", "פעמון דלת", "جرس الباب", "Sonerie", "Sonnette", "Doorbell"], "celesta": ["✨", "צ׳לסטה", "سيليستا", "Celestă", "Célesta", "Celesta"], "handpan": ["🛸", "הנדפאן", "هاندبان", "Handpan", "Handpan", "Handpan"], "pizzicato": ["🎻", "פיציקטו", "بيتزيكاتو", "Pizzicato", "Pizzicato", "Pizzicato"], "laser": ["🔫", "לייזר", "ليزر", "Laser", "Laser", "Laser"], "comet": ["☄️", "שביט", "مذنب", "Cometă", "Comète", "Comet"], "pulsar": ["💫", "פולסר", "نجم نابض", "Pulsar", "Pulsar", "Pulsar"], "alien": ["👽", "חייזר", "كائن فضائي", "Extraterestru", "Extraterrestre", "Alien"], "whale": ["🐋", "לוויתן", "حوت", "Balenă", "Baleine", "Whale"], "seagulls": ["🕊️", "שחפים", "نوارس", "Pescăruși", "Mouettes", "Seagulls"], "wood_block": ["🪵", "קוביית עץ", "قطعة خشب", "Bloc de lemn", "Bloc de bois", "Wood block"], "tabla": ["🪇", "טבלה", "طبلة", "Tabla", "Tabla", "Tabla"], "orchestra": ["🎭", "תזמורת", "أوركسترا", "Orchestră", "Orchestre", "Orchestra"], "meditation": ["🕉️", "מדיטציה", "تأمل", "Meditație", "Méditation", "Meditation"], "chime_up": ["🔆", "צלצול עולה", "رنين صاعد", "Clopoțel urcător", "Carillon montant", "Rising chime"], "black_hole": ["🕳️", "חור שחור", "ثقب أسود", "Gaură neagră", "Trou noir", "Black hole"], "rooster": ["🐓", "תרנגול", "ديك", "Cocoș", "Coq", "Rooster"]};
-        var LANG_IDX = { he: 1, ar: 2, ro: 3, fr: 4, en: 5 };
+        const SOUND_NAMES = {"space_ping": ["🛰️", "פינג חללי", "رنين فضائي", "Ping spațial", "Ping spatial", "Space ping", "Космический сигнал"], "nebula": ["🌌", "ערפילית", "سديم", "Nebuloasă", "Nébuleuse", "Nebula", "Туманность"], "orbit": ["🪐", "מסלול", "مدار", "Orbită", "Orbite", "Orbit", "Орбита"], "starfall": ["🌠", "מטר כוכבים", "شهب", "Ploaie de stele", "Pluie d’étoiles", "Starfall", "Звездопад"], "warp": ["🚀", "קפיצת חלל", "قفزة فضائية", "Salt warp", "Saut spatial", "Warp jump", "Гиперпрыжок"], "sonar": ["📡", "סונאר", "سونار", "Sonar", "Sonar", "Sonar", "Сонар"], "bird_chirp": ["🐦", "ציוץ ציפור", "زقزقة عصفور", "Ciripit", "Gazouillis", "Bird chirp", "Щебет птицы"], "morning_birds": ["🌅", "ציפורי בוקר", "طيور الصباح", "Păsări de dimineață", "Oiseaux du matin", "Morning birds", "Утренние птицы"], "nightingale": ["🎶", "זמיר", "عندليب", "Privighetoare", "Rossignol", "Nightingale", "Соловей"], "cuckoo": ["🕰️", "קוקייה", "وقواق", "Cuc", "Coucou", "Cuckoo", "Кукушка"], "owl": ["🦉", "ינשוף", "بومة", "Bufniță", "Hibou", "Owl", "Сова"], "crystal_bells": ["💎", "פעמוני קריסטל", "أجراس كريستال", "Clopoței de cristal", "Cloches de cristal", "Crystal bells", "Хрустальные колокольчики"], "wind_chimes": ["🎐", "פעמוני רוח", "أجراس الرياح", "Clopoței de vânt", "Carillon à vent", "Wind chimes", "Музыка ветра"], "tibetan_bowl": ["🥣", "קערה טיבטית", "وعاء تبتي", "Bol tibetan", "Bol tibétain", "Tibetan bowl", "Тибетская чаша"], "marimba": ["🪘", "מרימבה", "ماريمبا", "Marimbă", "Marimba", "Marimba", "Маримба"], "harp": ["🪕", "נבל", "قيثارة", "Harpă", "Harpe", "Harp", "Арфа"], "music_box": ["🎁", "תיבת נגינה", "صندوق موسيقى", "Cutie muzicală", "Boîte à musique", "Music box", "Музыкальная шкатулка"], "piano_rise": ["🎹", "פסנתר עולה", "بيانو صاعد", "Pian ascendent", "Piano montant", "Rising piano", "Восходящее пианино"], "kalimba": ["🎵", "קלימבה", "كاليمبا", "Kalimba", "Kalimba", "Kalimba", "Калимба"], "glass": ["🥂", "כוס זכוכית", "كأس زجاج", "Pahar de cristal", "Verre", "Glass", "Стекло"], "water_drops": ["💧", "טיפות מים", "قطرات ماء", "Picături de apă", "Gouttes d’eau", "Water drops", "Капли воды"], "bubbles": ["🫧", "בועות", "فقاعات", "Bule", "Bulles", "Bubbles", "Пузыри"], "ocean": ["🌊", "גלי ים", "أمواج البحر", "Valuri", "Vagues", "Ocean waves", "Океанские волны"], "rain": ["🌧️", "גשם קל", "مطر خفيف", "Ploaie ușoară", "Pluie légère", "Light rain", "Лёгкий дождь"], "gong": ["🔔", "גונג", "غونغ", "Gong", "Gong", "Gong", "Гонг"], "sunrise": ["☀️", "זריחה", "شروق", "Răsărit", "Lever du soleil", "Sunrise", "Восход"], "fairy": ["🧚", "אבק פיות", "غبار الجنيات", "Praf de zâne", "Poussière de fée", "Fairy dust", "Волшебная пыльца"], "arcade": ["👾", "ארקייד", "أركيد", "Arcade", "Arcade", "Arcade", "Аркада"], "digital": ["⌚", "דיגיטלי", "رقمي", "Digital", "Numérique", "Digital", "Цифровой"], "heartbeat": ["💓", "פעימות לב", "نبضات القلب", "Bătăi de inimă", "Battements de cœur", "Heartbeat", "Сердцебиение"], "fanfare": ["🎺", "תרועה", "فانفار", "Fanfară", "Fanfare", "Fanfare", "Фанфары"], "zen": ["🧘", "זן", "زن", "Zen", "Zen", "Zen", "Дзен"], "magic_wand": ["🪄", "שרביט קסמים", "عصا سحرية", "Baghetă magică", "Baguette magique", "Magic wand", "Волшебная палочка"], "scanner": ["🔦", "סורק חללי", "ماسح فضائي", "Scaner", "Scanner", "Scanner", "Сканер"], "robot": ["🤖", "רובוט", "روبوت", "Robot", "Robot", "Robot", "Робот"], "dolphin": ["🐬", "דולפין", "دلفين", "Delfin", "Dauphin", "Dolphin", "Дельфин"], "frog": ["🐸", "צפרדע", "ضفدع", "Broască", "Grenouille", "Frog", "Лягушка"], "crickets": ["🦗", "צרצרים", "صراصير الليل", "Greieri", "Grillons", "Crickets", "Сверчки"], "church_bells": ["⛪", "פעמוני מגדל", "أجراس البرج", "Clopote", "Cloches", "Tower bells", "Колокола башни"], "xylophone": ["🎼", "קסילופון", "إكسيليفون", "Xilofon", "Xylophone", "Xylophone", "Ксилофон"], "steel_drum": ["🥁", "תוף פלדה", "طبل فولاذي", "Tobă de oțel", "Steel drum", "Steel drum", "Стальной барабан"], "flute": ["🪈", "חליל", "ناي", "Flaut", "Flûte", "Flute", "Флейта"], "ukulele": ["🎸", "יוקלילי", "يوكوليلي", "Ukulele", "Ukulélé", "Ukulele", "Укулеле"], "synth_pluck": ["🎛️", "סינתי", "سينث", "Synth", "Synthé", "Synth pluck", "Синтезатор"], "retro_phone": ["☎️", "טלפון ישן", "هاتف قديم", "Telefon retro", "Téléphone rétro", "Retro phone", "Ретро-телефон"], "doorbell": ["🚪", "פעמון דלת", "جرس الباب", "Sonerie", "Sonnette", "Doorbell", "Дверной звонок"], "celesta": ["✨", "צ׳לסטה", "سيليستا", "Celestă", "Célesta", "Celesta", "Челеста"], "handpan": ["🛸", "הנדפאן", "هاندبان", "Handpan", "Handpan", "Handpan", "Хэндпан"], "pizzicato": ["🎻", "פיציקטו", "بيتزيكاتو", "Pizzicato", "Pizzicato", "Pizzicato", "Пиццикато"], "laser": ["🔫", "לייזר", "ليزر", "Laser", "Laser", "Laser", "Лазер"], "comet": ["☄️", "שביט", "مذنب", "Cometă", "Comète", "Comet", "Комета"], "pulsar": ["💫", "פולסר", "نجم نابض", "Pulsar", "Pulsar", "Pulsar", "Пульсар"], "alien": ["👽", "חייזר", "كائن فضائي", "Extraterestru", "Extraterrestre", "Alien", "Пришелец"], "whale": ["🐋", "לוויתן", "حوت", "Balenă", "Baleine", "Whale", "Кит"], "seagulls": ["🕊️", "שחפים", "نوارس", "Pescăruși", "Mouettes", "Seagulls", "Чайки"], "wood_block": ["🪵", "קוביית עץ", "قطعة خشب", "Bloc de lemn", "Bloc de bois", "Wood block", "Деревянный блок"], "tabla": ["🪇", "טבלה", "طبلة", "Tabla", "Tabla", "Tabla", "Табла"], "orchestra": ["🎭", "תזמורת", "أوركسترا", "Orchestră", "Orchestre", "Orchestra", "Оркестр"], "meditation": ["🕉️", "מדיטציה", "تأمل", "Meditație", "Méditation", "Meditation", "Медитация"], "chime_up": ["🔆", "צלצול עולה", "رنين صاعد", "Clopoțel urcător", "Carillon montant", "Rising chime", "Восходящий звон"], "black_hole": ["🕳️", "חור שחור", "ثقب أسود", "Gaură neagră", "Trou noir", "Black hole", "Чёрная дыра"], "rooster": ["🐓", "תרנגול", "ديك", "Cocoș", "Coq", "Rooster", "Петух"]};
+        var LANG_IDX = { he: 1, ar: 2, ro: 3, fr: 4, en: 5, ru: 6 };
         const soundName = id => { const n = SOUND_NAMES[id]; return n ? n[0] + ' ' + n[LANG_IDX[LANG] || 5] : id; };
         function renderSounds() {
             const box = document.getElementById('sound-list');

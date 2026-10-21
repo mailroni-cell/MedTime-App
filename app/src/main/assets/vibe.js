@@ -1,24 +1,24 @@
 // M-079: vibration choice for reminders, in the 🔔 sound tile of settings. Tap = choose + feel it.
 (function () {
     'use strict';
-    const L5 = ['he', 'ar', 'ro', 'fr', 'en'];
+    const L5 = ['he', 'ar', 'ro', 'fr', 'en', 'ru'];
     const li = () => Math.max(0, L5.indexOf(typeof LANG === 'string' ? LANG : 'he'));
     const N = window.MedTimeNative;
     const list = document.getElementById('sound-list');
     if (!list || !N || typeof N.setVibration !== 'function') return;
 
-    const TITLE = ['📳 רטט בתזכורת', '📳 الاهتزاز في التذكير', '📳 Vibrație la memento', '📳 Vibration du rappel', '📳 Reminder vibration'];
-    const NOTE = ['לחצו על סוג רטט כדי להרגיש אותו', 'اضغط على نوع لتشعر به', 'Atingeți un tip ca să-l simțiți', 'Touchez un type pour le sentir', 'Tap a type to feel it'];
+    const TITLE = ['📳 רטט בתזכורת', '📳 الاهتزاز في التذكير', '📳 Vibrație la memento', '📳 Vibration du rappel', '📳 Reminder vibration', '📳 Вибрация напоминания'];
+    const NOTE = ['לחצו על סוג רטט כדי להרגיש אותו', 'اضغط على نوع لتشعر به', 'Atingeți un tip ca să-l simțiți', 'Touchez un type pour le sentir', 'Tap a type to feel it', 'Нажмите на тип, чтобы почувствовать'];
     const OPT = [
-        ['off', '🚫', ['בלי רטט', 'بدون اهتزاز', 'Fără', 'Aucune', 'None']],
-        ['soft', '🪶', ['עדין', 'خفيف', 'Ușoară', 'Douce', 'Gentle']],
-        ['normal', '📳', ['רגיל', 'عادي', 'Normală', 'Normale', 'Normal']],
-        ['strong', '💪', ['חזק', 'قوي', 'Puternică', 'Forte', 'Strong']],
-        ['heart', '💓', ['דופק לב', 'نبض القلب', 'Puls', 'Battement', 'Heartbeat']],
-        ['long', '〰️', ['ארוך ורציף', 'طويل متواصل', 'Lungă', 'Longue', 'Long']]
+        ['off', '🚫', ['בלי רטט', 'بدون اهتزاز', 'Fără', 'Aucune', 'None', 'Нет']],
+        ['soft', '🪶', ['עדין', 'خفيف', 'Ușoară', 'Douce', 'Gentle', 'Мягкая']],
+        ['normal', '📳', ['רגיל', 'عادي', 'Normală', 'Normale', 'Normal', 'Обычная']],
+        ['strong', '💪', ['חזק', 'قوي', 'Puternică', 'Forte', 'Strong', 'Сильная']],
+        ['heart', '💓', ['דופק לב', 'نبض القلب', 'Puls', 'Battement', 'Heartbeat', 'Сердцебиение']],
+        ['long', '〰️', ['ארוך ורציף', 'طويل متواصل', 'Lungă', 'Longue', 'Long', 'Длинная']]
     ];
 
-    const NAG = ['🔁 רטט חזק כל 30 שניות עד שעונים לתזכורת', '🔁 اهتزاز قوي كل 30 ثانية حتى الرد', '🔁 Vibrație puternică la 30 s până răspundeți', '🔁 Forte vibration toutes les 30 s jusqu\'à la réponse', '🔁 Strong vibration every 30 s until answered']; // M-098
+    const NAG = ['🔁 רטט חזק כל 30 שניות עד שעונים לתזכורת', '🔁 اهتزاز قوي كل 30 ثانية حتى الرد', '🔁 Vibrație puternică la 30 s până răspundeți', '🔁 Forte vibration toutes les 30 s jusqu\'à la réponse', '🔁 Strong vibration every 30 s until answered', '🔁 Сильная вибрация каждые 30 с до ответа']; // M-098
     const css = document.createElement('style');
     css.textContent = `
     .vb-box{padding:12px 0 10px;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:8px}

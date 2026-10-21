@@ -2,43 +2,43 @@
 // and an optional 🌡️ vitals tile (blood pressure, sugar, pulse) with a 30-day chart, in the weekly PDF and the backup.
 (function () {
     'use strict';
-    const L5 = ['he', 'ar', 'ro', 'fr', 'en'];
+    const L5 = ['he', 'ar', 'ro', 'fr', 'en', 'ru'];
     const li = () => Math.max(0, L5.indexOf(typeof LANG === 'string' ? LANG : 'he'));
     const N = window.MedTimeNative;
     const has = f => !!(N && typeof N[f] === 'function');
     const vib = () => { try { navigator.vibrate && navigator.vibrate(12); } catch (e) { } };
 
     const T = {
-        early: ['⏰ לקחתי כבר עכשיו', '⏰ تناولته الآن', '⏰ L-am luat deja', '⏰ Déjà pris', '⏰ Taken already'],
-        earlyQ: ['לסמן שלקחת עכשיו? התזכורת של היום ב-{t} לא תצלצל.', 'هل تناولته الآن؟ تذكير اليوم في {t} لن يرن.', 'Marchezi ca luat acum? Memento-ul de azi de la {t} nu va mai suna.', 'Marquer comme pris ? Le rappel de {t} aujourd\'hui ne sonnera pas.', 'Mark as taken now? Today\'s {t} reminder will stay quiet.'],
-        earlyDone: ['✅ נרשם. התזכורת של {t} היום לא תצלצל.', '✅ تم التسجيل. تذكير {t} اليوم لن يرن.', '✅ Notat. Memento-ul de la {t} nu va suna azi.', '✅ Noté. Le rappel de {t} ne sonnera pas aujourd\'hui.', '✅ Saved. Today\'s {t} reminder will stay quiet.'],
-        earlyNone: ['לתזכורת הזו אין יותר צלצול היום.', 'لا يوجد تذكير آخر اليوم.', 'Nu mai e niciun memento azi.', 'Plus de rappel aujourd\'hui.', 'No more alarm today for this reminder.'],
-        earlyOn: ['✅ נלקח מוקדם היום', '✅ أُخذ مبكرًا اليوم', '✅ Luat mai devreme azi', '✅ Pris plus tôt aujourd\'hui', '✅ Taken early today'],
-        yes: ['כן, לקחתי', 'نعم، تناولته', 'Da, l-am luat', 'Oui, pris', 'Yes, taken'],
-        no: ['ביטול', 'إلغاء', 'Anulează', 'Annuler', 'Cancel'],
-        photoAdd: ['📷 תמונה', '📷 صورة', '📷 Poză', '📷 Photo', '📷 Photo'],
-        photoQ: ['תמונה של {n}', 'صورة {n}', 'Poza pentru {n}', 'Photo de {n}', 'Photo of {n}'],
-        photoNew: ['📷 תמונה חדשה', '📷 صورة جديدة', '📷 Poză nouă', '📷 Nouvelle photo', '📷 New photo'],
-        photoDel: ['🗑️ מחיקה', '🗑️ حذف', '🗑️ Șterge', '🗑️ Supprimer', '🗑️ Delete'],
-        photoDelQ: ['למחוק את התמונה של {n}?', 'حذف صورة {n}؟', 'Ștergi poza pentru {n}?', 'Supprimer la photo de {n} ?', 'Delete the photo of {n}?'],
-        photoErr: ['לא הצלחתי לשמור את התמונה. נסו שוב.', 'تعذر حفظ الصورة. حاول مرة أخرى.', 'Poza nu a putut fi salvată. Încearcă din nou.', 'Impossible d\'enregistrer la photo. Réessayez.', 'Could not save the photo. Please try again.'],
-        vT: ['🌡️ מדדים', '🌡️ القياسات', '🌡️ Măsurători', '🌡️ Mesures', '🌡️ Vitals'],
-        vSubNone: ['לחץ דם, סוכר, דופק', 'ضغط، سكر، نبض', 'Tensiune, glicemie, puls', 'Tension, glycémie, pouls', 'Blood pressure, sugar, pulse'],
-        vSubLast: ['אחרון: {v}', 'الأخير: {v}', 'Ultima: {v}', 'Dernière : {v}', 'Last: {v}'],
-        bp: ['❤️ לחץ דם', '❤️ ضغط الدم', '❤️ Tensiune', '❤️ Tension', '❤️ Blood pressure'],
-        sugar: ['🩸 סוכר', '🩸 السكر', '🩸 Glicemie', '🩸 Glycémie', '🩸 Sugar'],
-        pulse: ['💓 דופק', '💓 النبض', '💓 Puls', '💓 Pouls', '💓 Pulse'],
-        sys: ['עליון', 'الانقباضي', 'Sistolică', 'Systolique', 'Upper'],
-        dia: ['תחתון', 'الانبساطي', 'Diastolică', 'Diastolique', 'Lower'],
-        val: ['ערך', 'القيمة', 'Valoare', 'Valeur', 'Value'],
-        save: ['💾 שמירה', '💾 حفظ', '💾 Salvează', '💾 Enregistrer', '💾 Save'],
-        bad: ['נא להקליד מספר תקין', 'يرجى إدخال رقم صحيح', 'Introdu un număr valid', 'Entrez un nombre valide', 'Please type a valid number'],
-        last30: ['30 הימים האחרונים', 'آخر 30 يومًا', 'Ultimele 30 de zile', '30 derniers jours', 'Last 30 days'],
-        empty: ['עוד אין מדידות. מקלידים מספר ולוחצים "שמירה".', 'لا توجد قياسات بعد.', 'Încă nu sunt măsurători.', 'Pas encore de mesures.', 'No measurements yet.'],
-        note: ['הצבעים הם הכוונה כללית בלבד. מה תקין עבורכם קובע הרופא.', 'الألوان للإرشاد العام فقط. الطبيب يحدد ما هو طبيعي لك.', 'Culorile sunt doar orientative. Medicul stabilește ce e normal pentru tine.', 'Les couleurs sont indicatives. Votre médecin décide de ce qui est normal pour vous.', 'Colours are only a general guide. Your doctor decides what is normal for you.'],
-        del: ['🗑️', '🗑️', '🗑️', '🗑️', '🗑️'],
-        pdfV: ['מדדים', 'القياسات', 'Măsurători', 'Mesures', 'Vitals'],
-        done: ['✓ סיום', '✓ إنهاء', '✓ Gata', '✓ Terminé', '✓ Done']
+        early: ['⏰ לקחתי כבר עכשיו', '⏰ تناولته الآن', '⏰ L-am luat deja', '⏰ Déjà pris', '⏰ Taken already', '⏰ Уже принял'],
+        earlyQ: ['לסמן שלקחת עכשיו? התזכורת של היום ב-{t} לא תצלצל.', 'هل تناولته الآن؟ تذكير اليوم في {t} لن يرن.', 'Marchezi ca luat acum? Memento-ul de azi de la {t} nu va mai suna.', 'Marquer comme pris ? Le rappel de {t} aujourd\'hui ne sonnera pas.', 'Mark as taken now? Today\'s {t} reminder will stay quiet.', 'Отметить как принятое сейчас? Сегодняшнее напоминание в {t} будет беззвучным.'],
+        earlyDone: ['✅ נרשם. התזכורת של {t} היום לא תצלצל.', '✅ تم التسجيل. تذكير {t} اليوم لن يرن.', '✅ Notat. Memento-ul de la {t} nu va suna azi.', '✅ Noté. Le rappel de {t} ne sonnera pas aujourd\'hui.', '✅ Saved. Today\'s {t} reminder will stay quiet.', '✅ Сохранено. Сегодняшнее напоминание в {t} будет беззвучным.'],
+        earlyNone: ['לתזכורת הזו אין יותר צלצול היום.', 'لا يوجد تذكير آخر اليوم.', 'Nu mai e niciun memento azi.', 'Plus de rappel aujourd\'hui.', 'No more alarm today for this reminder.', 'Сегодня больше не будет сигнала для этого напоминания.'],
+        earlyOn: ['✅ נלקח מוקדם היום', '✅ أُخذ مبكرًا اليوم', '✅ Luat mai devreme azi', '✅ Pris plus tôt aujourd\'hui', '✅ Taken early today', '✅ Сегодня принято заранее'],
+        yes: ['כן, לקחתי', 'نعم، تناولته', 'Da, l-am luat', 'Oui, pris', 'Yes, taken', 'Да, принял'],
+        no: ['ביטול', 'إلغاء', 'Anulează', 'Annuler', 'Cancel', 'Отмена'],
+        photoAdd: ['📷 תמונה', '📷 صورة', '📷 Poză', '📷 Photo', '📷 Photo', '📷 Фото'],
+        photoQ: ['תמונה של {n}', 'صورة {n}', 'Poza pentru {n}', 'Photo de {n}', 'Photo of {n}', 'Фото: {n}'],
+        photoNew: ['📷 תמונה חדשה', '📷 صورة جديدة', '📷 Poză nouă', '📷 Nouvelle photo', '📷 New photo', '📷 Новое фото'],
+        photoDel: ['🗑️ מחיקה', '🗑️ حذف', '🗑️ Șterge', '🗑️ Supprimer', '🗑️ Delete', '🗑️ Удалить'],
+        photoDelQ: ['למחוק את התמונה של {n}?', 'حذف صورة {n}؟', 'Ștergi poza pentru {n}?', 'Supprimer la photo de {n} ?', 'Delete the photo of {n}?', 'Удалить фото {n}?'],
+        photoErr: ['לא הצלחתי לשמור את התמונה. נסו שוב.', 'تعذر حفظ الصورة. حاول مرة أخرى.', 'Poza nu a putut fi salvată. Încearcă din nou.', 'Impossible d\'enregistrer la photo. Réessayez.', 'Could not save the photo. Please try again.', 'Не удалось сохранить фото. Попробуйте ещё раз.'],
+        vT: ['🌡️ מדדים', '🌡️ القياسات', '🌡️ Măsurători', '🌡️ Mesures', '🌡️ Vitals', '🌡️ Показатели'],
+        vSubNone: ['לחץ דם, סוכר, דופק', 'ضغط، سكر، نبض', 'Tensiune, glicemie, puls', 'Tension, glycémie, pouls', 'Blood pressure, sugar, pulse', 'Давление, сахар, пульс'],
+        vSubLast: ['אחרון: {v}', 'الأخير: {v}', 'Ultima: {v}', 'Dernière : {v}', 'Last: {v}', 'Последнее: {v}'],
+        bp: ['❤️ לחץ דם', '❤️ ضغط الدم', '❤️ Tensiune', '❤️ Tension', '❤️ Blood pressure', '❤️ Давление'],
+        sugar: ['🩸 סוכר', '🩸 السكر', '🩸 Glicemie', '🩸 Glycémie', '🩸 Sugar', '🩸 Сахар'],
+        pulse: ['💓 דופק', '💓 النبض', '💓 Puls', '💓 Pouls', '💓 Pulse', '💓 Пульс'],
+        sys: ['עליון', 'الانقباضي', 'Sistolică', 'Systolique', 'Upper', 'Верхнее'],
+        dia: ['תחתון', 'الانبساطي', 'Diastolică', 'Diastolique', 'Lower', 'Нижнее'],
+        val: ['ערך', 'القيمة', 'Valoare', 'Valeur', 'Value', 'Значение'],
+        save: ['💾 שמירה', '💾 حفظ', '💾 Salvează', '💾 Enregistrer', '💾 Save', '💾 Сохранить'],
+        bad: ['נא להקליד מספר תקין', 'يرجى إدخال رقم صحيح', 'Introdu un număr valid', 'Entrez un nombre valide', 'Please type a valid number', 'Введите правильное число'],
+        last30: ['30 הימים האחרונים', 'آخر 30 يومًا', 'Ultimele 30 de zile', '30 derniers jours', 'Last 30 days', 'Последние 30 дней'],
+        empty: ['עוד אין מדידות. מקלידים מספר ולוחצים "שמירה".', 'لا توجد قياسات بعد.', 'Încă nu sunt măsurători.', 'Pas encore de mesures.', 'No measurements yet.', 'Пока нет измерений.'],
+        note: ['הצבעים הם הכוונה כללית בלבד. מה תקין עבורכם קובע הרופא.', 'الألوان للإرشاد العام فقط. الطبيب يحدد ما هو طبيعي لك.', 'Culorile sunt doar orientative. Medicul stabilește ce e normal pentru tine.', 'Les couleurs sont indicatives. Votre médecin décide de ce qui est normal pour vous.', 'Colours are only a general guide. Your doctor decides what is normal for you.', 'Цвета — лишь общий ориентир. Что для вас норма, решает ваш врач.'],
+        del: ['🗑️', '🗑️', '🗑️', '🗑️', '🗑️', '🗑️'],
+        pdfV: ['מדדים', 'القياسات', 'Măsurători', 'Mesures', 'Vitals', 'Показатели'],
+        done: ['✓ סיום', '✓ إنهاء', '✓ Gata', '✓ Terminé', '✓ Done', '✓ Готово']
     };
     const tx = k => (T[k] || [])[li()] || (T[k] || [])[0] || k;
     const fill = (s, o) => s.replace(/\{(\w+)\}/g, (m, k) => (k in o ? o[k] : m));
