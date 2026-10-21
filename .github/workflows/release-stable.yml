@@ -40,6 +40,16 @@ jobs:
             echo "::error::release/stable.txt asks for run $want but the test release is run $have"; exit 1
           fi
           sha=$(grep -oE '[0-9a-f]{40}' build-info.txt)
+          # M-181: GitHub resets the download counter when "latest" is replaced, so keep the old count first (stats/downloads.csv)
+          n=$(gh api "repos/$REPO/releases/tags/latest" -q '.assets[]|select(.name=="MedTime-latest.apk")|.download_count' 2>/dev/null || echo "")
+          if [ -n "$n" ] && [ "$cur" != "0" ]; then
+            cd .. && mkdir -p stats && f=stats/downloads.csv
+            [ -f "$f" ] || echo "date,run,downloads" > "$f"
+            echo "$(date -u +%F),$cur,$n" >> "$f"
+            git config user.name "github-actions[bot]" && git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add "$f" && git commit -m "Download count for run $cur: $n [skip ci]" && git pull --rebase -q origin main && git push || echo "::warning::could not save the download count"
+            cd dl
+          fi
           gh release delete latest -R "$REPO" --yes --cleanup-tag || true
           gh release create latest MedTime-latest.apk build-info.txt -R "$REPO" --target "$sha" \
             --title "MedTime (run $have)" --notes "Released to everyone: build $have"

@@ -185,6 +185,7 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-179 | 2026-10-21 | index.html, splash.mp4 | Owner: opening credit also names Orly Shalem as designer, in the same handwriting as the owner's line ("עיצוב: אורלי שלם" Playpen Sans Hebrew + "Design by Orly Shalem" Great Vibes, SVG paths, writes in at 6.1/6.6 s). Opening video re-recorded with tools/splash-capture.js | ⏳ |
 | R-159 | 2026-10-21 | release/stable.txt | Run 159 (M-177, M-178, M-179) released to everyone 18:38 UTC | ✅ |
 | M-180 | 2026-10-21 | tools/medtime_autoinstall.ps1 | Owner: GitHub download to the phone is slow; owner approved: the PC watcher checks release "latest" every 5 min and copies each released APK to Z:\My Drive\MedTime\MedTime.apk (Google Drive for desktop), same file so the share link stays the same | ⏳ |
+| M-181 | 2026-10-21 | release-stable.yml, stats/downloads.csv | Owner: count downloads always. GitHub resets the counter when "latest" is replaced; the release workflow now saves the old count (date, run, downloads) to stats/downloads.csv before each release, so the total keeps adding up. Drive downloads are not counted (Google shows no numbers for a personal account) | ⏳ |
 | R-156 | 2026-10-21 | release/stable.txt | Run 156 (M-175) released to everyone | ✅ |
 | R-155 | 2026-10-21 | release/stable.txt | Run 155 (M-172..M-174) released to everyone (standing rule) | ✅ |
 | R-154 | 2026-10-21 | release/stable.txt | Owner: run 154 (M-169..M-171) released to everyone | ✅ |
