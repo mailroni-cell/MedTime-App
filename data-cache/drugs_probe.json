@@ -47,5 +47,7 @@
  ],
  "home_https://israeldrugs.health.gov.il/": 200,
  "home_https://www.health.gov.il/": 202,
+ "home_head": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><script>var h=window.location.hash;var m=h.match(/^#!\\/medDetails\\/(.+)$/);window.location.replace(m ? \"https://registries.health.gov.il/Medicines/\" + m[1] : \"https://registries.health.gov.il/Medicines\");</script></head><body></body></html>",
+ "scripts": {},
  "search_err": "HTTP Error 403: Forbidden"
 }
