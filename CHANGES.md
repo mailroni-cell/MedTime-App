@@ -178,6 +178,7 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-173 | 2026-10-21 | relax.js | Owner: calm sound choice spreads over the whole screen, 15 sounds in 5 rows, no scrolling | ⏳ |
 | M-174 | 2026-10-21 | index.html | Owner: main "Exit" button label is now "Close" (סגירה) in all 6 languages | ⏳ |
 | M-175 | 2026-10-21 | relax.js, Voices.java, NativeBridge.java | Owner: breathing guide speaks like a person: changing lines under the word (4 phrasings per phase, 6 languages) with a seconds countdown, rhythm 4 in / 4 hold / 6 out; new "🗣️ Voice guide" button (shown when breathing is on) reads each line in a calm voice (rate 0.72, slightly lower pitch, native speakCalm) | ⏳ |
+| R-156 | 2026-10-21 | release/stable.txt | Run 156 (M-175) released to everyone | ✅ |
 | R-155 | 2026-10-21 | release/stable.txt | Run 155 (M-172..M-174) released to everyone (standing rule) | ✅ |
 | R-154 | 2026-10-21 | release/stable.txt | Owner: run 154 (M-169..M-171) released to everyone | ✅ |
 | R-151 | 2026-10-21 | release/stable.txt | Owner "משחררים לכולם": run 151 (Russian, substitute medicine, auto update on opening, smoothness) released to everyone | ✅ |
