@@ -1,6 +1,6 @@
 // S-01 (owner 2026-10-21): "I got a different medicine" - when the pharmacy hands out a substitute (generic) for the
 // medicine the doctor prescribed, compare both in the Ministry of Health registry (drugs_il.js): same active
-// ingredients + same dose + same form = full substitute. Always ends with "check with the pharmacist".
+// ingredients + same dose + same form = full substitute. Always ends with "check with the pharmacist". (M-161)
 (function () {
     'use strict';
     const L5 = ['he', 'ar', 'ro', 'fr', 'en'];
