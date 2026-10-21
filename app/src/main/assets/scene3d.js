@@ -514,9 +514,13 @@
             clock.getDelta();
             // M-089: get ready behind the opening (shaders, textures, first picture), so the hand-over does not freeze
             if (prewarm === 0 && window.__spPrewarm) prewarm = 1;
+            // M-166: compile, then (next frame) draw one full hidden picture with bloom, so textures and glow buffers
+            // are ready before the hand-over (the first visible frames used to stutter for a second or two)
+            if (prewarm === 3) { try { if (composer) composer.render(); else renderer.render(scene, camera); } catch (e) { } prewarm = 4; return; }
             if (prewarm !== 1) return;
-            prewarm = 2;
+            prewarm = 3;
             try { renderer.compile(scene, camera); } catch (e) { }
+            return;
         }
         const rawDt = Math.min(clock.getDelta(), 0.05);
         // M-084: measure speed only once the opening is gone and things settled (not during the hand-over)

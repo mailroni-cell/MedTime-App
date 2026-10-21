@@ -5,7 +5,6 @@
     const css = document.createElement('style');
     css.textContent = `
     /* while the opening video plays, the screen behind it stands still */
-    body:has(#splash:not(.out)) *:not(#splash, #splash *) { animation-play-state: paused !important; }
     /* the running heart line inside a button gets its own layer: the button text is not re-drawn with it */
     .ba-ecg, .home-card svg, h1.mt-logo .lg-ecg, h1.mt-logo .mt-word, .hello-line, .home-card button > span, .ba-txt { will-change: transform; }
     /* logo shine: plain layer (screen blending over the moving 3D background was re-mixed every frame) */
@@ -18,6 +17,26 @@
         box-shadow: 0 0 14px rgba(74,222,128,1), 0 0 30px rgba(74,222,128,.6); opacity: 0; will-change: opacity; animation: mtGlFade 3s ease-in-out infinite; }
     @keyframes mtGlFade { 50% { opacity: 1; } }`;
     document.head.appendChild(css);
+
+    // M-166: while the opening plays, the endless menu animations behind it stand still; at the hand-over they come
+    // back in small groups, not all in the same frame as the first 3D picture
+    const held = new Set();
+    const isSplash = el => !!(el && el.closest && el.closest('#splash'));
+    const spOn = () => { const sp = document.getElementById('splash'); return sp && !sp.classList.contains('out') && sp.style.display !== 'none'; };
+    function hold() {
+        if (!document.getAnimations) return;
+        document.getAnimations().forEach(a => {
+            try { if (a.effect && a.effect.getTiming().iterations === Infinity && !isSplash(a.effect.target) && a.playState === 'running') { a.pause(); held.add(a); } } catch (e) { }
+        });
+    }
+    function release() {
+        const list = Array.from(held); held.clear();
+        list.forEach((a, i) => setTimeout(() => { try { a.play(); } catch (e) { } }, 250 + Math.floor(i / 4) * 120));
+    }
+    if (spOn()) {
+        hold();
+        const iv = setInterval(() => { if (spOn()) hold(); else { clearInterval(iv); release(); } }, 400);
+    }
 
     // logo shine: it ran non-stop on the main thread (SVG animation) and re-drew the 84-layer logo every frame.
     // Now one short sweep every 7 seconds, only while the main screen is visible.
