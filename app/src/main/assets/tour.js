@@ -196,6 +196,12 @@
     #mt-guide .g-grid{flex:1 1 auto;min-height:0;grid-auto-rows:1fr;gap:8px}
     #mt-guide .g-grid button{padding:4px 8px;min-height:0;line-height:1.15;font-size:min(1.05rem,2.4vh)}
     #mt-guide .g-more{flex:none;margin-top:10px}
+    /* M-155 (owner): in low-vision mode the guide text spilled out of the cards: sizes follow the screen height, long words wrap */
+    html.lowvision #mt-guide .g-grid button{font-size:min(1.05rem,2.3vh)!important;overflow:hidden;overflow-wrap:anywhere;padding:2px 6px!important}
+    html.lowvision #mt-guide .g-t{font-size:min(1.5rem,3.2vh)!important;margin-top:0}
+    html.lowvision #mt-guide .g-s,html.lowvision #mt-guide .g-m{font-size:min(1rem,2.1vh)!important;margin-bottom:8px}
+    html.lowvision #mt-guide .g-voice{font-size:min(1.12rem,2.3vh)!important;padding:8px 12px;margin-bottom:8px}
+    html.lowvision #mt-guide .g-help{font-size:min(1.1rem,2.3vh)!important}
     /* M-154 (owner): Help fills the screen exactly: big cards in one column that share the height, no scrolling */
     #tile-help.open .set-body{display:flex!important;flex-direction:column}
     #tile-help.open .help-demos{flex:none;margin-bottom:8px}

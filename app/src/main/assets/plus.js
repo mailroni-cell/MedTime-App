@@ -49,6 +49,21 @@
     .pl-early{border:1.5px solid #86efac!important;background:linear-gradient(135deg,#16a34a,#15803d)!important;color:#fff!important;border-radius:999px!important;padding:9px 14px!important;font-weight:800!important;font-size:1rem!important}
     .pl-on{display:inline-block;padding:8px 12px;border-radius:999px;background:rgba(34,197,94,.18);color:#86efac;font-weight:800}
     .pl-cam{display:inline-flex!important;align-items:center;gap:8px;border:1.5px solid #7dd3fc!important;background:linear-gradient(135deg,#0ea5e9,#0369a1)!important;color:#fff!important;border-radius:999px!important;padding:8px 14px!important;font-size:.98rem!important;font-weight:800!important;min-height:44px}
+    /* M-156: compact so the reminders list fits the page */
+    .pl-row{gap:6px!important;margin-top:6px!important}
+    .med-item.pl-wrap{flex-wrap:wrap!important}
+    .list-page.pl-t1 .med-item{padding-top:8px!important;padding-bottom:8px!important}
+    .list-page.pl-t1 .med-list{gap:8px!important}
+    .list-page.pl-t1 .med-list > .med-item{margin-bottom:8px!important}
+    .list-page.pl-t1 #wk-bar{padding:8px 12px!important;margin-bottom:8px!important}
+    .list-page.pl-t2 #wk-bar .wk-note{display:none!important}
+    .list-page.pl-t2 #wk-bar .af-chip{padding-top:5px!important;padding-bottom:5px!important}
+    .list-page.pl-t2 .med-info h3{margin:0 0 2px!important;font-size:1.25rem!important}
+    .list-page.pl-t2 .med-item .btn-edit, .list-page.pl-t2 .med-item .btn-delete{padding-top:4px!important;padding-bottom:4px!important;min-height:0!important}
+    .med-item.pl-wrap > .pl-row{flex:1 0 100%;justify-content:flex-start}
+    .pl-row .pl-cam,.pl-row .pl-early{min-height:34px!important;padding:4px 11px!important;font-size:.88rem!important}
+    .pl-row .pl-on{padding:4px 10px;font-size:.88rem}
+    .pl-row .pl-th{width:30px!important;height:30px!important;border-radius:8px!important;margin:-2px 0 -2px -4px!important}
     .pl-th{width:52px;height:52px;border-radius:12px;object-fit:cover;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.4);margin:-4px 0 -4px -6px}
     .vt-tabs{display:flex;gap:6px;margin:4px 0 10px}
     .vt-tabs button{flex:1;border:1.5px solid rgba(255,255,255,.25)!important;background:rgba(255,255,255,.07)!important;color:#fff!important;border-radius:14px!important;padding:10px 4px!important;font-weight:700!important;font-size:.95rem!important}
@@ -138,7 +153,20 @@
             }
             if (info) info.appendChild(box);
         }
+        // M-156 (owner): keep the list short, photo and taken-early buttons share one compact row
+        const rows = info.querySelectorAll(':scope > .pl-row');
+        if (rows.length > 1) { while (rows[1].firstChild) rows[0].appendChild(rows[1].firstChild); rows[1].remove(); }
+        if (rows[0]) { li.classList.add('pl-wrap'); li.appendChild(rows[0]); } // full card width, under the text and the edit buttons
     };
+    // M-156 (owner): the reminders page fits the screen; tighter steps only while it would scroll
+    function fitList() {
+        const pg = document.getElementById('list-page'); if (!pg || !pg.classList.contains('open')) return;
+        pg.classList.remove('pl-t1', 'pl-t2');
+        for (const c of ['pl-t1', 'pl-t2']) { if (pg.scrollHeight <= pg.clientHeight + 2) break; pg.classList.add(c); }
+    }
+    const lp = document.getElementById('list-page');
+    if (lp) new MutationObserver(() => requestAnimationFrame(fitList)).observe(lp, { attributes: true, attributeFilter: ['class'], childList: true, subtree: true });
+    window.addEventListener('resize', () => setTimeout(fitList, 80));
     // M-153: the list was drawn at start-up before this file loaded, so the cards had no photo / taken-early buttons
     if (typeof renderMeds === 'function') try { renderMeds(); } catch (e) { }
 
@@ -265,11 +293,32 @@
         lab();
         const prevL = window.moreRender;
         window.moreRender = function () { if (prevL) prevL(); lab(); };
+        // M-155: one more squeeze step (fit4) when the menu still reaches the bottom buttons (low-vision text is bigger),
+        // and re-measure when low-vision is turned on / off
+        if (typeof fitMain === 'function') {
+            const fm = fitMain;
+            window.fitMain = function () {
+                document.documentElement.classList.remove('fit4');
+                fm();
+                const ex = document.getElementById('exit-btn'), gl = document.getElementById('guide-btn');
+                if (ex && gl && gl.offsetParent && gl.getBoundingClientRect().bottom > ex.getBoundingClientRect().top - 10) document.documentElement.classList.add('fit4');
+            };
+            let lv = document.documentElement.classList.contains('lowvision');
+            new MutationObserver(() => {
+                const now = document.documentElement.classList.contains('lowvision');
+                if (now !== lv) { lv = now; setTimeout(window.fitMain, 80); }
+            }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+        }
         const st = document.createElement('style');
         st.textContent = `
         #tile-vitals:not(.open){display:none!important}
         #tile-vitals > .set-tile-head{display:none!important}
         .home-pair{display:flex;gap:10px;width:100%}
+        html.fit4 .hero-space{height:0!important;min-height:0!important}
+        html.fit4 .home-card{gap:6px!important}
+        html.fit4 .home-pair > .relax-btn{min-height:0!important;padding-top:3px!important;padding-bottom:3px!important}
+        html.fit4 .home-pair .rb-ico{transform:scale(.78);margin:-4px 0}
+        html.fit4 #guide-btn{margin-top:4px!important;padding-top:4px!important;padding-bottom:4px!important}
         .home-pair > .relax-btn{flex:1 1 0!important;min-width:0!important;width:auto!important;margin-left:0!important;margin-right:0!important}
         .home-card #vt-btn{background:linear-gradient(135deg,#ec4899,#9d174d)!important;border-color:rgba(251,207,232,.7)!important}
         .home-card #vt-btn .rb-ico{background:radial-gradient(circle at 35% 30%,#fce7f3,#f472b6 55%,#9d174d)!important}
