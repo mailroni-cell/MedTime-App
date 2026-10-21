@@ -28,6 +28,12 @@
 - אחר כך בדיקה סגורה: לפחות 12 בודקים, 14 ימים. רשימה: testers.csv במחשב (6 עד עכשיו). הודעה: invite_he.txt.
 - בטפסים ב־Play Console: מדיניות פרטיות (קישור ל־Pages), אבטחת נתונים (לא נאסף מידע), אפליקציית בריאות, הצהרה על התראות במסך מלא (USE_FULL_SCREEN_INTENT: תזכורת תרופה = התראת שעון).
 
+## איפה עצרנו ב־Play Console (2026-10-21 17:07)
+- האפליקציה נוצרה ב־Play Console עם package io.github.mailronicell.medtime.
+- רוני ממלא עכשיו את "Set up your app" ב־Dashboard: מדיניות פרטיות, App access, Ads, Content rating, Target audience 18+, Data safety (לא נאסף מידע), Government, Financial, Health (Medication management).
+- אחרי זה: Closed testing ← Testers (testers.csv) ← Create new release ← העלאת MedTime-play.aab ← Send for review.
+- עוד לא אושר: בדיקת בנייה 146 בטלפון (כפתור חזור, מסך תזכורת), GitHub Pages פעיל.
+
 ## להדבקה בחשבון השני
 ```
 ממשיכים את פרויקט MedTime בדיוק מהנקודה שעצרנו. עונים רק בעברית.
