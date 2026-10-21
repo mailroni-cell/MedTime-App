@@ -79,7 +79,7 @@
     (function () {
         const c = document.createElement('style');
         c.textContent = `
-    #relax .rx-head { position: absolute; left: 16px; right: 16px; top: calc(50% - min(235px, 33vh)); z-index: 6; text-align: center; pointer-events: none;
+    #relax .rx-head { position: absolute; left: 16px; right: 16px; top: calc(50% - min(290px, 39vh)); z-index: 6; text-align: center; pointer-events: none;
         font: 900 1.7rem 'MTUI', sans-serif; color: #fff; text-shadow: 0 0 2px #000, 0 2px 3px #000, 0 0 16px rgba(167,139,250,.95);
         will-change: transform, opacity; transition: opacity .5s, transform .5s; animation: rxHead 4s ease-in-out infinite; }
     @keyframes rxHead { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
@@ -133,6 +133,27 @@
         background: linear-gradient(180deg, #64748b, #334155); box-shadow: inset 0 2px 1px rgba(255,255,255,.35), 0 4px 0 #0f172a, 0 8px 14px rgba(0,0,0,.45); }
     #relax .rx-back:active { transform: translateY(3px); }
     #relax .rx-line { color: #fff; }
+    /* M-172: breathing guide: soft rounded word floating in 3D in the middle, behind the menu, growing and shrinking with the breath */
+    #relax .rx-panel label.rx-line:has(#rx-br) { display: none !important; }
+    #relax .rx-breath { left: 50% !important; top: 50% !important; width: 300px !important; height: 300px !important; margin: -150px 0 0 -150px !important; z-index: 2; perspective: 600px; }
+    #relax.rx-orb .rx-breath { top: 50% !important; }
+    #relax .rx-ring { border: none !important; background: radial-gradient(circle, rgba(224,242,254,.5) 0, rgba(125,211,252,.28) 38%, rgba(99,102,241,.12) 58%, rgba(99,102,241,0) 70%) !important;
+        box-shadow: none !important; will-change: transform; }
+    #relax .rx-btext { font: 600 3.1rem 'MTSoft', 'MTUI', sans-serif !important; letter-spacing: .02em; color: #f0fdff !important; will-change: transform;
+        text-shadow: 0 1px 0 #a5f3fc, 0 2px 0 #67e8f9, 0 3px 0 #22d3ee, 0 4px 0 #0891b2, 0 8px 14px rgba(0,0,0,.55), 0 0 26px rgba(125,211,252,.85) !important;
+        animation: rxBFloat 7s ease-in-out infinite; }
+    #relax .rx-breath > * { transform-style: preserve-3d; }
+    @keyframes rxBFloat { 0%,100% { translate: 0 0; } 50% { translate: 0 -10px; } }
+    #relax .rx-bar button[data-s="breath"] { --c1: #67e8f9; --c2: #0369a1; --c3: #0c4a6e; }
+    #relax .rx-bar button[data-s="breath"].on { box-shadow: inset 0 2px 1px rgba(255,255,255,.5), 0 6px 0 var(--c3), 0 0 0 3px #a5f3fc, 0 0 22px rgba(103,232,249,.9) !important; }
+    /* M-173 (owner): the sound choice spreads over the whole screen, no scrolling */
+    #relax[data-sec="sound"] .rx-panel { top: calc(66px + env(safe-area-inset-top)) !important; bottom: calc(14px + env(safe-area-inset-bottom)) !important;
+        transform: translateX(-50%) !important; display: flex !important; flex-direction: column; width: min(460px, 94vw) !important; }
+    #relax[data-sec="sound"] .rx-scroll { flex: 1; min-height: 0; max-height: none !important; overflow: hidden !important; display: flex; flex-direction: column; }
+    #relax[data-sec="sound"] .rx-sec[data-t="sound"] { flex: 1; min-height: 0; display: flex !important; flex-direction: column; }
+    #relax[data-sec="sound"] .rx-sec[data-t="sound"] .rx-grid { flex: 1; min-height: 0; grid-template-rows: repeat(5, minmax(0, 1fr)); gap: 9px !important; padding: 2px 2px 6px !important; }
+    #relax[data-sec="sound"] .rx-sec[data-t="sound"] .rx-tile { min-height: 0 !important; height: auto; }
+    #relax[data-sec="sound"] .rx-panel .rx-line { flex: none; margin-top: 8px; }
     @media (max-height: 640px) { #relax .rx-bar button { height: 50px !important; } #relax .rx-bar button[data-s="go"] { height: 54px !important; } #relax .rx-head { font-size: 1.35rem; } }`;
         document.head.appendChild(c);
     })();
@@ -163,7 +184,7 @@
             '<button type="button" class="rx-go"></button>' +
             '</div>' +
             '<button type="button" class="rx-mini"><span class="rx-mini-ico"></span><span class="rx-mini-t"></span></button>' +
-            '<div class="rx-bar">' + ['scene', 'sound', 'timer', 'last', 'lock', 'go'].map(t => '<button type="button" data-s="' + t + '"><span class="rx-bi"></span><small></small></button>').join('') + '</div>' +
+            '<div class="rx-bar">' + ['scene', 'sound', 'timer', 'breath', 'last', 'lock', 'go'].map(t => '<button type="button" data-s="' + t + '"><span class="rx-bi"></span><small></small></button>').join('') + '</div>' +
             '<button type="button" class="rx-unlock" aria-label="unlock"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="29"/></svg><span>🔒</span></button>' +
             '<div class="rx-lockmsg"></div>';
         document.body.appendChild(root);
@@ -185,6 +206,7 @@
                 if (b.dataset.s === 'last') { useLast(); return; }
                 if (b.dataset.s === 'lock') { lockOn(); return; }
                 if (b.dataset.s === 'go') { hidePanel(); return; }
+                if (b.dataset.s === 'breath') { st.breath = !st.breath; save(); drawBreath(); drawPanel(); poke(); return; }
                 setSec(sec === b.dataset.s ? '' : b.dataset.s); poke();
             });
         });
@@ -246,6 +268,7 @@
             const t = b.dataset.s;
             if (t === 'last') { b.querySelector('.rx-bi').textContent = '↺'; b.querySelector('small').textContent = tx('last'); b.hidden = !!(chosen.scene || chosen.sound || chosen.timer); return; }
             if (t === 'lock') { b.querySelector('.rx-bi').textContent = '🔓'; b.querySelector('small').textContent = tx('lock'); return; }
+            if (t === 'breath') { b.querySelector('.rx-bi').textContent = '🫁'; b.querySelector('small').textContent = tx('breath').replace(/^\S+\s/, '') + (st.breath ? ' ✓' : ''); b.classList.toggle('on', !!st.breath); return; }
             if (t === 'go') { b.querySelector('.rx-bi').textContent = '✓'; b.querySelector('small').textContent = tx('go').replace(/^\S+\s/, ''); return; }
             b.querySelector('.rx-bi').textContent = !chosen[t] ? (t === 'scene' ? '🖼️' : t === 'sound' ? '🎵' : '⏳')
                 : t === 'scene' ? (SCENES.find(x => x[0] === st.scene) || [])[1] : t === 'sound' ? (SOUNDS.find(x => x[0] === st.sound) || [])[1] : (+st.timer ? '⏳' : '♾️');
@@ -262,7 +285,7 @@
     let sec = '';
     function setSec(t) {
         sec = t; root.dataset.sec = t;
-        root.querySelectorAll('.rx-bar button').forEach(b => b.classList.toggle('on', b.dataset.s === t));
+        root.querySelectorAll('.rx-bar button').forEach(b => b.classList.toggle('on', b.dataset.s === t || (b.dataset.s === 'breath' && !!st.breath)));
         const box = root.querySelector('.rx-scroll'); if (box) box.scrollTop = 0;
         replay(t ? panel : root.querySelector('.rx-bar'), t ? '.rx-sec[data-t=' + t + '] .rx-tile' : 'button');
     }
@@ -289,7 +312,7 @@
         hideT = setTimeout(hidePanel, 25000);
     }
     function togglePanel() { if (root.classList.contains('rx-hide')) poke(); else hidePanel(); }
-    function drawBreath() { root.classList.toggle('rx-br-on', !!st.breath || st.scene === 'orb'); }
+    function drawBreath() { root.classList.toggle('rx-br-on', !!st.breath); } // M-172: only when asked (button in the menu)
 
     // ======================= sleep timer =======================
     let endAt = 0, tickT = 0, ending = false;
@@ -853,10 +876,11 @@
         }
         if (world) world.update(t, dt);
         renderer.render(scene, camera);
-        if (st.breath || st.scene === 'orb') {
+        if (st.breath) {
             const [k, ph] = breathK(t);
             const ring = root.querySelector('.rx-ring'), txt = root.querySelector('.rx-btext');
             ring.style.transform = 'scale(' + (0.55 + 0.45 * k).toFixed(3) + ')';
+            txt.style.transform = 'translateZ(0) rotateX(' + (8 - 8 * k).toFixed(2) + 'deg) scale(' + (0.72 + 0.5 * k).toFixed(3) + ')'; // M-172: the word breathes too
             const w = tx(ph); if (txt.textContent !== w) txt.textContent = w;
         }
     }
@@ -874,7 +898,7 @@
         if (window.MedTime3D && window.MedTime3D.pause) window.MedTime3D.pause(true);
         root.classList.add('open'); document.documentElement.classList.add('relax-open');
         try { const sv = JSON.parse(localStorage.getItem('medtime_relax') || '{}'); last = { scene: sv.scene || 'aurora', sound: sv.sound || 'none', timer: sv.timer || 0 }; } catch (e) { }
-        Object.assign(st, FRESH); chosen = {}; root.classList.remove('rx-locked');
+        Object.assign(st, FRESH); st.breath = false; chosen = {}; root.classList.remove('rx-locked');
         root.querySelector('.rx-bar').style.setProperty('--d', '450ms'); setSec(''); drawPanel(); poke();
         setTimeout(() => root && root.querySelector('.rx-bar').style.removeProperty('--d'), 2000);
         root.querySelector('.rx-hint').classList.remove('gone');
