@@ -57,6 +57,7 @@ Proposed stages (owner to approve order):
 
 ## Spec: planned features (owner request, not built yet)
 ### S-01 (2026-10-21): recognize a substitute medicine (generic) as a full replacement
+Status: stage 1 (by name) built as M-161, ⏳ owner test. Stage 2 (package photo / barcode; drugs_il.js already holds barcodes) not started.
 Owner's words: automatic identification of medicines by package or name, and grouping into a specific medicine family. If the pharmacy gives a substitute because the original the doctor prescribed is out of stock, the app recognizes automatically that it is a full substitute for the original and tells the user.
 - Identify by: typed name (autocomplete), photo of the package (on-device text reading, ML Kit), or package barcode.
 - Data: each medicine gets active ingredient + strength + form (pill, syrup...). Source: Israeli Ministry of Health drug registry (israeldrugs.health.gov.il / data.gov.il), fetched in GitHub Actions like tools/fetch_data.py and shipped inside the app (works offline). Today meds.js (342 names) has the ingredient only in the English name for some entries.
