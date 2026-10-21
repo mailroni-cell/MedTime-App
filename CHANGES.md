@@ -177,6 +177,7 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-172 | 2026-10-21 | relax.js, fonts.css, fonts/* | Owner: breathing guide only when asked (new 🫁 button in the calm menu, off on every opening, not forced by the orb scene); the word is in a soft rounded font (Fredoka Hebrew/Latin, Comfortaa Cyrillic, Baloo Bhaijaan 2 Arabic, OFL), floats in 3D in the middle behind the menu and grows/shrinks with the breath, soft light halo | ⏳ |
 | M-173 | 2026-10-21 | relax.js | Owner: calm sound choice spreads over the whole screen, 15 sounds in 5 rows, no scrolling | ⏳ |
 | M-174 | 2026-10-21 | index.html | Owner: main "Exit" button label is now "Close" (סגירה) in all 6 languages | ⏳ |
+| R-155 | 2026-10-21 | release/stable.txt | Run 155 (M-172..M-174) released to everyone (standing rule) | ✅ |
 | R-154 | 2026-10-21 | release/stable.txt | Owner: run 154 (M-169..M-171) released to everyone | ✅ |
 | R-151 | 2026-10-21 | release/stable.txt | Owner "משחררים לכולם": run 151 (Russian, substitute medicine, auto update on opening, smoothness) released to everyone | ✅ |
 | R-147 | 2026-10-21 | release/stable.txt | Owner: run 147 released to everyone (was run 80) | ✅ |
