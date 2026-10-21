@@ -45,5 +45,7 @@
    ]
   }
  ],
+ "home_https://israeldrugs.health.gov.il/": 200,
+ "home_https://www.health.gov.il/": 202,
  "search_err": "HTTP Error 403: Forbidden"
 }
