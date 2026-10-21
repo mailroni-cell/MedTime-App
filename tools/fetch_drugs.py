@@ -86,36 +86,26 @@ try:
 except Exception as e:
     probe['search_err'] = str(e)
 json.dump(probe, open('data-cache/drugs_probe.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-# 3) full crawl by two-letter prefixes (deduplicated by registration number)
-def results(d):
-    return d.get('results') or d.get('Results') or []
-drugs = {}
-if os.environ.get('CRAWL') == '1' and 'search_acamol' in probe and results(probe['search_acamol']):
-    t0 = time.time()
-    for a, b in itertools.product(string.ascii_lowercase, repeat=2):
-        page = 1
-        while page <= 40:
-            try:
-                d = search(a + b, page)
-            except Exception as e:
-                log.setdefault('errors', []).append(f'{a}{b}:{page}:{e}'); break
-            rs = results(d)
-            for r in rs:
-                key = r.get('dragRegNum') or r.get('dragEnName')
-                if key and key not in drugs:
-                    drugs[key] = r
-            if len(rs) == 0 or page >= (d.get('pages') or d.get('totalPages') or 1):
-                break
-            page += 1
-        if time.time() - t0 > 3 * 3600: break
-    def comp(r):
-        ac = r.get('activeComponents') or []
-        return {'r': r.get('dragRegNum'), 'h': r.get('dragHebName'), 'e': r.get('dragEnName'),
-                'f': r.get('dosageForm'), 'fe': r.get('dosageFormEng'),
-                'a': [[c.get('componentName'), c.get('dosage')] for c in ac],
-                'b': r.get('barcodes')}
-    json.dump([comp(r) for r in drugs.values()], open('data-cache/drugs.json', 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
-    json.dump(list(drugs.values())[:5], open('data-cache/drugs_raw_sample.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-log['count'] = len(drugs)
+# 3) full download through the registry's own API (GetMedicines, the same call its "export to Excel" uses)
+import gzip
+try:
+    cfgm = json.loads(gett('https://registries.health.gov.il/Medicines/assets/medicines/config.prod.json'))
+    api = cfgm['moh-package']['medicinesApiUrl']; log['api'] = api
+    allm, page, total = [], 0, None
+    while True:
+        d = call(api + 'GetMedicines', {'sortBy': 'tradeNameHeb', 'sortDirection': 'asc', 'maxResult': 1000, 'pageNumber': page})
+        ro = d.get('returnObject') or {}
+        meds = ro.get('medicines') or []
+        if total is None:
+            total = {k: v for k, v in ro.items() if k != 'medicines'}; log['meta'] = total
+        allm += meds
+        if not meds or len(meds) < 1000 or page > 200: break
+        page += 1
+    log['count'] = len(allm)
+    with gzip.open('data-cache/drugs_raw.json.gz', 'wt', encoding='utf-8') as f:
+        json.dump(allm, f, ensure_ascii=False)
+    json.dump(allm[:3], open('data-cache/drugs_raw_sample.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+except Exception as e:
+    log['crawl_err'] = repr(e)
 json.dump(log, open('data-cache/drugs_log.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-print('drugs:', len(drugs))
+print(log)
