@@ -30,7 +30,10 @@
         // M-168 (owner): on opening, a newer version updates by itself behind a "please wait" screen
         wait: ['נא להמתין, מעדכן לגרסה חדשה יותר…', 'يرجى الانتظار، جارٍ التحديث إلى إصدار أحدث…', 'Vă rugăm așteptați, se actualizează la o versiune nouă…', 'Veuillez patienter, mise à jour vers une version plus récente…', 'Please wait, updating to a newer version…', 'Пожалуйста, подождите, обновляем до новой версии…'],
         waitSub: ['התזכורות, התורים וההגדרות שלכם נשמרים', 'تذكيراتك ومواعيدك وإعداداتك محفوظة', 'Mementourile, programările și setările rămân', 'Vos rappels, rendez-vous et réglages sont conservés', 'Your reminders, appointments and settings stay', 'Ваши напоминания, записи и настройки сохранятся'],
-        waitTap: ['כמעט סיימנו: לחצו "עדכון" במסך של אנדרואיד', 'اقتربنا: اضغط "تحديث" في شاشة أندرويد', 'Aproape gata: apăsați "Actualizează" pe ecranul Android', 'Presque fini : touchez « Mettre à jour » sur l\'écran Android', 'Almost done: tap "Update" on the Android screen', 'Почти готово: нажмите «Обновить» на экране Android'],
+        waitTap: ['כמעט סיימנו: במסך של אנדרואיד לחצו "עדכון". אם הטלפון מבקש אישור, לחצו "אישור" או "אפשר"', 'اقتربنا: اضغط "تحديث" في شاشة أندرويد. إذا طلب الهاتف موافقة، اضغط "موافق" أو "سماح"', 'Aproape gata: apăsați "Actualizează" pe ecranul Android. Dacă telefonul cere confirmare, apăsați "OK" sau "Permite"', 'Presque fini : touchez « Mettre à jour » sur l\'écran Android. Si le téléphone demande une confirmation, touchez « OK » ou « Autoriser »', 'Almost done: tap "Update" on the Android screen. If the phone asks to confirm, tap "OK" or "Allow"', 'Почти готово: нажмите «Обновить» на экране Android. Если телефон просит подтверждение, нажмите «ОК» или «Разрешить»'],
+        doneT: ['✅ MedTime עודכן לגרסה {v}', '✅ تم تحديث MedTime إلى الإصدار {v}', '✅ MedTime a fost actualizat la versiunea {v}', '✅ MedTime a été mis à jour (version {v})', '✅ MedTime was updated to version {v}', '✅ MedTime обновлён до версии {v}'],
+        doneX: ['אם הטלפון מבקש אישור או הרשאה, לחצו "אישור" או "אפשר", כדי שהתזכורות ימשיכו להגיע בזמן. התזכורות, התורים וההגדרות שלכם נשמרו.', 'إذا طلب الهاتف موافقة أو إذنًا، اضغط "موافق" أو "سماح" لتستمر التذكيرات في الوصول في وقتها. تذكيراتك ومواعيدك وإعداداتك محفوظة.', 'Dacă telefonul cere o confirmare sau o permisiune, apăsați "OK" sau "Permite", ca mementourile să sosească la timp. Mementourile, programările și setările au rămas.', 'Si le téléphone demande une confirmation ou une autorisation, touchez « OK » ou « Autoriser » pour que les rappels arrivent à l\'heure. Vos rappels, rendez-vous et réglages sont conservés.', 'If the phone asks to confirm or for a permission, tap "OK" or "Allow" so reminders keep arriving on time. Your reminders, appointments and settings were kept.', 'Если телефон просит подтверждение или разрешение, нажмите «ОК» или «Разрешить», чтобы напоминания приходили вовремя. Ваши напоминания, записи и настройки сохранены.'],
+        doneOk: ['הבנתי 👍', 'فهمت 👍', 'Am înțeles 👍', 'Compris 👍', 'Got it 👍', 'Понятно 👍'],
         now: ['עדכן עכשיו', 'حدّث الآن', 'Actualizează', 'Mettre à jour', 'Update now', 'Обновить сейчас']
     };
     const tx = k => (TX[k] || [k])[li()];
@@ -256,6 +259,11 @@
     (function autoCheck() {
         const sp = document.getElementById('splash');
         if (sp && !sp.classList.contains('out') && sp.style.display !== 'none') { setTimeout(autoCheck, 700); return; }
+        // M-169 (owner): right after an update, say so and ask to approve anything the phone asks
+        if (cur && (st.ver ? cur > st.ver : !!st.last) && window.mtDialog) { // older versions kept no st.ver, only st.last
+            setTimeout(() => mtDialog({ icon: '✅', title: tx('doneT').replace('{v}', cur), text: tx('doneX'), ok: tx('doneOk'), cancel: false }), 600);
+        }
+        if (cur) { st.ver = cur; save(); }
         setTimeout(() => { if (st.auto && has('checkUpdate')) check(true); }, 1500);
     })();
 
