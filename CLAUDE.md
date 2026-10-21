@@ -26,7 +26,7 @@ Every new rule the owner sets is added here right away.
 ## Communication
 - ALWAYS answer in Hebrew only, never English (owner rule for ALL projects, 2026-10-18). Simple, from scratch, step by step (1, 2, 3).
 - Questions / choices for the owner as clickable suggestion cards.
-- Every change made in Hebrew applies to ALL 5 languages (he, ar, ro, fr, en) at the same time (owner rule 2026-10-20).
+- Every change made in Hebrew applies to ALL 6 languages (he, ar, ro, fr, en, ru) at the same time (owner rule 2026-10-20; Russian added 2026-10-21, M-167).
 - Each relevant reply has a short **💡 ייעול / רעיון** section. Owner (2026-10-21): after EVERY finished change, always give a concrete efficiency tip about the app or the work process (like 'updates without reinstall').
 - Each reply ends with `[📊 Estimated Session Context / Account Quota Used: ~X%]`.
 - Any script for the owner: PowerShell, full script in the reply, first line `Clear-Host`.
