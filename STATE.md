@@ -55,6 +55,16 @@ Proposed stages (owner to approve order):
 4. Look: 3D "pneumatic" buttons with vibration, thick frames with 4 materials (glossy polymer, brushed titanium, carbon neon, quantum gold), deep 3D layers, 14 animated 3D backgrounds (seamless loop), neon color themes.
 5. Settings screen: live preview, background / theme / frame pickers, language, 16 alert sounds with test, volume slider, accessibility + voice switches.
 
+## Spec: planned features (owner request, not built yet)
+### S-01 (2026-10-21): recognize a substitute medicine (generic) as a full replacement
+Owner's words: automatic identification of medicines by package or name, and grouping into a specific medicine family. If the pharmacy gives a substitute because the original the doctor prescribed is out of stock, the app recognizes automatically that it is a full substitute for the original and tells the user.
+- Identify by: typed name (autocomplete), photo of the package (on-device text reading, ML Kit), or package barcode.
+- Data: each medicine gets active ingredient + strength + form (pill, syrup...). Source: Israeli Ministry of Health drug registry (israeldrugs.health.gov.il / data.gov.il), fetched in GitHub Actions like tools/fetch_data.py and shipped inside the app (works offline). Today meds.js (342 names) has the ingredient only in the English name for some entries.
+- Rule: same active ingredient(s) + same strength + same form = "full substitute". Same ingredient but different strength or form = warning, not a substitute.
+- UI: when adding a medicine, or with a new "קיבלתי תרופה אחרת" (I got a different medicine) button on a reminder card: "✅ <new name> היא חלופה מלאה ל<original>: אותו חומר פעיל <X>, אותו מינון". The reminder keeps its times and history and shows both names. Family/ingredient shown on the card.
+- Safety: always add "כדאי לוודא עם הרוקח" (confirm with the pharmacist). Never says "not a substitute" with certainty when data is missing; says "לא הצלחתי לזהות" (couldn't identify) instead.
+- All 5 languages. Play store edition: no new permissions except camera (already used for pill photos).
+
 ## Ideas (from the old Flutter version pill-reminder)
 - Voice reading (TTS) of medicine name and dose.
 - Reminders that pop up when the app is closed (Android alarms, needs Java side).
