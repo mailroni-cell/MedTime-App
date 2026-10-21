@@ -34,6 +34,8 @@
             ['Expirez lentement par la bouche… {n} secondes', 'Laissez sortir toute la tension', 'Lentement… jusqu\'au bout', 'Le corps se détend et s\'alourdit'],
             ['Breathe out slowly through your mouth… {n} seconds', 'Let all the tension go', 'Slowly… all the way out', 'Your body relaxes and feels heavy'],
             ['Медленный выдох через рот… {n} секунд', 'Отпустите всё напряжение', 'Медленно… до конца', 'Тело расслабляется и тяжелеет']],
+        // M-177 (owner): a small tip on opening, gone after a few seconds
+        tip: ['💡 הכי מרגיע: אוזניות, הנחיה קולית רגועה וצליל "גלים" או "קערות טיבטיות"', '💡 الأكثر استرخاءً: سماعات، إرشاد صوتي هادئ وصوت "الأمواج" أو "الأوعية التبتية"', '💡 Cel mai relaxant: căști, ghid vocal calm și sunetul „Valuri” sau „Boluri tibetane”', '💡 Le plus apaisant : des écouteurs, le guide vocal calme et le son « Vagues » ou « Bols tibétains »', '💡 Most relaxing: headphones, the calm voice guide and the "Waves" or "Singing bowls" sound', '💡 Лучше всего: наушники, спокойный голос и звук «Волны» или «Поющие чаши»'],
         vOff: ['ללא קול', 'بدون صوت', 'Fără voce', 'Sans voix', 'No voice', 'Без голоса'],
         vPhone: ['קול הטלפון', 'صوت الهاتف', 'Vocea telefonului', 'Voix du téléphone', 'Phone voice', 'Голос телефона'],
         vSample: ['נושמים עמוק… ומשחררים לאט', 'تنفس بعمق… وأخرج الهواء ببطء', 'Respiră adânc… și expiră încet', 'Respirez profondément… et relâchez lentement', 'Breathe in deeply… and let go slowly', 'Глубокий вдох… и медленный выдох'],
@@ -166,6 +168,12 @@
         text-shadow: 0 1px 0 rgba(165,243,252,.9), 0 2px 0 rgba(103,232,249,.7), 0 3px 0 rgba(34,211,238,.5), 0 6px 12px rgba(0,0,0,.45), 0 0 30px rgba(125,211,252,.75) !important;
         animation: rxBFloat 7s ease-in-out infinite; }
     #relax .rx-breath > * { transform-style: preserve-3d; }
+    #relax .rx-tip { position: absolute; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom)); transform: translate(-50%, 0); width: min(360px, 90vw); z-index: 7; pointer-events: none;
+        box-sizing: border-box; padding: 9px 14px; border-radius: 16px; text-align: center; font: 400 .98rem/1.45 'MTCalm', 'MTUI', sans-serif; color: #e0f2fe;
+        background: rgba(15,23,42,.72); border: 1px solid rgba(165,243,252,.35); box-shadow: 0 6px 18px rgba(0,0,0,.4);
+        opacity: 0; transition: opacity .9s ease, transform .9s ease; }
+    #relax .rx-tip.show { opacity: 1; }
+    #relax .rx-tip.gone { opacity: 0; transform: translate(-50%, 12px); }
     #relax .rx-bsub { position: absolute; left: 50%; top: calc(100% - 26px); width: min(340px, 90vw); transform: translateX(-50%); text-align: center;
         font: 400 1.35rem/1.5 'MTCalm', 'MTUI', sans-serif; letter-spacing: .02em; color: #e0f2fe; will-change: transform, opacity;
         text-shadow: 0 1px 3px rgba(0,0,0,.8), 0 0 16px rgba(125,211,252,.55); }
@@ -203,7 +211,7 @@
             '<div class="rx-left"></div>' +
             '<div class="rx-breath"><div class="rx-ring"></div><div class="rx-btext"></div><div class="rx-bsub"></div></div>' +
             '<div class="rx-hint"></div>' +
-            '<div class="rx-head"></div>' +
+            '<div class="rx-head"></div><div class="rx-tip"></div>' +
             '<div class="rx-panel">' +
             '<div class="rx-title"></div>' +
             '<div class="rx-scroll">' +
@@ -987,6 +995,8 @@
         Object.assign(st, FRESH); st.breath = false; chosen = {}; root.classList.remove('rx-locked');
         root.querySelector('.rx-bar').style.setProperty('--d', '450ms'); setSec(''); drawPanel(); poke();
         setTimeout(() => root && root.querySelector('.rx-bar').style.removeProperty('--d'), 2000);
+        const tip = root.querySelector('.rx-tip'); tip.textContent = tx('tip'); tip.classList.remove('gone'); tip.classList.add('show');
+        clearTimeout(tip._t); tip._t = setTimeout(() => tip.classList.add('gone'), 7000);
         root.querySelector('.rx-hint').classList.remove('gone');
         setTimeout(() => root && root.querySelector('.rx-hint').classList.add('gone'), 6000);
         vol = st.vol / 100;

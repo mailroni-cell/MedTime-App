@@ -279,7 +279,9 @@
     // M-095/M-096: a dark 1-pixel poster (no grey play icon); the film stays hidden until it really moves, then fades in,
     // so the first second never shows a frozen picture
     v.poster = 'data:image/gif;base64,R0lGODlhAQABAIAAAAIGFwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==';
-    v.src = 'splash.mp4';
+    // M-177 (owner): the full film only the first time; afterwards only its last 3 seconds (the calm logo ending)
+    var seen = false; try { seen = !!localStorage.getItem('medtime_sp_seen'); } catch (e) { }
+    v.src = seen ? 'splash.mp4#t=8.35' : 'splash.mp4';
     sp.insertBefore(v, sp.firstChild);
     sp.classList.add('sp-video');
     window.__sp3d = true; // the video ends the opening itself
@@ -301,9 +303,9 @@
     v.addEventListener('error', fail);
     v.addEventListener('loadedmetadata', placeTag);
     window.addEventListener('resize', placeTag);
-    v.addEventListener('playing', function () { if (started) return; started = true; v.classList.add('on'); placeTag(); go(); });
+    v.addEventListener('playing', function () { if (started) return; started = true; try { localStorage.setItem('medtime_sp_seen', '1'); } catch (e) { } v.classList.add('on'); placeTag(); go(); });
     v.addEventListener('timeupdate', function () {
-        if (v.currentTime >= 9.8) window.__spPrewarm = true; // main screen gets ready during the calm end
+        if (v.currentTime >= (seen ? 8.9 : 9.8)) window.__spPrewarm = true; // main screen gets ready during the calm end
         if (v.currentTime >= endAt && window.endSplash) window.endSplash(); // fade starts while the video still moves
     });
     v.addEventListener('ended', function () { if (window.endSplash) window.endSplash(); });
