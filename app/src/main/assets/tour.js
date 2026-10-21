@@ -196,12 +196,19 @@
     #mt-guide .g-grid{flex:1 1 auto;min-height:0;grid-auto-rows:1fr;gap:8px}
     #mt-guide .g-grid button{padding:4px 8px;min-height:0;line-height:1.15;font-size:min(1.05rem,2.4vh)}
     #mt-guide .g-more{flex:none;margin-top:10px}
-    #tile-help .help-list{display:grid!important;grid-template-columns:1fr 1fr;gap:7px}
-    #tile-help .help-demos{margin-bottom:8px}
-    #tile-help .help-item[open]{grid-column:1/-1}
-    #tile-help .help-item summary{padding:9px 10px!important;font-size:.95rem!important;gap:6px!important;line-height:1.2}
-    #tile-help .help-item .h-ico{font-size:1.15rem!important}
-    #tile-help .help-item:not([open]) .h-chev{display:none}
+    /* M-154 (owner): Help fills the screen exactly: big cards in one column that share the height, no scrolling */
+    #tile-help.open .set-body{display:flex!important;flex-direction:column}
+    #tile-help.open .help-demos{flex:none;margin-bottom:8px}
+    #tile-help.open .help-list{flex:1 1 auto;min-height:0;display:flex!important;flex-direction:column;gap:min(8px,.9vh)!important;padding-bottom:0!important}
+    #tile-help.open .help-item:not([open]){flex:1 1 0;min-height:0;display:flex;flex-direction:column;justify-content:center}
+    #tile-help.open .help-item[open]{flex:none}
+    #tile-help.open .help-list:has(.help-item[open]){overflow-y:auto}
+    #tile-help.open .help-list:has(.help-item[open]) .help-item:not([open]){flex:none}
+    #tile-help.open .help-item summary{padding:0 14px!important;min-height:0;font-size:min(1.12rem,2.6vh)!important}
+    /* M-154 (owner): the Help tile in settings stands out from all the others: bright sky-blue pulsing icon */
+    #tile-help .set-ico{background:radial-gradient(circle at 35% 28%,#e0f2fe,#38bdf8 45%,#1d4ed8)!important;animation:mtHelpGlow 2.2s ease-in-out infinite!important}
+    #tile-help .set-title{color:#7dd3fc!important;font-weight:900!important;text-shadow:0 0 10px rgba(56,189,248,.7)!important}
+    @keyframes mtHelpGlow{0%,100%{box-shadow:0 0 0 2.5px #e0f2fe,0 0 12px 3px rgba(56,189,248,.6),0 8px 16px rgba(0,0,0,.45)}50%{box-shadow:0 0 0 2.5px #e0f2fe,0 0 26px 9px rgba(56,189,248,.95),0 8px 16px rgba(0,0,0,.45)}}
     #tile-help.open .set-body{top:0!important;max-height:none!important;height:100vh;height:100dvh;border-radius:0!important;padding-top:calc(10px + env(safe-area-inset-top))!important}
     #mt-guide .g-grid button{padding:15px 8px;border-radius:18px;border:1.5px solid rgba(233,213,255,.45);background:linear-gradient(170deg,rgba(168,85,247,.45),rgba(59,7,100,.6));color:#fff;font-weight:800;font-size:1.05rem;
       box-shadow:inset 0 2px 0 rgba(255,255,255,.3),inset 0 -4px 8px rgba(0,0,0,.35),0 6px 0 rgba(0,0,0,.35),0 10px 18px rgba(0,0,0,.4)}
