@@ -72,6 +72,20 @@
     .vt-in label{flex:1;font-size:.85rem;opacity:.85}
     .vt-in input{width:100%;box-sizing:border-box;font-size:1.5rem;font-weight:800;text-align:center;padding:10px;border-radius:14px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff;direction:ltr}
     .vt-chart{width:100%;height:150px;margin:12px 0 4px;background:rgba(255,255,255,.05);border-radius:14px}
+    /* M-157 (owner): the vitals panel fills the whole screen with no page scrolling; the chart takes the free height,
+       only a long list of measurements scrolls inside its own box */
+    #tile-vitals.open .set-body{top:0!important;max-height:none!important;height:100vh;height:100dvh;border-radius:0!important;display:flex!important;flex-direction:column;overflow:hidden!important;padding-top:calc(10px + env(safe-area-inset-top))!important}
+    #tile-vitals.open .set-body > *{flex:none}
+    #tile-vitals.open .vt-chart{flex:1 1 140px;min-height:70px;height:auto}
+    #tile-vitals.open .vt-list{flex:0 1 auto;min-height:0;overflow-y:auto}
+    #tile-vitals.open #vt-done{margin-top:10px!important}
+    /* M-157 (owner): low-vision settings without scrolling: 2 columns, rows share the height, sizes follow the screen */
+    html.lowvision #settings-page .set-grid{grid-template-rows:none!important;grid-auto-rows:minmax(0,1fr)!important;row-gap:6px!important;padding-bottom:calc(6px + env(safe-area-inset-bottom,0px))!important;align-content:stretch!important}
+    html.lowvision #settings-page .set-grid > .set-tile{min-height:0!important;height:auto!important}
+    html.lowvision #settings-page .set-grid .set-tile-head{gap:2px!important;padding:2px 1px 0!important;justify-content:center!important}
+    html.lowvision #settings-page .set-grid .set-ico{width:min(14vw,5.4vh,72px)!important;height:min(14vw,5.4vh,72px)!important;font-size:min(7vw,2.8vh,2rem)!important;margin:0!important;flex:none}
+    html.lowvision #settings-page .set-grid .set-title{font-size:min(1.15rem,4.6vw,2.2vh)!important;line-height:1.1!important;white-space:normal!important;text-align:center}
+    html.lowvision #settings-page .set-grid .set-sub{display:none!important}
     .vt-list{max-height:30vh;overflow:auto}
     .vt-r{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:12px;background:rgba(255,255,255,.05);margin:4px 0}
     .vt-r .d{flex:1;opacity:.8;font-size:.9rem}.vt-r b{font-size:1.15rem;direction:ltr}
@@ -167,6 +181,11 @@
     const lp = document.getElementById('list-page');
     if (lp) new MutationObserver(() => requestAnimationFrame(fitList)).observe(lp, { attributes: true, attributeFilter: ['class'], childList: true, subtree: true });
     window.addEventListener('resize', () => setTimeout(fitList, 80));
+    // M-157 (owner): Help sits at the top of settings, right after Language, both stand out
+    try {
+        const g2 = document.querySelector('#settings-page .set-grid'), hp = document.getElementById('tile-help');
+        if (g2 && hp && g2.firstElementChild && g2.firstElementChild !== hp) g2.insertBefore(hp, g2.firstElementChild.nextSibling);
+    } catch (e) { }
     // M-153: the list was drawn at start-up before this file loaded, so the cards had no photo / taken-early buttons
     if (typeof renderMeds === 'function') try { renderMeds(); } catch (e) { }
 
