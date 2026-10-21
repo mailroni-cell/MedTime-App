@@ -34,6 +34,7 @@ public class I18n {
                 "MedTime: {who} nu a confirmat încă {items} (memento de la {time}, acum o oră). Verificați dacă e totul bine.",
                 "MedTime : {who} n'a pas encore confirmé {items} (rappel de {time}, il y a une heure). Vérifiez que tout va bien.",
                 "MedTime: {who} has not confirmed taking {items} yet (reminder at {time}, an hour ago). Please check all is well."); // M-100
+        put("fam_tap", "👨‍👩‍👧 לחצו כדי לשלוח הודעה ל{name}", "👨‍👩‍👧 اضغط لإرسال رسالة إلى {name}", "👨‍👩‍👧 Apăsați pentru a trimite mesaj către {name}", "👨‍👩‍👧 Touchez pour envoyer un message à {name}", "👨‍👩‍👧 Tap to send a message to {name}"); // Play edition
         put("fam_someone", "המשתמש/ת", "المستخدم", "utilizatorul", "l'utilisateur", "the user");
         put("skip", "✖️ ביטלתי (לא לוקח הפעם)", "✖️ ألغيت (لن آخذه هذه المرة)", "✖️ Anulez (nu iau acum)", "✖️ Annuler (pas cette fois)", "✖️ Skip (not this time)"); // M-080
         put("open_app", "📱 פתח את MedTime", "📱 افتح MedTime", "📱 Deschide MedTime", "📱 Ouvrir MedTime", "📱 Open MedTime");

@@ -140,6 +140,7 @@ public class AlarmActivity extends Activity {
                 android.widget.ScrollView.LayoutParams.MATCH_PARENT,
                 android.widget.ScrollView.LayoutParams.MATCH_PARENT));
         setContentView(scroll);
+        blockBack();
         FullScreen.apply(this); // M-012
     }
 
@@ -200,6 +201,7 @@ public class AlarmActivity extends Activity {
         scroll.addView(root, new android.widget.ScrollView.LayoutParams(
                 android.widget.ScrollView.LayoutParams.MATCH_PARENT, android.widget.ScrollView.LayoutParams.MATCH_PARENT));
         setContentView(scroll);
+        blockBack();
         FullScreen.apply(this);
     }
 
@@ -305,6 +307,16 @@ public class AlarmActivity extends Activity {
     @Override
     @SuppressWarnings("deprecation")
     public void onBackPressed() { }
+
+    // Target API 36: back is delivered through OnBackInvokedCallback; swallow it so the alarm cannot be closed by mistake
+    private Object backCb;
+    private void blockBack() {
+        if (Build.VERSION.SDK_INT >= 33 && backCb == null) {
+            android.window.OnBackInvokedCallback cb = () -> { };
+            getOnBackInvokedDispatcher().registerOnBackInvokedCallback(android.window.OnBackInvokedDispatcher.PRIORITY_DEFAULT, cb);
+            backCb = cb;
+        }
+    }
 
     // M-097: Home / recent apps / another app on top do not hide it either: unanswered, it comes back on top right away
     // (needs "display over other apps"). When the screen is just turned off it stays where it is (shows on wake).

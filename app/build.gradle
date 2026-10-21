@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.medtime.app'
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.medtime.app"
         minSdk 24
-        targetSdk 34
+        targetSdk 36 // Google Play: new apps must target API 36 (from 2026-08-31)
         // Build number from GitHub Actions, so every build has a higher version
         versionCode 100 + (System.getenv('GITHUB_RUN_NUMBER') ?: '0').toInteger()
         versionName "1.0." + (System.getenv('GITHUB_RUN_NUMBER') ?: '0')
@@ -26,11 +26,31 @@ android {
         }
     }
 
+    // Google Play: two editions from the same code. "full" = the owner's test phone and GitHub (self-update, automatic SMS);
+    // "play" = the store edition (no self-update, no automatic SMS, no USE_EXACT_ALARM), signed with the upload key
+    flavorDimensions 'store'
+    productFlavors {
+        full { dimension 'store'; buildConfigField 'boolean', 'STORE', 'false' }
+        play { dimension 'store'; buildConfigField 'boolean', 'STORE', 'true' }
+    }
+    buildFeatures { buildConfig true }
+    if (System.getenv('UPLOAD_KEYSTORE')) {
+        signingConfigs {
+            upload {
+                storeFile file(System.getenv('UPLOAD_KEYSTORE'))
+                storePassword System.getenv('UPLOAD_STORE_PASSWORD')
+                keyAlias System.getenv('UPLOAD_KEY_ALIAS')
+                keyPassword System.getenv('UPLOAD_KEY_PASSWORD')
+            }
+        }
+    }
+
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
         }
         release {
+            if (System.getenv('UPLOAD_KEYSTORE')) signingConfig signingConfigs.upload
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

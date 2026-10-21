@@ -1,0 +1,75 @@
+name: Play - build store bundle (AAB)
+
+# Google Play edition (flavor "play"), release build signed with the upload key.
+# Run by hand when the owner approves a version for the store. The AAB goes to the release "play".
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle 8.11.1
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.11.1'
+
+      # M-087: offline voice engine (sherpa-onnx, Apache-2.0). Version must match app/src/main/java/com/k2fsa/sherpa/onnx/Tts.kt
+      - name: Offline voice engine libraries
+        run: |
+          set -e
+          curl -sSfL -o so.tar.bz2 https://github.com/k2-fsa/sherpa-onnx/releases/download/v1.12.20/sherpa-onnx-v1.12.20-android.tar.bz2
+          tar xjf so.tar.bz2 ./jniLibs/arm64-v8a/libonnxruntime.so ./jniLibs/arm64-v8a/libsherpa-onnx-jni.so
+          mkdir -p app/src/main/jniLibs/arm64-v8a
+          cp jniLibs/arm64-v8a/*.so app/src/main/jniLibs/arm64-v8a/
+          rm -rf so.tar.bz2 jniLibs
+
+      # M-091: the offline voices go inside the APK (owner's choice). Packs come from the release "voices" (workflow voices.yml)
+      - name: Offline voices into the APK
+        run: |
+          set -e
+          base=https://github.com/mailroni-cell/MedTime-App/releases/download/voices
+          for p in espeak ar_kareem ro_mihai fr_upmc en_amy en_ryan; do
+            curl -sSfL -o v.zip "$base/$p.zip"
+            mkdir -p app/src/main/assets/piper/$p
+            unzip -q -o v.zip -d app/src/main/assets/piper/$p
+          done
+          rm -f v.zip
+          du -sh app/src/main/assets/piper
+
+      - name: Build store bundle
+        env:
+          UPLOAD_KEYSTORE: ${{ github.workspace }}/app/medtime-upload.keystore
+          UPLOAD_STORE_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
+          UPLOAD_KEY_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
+          UPLOAD_KEY_ALIAS: upload
+        run: |
+          set -o pipefail
+          test -f app/medtime-upload.keystore || { echo "::error::No upload key yet - run 'Play - create upload key (once)' first"; exit 1; }
+          gradle bundlePlayRelease --stacktrace 2>&1 | tee build.log
+
+      - name: Report build errors
+        if: failure()
+        run: |
+          grep -E "error:|FAILURE|What went wrong|e: " build.log | head -30 | while IFS= read -r line; do echo "::error::$line"; done
+
+      - name: Publish to release "play"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cp app/build/outputs/bundle/playRelease/*.aab MedTime-play.aab
+          echo "run ${{ github.run_number }} / ${{ github.sha }} / versionCode $((100 + ${{ github.run_number }}))" > play-info.txt
+          gh release delete play --yes --cleanup-tag || true
+          gh release create play MedTime-play.aab play-info.txt --target "${{ github.sha }}" --title "MedTime for Google Play (run ${{ github.run_number }})" --notes "Store bundle - upload this AAB in Play Console" --prerelease

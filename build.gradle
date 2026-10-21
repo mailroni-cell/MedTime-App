@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application' version '8.2.2' apply false
+    id 'com.android.application' version '8.10.1' apply false // Play 2026: target API 36 needs a newer build tool
     id 'org.jetbrains.kotlin.android' version '1.9.22' apply false // M-087: for the offline voice engine API
 }
 

@@ -42,10 +42,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Gradle 8.7
+      - name: Setup Gradle 8.11.1
         uses: gradle/actions/setup-gradle@v3
         with:
-          gradle-version: '8.7'
+          gradle-version: '8.11.1'
 
       # M-087: offline voice engine (sherpa-onnx, Apache-2.0). Version must match app/src/main/java/com/k2fsa/sherpa/onnx/Tts.kt
       - name: Offline voice engine libraries
@@ -73,7 +73,7 @@ jobs:
       - name: Build Debug APK
         run: |
           set -o pipefail
-          gradle assembleDebug --stacktrace 2>&1 | tee build.log
+          gradle assembleFullDebug --stacktrace 2>&1 | tee build.log
 
       # Show compile errors as annotations, readable without logging in
       - name: Report build errors
@@ -85,7 +85,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: MedTime-Debug-APK
-          path: app/build/outputs/apk/debug/*.apk
+          path: app/build/outputs/apk/full/debug/*.apk
 
       # M-075: every build goes to the "test" release only (owner's phone, via the PC watcher).
       # The "latest" release is what all users' apps update from; it changes only when the
@@ -95,7 +95,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cp app/build/outputs/apk/debug/*.apk MedTime-latest.apk
+          cp app/build/outputs/apk/full/debug/*.apk MedTime-latest.apk
           echo "run ${{ github.run_number }} / ${{ github.sha }}" > build-info.txt
           gh release delete test --yes --cleanup-tag || true
           gh release create test MedTime-latest.apk build-info.txt --target "${{ github.sha }}" --title "MedTime test (run ${{ github.run_number }})" --notes "Test build ${{ github.run_number }} - owner's phone only" --prerelease

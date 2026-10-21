@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         webView = new WebView(this);
         setContentView(webView);
+        getOnBackPressedDispatcher().addCallback(this, backCb);
         FullScreen.apply(this); // M-012
 
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
@@ -264,12 +265,14 @@ public class MainActivity extends AppCompatActivity {
         if (webView != null) webView.evaluateJavascript("window.mtResumed && mtResumed()", null);
     }
 
-    @Override
-    public void onBackPressed() {
-        if (webView.canGoBack()) {
-            webView.goBack();
-        } else {
-            super.onBackPressed();
+    // Target API 36: Android no longer calls onBackPressed(); the back gesture goes through this callback
+    private final androidx.activity.OnBackPressedCallback backCb = new androidx.activity.OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            if (webView != null && webView.canGoBack()) { webView.goBack(); return; }
+            setEnabled(false);
+            getOnBackPressedDispatcher().onBackPressed();
+            setEnabled(true);
         }
-    }
+    };
 }
