@@ -177,9 +177,11 @@
         const pg = document.getElementById('list-page'); if (!pg || !pg.classList.contains('open')) return;
         pg.classList.remove('pl-t1', 'pl-t2');
         for (const c of ['pl-t1', 'pl-t2']) { if (pg.scrollHeight <= pg.clientHeight + 2) break; pg.classList.add(c); }
+        if (fitMo) fitMo.takeRecords(); // M-162: our own class changes must not start fitList again (endless loop = flicker)
     }
     const lp = document.getElementById('list-page');
-    if (lp) new MutationObserver(() => requestAnimationFrame(fitList)).observe(lp, { attributes: true, attributeFilter: ['class'], childList: true, subtree: true });
+    let fitMo = null, fitQ = 0;
+    if (lp) (fitMo = new MutationObserver(() => { if (!fitQ) fitQ = requestAnimationFrame(() => { fitQ = 0; fitList(); }); })).observe(lp, { attributes: true, attributeFilter: ['class'], childList: true, subtree: true });
     window.addEventListener('resize', () => setTimeout(fitList, 80));
     // M-157 (owner): Help sits at the top of settings, right after Language, both stand out
     try {
