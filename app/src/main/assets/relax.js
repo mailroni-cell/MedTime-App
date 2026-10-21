@@ -81,7 +81,7 @@
         c.textContent = `
     #relax .rx-head { position: absolute; left: 16px; right: 16px; top: calc(50% - min(235px, 33vh)); z-index: 6; text-align: center; pointer-events: none;
         font: 900 1.7rem 'MTUI', sans-serif; color: #fff; text-shadow: 0 0 2px #000, 0 2px 3px #000, 0 0 16px rgba(167,139,250,.95);
-        transition: opacity .5s, transform .5s; animation: rxHead 4s ease-in-out infinite; }
+        will-change: transform, opacity; transition: opacity .5s, transform .5s; animation: rxHead 4s ease-in-out infinite; }
     @keyframes rxHead { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
     #relax.rx-hide .rx-head, #relax[data-sec="scene"] .rx-head, #relax[data-sec="sound"] .rx-head, #relax[data-sec="timer"] .rx-head, #relax.rx-locked .rx-head { opacity: 0; }
     #relax .rx-bar { left: 50% !important; top: 50% !important; bottom: auto !important; transform: translate(-50%, -46%) !important; flex-direction: column !important;
@@ -99,7 +99,7 @@
     #relax .rx-bar button:active { transform: translateY(4px) !important; box-shadow: inset 0 2px 1px rgba(255,255,255,.4), 0 2px 0 var(--c3), 0 5px 10px rgba(0,0,0,.5) !important; }
     #relax .rx-bar button .rx-bi { width: 44px; height: 44px; flex: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.45rem !important;
         background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.95), rgba(255,255,255,.35) 45%, rgba(255,255,255,.12) 75%);
-        box-shadow: inset 0 -3px 6px rgba(0,0,0,.25), 0 3px 6px rgba(0,0,0,.35); will-change: transform; animation: rxBob 3.2s ease-in-out infinite; }
+        box-shadow: inset 0 -3px 6px rgba(0,0,0,.25), 0 3px 6px rgba(0,0,0,.35); }
     #relax .rx-bar button small { max-width: none !important; font: inherit !important; }
     #relax .rx-bar button[data-s="scene"] { --c1: #a78bfa; --c2: #6d28d9; --c3: #3b0f8a; }
     #relax .rx-bar button[data-s="sound"] { --c1: #2dd4bf; --c2: #0f766e; --c3: #064e48; }
@@ -109,7 +109,7 @@
     #relax .rx-bar button[data-s="go"] { --c1: #f472b6; --c2: #be185d; --c3: #831843; justify-content: center !important; height: 66px !important; font-size: 1.4rem !important; margin-top: 4px; }
     #relax .rx-bar button[data-s="go"] .rx-bi { width: 36px; height: 36px; }
     #relax .rx-bar button[data-s="last"] .rx-bi { color: #14532d !important; }
-    #relax .rx-bar.rx-anim button { animation: rxPop .62s cubic-bezier(.2, 1.1, .35, 1) both; animation-delay: calc(var(--i, 0) * 70ms); }
+    #relax .rx-bar.rx-anim button { will-change: transform, opacity; animation: rxPop .62s cubic-bezier(.2, 1.1, .35, 1) both; animation-delay: calc(var(--d, 0ms) + var(--i, 0) * 70ms); }
     @keyframes rxPop { from { opacity: 0; transform: translateY(46px) rotateX(70deg) scale(.82); } to { opacity: 1; transform: none; } }
     @keyframes rxBob { 0%,100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-3px) rotate(4deg); } }
     /* sub-menus: a 3D card in the middle */
@@ -127,7 +127,7 @@
     #relax .rx-sec .rx-tile.sel { background: linear-gradient(180deg, #e879f9, #7e22ce) !important;
         box-shadow: inset 0 2px 1px rgba(255,255,255,.5), 0 5px 0 #4a044e, 0 0 0 2px #f5d0fe, 0 0 22px rgba(232,121,249,.85) !important; }
     #relax .rx-sec .rx-tile:active { transform: translateY(4px) !important; box-shadow: inset 0 2px 1px rgba(255,255,255,.35), 0 1px 0 #1e1b4b !important; }
-    #relax .rx-panel.rx-anim .rx-tile { animation: rxTile .5s cubic-bezier(.2, 1.15, .35, 1) both; animation-delay: calc(var(--i, 0) * 40ms); }
+    #relax .rx-panel.rx-anim .rx-tile { will-change: transform, opacity; animation: rxTile .5s cubic-bezier(.2, 1.15, .35, 1) both; animation-delay: calc(var(--i, 0) * 40ms); }
     @keyframes rxTile { from { opacity: 0; transform: translateY(30px) rotateX(65deg) scale(.7); } to { opacity: 1; transform: none; } }
     #relax .rx-back { display: block; width: 100%; margin-top: 12px; min-height: 50px; border: none; border-radius: 25px; color: #fff; font: 900 1.12rem 'MTUI', sans-serif;
         background: linear-gradient(180deg, #64748b, #334155); box-shadow: inset 0 2px 1px rgba(255,255,255,.35), 0 4px 0 #0f172a, 0 8px 14px rgba(0,0,0,.45); }
@@ -833,7 +833,7 @@
         try {
             renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
         } catch (e) { renderer = null; root.querySelector('.rx-hint').textContent = tx('noGL'); return; }
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.6));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.3)); // M-171: lighter, so the menu over it moves smoothly
         renderer.setSize(innerWidth, innerHeight, false);
         camera = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, 0.1, 2500);
         clock = new THREE.Clock();
@@ -875,7 +875,8 @@
         root.classList.add('open'); document.documentElement.classList.add('relax-open');
         try { const sv = JSON.parse(localStorage.getItem('medtime_relax') || '{}'); last = { scene: sv.scene || 'aurora', sound: sv.sound || 'none', timer: sv.timer || 0 }; } catch (e) { }
         Object.assign(st, FRESH); chosen = {}; root.classList.remove('rx-locked');
-        setSec(''); drawPanel(); poke();
+        root.querySelector('.rx-bar').style.setProperty('--d', '450ms'); setSec(''); drawPanel(); poke();
+        setTimeout(() => root && root.querySelector('.rx-bar').style.removeProperty('--d'), 2000);
         root.querySelector('.rx-hint').classList.remove('gone');
         setTimeout(() => root && root.querySelector('.rx-hint').classList.add('gone'), 6000);
         vol = st.vol / 100;

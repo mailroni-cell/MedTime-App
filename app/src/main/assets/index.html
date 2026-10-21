@@ -4275,7 +4275,9 @@
         function ambVol() { try { const v = parseInt(localStorage.getItem('medtime_amb_vol'), 10); return isNaN(v) ? 35 : v; } catch (e) { return 35; } }
         amb.volume = ambVol() / 100;
         var ambUnlocked = false;
-        function ambOn() { try { return localStorage.getItem('medtime_amb') !== '0'; } catch (e) { return true; } }
+        // M-171 (owner): no background sound unless the user turns it on (it used to be on by default: the wind on opening)
+        try { if (!localStorage.getItem('medtime_amb_v2')) { localStorage.setItem('medtime_amb', '0'); localStorage.setItem('medtime_amb_v2', '1'); } } catch (e) { }
+        function ambOn() { try { return localStorage.getItem('medtime_amb') === '1'; } catch (e) { return false; } }
         function updateAmbient(i) {
             const th = (window.MED_THEMES || [])[i == null ? curTheme() : i];
             if (!th || !ambOn() || !ambUnlocked || document.hidden || window.relaxOn) { amb.pause(); return; }
