@@ -53,6 +53,24 @@ try:
         except Exception as e:
             found[u] = str(e)
     probe['scripts'] = found
+    for u in ['https://registries.health.gov.il/assets/config.prod.json', 'https://registries.health.gov.il/assets/data/menuItems.v3.json']:
+        try:
+            probe[u] = gett(u)[:6000]
+        except Exception as e:
+            probe[u] = str(e)
+    # the Medicines screen is a separate bundle: find its remoteEntry and save all its code
+    cfg = probe.get('https://registries.health.gov.il/assets/config.prod.json', '')
+    m = re.search(r'"Medicines"\s*:\s*(?:\{[^}]*?"remoteEntry"\s*:\s*)?"([^"]+)"', cfg) or re.search(r'(https?://[^"]*[Mm]edicines[^"]*remoteEntry[^"]*)', cfg)
+    if m:
+        re_url = m.group(1); probe['med_remote'] = re_url
+        base = re_url.rsplit('/', 1)[0] + '/'
+        code = gett(re_url)
+        for cid, h in re.findall(r'(\d+):"([0-9a-f]{16,20})"', code):
+            try:
+                code += '\n//CHUNK ' + cid + '\n' + gett(f'{base}{cid}.{h}.js')
+            except Exception as e:
+                found['med' + cid] = str(e)
+        open('data-cache/drugs_med.js', 'w', encoding='utf-8').write(code)
 except Exception as e:
     probe['scripts_err'] = str(e)
 # 2) registry search API sample
