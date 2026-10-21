@@ -27,6 +27,10 @@
         dlgTitle: ['גרסה חדשה של MedTime', 'إصدار جديد من MedTime', 'Versiune nouă MedTime', 'Nouvelle version de MedTime', 'New MedTime version', 'Новая версия MedTime'],
         dlgText: ['יש גרסה חדשה ומשופרת. לעדכן עכשיו? התזכורות שלכם נשמרות.', 'يوجد إصدار جديد ومحسّن. التحديث الآن؟ تذكيراتك محفوظة.', 'Există o versiune nouă. Actualizați acum? Mementourile rămân.', 'Une nouvelle version est prête. Mettre à jour ? Vos rappels restent.', 'A newer version is ready. Update now? Your reminders stay.', 'Готова новая версия. Обновить сейчас? Ваши напоминания сохранятся.'],
         later: ['אחר כך', 'لاحقًا', 'Mai târziu', 'Plus tard', 'Later', 'Позже'],
+        // M-168 (owner): on opening, a newer version updates by itself behind a "please wait" screen
+        wait: ['נא להמתין, מעדכן לגרסה חדשה יותר…', 'يرجى الانتظار، جارٍ التحديث إلى إصدار أحدث…', 'Vă rugăm așteptați, se actualizează la o versiune nouă…', 'Veuillez patienter, mise à jour vers une version plus récente…', 'Please wait, updating to a newer version…', 'Пожалуйста, подождите, обновляем до новой версии…'],
+        waitSub: ['התזכורות, התורים וההגדרות שלכם נשמרים', 'تذكيراتك ومواعيدك وإعداداتك محفوظة', 'Mementourile, programările și setările rămân', 'Vos rappels, rendez-vous et réglages sont conservés', 'Your reminders, appointments and settings stay', 'Ваши напоминания, записи и настройки сохранятся'],
+        waitTap: ['כמעט סיימנו: לחצו "עדכון" במסך של אנדרואיד', 'اقتربنا: اضغط "تحديث" في شاشة أندرويد', 'Aproape gata: apăsați "Actualizează" pe ecranul Android', 'Presque fini : touchez « Mettre à jour » sur l\'écran Android', 'Almost done: tap "Update" on the Android screen', 'Почти готово: нажмите «Обновить» на экране Android'],
         now: ['עדכן עכשיו', 'حدّث الآن', 'Actualizează', 'Mettre à jour', 'Update now', 'Обновить сейчас']
     };
     const tx = k => (TX[k] || [k])[li()];
@@ -203,26 +207,57 @@
             latest = r.latest;
             msgKey = latest > cur ? 'newer' : 'upToDate';
             drawUpd();
-            if (fromAuto && latest > cur && st.skip !== latest && window.mtDialog) {
-                mtDialog({ icon: '🎉', title: tx('dlgTitle'), text: tx('dlgText'), ok: tx('now'), cancel: tx('later') }).then(ok => {
-                    if (ok) install(); else { st.skip = latest; save(); }
-                });
-            }
-        } else if (r.type === 'progress') { mode = 'loading'; pct = r.pct; drawUpd(); }
-        else if (r.type === 'ready') { mode = 'idle'; msgKey = 'ready'; drawUpd(); }
+            if (fromAuto && latest > cur && cur) { waitShow(); install(); }
+        } else if (r.type === 'progress') { mode = 'loading'; pct = r.pct; drawUpd(); waitDraw(); }
+        else if (r.type === 'ready') { mode = 'idle'; msgKey = 'ready'; drawUpd(); waitDraw(true); }
         else if (r.type === 'permission') {
+            waitHide();
             // M-076: a friendly explanation first, then Android's one-time screen; when allowed, the download starts by itself
             mode = 'idle'; msgKey = 'perm'; drawUpd();
             if (window.mtPermGuide) mtPermGuide('install').then(ok => { if (ok) install(); });
             else if (has('openInstallPermission')) N.openInstallPermission();
         }
-        else if (r.type === 'error') { mode = 'idle'; msgKey = 'error'; drawUpd(); }
+        else if (r.type === 'error') { mode = 'idle'; msgKey = 'error'; drawUpd(); waitHide(); }
     };
+    // M-168: full-screen "please wait, updating" while the new version downloads
+    let wt = null;
+    function waitShow() {
+        if (wt) return;
+        if (!document.getElementById('mt-wait-css')) {
+            const c = document.createElement('style'); c.id = 'mt-wait-css';
+            c.textContent = '#mt-wait{position:fixed;inset:0;z-index:2147483600;background:radial-gradient(circle at 50% 35%,#1e3a8a,#020617 70%);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center;opacity:0;transition:opacity .3s}' +
+                '#mt-wait.in{opacity:1}#mt-wait .w-ico{font-size:4.2rem;will-change:transform;animation:mtWSpin 2.2s linear infinite}@keyframes mtWSpin{to{transform:rotate(360deg)}}' +
+                '#mt-wait b{font-size:1.5rem;line-height:1.4;max-width:420px}#mt-wait small{font-size:1.05rem;color:#bae6fd}' +
+                '#mt-wait .w-bar{width:min(320px,80vw);height:14px;border-radius:9px;background:rgba(255,255,255,.15);overflow:hidden}#mt-wait .w-bar i{display:block;height:100%;width:8%;background:linear-gradient(90deg,#22d3ee,#a78bfa);border-radius:9px;transition:width .3s}' +
+                '#mt-wait .w-pct{font-size:1.2rem;font-weight:800;color:#67e8f9}#mt-wait.done .w-ico{animation:none}';
+            document.head.appendChild(c);
+        }
+        wt = document.createElement('div'); wt.id = 'mt-wait'; wt.dir = li() < 2 ? 'rtl' : 'ltr';
+        wt.innerHTML = '<div class="w-ico">🔄</div><b></b><div class="w-bar"><i></i></div><div class="w-pct"></div><small></small>';
+        document.body.appendChild(wt); requestAnimationFrame(() => wt && wt.classList.add('in'));
+        waitDraw();
+    }
+    function waitDraw(ready) {
+        if (!wt) return;
+        wt.classList.toggle('done', !!ready);
+        wt.querySelector('.w-ico').textContent = ready ? '✅' : '🔄';
+        wt.querySelector('b').textContent = tx(ready ? 'waitTap' : 'wait');
+        wt.querySelector('small').textContent = tx('waitSub');
+        wt.querySelector('.w-bar i').style.width = (ready ? 100 : Math.max(8, pct)) + '%';
+        wt.querySelector('.w-pct').textContent = ready ? '' : (pct >= 0 ? pct + '%' : '');
+        // if Android's screen was closed without updating, let the user back into the app
+        if (ready) { clearTimeout(wt._t); wt._t = setTimeout(waitHide, 60000); }
+    }
+    function waitHide() { if (!wt) return; const w = wt; wt = null; w.classList.remove('in'); setTimeout(() => w.remove(), 350); }
     // small floating line while downloading outside the settings screen
     const pill = document.createElement('div'); pill.id = 'upd-pill'; pill.className = 'upd-pill';
     document.body.appendChild(pill);
-    // automatic check a little after the opening, at most every 6 hours
-    setTimeout(() => { if (st.auto && has('checkUpdate') && (!st.last || Date.now() - st.last > 6 * 3600e3)) check(true); }, 14000);
+    // M-168: automatic check on every opening, once the opening video is gone
+    (function autoCheck() {
+        const sp = document.getElementById('splash');
+        if (sp && !sp.classList.contains('out') && sp.style.display !== 'none') { setTimeout(autoCheck, 700); return; }
+        setTimeout(() => { if (st.auto && has('checkUpdate')) check(true); }, 1500);
+    })();
 
     // ---------------- help ----------------
     function drawHelp() {
