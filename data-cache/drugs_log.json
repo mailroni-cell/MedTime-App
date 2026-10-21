@@ -1,3 +1,4 @@
 {
- "count": 0
+ "api": "api/Medicines/",
+ "crawl_err": "ValueError(\"unknown url type: 'api/Medicines/GetMedicines'\")"
 }
