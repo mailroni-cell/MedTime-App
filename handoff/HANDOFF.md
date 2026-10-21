@@ -38,7 +38,8 @@
 - רוני ממלא את רשימת "Set up your app" (11 משימות). קיבל הוראות לכל אחת וטקסטים לדף החנות.
 - נוצרו אייקון 512x512 ותמונה ראשית 1024x500 (עיצוב A מ־tools/icons.js): בתיקיית הפרויקט medtime-play/images/. ⏳ רוני מעלה אותם. נוצרו גם 2 צילומי מסך עם כותרת, 1080x1920 (screenshot-1/2.png באותה תיקייה; צילומי הטלפון המקוריים ארוכים מדי לגוגל). הוצע לרוני לשלוח צילום של מסך תזכורת.
 - 17:44: רוני העלה את 4 התמונות (מ־docs/store/ בגיטהאב) ושמר את דף החנות ✅.
-- הבא: לוודא שכל Set up your app ירוק, ואז Closed testing ← Testers (testers.csv) ← Create new release ← MedTime-play.aab (versionCode 102) ← Send for review.
+- 18:03: Set up your app הושלם (הרשימה נעלמה מה־Dashboard). רשימת הבודקים הוחלפה: 9 מיילים, בתיקיית הפרויקט medtime-play/testers.csv (הקובץ במחשב ישן). חסרים 3.
+- הבא: ואז Closed testing ← Testers (testers.csv) ← Create new release ← MedTime-play.aab (versionCode 102) ← Send for review.
 
 ## להדבקה בחשבון השני
 ```
