@@ -39,7 +39,7 @@
 - נוצרו אייקון 512x512 ותמונה ראשית 1024x500 (עיצוב A מ־tools/icons.js): בתיקיית הפרויקט medtime-play/images/. ⏳ רוני מעלה אותם. נוצרו גם 2 צילומי מסך עם כותרת, 1080x1920 (screenshot-1/2.png באותה תיקייה; צילומי הטלפון המקוריים ארוכים מדי לגוגל). הוצע לרוני לשלוח צילום של מסך תזכורת.
 - 17:44: רוני העלה את 4 התמונות (מ־docs/store/ בגיטהאב) ושמר את דף החנות ✅.
 - 18:03: Set up your app הושלם (הרשימה נעלמה מה־Dashboard). רשימת הבודקים הוחלפה: 9 מיילים, בתיקיית הפרויקט medtime-play/testers.csv (הקובץ במחשב ישן). חסרים 3.
-- הבא: ואז Closed testing ← Testers (testers.csv) ← Create new release ← MedTime-play.aab (versionCode 102) ← Send for review.
+- 18:27: גרסה 102 ("1.0 בדיקה ראשונה") ב־Closed testing (Alpha), ישראל, רשימת TESTERS-MEDTIME (8 נקלטו מ־9), הצהרות Advertising ID=No ו־Full-screen intent=Yes/Alarm. נשלח לבדיקת גוגל (Submit 15 changes). ⏳ ממתינים לאישור (שעות עד 3 ימים). אחרי האישור: קישור Join on the web ← הודעה לבודקים; לאסוף עוד 3 בודקים.
 
 ## להדבקה בחשבון השני
 ```
