@@ -98,7 +98,12 @@ class Voices {
     }
 
     /** Says a sample sentence with a voice ("" = phone default for the language). */
-    static void preview(Activity a, String name, String text) {
+    static void preview(Activity a, String name, String text) { preview(a, name, text, 0.9f, 1f); }
+
+    /** M-175: breathing guidance in a calm voice: slower and a little lower. */
+    static void speakCalm(Activity a, String text) { preview(a, chosen(a.getApplicationContext()), text, 0.72f, 0.92f); }
+
+    static void preview(Activity a, String name, String text, float rate, float pitchMul) {
         if (Piper.isPiper(name)) { if (tts != null) try { tts.stop(); } catch (Exception ignored) { } Piper.preview(a.getApplicationContext(), name, text); return; }
         Piper.stop();
         withTts(a, () -> {
@@ -109,11 +114,11 @@ class Voices {
                     int r = tts.setLanguage(loc);
                     if (r != TextToSpeech.LANG_MISSING_DATA && r != TextToSpeech.LANG_NOT_SUPPORTED) break;
                 }
-                tts.setPitch(pitchOf(name));
+                tts.setPitch(pitchOf(name) * pitchMul);
                 if (name != null && !name.isEmpty() && !name.startsWith("pitch:")) for (Voice v : forLang(a, tts)) if (v.getName().equals(name)) { tts.setVoice(v); break; }
                 Bundle p = new Bundle();
                 p.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, Sounds.voiceVolume(a));
-                tts.setSpeechRate(0.9f);
+                tts.setSpeechRate(rate);
                 // M-120: a short silence first, so the first word is not cut off
                 tts.playSilentUtterance(300, TextToSpeech.QUEUE_FLUSH, "lead");
                 tts.speak(text, TextToSpeech.QUEUE_ADD, p, "preview");

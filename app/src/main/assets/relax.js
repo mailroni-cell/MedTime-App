@@ -15,6 +15,26 @@
         breath: ['🫁 הנחיית נשימה', '🫁 إرشاد التنفس', '🫁 Ghid de respirație', '🫁 Guide de respiration', '🫁 Breathing guide', '🫁 Помощник дыхания'],
         inhale: ['שאיפה…', 'شهيق…', 'Inspiră…', 'Inspirez…', 'Breathe in…', 'Вдох…'],
         hold: ['להחזיק', 'احبس', 'Ține', 'Retenez', 'Hold', 'Задержка'],
+        // M-175 (owner): human, changing guidance lines under the breathing word ({n} = seconds); [he, ar, ro, fr, en, ru] x 4 phrasings
+        gIn: [['שואפים עמוק דרך האף… {n} שניות', 'ממלאים את הבטן באוויר, לאט לאט', 'שאיפה רכה ושקטה', 'מרגישים את החזה מתרחב'],
+            ['خذ نفسًا عميقًا من الأنف… {n} ثوانٍ', 'املأ بطنك بالهواء، ببطء', 'شهيق ناعم وهادئ', 'اشعر بصدرك يتسع'],
+            ['Inspiră adânc pe nas… {n} secunde', 'Umple-ți burta cu aer, încet', 'O inspirație moale și liniștită', 'Simte cum se lărgește pieptul'],
+            ['Inspirez profondément par le nez… {n} secondes', 'Remplissez le ventre d\'air, lentement', 'Une inspiration douce et calme', 'Sentez la poitrine s\'ouvrir'],
+            ['Breathe in deeply through your nose… {n} seconds', 'Fill your belly with air, slowly', 'A soft, quiet breath in', 'Feel your chest expand'],
+            ['Глубокий вдох через нос… {n} секунды', 'Медленно наполните живот воздухом', 'Мягкий, спокойный вдох', 'Почувствуйте, как расширяется грудь']],
+        gHold: [['מחזיקים בעדינות… {n} שניות', 'עוצרים רגע, בלי מאמץ', 'נשארים כאן, רגועים', 'הכתפיים רפויות'],
+            ['احبس بلطف… {n} ثوانٍ', 'توقف لحظة، دون جهد', 'ابقَ هنا، هادئًا', 'أرخِ كتفيك'],
+            ['Ține ușor… {n} secunde', 'Oprește-te o clipă, fără efort', 'Rămâi aici, liniștit', 'Umerii relaxați'],
+            ['Retenez doucement… {n} secondes', 'Une pause, sans effort', 'Restez là, détendu', 'Les épaules relâchées'],
+            ['Hold gently… {n} seconds', 'Pause for a moment, no effort', 'Stay here, calm', 'Let your shoulders drop'],
+            ['Мягко задержите… {n} секунды', 'Пауза, без усилий', 'Оставайтесь здесь, спокойно', 'Плечи расслаблены']],
+        gOut: [['משחררים לאט דרך הפה… {n} שניות', 'נושפים החוצה את כל המתח', 'משחררים… לאט… עד הסוף', 'הגוף נרגע ונעשה כבד'],
+            ['أخرج الهواء ببطء من الفم… {n} ثوانٍ', 'أخرج كل التوتر', 'ببطء… حتى النهاية', 'جسدك يسترخي ويثقل'],
+            ['Expiră încet pe gură… {n} secunde', 'Dă afară toată tensiunea', 'Încet… până la capăt', 'Corpul se relaxează și devine greu'],
+            ['Expirez lentement par la bouche… {n} secondes', 'Laissez sortir toute la tension', 'Lentement… jusqu\'au bout', 'Le corps se détend et s\'alourdit'],
+            ['Breathe out slowly through your mouth… {n} seconds', 'Let all the tension go', 'Slowly… all the way out', 'Your body relaxes and feels heavy'],
+            ['Медленный выдох через рот… {n} секунд', 'Отпустите всё напряжение', 'Медленно… до конца', 'Тело расслабляется и тяжелеет']],
+        bVoice: ['🗣️ הנחיה קולית', '🗣️ إرشاد صوتي', '🗣️ Ghid vocal', '🗣️ Guide vocal', '🗣️ Voice guide', '🗣️ Голосовые подсказки'],
         exhale: ['נשיפה…', 'زفير…', 'Expiră…', 'Expirez…', 'Breathe out…', 'Выдох…'],
         off: ['ללא', 'بدون', 'Fără', 'Non', 'Off', 'Выкл.'],
         min: ['דק׳', 'د', 'min', 'min', 'min', 'мин'],
@@ -60,7 +80,7 @@
     const SCENES = [['aurora', '🌌'], ['ocean', '🌊'], ['galaxy', '🌀'], ['lanterns', '🏮'], ['orb', '🔮'], ['snow', '🌲'], ['jelly', '🪼'], ['fireflies', '✨'], ['sunset', '🌅'], ['nebula', '☁️']];
     const SOUNDS = [['none', '🔇'], ['bowls', '🔔'], ['drone', '🕉️'], ['chimes', '🎐'], ['zen', '🎋'], ['rain', '🌧️'], ['ocean', '🌊'], ['forest', '🌲'], ['night', '🦗'], ['fire', '🔥'], ['wind', '🍃'], ['storm', '⛈️'], ['underwater', '🫧'], ['space', '🪐'], ['synth', '🎹']];
     const TIMERS = [0, 10, 20, 30, 45, 60];
-    const BREATH = { inh: 4, hold: 1.5, exh: 6 }; // seconds, calm 4 / 1.5 / 6 rhythm
+    const BREATH = { inh: 4, hold: 4, exh: 6 }; // seconds; M-175: 4 in / 4 hold / 6 out
     const BP = BREATH.inh + BREATH.hold + BREATH.exh;
 
     // M-074: calm mode always opens fresh (quiet, nothing pre-chosen); "Last mode" brings back the last choices
@@ -70,7 +90,7 @@
     let last = { scene: st.scene, sound: st.sound, timer: st.timer }, chosen = {};
     // only what was really chosen this time replaces the stored "last mode"
     const save = () => { try {
-        const sv = JSON.parse(localStorage.getItem('medtime_relax') || '{}'); sv.vol = st.vol; sv.breath = st.breath;
+        const sv = JSON.parse(localStorage.getItem('medtime_relax') || '{}'); sv.vol = st.vol; sv.breath = st.breath; sv.bvoice = st.bvoice;
         ['scene', 'sound', 'timer'].forEach(k => { if (chosen[k]) sv[k] = st[k]; });
         localStorage.setItem('medtime_relax', JSON.stringify(sv));
     } catch (e) { } };
@@ -79,7 +99,7 @@
     (function () {
         const c = document.createElement('style');
         c.textContent = `
-    #relax .rx-head { position: absolute; left: 16px; right: 16px; top: calc(50% - min(290px, 39vh)); z-index: 6; text-align: center; pointer-events: none;
+    #relax .rx-head { position: absolute; left: 16px; right: 16px; top: calc(50% - min(305px, 41vh)); z-index: 6; text-align: center; pointer-events: none;
         font: 900 1.7rem 'MTUI', sans-serif; color: #fff; text-shadow: 0 0 2px #000, 0 2px 3px #000, 0 0 16px rgba(167,139,250,.95);
         will-change: transform, opacity; transition: opacity .5s, transform .5s; animation: rxHead 4s ease-in-out infinite; }
     @keyframes rxHead { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
@@ -143,6 +163,10 @@
         text-shadow: 0 1px 0 #a5f3fc, 0 2px 0 #67e8f9, 0 3px 0 #22d3ee, 0 4px 0 #0891b2, 0 8px 14px rgba(0,0,0,.55), 0 0 26px rgba(125,211,252,.85) !important;
         animation: rxBFloat 7s ease-in-out infinite; }
     #relax .rx-breath > * { transform-style: preserve-3d; }
+    #relax .rx-bsub { position: absolute; left: 50%; top: calc(100% - 26px); width: min(340px, 90vw); transform: translateX(-50%); text-align: center;
+        font: 600 1.25rem/1.4 'MTSoft', 'MTUI', sans-serif; color: #e0f2fe; text-shadow: 0 1px 2px #000, 0 0 12px rgba(125,211,252,.7); }
+    #relax .rx-bar button[data-s="bvoice"] { --c1: #c4b5fd; --c2: #6d28d9; --c3: #3b0764; }
+    #relax .rx-bar button[data-s="bvoice"].on { box-shadow: inset 0 2px 1px rgba(255,255,255,.5), 0 6px 0 var(--c3), 0 0 0 3px #ddd6fe, 0 0 22px rgba(196,181,253,.9) !important; }
     @keyframes rxBFloat { 0%,100% { translate: 0 0; } 50% { translate: 0 -10px; } }
     #relax .rx-bar button[data-s="breath"] { --c1: #67e8f9; --c2: #0369a1; --c3: #0c4a6e; }
     #relax .rx-bar button[data-s="breath"].on { box-shadow: inset 0 2px 1px rgba(255,255,255,.5), 0 6px 0 var(--c3), 0 0 0 3px #a5f3fc, 0 0 22px rgba(103,232,249,.9) !important; }
@@ -169,7 +193,7 @@
             '<div class="rx-fade"></div>' +
             '<button type="button" class="rx-close" aria-label="close">✕</button>' +
             '<div class="rx-left"></div>' +
-            '<div class="rx-breath"><div class="rx-ring"></div><div class="rx-btext"></div></div>' +
+            '<div class="rx-breath"><div class="rx-ring"></div><div class="rx-btext"></div><div class="rx-bsub"></div></div>' +
             '<div class="rx-hint"></div>' +
             '<div class="rx-head"></div>' +
             '<div class="rx-panel">' +
@@ -184,7 +208,7 @@
             '<button type="button" class="rx-go"></button>' +
             '</div>' +
             '<button type="button" class="rx-mini"><span class="rx-mini-ico"></span><span class="rx-mini-t"></span></button>' +
-            '<div class="rx-bar">' + ['scene', 'sound', 'timer', 'breath', 'last', 'lock', 'go'].map(t => '<button type="button" data-s="' + t + '"><span class="rx-bi"></span><small></small></button>').join('') + '</div>' +
+            '<div class="rx-bar">' + ['scene', 'sound', 'timer', 'breath', 'bvoice', 'last', 'lock', 'go'].map(t => '<button type="button" data-s="' + t + '"><span class="rx-bi"></span><small></small></button>').join('') + '</div>' +
             '<button type="button" class="rx-unlock" aria-label="unlock"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="29"/></svg><span>🔒</span></button>' +
             '<div class="rx-lockmsg"></div>';
         document.body.appendChild(root);
@@ -206,7 +230,8 @@
                 if (b.dataset.s === 'last') { useLast(); return; }
                 if (b.dataset.s === 'lock') { lockOn(); return; }
                 if (b.dataset.s === 'go') { hidePanel(); return; }
-                if (b.dataset.s === 'breath') { st.breath = !st.breath; save(); drawBreath(); drawPanel(); poke(); return; }
+                if (b.dataset.s === 'breath') { st.breath = !st.breath; save(); drawBreath(); drawPanel(); poke(); bPh = ''; if (!st.breath) hush(); return; }
+                if (b.dataset.s === 'bvoice') { st.bvoice = !st.bvoice; save(); drawPanel(); poke(); bPh = ''; if (!st.bvoice) hush(); return; }
                 setSec(sec === b.dataset.s ? '' : b.dataset.s); poke();
             });
         });
@@ -269,6 +294,7 @@
             if (t === 'last') { b.querySelector('.rx-bi').textContent = '↺'; b.querySelector('small').textContent = tx('last'); b.hidden = !!(chosen.scene || chosen.sound || chosen.timer); return; }
             if (t === 'lock') { b.querySelector('.rx-bi').textContent = '🔓'; b.querySelector('small').textContent = tx('lock'); return; }
             if (t === 'breath') { b.querySelector('.rx-bi').textContent = '🫁'; b.querySelector('small').textContent = tx('breath').replace(/^\S+\s/, '') + (st.breath ? ' ✓' : ''); b.classList.toggle('on', !!st.breath); return; }
+            if (t === 'bvoice') { b.hidden = !st.breath; b.querySelector('.rx-bi').textContent = '🗣️'; b.querySelector('small').textContent = tx('bVoice').replace(/^\S+\s/, '') + (st.bvoice ? ' ✓' : ''); b.classList.toggle('on', !!st.bvoice); return; }
             if (t === 'go') { b.querySelector('.rx-bi').textContent = '✓'; b.querySelector('small').textContent = tx('go').replace(/^\S+\s/, ''); return; }
             b.querySelector('.rx-bi').textContent = !chosen[t] ? (t === 'scene' ? '🖼️' : t === 'sound' ? '🎵' : '⏳')
                 : t === 'scene' ? (SCENES.find(x => x[0] === st.scene) || [])[1] : t === 'sound' ? (SOUNDS.find(x => x[0] === st.sound) || [])[1] : (+st.timer ? '⏳' : '♾️');
@@ -285,7 +311,7 @@
     let sec = '';
     function setSec(t) {
         sec = t; root.dataset.sec = t;
-        root.querySelectorAll('.rx-bar button').forEach(b => b.classList.toggle('on', b.dataset.s === t || (b.dataset.s === 'breath' && !!st.breath)));
+        root.querySelectorAll('.rx-bar button').forEach(b => b.classList.toggle('on', b.dataset.s === t || (b.dataset.s === 'breath' && !!st.breath) || (b.dataset.s === 'bvoice' && !!st.bvoice)));
         const box = root.querySelector('.rx-scroll'); if (box) box.scrollTop = 0;
         replay(t ? panel : root.querySelector('.rx-bar'), t ? '.rx-sec[data-t=' + t + '] .rx-tile' : 'button');
     }
@@ -882,8 +908,31 @@
             ring.style.transform = 'scale(' + (0.55 + 0.45 * k).toFixed(3) + ')';
             txt.style.transform = 'translateZ(0) rotateX(' + (8 - 8 * k).toFixed(2) + 'deg) scale(' + (0.72 + 0.5 * k).toFixed(3) + ')'; // M-172: the word breathes too
             const w = tx(ph); if (txt.textContent !== w) txt.textContent = w;
+            // M-175: a changing human line under the word, seconds counting down; read aloud in a calm voice if chosen
+            const x = t % BP, cyc = Math.floor(t / BP);
+            const left = Math.ceil(ph === 'inhale' ? BREATH.inh - x : ph === 'hold' ? BREATH.inh + BREATH.hold - x : BP - x);
+            if (ph !== bPh) {
+                bPh = ph;
+                const set = TX[ph === 'inhale' ? 'gIn' : ph === 'hold' ? 'gHold' : 'gOut'];
+                const list = set[li()] || set[4];
+                bLine = list[cyc % list.length];
+                const total = ph === 'inhale' ? BREATH.inh : ph === 'hold' ? BREATH.hold : BREATH.exh;
+                if (st.bvoice) calmSay(bLine.replace('{n}', total));
+            }
+            const sub = root.querySelector('.rx-bsub'), line = bLine.replace('{n}', left) + (bLine.includes('{n}') ? '' : '  ·  ' + left);
+            if (sub.textContent !== line) sub.textContent = line;
         }
     }
+    let bPh = '', bLine = '';
+    function calmSay(text) {
+        const N = window.MedTimeNative;
+        try {
+            if (N && typeof N.speakCalm === 'function') N.speakCalm(text.replace(/…/g, ', '));
+            else if (N && typeof N.speakGuide === 'function') N.speakGuide(text.replace(/…/g, ', '));
+            else if (window.speechSynthesis) { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = ['he-IL', 'ar', 'ro-RO', 'fr-FR', 'en-US', 'ru-RU'][li()]; u.rate = 0.75; u.pitch = 0.9; speechSynthesis.speak(u); }
+        } catch (e) { }
+    }
+    function hush() { const N = window.MedTimeNative; try { if (N && typeof N.stopSpeech === 'function') N.stopSpeech(); else if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) { } }
     function onResize() {
         if (!renderer) return;
         renderer.setSize(innerWidth, innerHeight, false);
@@ -912,7 +961,7 @@
     function closeRelax(fromBack) {
         if (!open) return;
         open = false; window.relaxOn = false;
-        cancelAnimationFrame(raf); clearInterval(tickT); clearInterval(fadeI); clearTimeout(hideT);
+        cancelAnimationFrame(raf); clearInterval(tickT); clearInterval(fadeI); clearTimeout(hideT); hush(); bPh = '';
         stopSound(); if (ac) { try { ac.suspend(); } catch (e) { } }
         disposeScene();
         if (renderer) { renderer.dispose(); try { renderer.forceContextLoss(); } catch (e) { } renderer = null; }

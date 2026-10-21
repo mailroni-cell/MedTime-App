@@ -82,6 +82,10 @@ public class NativeBridge {
     @JavascriptInterface
     public void speakGuide(String text) { Voices.speakGuide(activity, text); }
 
+    /** M-175: calm-mode breathing guidance, slow and soft. */
+    @JavascriptInterface
+    public void speakCalm(String text) { Voices.speakCalm(activity, text); }
+
     @JavascriptInterface
     public void stopSpeech() { Voices.stopAll(); }
 
