@@ -28,6 +28,26 @@ for u in ['https://israeldrugs.health.gov.il/', 'https://www.health.gov.il/']:
             probe['home_' + u] = r.status
     except Exception as e:
         probe['home_' + u] = str(e)
+# 2c) learn the real API addresses from the site's own scripts
+import re
+try:
+    def gett(u):
+        with urllib.request.urlopen(urllib.request.Request(u, headers={'User-Agent': H['User-Agent']}), timeout=60) as r:
+            return r.read().decode('utf-8', 'replace')
+    home = gett('https://israeldrugs.health.gov.il/')
+    probe['home_head'] = home[:3000]
+    found = {}
+    for src in re.findall(r'src="([^"]+\.js)"', home):
+        u = src if src.startswith('http') else 'https://israeldrugs.health.gov.il/' + src.lstrip('/')
+        try:
+            js = gett(u)
+            found[u] = sorted(set(re.findall(r'[\w/.:-]*(?:IDRServer|GovServiceList|api)[\w/.:-]*', js)))[:80]
+            found[u + '#ctx'] = [js[max(0, m.start() - 200): m.start() + 300] for m in re.finditer(r'SearchByName|searchByName', js)][:4]
+        except Exception as e:
+            found[u] = str(e)
+    probe['scripts'] = found
+except Exception as e:
+    probe['scripts_err'] = str(e)
 # 2) registry search API sample
 def search(val, page=1):
     return call(BASE + 'SearchByName', {'val': val, 'prescription': False, 'healthServices': False, 'pageIndex': page, 'orderBy': 0})
