@@ -31,7 +31,7 @@ android {
     flavorDimensions 'store'
     productFlavors {
         full { dimension 'store'; buildConfigField 'boolean', 'STORE', 'false' }
-        play { dimension 'store'; buildConfigField 'boolean', 'STORE', 'true' }
+        play { dimension 'store'; buildConfigField 'boolean', 'STORE', 'true'; applicationId 'io.github.mailronicell.medtime' } // com.medtime.app is taken on Google Play
     }
     buildFeatures { buildConfig true }
     if (System.getenv('UPLOAD_KEYSTORE')) {
