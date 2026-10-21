@@ -1,0 +1,49 @@
+{
+ "datagov": [
+  {
+   "name": "prescription-drug-addiction-treatment-clinics",
+   "title": "מרפאות לטיפול בהתמכרות לתרופות מרשם",
+   "res": [
+    [
+     "a05837e9-8e0f-421b-af29-3ec8d9d6c704",
+     "מרפאות לטיפול בהתמכרות לתרופות מרשם",
+     "CSV"
+    ]
+   ]
+  },
+  {
+   "name": "permit-pharm",
+   "title": "רוקחים בעלי הרשאה אישית",
+   "res": [
+    [
+     "73df1b93-9735-4bc0-b84d-aa5f6bcbfb92",
+     "רוקחים בעלי הרשאה אישית",
+     "XLSX"
+    ]
+   ]
+  },
+  {
+   "name": "pharmacy",
+   "title": "בתי מרקחת",
+   "res": [
+    [
+     "d65660ac-f895-463e-a8ed-3cdecc5d2c1b",
+     "רשימת בתי מרקחת",
+     "CSV"
+    ]
+   ]
+  },
+  {
+   "name": "hmomaaleadumim",
+   "title": "קופות חולים",
+   "res": [
+    [
+     "a48e7587-554e-4fe5-ba65-973a77f53653",
+     "רשימת קופות חולים",
+     "CSV"
+    ]
+   ]
+  }
+ ],
+ "search_err": "HTTP Error 403: Forbidden"
+}
