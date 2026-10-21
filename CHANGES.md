@@ -183,6 +183,7 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-177 | 2026-10-21 | relax.js, splash3d.js | Owner: the calm tip is a small note at the bottom of the calm screen that fades after 7 s (6 languages). Opening video plays in full only on the first launch; later launches start it at 8.35 s so it lasts at most 3 s (flag medtime_sp_seen) | ⏳ |
 | M-178 | 2026-10-21 | fonts.css, fonts/* | Owner: calm breathing text in a rounded handwriting font: Playpen Sans (Hebrew, Arabic, Latin, Cyrillic, OFL) replaces Varela Round / Comfortaa / Baloo Bhaijaan 2 | ⏳ |
 | M-179 | 2026-10-21 | index.html, splash.mp4 | Owner: opening credit also names Orly Shalem as designer, in the same handwriting as the owner's line ("עיצוב: אורלי שלם" Playpen Sans Hebrew + "Design by Orly Shalem" Great Vibes, SVG paths, writes in at 6.1/6.6 s). Opening video re-recorded with tools/splash-capture.js | ⏳ |
+| R-159 | 2026-10-21 | release/stable.txt | Run 159 (M-177, M-178, M-179) released to everyone 18:38 UTC | ✅ |
 | R-156 | 2026-10-21 | release/stable.txt | Run 156 (M-175) released to everyone | ✅ |
 | R-155 | 2026-10-21 | release/stable.txt | Run 155 (M-172..M-174) released to everyone (standing rule) | ✅ |
 | R-154 | 2026-10-21 | release/stable.txt | Owner: run 154 (M-169..M-171) released to everyone | ✅ |
