@@ -90,7 +90,7 @@ json.dump(probe, open('data-cache/drugs_probe.json', 'w', encoding='utf-8'), ens
 import gzip
 try:
     cfgm = json.loads(gett('https://registries.health.gov.il/Medicines/assets/medicines/config.prod.json'))
-    api = cfgm['moh-package']['medicinesApiUrl']; log['api'] = api
+    api = urllib.parse.urljoin('https://registries.health.gov.il/', cfgm['moh-package']['medicinesApiUrl']); log['api'] = api
     allm, page, total = [], 0, None
     while True:
         d = call(api + 'GetMedicines', {'sortBy': 'tradeNameHeb', 'sortDirection': 'asc', 'maxResult': 1000, 'pageNumber': page})
