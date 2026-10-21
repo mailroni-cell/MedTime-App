@@ -59,10 +59,15 @@ try:
         except Exception as e:
             probe[u] = str(e)
     # the Medicines screen is a separate bundle: find its remoteEntry and save all its code
-    cfg = probe.get('https://registries.health.gov.il/assets/config.prod.json', '')
-    m = re.search(r'"Medicines"\s*:\s*(?:\{[^}]*?"remoteEntry"\s*:\s*)?"([^"]+)"', cfg) or re.search(r'(https?://[^"]*[Mm]edicines[^"]*remoteEntry[^"]*)', cfg)
+    for u in ['https://registries.health.gov.il/api/Registries/GetAllRegistries', 'https://registries.health.gov.il/api/Registries/GetAllSubMenus']:
+        try:
+            probe[u] = gett(u)[:8000]
+        except Exception as e:
+            probe[u] = str(e)
+    cfg = probe.get('https://registries.health.gov.il/api/Registries/GetAllRegistries', '')
+    m = re.search(r'"Medicines"\s*:\s*(?:\{[^}]*?"remoteEntry"\s*:\s*)?"([^"]+)"', cfg) or re.search(r'([^"]*[Mm]edicines[^"]*remoteEntry[^"]*)', cfg)
     if m:
-        re_url = m.group(1); probe['med_remote'] = re_url
+        re_url = urllib.parse.urljoin('https://registries.health.gov.il/', m.group(1)); probe['med_remote'] = re_url
         base = re_url.rsplit('/', 1)[0] + '/'
         code = gett(re_url)
         for cid, h in re.findall(r'(\d+):"([0-9a-f]{16,20})"', code):
