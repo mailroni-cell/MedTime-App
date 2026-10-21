@@ -43,7 +43,13 @@ try:
         try:
             js = gett(u); found[u] = len(js)
             if 'main' in src:
-                open('data-cache/drugs_main.js', 'w', encoding='utf-8').write(js)
+                allj = js
+                for cid, h in re.findall(r'(\d+):"([0-9a-f]{16})"', js):
+                    try:
+                        allj += '\n//CHUNK ' + cid + '\n' + gett(f'https://registries.health.gov.il/{cid}.{h}.js')
+                    except Exception as e:
+                        found[cid] = str(e)
+                open('data-cache/drugs_main.js', 'w', encoding='utf-8').write(allj)
         except Exception as e:
             found[u] = str(e)
     probe['scripts'] = found
