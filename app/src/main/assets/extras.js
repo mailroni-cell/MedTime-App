@@ -31,8 +31,10 @@
         wait: ['נא להמתין, מעדכן לגרסה חדשה יותר…', 'يرجى الانتظار، جارٍ التحديث إلى إصدار أحدث…', 'Vă rugăm așteptați, se actualizează la o versiune nouă…', 'Veuillez patienter, mise à jour vers une version plus récente…', 'Please wait, updating to a newer version…', 'Пожалуйста, подождите, обновляем до новой версии…'],
         waitSub: ['התזכורות, התורים וההגדרות שלכם נשמרים', 'تذكيراتك ومواعيدك وإعداداتك محفوظة', 'Mementourile, programările și setările rămân', 'Vos rappels, rendez-vous et réglages sont conservés', 'Your reminders, appointments and settings stay', 'Ваши напоминания, записи и настройки сохранятся'],
         waitTap: ['כמעט סיימנו: במסך של אנדרואיד לחצו "עדכון". אם הטלפון מבקש אישור, לחצו "אישור" או "אפשר"', 'اقتربنا: اضغط "تحديث" في شاشة أندرويد. إذا طلب الهاتف موافقة، اضغط "موافق" أو "سماح"', 'Aproape gata: apăsați "Actualizează" pe ecranul Android. Dacă telefonul cere confirmare, apăsați "OK" sau "Permite"', 'Presque fini : touchez « Mettre à jour » sur l\'écran Android. Si le téléphone demande une confirmation, touchez « OK » ou « Autoriser »', 'Almost done: tap "Update" on the Android screen. If the phone asks to confirm, tap "OK" or "Allow"', 'Почти готово: нажмите «Обновить» на экране Android. Если телефон просит подтверждение, нажмите «ОК» или «Разрешить»'],
+        preT: ['יש גרסה חדשה של MedTime', 'يوجد إصدار جديد من MedTime', 'Există o versiune nouă MedTime', 'Une nouvelle version de MedTime est disponible', 'A new MedTime version is available', 'Доступна новая версия MedTime'],
+        preOk: ['הבנתי, לעדכן 👍', 'فهمت، حدّث 👍', 'Am înțeles, actualizează 👍', 'Compris, mettre à jour 👍', 'Got it, update 👍', 'Понятно, обновить 👍'],
         doneT: ['✅ MedTime עודכן לגרסה {v}', '✅ تم تحديث MedTime إلى الإصدار {v}', '✅ MedTime a fost actualizat la versiunea {v}', '✅ MedTime a été mis à jour (version {v})', '✅ MedTime was updated to version {v}', '✅ MedTime обновлён до версии {v}'],
-        doneX: ['אם הטלפון מבקש אישור או הרשאה, לחצו "אישור" או "אפשר", כדי שהתזכורות ימשיכו להגיע בזמן. התזכורות, התורים וההגדרות שלכם נשמרו.', 'إذا طلب الهاتف موافقة أو إذنًا، اضغط "موافق" أو "سماح" لتستمر التذكيرات في الوصول في وقتها. تذكيراتك ومواعيدك وإعداداتك محفوظة.', 'Dacă telefonul cere o confirmare sau o permisiune, apăsați "OK" sau "Permite", ca mementourile să sosească la timp. Mementourile, programările și setările au rămas.', 'Si le téléphone demande une confirmation ou une autorisation, touchez « OK » ou « Autoriser » pour que les rappels arrivent à l\'heure. Vos rappels, rendez-vous et réglages sont conservés.', 'If the phone asks to confirm or for a permission, tap "OK" or "Allow" so reminders keep arriving on time. Your reminders, appointments and settings were kept.', 'Если телефон просит подтверждение или разрешение, нажмите «ОК» или «Разрешить», чтобы напоминания приходили вовремя. Ваши напоминания, записи и настройки сохранены.'],
+        doneX: ['העדכון מתחיל עכשיו. אם הטלפון מבקש אישור, לחצו "עדכון", "אישור" או "אפשר". התזכורות, התורים וההגדרות שלכם נשמרים.', 'سيبدأ التحديث الآن. إذا طلب الهاتف موافقة، اضغط "تحديث" أو "موافق" أو "سماح". تذكيراتك ومواعيدك وإعداداتك محفوظة.', 'Actualizarea începe acum. Dacă telefonul cere confirmare, apăsați "Actualizează", "OK" sau "Permite". Mementourile, programările și setările rămân.', 'La mise à jour commence maintenant. Si le téléphone demande une confirmation, touchez « Mettre à jour », « OK » ou « Autoriser ». Vos rappels, rendez-vous et réglages sont conservés.', 'The update starts now. If the phone asks to confirm, tap "Update", "OK" or "Allow". Your reminders, appointments and settings stay.', 'Обновление начинается. Если телефон просит подтверждение, нажмите «Обновить», «ОК» или «Разрешить». Ваши напоминания, записи и настройки сохранятся.'],
         doneOk: ['הבנתי 👍', 'فهمت 👍', 'Am înțeles 👍', 'Compris 👍', 'Got it 👍', 'Понятно 👍'],
         now: ['עדכן עכשיו', 'حدّث الآن', 'Actualizează', 'Mettre à jour', 'Update now', 'Обновить сейчас']
     };
@@ -210,7 +212,11 @@
             latest = r.latest;
             msgKey = latest > cur ? 'newer' : 'upToDate';
             drawUpd();
-            if (fromAuto && latest > cur && cur) { waitShow(); install(); }
+            // M-169 (owner): before the update, and only when there is one: say the phone may ask to approve, then update
+            if (fromAuto && latest > cur && cur) {
+                const go = () => { waitShow(); install(); };
+                if (window.mtDialog) mtDialog({ icon: '🎉', title: tx('preT'), text: tx('doneX'), ok: tx('preOk'), cancel: false }).then(go); else go();
+            }
         } else if (r.type === 'progress') { mode = 'loading'; pct = r.pct; drawUpd(); waitDraw(); }
         else if (r.type === 'ready') { mode = 'idle'; msgKey = 'ready'; drawUpd(); waitDraw(true); }
         else if (r.type === 'permission') {
@@ -259,10 +265,6 @@
     (function autoCheck() {
         const sp = document.getElementById('splash');
         if (sp && !sp.classList.contains('out') && sp.style.display !== 'none') { setTimeout(autoCheck, 700); return; }
-        // M-169 (owner): right after an update, say so and ask to approve anything the phone asks
-        if (cur && (st.ver ? cur > st.ver : !!st.last) && window.mtDialog) { // older versions kept no st.ver, only st.last
-            setTimeout(() => mtDialog({ icon: '✅', title: tx('doneT').replace('{v}', cur), text: tx('doneX'), ok: tx('doneOk'), cancel: false }), 600);
-        }
         if (cur) { st.ver = cur; save(); }
         setTimeout(() => { if (st.auto && has('checkUpdate')) check(true); }, 1500);
     })();

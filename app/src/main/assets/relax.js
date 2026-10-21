@@ -48,6 +48,7 @@
         a_space: ['חלל', 'فضاء', 'Spațiu', 'Espace', 'Space', 'Космос'],
         a_synth: ['גלים אלקטרוניים', 'موجات إلكترونية', 'Sintetizator', 'Nappes synthé', 'Synth pads', 'Синтезатор'],
         go: ['✓ התחלה', '✓ ابدأ', '✓ Începe', '✓ Commencer', '✓ Start', '✓ Начать'],
+        back: ['→ חזרה', '→ رجوع', '← Înapoi', '← Retour', '← Back', '← Назад'],
         menu: ['תפריט', 'القائمة', 'Meniu', 'Menu', 'Menu', 'Меню'],
         last: ['מצב אחרון', 'الوضع الأخير', 'Ultimul mod', 'Dernier mode', 'Last mode', 'Последний режим'],
         lock: ['נעילה', 'قفل', 'Blocare', 'Verrouiller', 'Lock', 'Блокировка'],
@@ -74,6 +75,68 @@
         localStorage.setItem('medtime_relax', JSON.stringify(sv));
     } catch (e) { } };
 
+    // M-170 (owner): the calm menu in the middle of the screen, big and 3D like the main screen, animated, sub-menus too
+    (function () {
+        const c = document.createElement('style');
+        c.textContent = `
+    #relax .rx-head { position: absolute; left: 16px; right: 16px; top: calc(50% - min(235px, 33vh)); z-index: 6; text-align: center; pointer-events: none;
+        font: 900 1.7rem 'MTUI', sans-serif; color: #fff; text-shadow: 0 0 2px #000, 0 2px 3px #000, 0 0 16px rgba(167,139,250,.95);
+        transition: opacity .5s, transform .5s; animation: rxHead 4s ease-in-out infinite; }
+    @keyframes rxHead { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+    #relax.rx-hide .rx-head, #relax[data-sec="scene"] .rx-head, #relax[data-sec="sound"] .rx-head, #relax[data-sec="timer"] .rx-head, #relax.rx-locked .rx-head { opacity: 0; }
+    #relax .rx-bar { left: 50% !important; top: 50% !important; bottom: auto !important; transform: translate(-50%, -46%) !important; flex-direction: column !important;
+        width: min(330px, 84vw) !important; max-width: none !important; gap: 11px !important; padding: 0 !important; background: none !important; border: none !important;
+        backdrop-filter: none !important; -webkit-backdrop-filter: none !important; perspective: 700px; transition: opacity .45s, transform .45s !important; }
+    #relax.rx-hide .rx-bar, #relax[data-sec="scene"] .rx-bar, #relax[data-sec="sound"] .rx-bar, #relax[data-sec="timer"] .rx-bar {
+        opacity: 0 !important; transform: translate(-50%, -46%) scale(.86) !important; pointer-events: none !important; }
+    #relax .rx-bar button { width: 100% !important; height: 60px !important; flex-direction: row !important; justify-content: flex-start !important; gap: 14px !important;
+        padding: 0 18px !important; border-radius: 30px !important; opacity: 1 !important; color: #fff !important; font: 900 1.22rem 'MTUI', sans-serif !important;
+        background: linear-gradient(180deg, var(--c1), var(--c2)) !important;
+        box-shadow: inset 0 2px 1px rgba(255,255,255,.5), inset 0 -5px 10px rgba(0,0,0,.3), 0 6px 0 var(--c3), 0 12px 22px rgba(0,0,0,.55) !important;
+        text-shadow: 0 1px 0 rgba(0,0,0,.45), 0 2px 4px rgba(0,0,0,.4); transform-style: preserve-3d; position: relative; overflow: visible; }
+    #relax .rx-bar button::after { content: ''; position: absolute; left: 14px; right: 14px; top: 4px; height: 40%; border-radius: 26px 26px 50% 50%;
+        background: linear-gradient(180deg, rgba(255,255,255,.38), rgba(255,255,255,0)); pointer-events: none; }
+    #relax .rx-bar button:active { transform: translateY(4px) !important; box-shadow: inset 0 2px 1px rgba(255,255,255,.4), 0 2px 0 var(--c3), 0 5px 10px rgba(0,0,0,.5) !important; }
+    #relax .rx-bar button .rx-bi { width: 44px; height: 44px; flex: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.45rem !important;
+        background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.95), rgba(255,255,255,.35) 45%, rgba(255,255,255,.12) 75%);
+        box-shadow: inset 0 -3px 6px rgba(0,0,0,.25), 0 3px 6px rgba(0,0,0,.35); will-change: transform; animation: rxBob 3.2s ease-in-out infinite; }
+    #relax .rx-bar button small { max-width: none !important; font: inherit !important; }
+    #relax .rx-bar button[data-s="scene"] { --c1: #a78bfa; --c2: #6d28d9; --c3: #3b0f8a; }
+    #relax .rx-bar button[data-s="sound"] { --c1: #2dd4bf; --c2: #0f766e; --c3: #064e48; }
+    #relax .rx-bar button[data-s="timer"] { --c1: #fbbf24; --c2: #c2410c; --c3: #7c2d12; }
+    #relax .rx-bar button[data-s="last"] { --c1: #4ade80; --c2: #15803d; --c3: #14532d; }
+    #relax .rx-bar button[data-s="lock"] { --c1: #94a3b8; --c2: #475569; --c3: #1e293b; }
+    #relax .rx-bar button[data-s="go"] { --c1: #f472b6; --c2: #be185d; --c3: #831843; justify-content: center !important; height: 66px !important; font-size: 1.4rem !important; margin-top: 4px; }
+    #relax .rx-bar button[data-s="go"] .rx-bi { width: 36px; height: 36px; }
+    #relax .rx-bar button[data-s="last"] .rx-bi { color: #14532d !important; }
+    #relax .rx-bar.rx-anim button { animation: rxPop .62s cubic-bezier(.2, 1.1, .35, 1) both; animation-delay: calc(var(--i, 0) * 70ms); }
+    @keyframes rxPop { from { opacity: 0; transform: translateY(46px) rotateX(70deg) scale(.82); } to { opacity: 1; transform: none; } }
+    @keyframes rxBob { 0%,100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-3px) rotate(4deg); } }
+    /* sub-menus: a 3D card in the middle */
+    #relax .rx-panel { left: 50% !important; right: auto !important; top: 50% !important; bottom: auto !important; width: min(380px, 92vw) !important; box-sizing: border-box;
+        transform: translate(-50%, -50%) scale(.9) !important; padding: 14px !important; border-radius: 28px !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+        background: linear-gradient(180deg, rgba(49,46,129,.94), rgba(15,23,42,.96)) !important; border: 1.5px solid rgba(196,181,253,.55) !important;
+        box-shadow: inset 0 2px 1px rgba(255,255,255,.25), 0 10px 0 rgba(10,8,40,.9), 0 24px 50px rgba(0,0,0,.65), 0 0 40px rgba(139,92,246,.35) !important; perspective: 800px; }
+    #relax[data-sec="scene"] .rx-panel, #relax[data-sec="sound"] .rx-panel, #relax[data-sec="timer"] .rx-panel { transform: translate(-50%, -50%) !important; }
+    #relax .rx-scroll { max-height: 56vh !important; }
+    #relax .rx-sec .rx-grid { gap: 10px !important; }
+    #relax .rx-sec .rx-tile { min-height: 78px !important; border-radius: 20px !important; color: #fff; font-weight: 800; font-size: .95rem !important; position: relative; border: none;
+        background: linear-gradient(180deg, #4f46e5, #312e81) !important;
+        box-shadow: inset 0 2px 1px rgba(255,255,255,.4), inset 0 -4px 8px rgba(0,0,0,.3), 0 5px 0 #1e1b4b, 0 9px 16px rgba(0,0,0,.5) !important; text-shadow: 0 1px 2px rgba(0,0,0,.6); }
+    #relax .rx-sec .rx-tile .rx-ico { font-size: 1.85rem !important; filter: drop-shadow(0 2px 2px rgba(0,0,0,.45)); }
+    #relax .rx-sec .rx-tile.sel { background: linear-gradient(180deg, #e879f9, #7e22ce) !important;
+        box-shadow: inset 0 2px 1px rgba(255,255,255,.5), 0 5px 0 #4a044e, 0 0 0 2px #f5d0fe, 0 0 22px rgba(232,121,249,.85) !important; }
+    #relax .rx-sec .rx-tile:active { transform: translateY(4px) !important; box-shadow: inset 0 2px 1px rgba(255,255,255,.35), 0 1px 0 #1e1b4b !important; }
+    #relax .rx-panel.rx-anim .rx-tile { animation: rxTile .5s cubic-bezier(.2, 1.15, .35, 1) both; animation-delay: calc(var(--i, 0) * 40ms); }
+    @keyframes rxTile { from { opacity: 0; transform: translateY(30px) rotateX(65deg) scale(.7); } to { opacity: 1; transform: none; } }
+    #relax .rx-back { display: block; width: 100%; margin-top: 12px; min-height: 50px; border: none; border-radius: 25px; color: #fff; font: 900 1.12rem 'MTUI', sans-serif;
+        background: linear-gradient(180deg, #64748b, #334155); box-shadow: inset 0 2px 1px rgba(255,255,255,.35), 0 4px 0 #0f172a, 0 8px 14px rgba(0,0,0,.45); }
+    #relax .rx-back:active { transform: translateY(3px); }
+    #relax .rx-line { color: #fff; }
+    @media (max-height: 640px) { #relax .rx-bar button { height: 50px !important; } #relax .rx-bar button[data-s="go"] { height: 54px !important; } #relax .rx-head { font-size: 1.35rem; } }`;
+        document.head.appendChild(c);
+    })();
+
     // ======================= page =======================
     let root, canvas, panel, hideT = 0, open = false;
     function build() {
@@ -87,6 +150,7 @@
             '<div class="rx-left"></div>' +
             '<div class="rx-breath"><div class="rx-ring"></div><div class="rx-btext"></div></div>' +
             '<div class="rx-hint"></div>' +
+            '<div class="rx-head"></div>' +
             '<div class="rx-panel">' +
             '<div class="rx-title"></div>' +
             '<div class="rx-scroll">' +
@@ -95,10 +159,11 @@
             '<div class="rx-line"><span data-k="vol"></span><input type="range" class="vol" id="rx-vol" min="0" max="100" step="5"></div>' +
             '<label class="rx-line"><span data-k="breath"></span><input type="checkbox" id="rx-br" class="toggle"></label>' +
             '</div>' +
+            '<button type="button" class="rx-back"></button>' +
             '<button type="button" class="rx-go"></button>' +
             '</div>' +
             '<button type="button" class="rx-mini"><span class="rx-mini-ico"></span><span class="rx-mini-t"></span></button>' +
-            '<div class="rx-bar">' + ['scene', 'sound', 'timer', 'last', 'lock'].map(t => '<button type="button" data-s="' + t + '"><span class="rx-bi"></span><small></small></button>').join('') + '</div>' +
+            '<div class="rx-bar">' + ['scene', 'sound', 'timer', 'last', 'lock', 'go'].map(t => '<button type="button" data-s="' + t + '"><span class="rx-bi"></span><small></small></button>').join('') + '</div>' +
             '<button type="button" class="rx-unlock" aria-label="unlock"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="29"/></svg><span>🔒</span></button>' +
             '<div class="rx-lockmsg"></div>';
         document.body.appendChild(root);
@@ -111,6 +176,7 @@
         br.addEventListener('change', () => { st.breath = br.checked; save(); drawBreath(); poke(); });
         panel.addEventListener('pointerdown', e => { e.stopPropagation(); poke(); });
         root.querySelector('.rx-go').addEventListener('click', e => { e.stopPropagation(); hidePanel(); });
+        root.querySelector('.rx-back').addEventListener('click', e => { e.stopPropagation(); vib(10); setSec(''); poke(); });
         // M-073: light menu: a slim bar with 3 small buttons; each one opens only its own choices
         root.querySelectorAll('.rx-bar button').forEach(b => {
             b.addEventListener('pointerdown', e => e.stopPropagation());
@@ -118,6 +184,7 @@
                 e.stopPropagation(); vib(10);
                 if (b.dataset.s === 'last') { useLast(); return; }
                 if (b.dataset.s === 'lock') { lockOn(); return; }
+                if (b.dataset.s === 'go') { hidePanel(); return; }
                 setSec(sec === b.dataset.s ? '' : b.dataset.s); poke();
             });
         });
@@ -154,6 +221,8 @@
     }
     function drawPanel() {
         root.querySelector('.rx-title').textContent = tx('title');
+        root.querySelector('.rx-head').textContent = tx('title');
+        root.querySelector('.rx-back').textContent = tx('back');
         root.querySelectorAll('[data-k]').forEach(el => { if (!el.classList.contains('rx-tile') && TX[el.dataset.k]) el.textContent = tx(el.dataset.k); });
         root.querySelector('.rx-hint').textContent = tx('tapHint');
         root.querySelectorAll('.rx-sec').forEach(sec => {
@@ -177,6 +246,7 @@
             const t = b.dataset.s;
             if (t === 'last') { b.querySelector('.rx-bi').textContent = '↺'; b.querySelector('small').textContent = tx('last'); b.hidden = !!(chosen.scene || chosen.sound || chosen.timer); return; }
             if (t === 'lock') { b.querySelector('.rx-bi').textContent = '🔓'; b.querySelector('small').textContent = tx('lock'); return; }
+            if (t === 'go') { b.querySelector('.rx-bi').textContent = '✓'; b.querySelector('small').textContent = tx('go').replace(/^\S+\s/, ''); return; }
             b.querySelector('.rx-bi').textContent = !chosen[t] ? (t === 'scene' ? '🖼️' : t === 'sound' ? '🎵' : '⏳')
                 : t === 'scene' ? (SCENES.find(x => x[0] === st.scene) || [])[1] : t === 'sound' ? (SOUNDS.find(x => x[0] === st.sound) || [])[1] : (+st.timer ? '⏳' : '♾️');
             b.querySelector('small').textContent = t === 'timer' && chosen.timer ? (+st.timer ? st.timer + ' ' + tx('min') : tx('off')) : tx(t);
@@ -194,6 +264,13 @@
         sec = t; root.dataset.sec = t;
         root.querySelectorAll('.rx-bar button').forEach(b => b.classList.toggle('on', b.dataset.s === t));
         const box = root.querySelector('.rx-scroll'); if (box) box.scrollTop = 0;
+        replay(t ? panel : root.querySelector('.rx-bar'), t ? '.rx-sec[data-t=' + t + '] .rx-tile' : 'button');
+    }
+    // M-170: play the 3D entrance again (staggered) each time a menu appears
+    function replay(box, sel) {
+        if (!box) return;
+        box.querySelectorAll(sel).forEach((el, i) => el.style.setProperty('--i', i));
+        box.classList.remove('rx-anim'); void box.offsetWidth; box.classList.add('rx-anim');
     }
     function useLast() {
         Object.assign(st, last); chosen = { scene: 1, sound: 1, timer: 1 };
@@ -206,7 +283,11 @@
     function lockOn() { setSec(''); root.classList.add('rx-locked'); hidePanel(); lockMsg(); }
     function lockOff() { vib(25); root.classList.remove('rx-locked'); poke(); }
     function hidePanel() { clearTimeout(hideT); setSec(''); root.classList.add('rx-hide'); }
-    function poke() { clearTimeout(hideT); root.classList.remove('rx-hide'); hideT = setTimeout(hidePanel, 25000); }
+    function poke() {
+        clearTimeout(hideT);
+        if (root.classList.contains('rx-hide')) { root.classList.remove('rx-hide'); if (!sec) replay(root.querySelector('.rx-bar'), 'button'); }
+        hideT = setTimeout(hidePanel, 25000);
+    }
     function togglePanel() { if (root.classList.contains('rx-hide')) poke(); else hidePanel(); }
     function drawBreath() { root.classList.toggle('rx-br-on', !!st.breath || st.scene === 'orb'); }
 
