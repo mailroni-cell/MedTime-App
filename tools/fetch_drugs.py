@@ -91,16 +91,30 @@ import gzip
 try:
     cfgm = json.loads(gett('https://registries.health.gov.il/Medicines/assets/medicines/config.prod.json'))
     api = urllib.parse.urljoin('https://registries.health.gov.il/', cfgm['moh-package']['medicinesApiUrl']); log['api'] = api
-    allm, page, total = [], 0, None
-    while True:
+    allm, seen, page, total = [], set(), 0, None
+    while page < 60:
         d = call(api + 'GetMedicines', {'sortBy': 'tradeNameHeb', 'sortDirection': 'asc', 'maxResult': 1000, 'pageNumber': page})
         ro = d.get('returnObject') or {}
-        meds = ro.get('medicines') or []
-        if total is None:
-            total = {k: v for k, v in ro.items() if k != 'medicines'}; log['meta'] = total
-        allm += meds
-        if not meds or len(meds) < 1000 or page > 200: break
+        meds = ro.get('medicinesList') or []
+        total = ro.get('totalRows'); log['total'] = total
+        new = [m for m in meds if m.get('medicineId') not in seen]
+        seen.update(m.get('medicineId') for m in new); allm += new
+        if not new or (total and len(allm) >= total): break
         page += 1
+    log['pages'] = page + 1
+    # compact list for the app: human medicines that are not cancelled
+    def num(x): return ' '.join((x or '').split())
+    comp = []
+    for m in allm:
+        if m.get('veterinaryUse') == 'כן' or m.get('canceled') == 'כן':
+            continue
+        comp.append({'h': num(m.get('tradeNameHeb')), 'e': num(m.get('tradeName')),
+                     'f': num(m.get('dosageFormHeb')), 'fe': num(m.get('dosageFormE')),
+                     'a': [[c.get('componentCode'), num(c.get('componentDesc')), num(c.get('dosage'))] for c in (m.get('components') or [])],
+                     'b': sorted({p.get('barkod').strip() for p in (m.get('packages') or []) if (p.get('barkod') or '').strip()}),
+                     'k': 1 if m.get('basket') == 'כן' else 0})
+    log['app_count'] = len(comp)
+    json.dump(comp, open('data-cache/drugs_app.json', 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
     log['count'] = len(allm)
     with gzip.open('data-cache/drugs_raw.json.gz', 'wt', encoding='utf-8') as f:
         json.dump(allm, f, ensure_ascii=False)
