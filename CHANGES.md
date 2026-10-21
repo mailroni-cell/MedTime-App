@@ -184,6 +184,7 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-178 | 2026-10-21 | fonts.css, fonts/* | Owner: calm breathing text in a rounded handwriting font: Playpen Sans (Hebrew, Arabic, Latin, Cyrillic, OFL) replaces Varela Round / Comfortaa / Baloo Bhaijaan 2 | ⏳ |
 | M-179 | 2026-10-21 | index.html, splash.mp4 | Owner: opening credit also names Orly Shalem as designer, in the same handwriting as the owner's line ("עיצוב: אורלי שלם" Playpen Sans Hebrew + "Design by Orly Shalem" Great Vibes, SVG paths, writes in at 6.1/6.6 s). Opening video re-recorded with tools/splash-capture.js | ⏳ |
 | R-159 | 2026-10-21 | release/stable.txt | Run 159 (M-177, M-178, M-179) released to everyone 18:38 UTC | ✅ |
+| M-180 | 2026-10-21 | tools/medtime_autoinstall.ps1 | Owner: GitHub download to the phone is slow; owner approved: the PC watcher checks release "latest" every 5 min and copies each released APK to Z:\My Drive\MedTime\MedTime.apk (Google Drive for desktop), same file so the share link stays the same | ⏳ |
 | R-156 | 2026-10-21 | release/stable.txt | Run 156 (M-175) released to everyone | ✅ |
 | R-155 | 2026-10-21 | release/stable.txt | Run 155 (M-172..M-174) released to everyone (standing rule) | ✅ |
 | R-154 | 2026-10-21 | release/stable.txt | Owner: run 154 (M-169..M-171) released to everyone | ✅ |

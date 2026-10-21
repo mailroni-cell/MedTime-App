@@ -36,6 +36,12 @@ $webInfoUrl = 'https://github.com/mailroni-cell/MedTime-App/releases/download/te
 $webZipUrl  = 'https://github.com/mailroni-cell/MedTime-App/releases/download/test/web.zip'
 $webSeen    = Join-Path $dir 'last_web.txt'
 $nextCheck = Get-Date
+# M-180 (owner approved 2026-10-21): every released version is copied to the owner's Google Drive (Drive for desktop, Z:\My Drive), same file = same share link
+$relInfoUrl = 'https://github.com/mailroni-cell/MedTime-App/releases/download/latest/build-info.txt'
+$relApkUrl  = 'https://github.com/mailroni-cell/MedTime-App/releases/download/latest/MedTime-latest.apk'
+$driveDir   = 'Z:\My Drive\MedTime'
+$driveSeen  = Join-Path $dir 'last_drive.txt'
+$nextDrive  = Get-Date
 $nextWeb = Get-Date
 $hashFor = ''; $hashVal = ''; $lastWebErr = ''
 $myTime = (Get-Item $PSCommandPath).LastWriteTime
@@ -57,6 +63,26 @@ while ($true) {
           Log ('downloaded ' + $info)
         }
       } catch { }
+    }
+    if ((Get-Date) -ge $nextDrive) {
+      $nextDrive = (Get-Date).AddMinutes(5)
+      try {
+        if (Test-Path 'Z:\My Drive') {
+          $rinfo = (Invoke-WebRequest -Uri $relInfoUrl -UseBasicParsing -TimeoutSec 30).Content
+          if ($rinfo -is [byte[]]) { $rinfo = [Text.Encoding]::UTF8.GetString($rinfo) }
+          $rinfo = "$rinfo".Trim()
+          $dseen = ''; if (Test-Path $driveSeen) { $dseen = "$(Get-Content $driveSeen -Raw)".Trim() }
+          if ($rinfo -and $rinfo -ne $dseen) {
+            $rtmp = Join-Path $dir 'MedTime-release.tmp'
+            Invoke-WebRequest -Uri $relApkUrl -OutFile $rtmp -UseBasicParsing -TimeoutSec 900
+            if (-not (Test-Path $driveDir)) { New-Item -ItemType Directory -Path $driveDir | Out-Null }
+            Copy-Item -Force $rtmp (Join-Path $driveDir 'MedTime.apk')
+            Remove-Item -Force $rtmp
+            Set-Content -Path $driveSeen -Value $rinfo
+            Log ('DRIVE COPY ' + $rinfo)
+          }
+        }
+      } catch { Log ('DRIVE ERROR: ' + $_) }
     }
     # M-144: quick web updates are checked every 15 seconds (APK builds stay every 60 s)
     if ((Get-Date) -ge $nextWeb) {
