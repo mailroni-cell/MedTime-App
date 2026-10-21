@@ -18,3 +18,4 @@
 - 2026-10-20: builds 109-115 (M-101..M-110: edit reminder, weekend modes, depth, auto theme, tour.js animated hand + purple 👆 guide button with 10 demos). Watcher doesn't start after PC reboot; Claude can't start it (admin window ignores clicks), Roni runs Start-ScheduledTask himself. Roni wants: features prominent, everything in 5 languages, animated guidance.
 - 2026-10-21: Roni's test: M-133 auto backup and M-137 cross failed; M-138 fixes them + settings spacing + red stop-counting button. Only gated items remain (release to all, Google Play, installer autostart fix, Orly).
 - 2026-10-21: owner waits for Google Play approval; release to all users only via Play Store, not via GitHub 'latest'.
+- 2026-10-21: Google Play prep started (M-158/M-159). Two editions full/play. Upload key is created by workflow from the owner's own secret UPLOAD_PASSWORD; never handle passwords in chat or files.
