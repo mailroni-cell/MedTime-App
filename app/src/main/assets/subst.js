@@ -109,8 +109,10 @@
     css.textContent = `
     .sb-btn{display:inline-flex!important;align-items:center;gap:6px;border:1.5px solid #c4b5fd!important;background:linear-gradient(135deg,#7c3aed,#5b21b6)!important;color:#fff!important;border-radius:999px!important;min-height:34px!important;padding:4px 11px!important;font-size:.88rem!important;font-weight:800!important}
     .sb-now{display:inline-block;margin-top:4px;padding:4px 10px;border-radius:999px;background:rgba(167,139,250,.18);color:#ddd6fe;font-weight:800;font-size:.9rem;border:none}
-    .sb-bg{position:fixed!important;inset:0!important;z-index:9600!important;background:rgba(2,6,23,.78);display:flex;align-items:flex-end;justify-content:center}
-    .sb-sh{width:100%;max-width:560px;max-height:92vh;display:flex;flex-direction:column;background:linear-gradient(180deg,#1e1b4b,#0f172a);border:1.5px solid rgba(196,181,253,.45);border-bottom:none;border-radius:22px 22px 0 0;padding:16px 16px 18px;color:#fff;box-shadow:0 -10px 40px rgba(0,0,0,.6)}
+    /* M-162 (owner): full-screen solid page at the top (the half-see-through layer made the 3D background flicker,
+       and the keyboard covered a bottom sheet); its height follows the visible area above the keyboard */
+    .sb-bg{position:fixed!important;left:0!important;right:0!important;top:0;z-index:9600!important;height:100vh;background:#0b1024!important;display:flex!important;justify-content:center}
+    .sb-sh{width:100%;max-width:560px;height:100%;box-sizing:border-box;display:flex;flex-direction:column;background:linear-gradient(180deg,#1e1b4b,#0f172a);color:#fff;padding:calc(14px + env(safe-area-inset-top)) 16px 12px}
     .sb-t{font-size:1.35rem;font-weight:800;margin:2px 0 4px}
     .sb-h{color:#c7d2fe;font-size:.95rem;margin-bottom:10px}
     .sb-in{width:100%;box-sizing:border-box;font-size:1.25rem;padding:12px 14px;border-radius:14px;border:2px solid #a78bfa;background:#0b1024;color:#fff;outline:none}
@@ -132,9 +134,14 @@
     function sheet() {
         const bg = document.createElement('div'); bg.className = 'sb-bg';
         const sh = document.createElement('div'); sh.className = 'sb-sh'; bg.appendChild(sh);
-        bg.addEventListener('click', e => { if (e.target === bg) bg.remove(); });
+        const vv = window.visualViewport;
+        const fit = () => { bg.style.height = (vv ? vv.height : window.innerHeight) + 'px'; bg.style.top = (vv ? vv.offsetTop : 0) + 'px'; };
+        fit();
+        if (vv) { vv.addEventListener('resize', fit); vv.addEventListener('scroll', fit); }
+        window.addEventListener('resize', fit);
         document.body.appendChild(bg);
-        return { bg, sh, close: () => bg.remove() };
+        const close = () => { if (vv) { vv.removeEventListener('resize', fit); vv.removeEventListener('scroll', fit); } window.removeEventListener('resize', fit); bg.remove(); };
+        return { bg, sh, close };
     }
     // one step: type a name, pick a registry entry
     function pickStep(s, title, start) {
