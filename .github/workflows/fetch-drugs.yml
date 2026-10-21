@@ -1,0 +1,32 @@
+name: Fetch drug registry (S-01)
+
+# Runs when tools/fetch_drugs.py changes; saves results under data-cache/ and commits them.
+on:
+  push:
+    branches: [main]
+    paths: ['tools/fetch_drugs.py']
+  workflow_dispatch:
+    inputs:
+      crawl:
+        description: 'Full crawl (1) or probe only (0)'
+        default: '1'
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch
+        run: CRAWL=${{ github.event.inputs.crawl || '0' }} python3 tools/fetch_drugs.py || true
+      - name: Commit results
+        run: |
+          git config user.name "medtime-bot"
+          git config user.email "medtime-bot@users.noreply.github.com"
+          git add data-cache || true
+          git pull --rebase -q || true
+          git commit -m "data: drug registry [skip ci]" || echo "nothing to commit"
+          git push || true
