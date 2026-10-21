@@ -79,7 +79,8 @@
     };
     function pick(name) { vib(); photoPending = name; N.pickPhoto(name); }
 
-    window.mtCardExtras = function (li, m) {
+    window.mtCardExtras = function (li, m) { try { cardExtras(li, m); } catch (e) { const d = document.createElement('div'); d.style.cssText = 'color:#f87171;font-size:.8rem'; d.textContent = 'diag: ' + e; (li.querySelector('.med-info') || li).appendChild(d); } };
+    function cardExtras(li, m) {
         if (!li || !m) return;
         // M-148 / M-150: photo per medicine (optional) - its own clear row under the medicines:
         // a thumbnail when there is a photo (tap: new photo / delete), else a big "📷 Photo: <name>" button
@@ -137,7 +138,11 @@
             }
             if (info) info.appendChild(box);
         }
-    };
+        // TEMP diag (M-151): remove once the photo button shows on the phone
+        const dg = document.createElement('div'); dg.style.cssText = 'opacity:.6;font-size:.75rem;direction:ltr';
+        dg.textContent = 'diag: N=' + (typeof N) + ' pick=' + has('pickPhoto') + ' early=' + has('takenEarly') + ' items=' + ((m.items || []).length);
+        info.appendChild(dg);
+    }
 
     // ---------------- 🌡️ vitals tile (M-149) ----------------
     const grid = document.querySelector('#settings-page .set-grid');
