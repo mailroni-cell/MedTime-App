@@ -24,7 +24,7 @@
 - M-158 (run 146): אנדרואיד 36, כפתור חזור חדש, שתי גרסאות: full (הטלפון של רוני, כמו קודם) ו־play (בלי SMS אוטומטי, בלי עדכון עצמי, בלי USE_EXACT_ALARM; התראה לבן משפחה = התראה שפותחת SMS מוכן). ⏳ רוני בודק בטלפון: כפתור חזור, חזור לא סוגר מסך תזכורת, תזכורת במסך מלא.
 - M-159: docs/privacy.html (מדיניות פרטיות ב־5 שפות). טקסטים לחנות: store-listing.md (בתיקיית הפרויקט ובמחשב).
 - ממתין לרוני: (1) secret בשם UPLOAD_PASSWORD בגיטהאב, סיסמה שהוא בחר (לעולם לא בצ'אט); (2) GitHub Pages: main /docs.
-- 2026-10-21: secret UPLOAD_PASSWORD נוצר ע"י רוני; מפתח העלאה נוצר (app/medtime-upload.keystore); AAB ראשון ב־release "play" (versionCode 101). הוראות Play Console: play-console-steps.md במחשב. ⏳ רוני: Pages, יצירת האפליקציה, בדיקה סגורה.
+- 2026-10-21: secret UPLOAD_PASSWORD נוצר ע"י רוני; מפתח העלאה נוצר (app/medtime-upload.keystore); AAB ב־release "play" (run 2, versionCode 102, package io.github.mailronicell.medtime כי com.medtime.app תפוס). הוראות Play Console: play-console-steps.md במחשב. ⏳ רוני: Pages, יצירת האפליקציה, בדיקה סגורה.
 - אחר כך בדיקה סגורה: לפחות 12 בודקים, 14 ימים. רשימה: testers.csv במחשב (6 עד עכשיו). הודעה: invite_he.txt.
 - בטפסים ב־Play Console: מדיניות פרטיות (קישור ל־Pages), אבטחת נתונים (לא נאסף מידע), אפליקציית בריאות, הצהרה על התראות במסך מלא (USE_FULL_SCREEN_INTENT: תזכורת תרופה = התראת שעון).
 
