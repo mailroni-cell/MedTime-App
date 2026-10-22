@@ -243,3 +243,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-220 | 2026-10-22 | homelayout.js | Owner: a soft "pop" sound (WebAudio) and a short buzz when a menu ball is pressed | ⏳ |
 | M-221 | 2026-10-22 | smooth.js | Owner: heart line stuck at the start of every beat: the light now enters before the line and leaves past its end, no wait and no jump (logo and opening) | ⏳ |
 | M-222 | 2026-10-22 | homelayout.js | Owner: balls not big enough: their size is measured to fill all the room down to the bottom buttons (up to 136 px) | ⏳ |
+| R-183 | 2026-10-22 | release/stable.txt | Run 183 (M-211..M-222, includes 182) released to everyone | ✅ |
