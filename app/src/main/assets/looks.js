@@ -7,6 +7,7 @@
     const N = 'html:not(.lowvision) body';
     const P = '#settings-page .set-tile.open .set-body';
     const BTN = `${P} button:not(.p-close):not(.mt-backbtn):not(.help-back):not(.page-done):not(.vc-play):not(.st-pm):not(.theme-sw), ${P} .sound-row`;
+    const WB = ':is(#med-page,#appt-form-page,#appt-page) button:not(.close-3d):not(.mt-backbtn):not(.wz-back):not(.wz-next):not(.mw-submit):not(.page-done):not(.af-del):not(.tp-btn)';
     const T3 = "font-family:'MTBall','MTUI',sans-serif!important;font-weight:700!important;letter-spacing:.3px;color:#fff!important;-webkit-text-fill-color:#fff!important;" +
         "text-shadow:0 1px 0 #e2e8f0,0 2px 0 #94a3b8,0 3px 0 #475569,0 4px 4px rgba(0,0,0,.85),0 0 14px rgba(var(--gA),.7)!important";
     const css = document.createElement('style');
@@ -52,6 +53,56 @@
     ${N} #list-page .med-item .btn-delete{background:linear-gradient(180deg,#fca5a5,#dc2626 60%,#7f1d1d)!important;color:#fff!important;border:1.5px solid rgba(255,255,255,.7)!important}
     ${N} #list-page #wk-bar{border:1.5px solid rgba(255,255,255,.22)!important;border-radius:24px!important;
       box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 0 0 1.5px rgba(0,0,0,.65),0 12px 22px rgba(0,0,0,.5)!important}
-    ${N} #list-page #wk-bar .af-chip{border-radius:999px!important}`;
+    ${N} #list-page #wk-bar .af-chip{border-radius:999px!important}
+
+    /* ---- M-250 (owner): Doctor appointments and the New reminder / New appointment wizards in the same look ---- */
+    html body :is(#med-page,#appt-form-page) :is(.af-head h2,.wz-step-title){${T3}}
+    html body #appt-page .settings-hero h2{${T3};font-size:min(1.9rem,8vw)!important;margin-top:2px!important}
+    html body #appt-page .settings-hero .hero-gear{display:none!important}
+    html body #appt-page .settings-hero{padding-bottom:8px!important}
+    html.lowvision body :is(#med-page,#appt-form-page,#appt-page) :is(.af-head h2,.wz-step-title,.settings-hero h2){text-shadow:0 2px 0 #000!important}
+    html body #appt-page #appt-list{padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))!important}
+    ${N} #appt-page .ap-card,${N} :is(#med-page,#appt-form-page) :is(.mw-summary,.af-summary){border:1.5px solid rgba(255,255,255,.26)!important;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -10px 24px rgba(var(--gA),.12),0 0 0 1.5px rgba(0,0,0,.7),0 16px 28px rgba(0,0,0,.6),0 0 18px rgba(var(--gA),.25)!important}
+    ${N} :is(${WB}){border:1.5px solid rgba(255,255,255,.3)!important;
+      box-shadow:inset 0 2px 2px rgba(255,255,255,.35),inset 0 -4px 7px rgba(0,0,0,.35),0 0 0 1.5px rgba(0,0,0,.7),0 7px 12px rgba(0,0,0,.55)!important}
+    ${N} :is(${WB}):is(.sel,.on,.cur,.active){border-color:#7dd3fc!important;
+      box-shadow:inset 0 2px 2px rgba(255,255,255,.45),inset 0 -4px 7px rgba(0,0,0,.3),0 0 0 2px rgba(0,0,0,.75),0 7px 12px rgba(0,0,0,.55),0 0 16px rgba(56,189,248,.8)!important}
+    ${N} :is(${WB}):active{transform:translateY(3px)!important}
+    ${N} :is(#med-page,#appt-form-page) .wz-nav > button{box-shadow:inset 0 3px 3px rgba(255,255,255,.4),inset 0 -5px 8px rgba(0,0,0,.3),0 0 0 2px rgba(0,0,0,.7),0 9px 14px rgba(0,0,0,.6)!important}
+    ${N} :is(#med-page,#appt-form-page) :is(input[type=text],input[type=tel],.af-in){border:1.5px solid rgba(255,255,255,.28)!important;box-shadow:inset 0 3px 6px rgba(0,0,0,.45),0 0 0 1.5px rgba(0,0,0,.6)!important}`;
     document.head.appendChild(css);
+
+    // M-250 (owner: step 7 of a new reminder was cut at the bottom): the Save button moves into the bottom bar,
+    // next to Back (like the appointment form), so the summary has the whole screen. form= keeps it a submit button.
+    css.textContent += `
+    html body #med-page[data-s="6"] .wz-nav.one{grid-template-columns:1fr 1.6fr!important}
+    html body #med-page .wz-nav > .mw-submit{width:auto!important;margin:0!important;min-height:0!important;padding:10px 12px!important;font-size:1.15rem!important;align-items:center;justify-content:center}`;
+    function moveSave() {
+        const sb = document.querySelector('#med-page .mw-submit'), nav = document.querySelector('#med-page .wz-nav');
+        if (!sb || !nav) return setTimeout(moveSave, 300);
+        if (sb.parentNode === nav) return;
+        sb.setAttribute('form', 'med-form');
+        nav.appendChild(sb);
+    }
+    moveSave();
+
+    // M-250: a wizard step that is taller than the screen (e.g. step 1 in big text) shrinks a little to fit, instead of hiding under the buttons
+    function fitStep(pg) {
+        const bd = pg.querySelector('.wz-body'); if (!bd || !pg.classList.contains('open')) return;
+        const st = [...pg.querySelectorAll('.wz-step')].find(x => x.offsetParent) || pg.querySelector('#med-form'); if (!st) return;
+        pg.querySelectorAll('.wz-step, #med-form').forEach(x => { if (x.style.zoom) x.style.zoom = ''; });
+        const over = bd.scrollHeight - bd.clientHeight;
+        if (over > 2) st.style.zoom = Math.max(0.72, (bd.clientHeight - 4) / bd.scrollHeight).toFixed(3);
+    }
+    function watchWiz() {
+        const pages = ['appt-form-page', 'med-page'].map(id => document.getElementById(id)).filter(Boolean);
+        if (pages.length < 2) return setTimeout(watchWiz, 400);
+        pages.forEach(pg => {
+            let q = 0; const go = () => { if (q) return; q = requestAnimationFrame(() => { q = 0; fitStep(pg); }); };
+            new MutationObserver(go).observe(pg, { attributes: true, subtree: true, attributeFilter: ['class', 'data-s'] });
+            addEventListener('resize', go);
+        });
+    }
+    watchWiz();
 })();

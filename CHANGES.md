@@ -276,3 +276,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | R-194 | 2026-10-22 | release/stable.txt | Run 194 (M-248) released to everyone | ✅ |
 | M-249 | 2026-10-22 | looks.js (new), index.html | Owner: My reminders no longer cut (last card clears the Done button, no half-cut side stripe), glass cards with dark outline, glossy edit/delete pills, 3D title font; every settings sub-menu gets a glowing background, glossy outlined buttons, a capsule icon and the 3D title font; low vision keeps its contrast | ⏳ |
 | R-195 | 2026-10-22 | release/stable.txt | Run 195 (M-249) released to everyone | ✅ |
+| M-250 | 2026-10-22 | looks.js | Owner: New reminder step 7 no longer cut (Save moved into the bottom bar next to Back); Doctor appointments, New reminder and New appointment wizards in the app look (3D titles, outlined glossy chips, glass cards); a wizard step taller than the screen shrinks slightly to fit; last appointment card clears Done | ⏳ |
