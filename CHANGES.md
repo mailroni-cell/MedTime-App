@@ -270,3 +270,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-245 | 2026-10-22 | homelayout.js | Owner: labels float too, on their own and a little behind the capsule, like in a liquid (still in low vision) | ⏳ |
 | M-246 | 2026-10-22 | setpills.js (new), index.html | Owner: settings icons are big glossy 3D capsules like the main screen, each floating on its own; rows fit their words (no text under the next capsule), gear removed and title a bit smaller; auto-shrink if a language needs more room | ⏳ |
 | R-192 | 2026-10-22 | release/stable.txt | Run 192 (M-242..M-246) released to everyone | ✅ |
+| M-247 | 2026-10-22 | setpills.js | Owner: settings capsules longer and thinner with room between them, dark outline and deeper shadow to lift them off the background; back-to-main button moved to the bottom left with a margin | ⏳ |
