@@ -134,12 +134,12 @@
     .fa-sh{width:100%;max-width:560px;height:100%;box-sizing:border-box;display:flex;flex-direction:column;background:linear-gradient(180deg,#3f0d12,#0f172a 55%);color:#fff;padding:calc(14px + env(safe-area-inset-top)) 16px calc(12px + env(safe-area-inset-bottom))}
     .fa-t{font-size:1.45rem;font-weight:800;margin:2px 0 10px}
     .fa-calls{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
-    .fa-calls button{min-height:58px;border-radius:16px;border:none;color:#fff;font-size:1.25rem;font-weight:800;font-family:inherit}
-    .fa-calls .c1{background:linear-gradient(135deg,#ef4444,#b91c1c);box-shadow:0 5px 0 #7f1d1d;min-height:66px;font-size:1.45rem}
+    .fa-calls button{min-height:54px;border-radius:16px;border:none;color:#fff;font-size:1.25rem;font-weight:800;font-family:inherit}
+    .fa-calls .c1{background:linear-gradient(135deg,#ef4444,#b91c1c);box-shadow:0 5px 0 #7f1d1d;min-height:62px;font-size:1.45rem}
     .fa-calls .c2{background:linear-gradient(135deg,#f59e0b,#b45309);box-shadow:0 4px 0 #78350f;font-size:1.1rem}
     .fa-calls button:active{transform:translateY(3px)}
     .fa-h{color:#fecaca;font-weight:800;margin:4px 0 6px}
-    .fa-body{flex:1 1 auto;overflow:auto;min-height:60px}
+    .fa-body{flex:1 1 auto;overflow:auto;min-height:60px;overscroll-behavior:contain}
     .fa-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
     .fa-grid button{display:flex;align-items:center;gap:8px;min-height:58px;text-align:start;border-radius:14px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.07);color:#fff;font-size:1rem;font-weight:800;padding:8px 10px;font-family:inherit}
     .fa-grid i{font-style:normal;font-size:1.5rem}
@@ -246,9 +246,9 @@
         const sh = document.createElement('div'); sh.className = 'fa-sh'; bg.appendChild(sh); document.body.appendChild(bg);
         let topic = null;
         const unBack = window.mtBackPush ? mtBackPush(() => { if (topic) { topic = null; draw(); return true; } close(); return false; }) : null;
-        const close = () => { bg.remove(); if (unBack) unBack(); };
+        const close = () => { bg.remove(); window.removeEventListener('resize', fit); if (unBack) unBack(); };
         const draw = () => {
-            const i = li();
+            const i = li(); sh.dir = i < 2 ? 'rtl' : 'ltr'; // M-204: Latin / Cyrillic left to right
             sh.innerHTML = `<div class="fa-t"></div><div class="fa-calls"><button type="button" class="c1"></button><button type="button" class="c2"></button><button type="button" class="c3"></button></div>
                 <div class="fa-body"><div class="fa-h"></div><div class="fa-in"></div><div class="fa-disc"></div></div><div class="fa-btns"></div>`;
             const q = c => sh.querySelector(c);
@@ -283,7 +283,17 @@
             const cb = document.createElement('button'); cb.type = 'button'; cb.textContent = tx('close'); cb.onclick = close;
             btns.appendChild(cb);
             q('.fa-body').scrollTop = 0;
+            fit();
         };
+        // M-204: the whole page fits the screen with no scrolling - shrink the content until it fits (scrolling only below 55%)
+        const fit = () => {
+            const body = sh.querySelector('.fa-body'); if (!body) return;
+            const parts = [...body.children]; let z = 1;
+            const set = () => parts.forEach(el => { el.style.zoom = z; });
+            set();
+            while (body.scrollHeight > body.clientHeight + 1 && z > 0.56) { z = Math.round((z - 0.04) * 100) / 100; set(); }
+        };
+        window.addEventListener('resize', fit);
         draw();
     }
     window.mtFirstAid = open;

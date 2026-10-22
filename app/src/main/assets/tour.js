@@ -84,6 +84,18 @@
         h4: ['תורים לרופא, עם ניווט', 'مواعيد الطبيب مع الملاحة', 'Programări cu navigare', 'Rendez-vous avec navigation', 'Doctor appointments, with navigation', 'Записи к врачу с навигацией'],
         h5: ['הגדרות', 'الإعدادات', 'Setări', 'Réglages', 'Settings', 'Настройки'],
         h6: ['ויציאה מהאפליקציה. התזכורות ימשיכו לעבוד גם כשהיא סגורה', 'والخروج. التذكيرات تعمل حتى والتطبيق مغلق', 'Ieșire. Mementourile merg și cu aplicația închisă', "Quitter. Les rappels marchent même l'appli fermée", 'And exit. Reminders keep working when the app is closed', 'И выход. Напоминания работают и при закрытом приложении'],
+        // M-207 (owner): the guide also shows first aid, the medicine check and vitals
+        dFa: ['🆘 עזרה ראשונה', '🆘 إسعاف أولي', '🆘 Prim ajutor', '🆘 Premiers secours', '🆘 First aid', '🆘 Первая помощь'],
+        dTools: ['📷 בדיקת תרופה ומדדים', '📷 فحص دواء وقياسات', '📷 Verificare și valori', '📷 Vérifier et mesures', '📷 Medicine check and vitals', '📷 Проверка и показатели'],
+        x1: ['הכפתור האדום פותח עזרה ראשונה', 'الزر الأحمر يفتح الإسعاف الأولي', 'Butonul roșu deschide Prim ajutor', 'Le bouton rouge ouvre les premiers secours', 'The red button opens first aid', 'Красная кнопка открывает первую помощь'],
+        x2: ['כאן חיוג מהיר למד״א 101', 'هنا اتصال سريع بنجمة داود الحمراء 101', 'Aici apel rapid la ambulanță 101', 'Ici, appel rapide du 101', 'Quick call to MDA 101 here', 'Здесь быстрый звонок в скорую 101'],
+        x3: ['וכאן למרכז ההרעלות', 'وهنا مركز السموم', 'Și aici centrul de toxicologie', 'Et ici le centre antipoison', 'And here the poison center', 'А здесь токсикологический центр'],
+        x4: ['בוחרים מה קרה', 'اختر ما حدث', 'Alegeți ce s-a întâmplat', 'Choisissez ce qui s’est passé', 'Pick what happened', 'Выберите, что случилось'],
+        x5: ['ומקבלים צעדים פשוטים, אחד אחרי השני', 'وتحصل على خطوات بسيطة واحدة تلو الأخرى', 'Și primiți pași simpli, unul după altul', 'Et suivez des étapes simples, une à une', 'And get simple steps, one by one', 'И получите простые шаги, один за другим'],
+        x6: ['כרטיס חירום לצוות, אפשר גם במסך הנעילה', 'بطاقة طوارئ للفريق، ويمكن عرضها في شاشة القفل', 'Fișă pentru echipa de urgență, și pe ecranul blocat', 'Fiche pour les secours, aussi sur l’écran verrouillé', 'An emergency card for the team, also on the lock screen', 'Карта для медиков, можно и на экране блокировки'],
+        t1: ['הכפתור הכחול: מצלמים או כותבים שם תרופה ומקבלים הסבר פשוט', 'الزر الأزرق: صوّر أو اكتب اسم الدواء واحصل على شرح بسيط', 'Butonul albastru: fotografiați sau scrieți numele și primiți o explicație simplă', 'Le bouton bleu : photo ou nom du médicament, et une explication simple', 'The blue button: photograph or type a medicine name and get a plain explanation', 'Синяя кнопка: сфотографируйте или введите название и получите простое объяснение'],
+        t2: ['וגם בודקים אם תרופה אחרת מבית המרקחת היא תחליף', 'وتفحص أيضًا إن كان دواء الصيدلية بديلًا', 'Și verificați dacă alt medicament de la farmacie e un înlocuitor', 'Et vérifiez si un autre médicament de la pharmacie remplace le vôtre', 'And check if a different medicine from the pharmacy replaces yours', 'И проверьте, заменяет ли другое лекарство из аптеки ваше'],
+        t3: ['הכפתור הוורוד: לחץ דם, סוכר, דופק ומשקל, בלי להקליד', 'الزر الوردي: الضغط والسكر والنبض والوزن بلا كتابة', 'Butonul roz: tensiune, glicemie, puls și greutate, fără să scrieți', 'Le bouton rose : tension, glycémie, pouls et poids, sans taper', 'The pink button: blood pressure, sugar, pulse and weight, no typing', 'Розовая кнопка: давление, сахар, пульс и вес без набора текста'],
         demoMed: ['אקמול', 'باراسيتامول', 'Paracetamol', 'Paracétamol', 'Tylenol', 'Парацетамол']
     };
     const tx = k => (T[k] || [k])[li()];
@@ -205,12 +217,23 @@
     /* M-154 (owner): Help fills the screen exactly: big cards in one column that share the height, no scrolling */
     #tile-help.open .set-body{display:flex!important;flex-direction:column}
     #tile-help.open .help-demos{flex:none;margin-bottom:8px}
-    #tile-help.open .help-list{flex:1 1 auto;min-height:0;display:flex!important;flex-direction:column;gap:min(8px,.9vh)!important;padding-bottom:0!important}
-    #tile-help.open .help-item:not([open]){flex:1 1 0;min-height:0;display:flex;flex-direction:column;justify-content:center}
-    #tile-help.open .help-item[open]{flex:none}
-    #tile-help.open .help-list:has(.help-item[open]){overflow-y:auto}
-    #tile-help.open .help-list:has(.help-item[open]) .help-item:not([open]){flex:none}
-    #tile-help.open .help-item summary{padding:0 14px!important;min-height:0;font-size:min(1.12rem,2.6vh)!important}
+    /* M-206 (owner): Help topics as big tiles, 2 per row, sharing the free height (no scrolling); a tile opens its text on the whole panel */
+    #tile-help.open .help-list.help-grid{flex:1 1 auto;min-height:0;display:grid!important;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:min(9px,1vh)!important;padding-bottom:4px!important}
+    #tile-help .help-tile{display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;min-width:0;min-height:0;padding:2px 10px;text-align:start;border-radius:18px;border:1.5px solid rgba(125,211,252,.45);
+      background:linear-gradient(170deg,rgba(56,189,248,.22),rgba(30,41,59,.65));color:#f1f5f9;font-family:inherit;box-shadow:inset 0 1px 1px rgba(255,255,255,.2),0 4px 0 rgba(0,0,0,.35)}
+    #tile-help .help-tile:active{transform:translateY(3px)}
+    #tile-help .ht-ico{flex:none;font-size:min(1.85rem,3.8vh);line-height:1}
+    #tile-help .ht-t{font-weight:800;font-size:min(1.08rem,2.35vh);line-height:1.15;text-align:start;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+    #tile-help .panel-head{display:flex;align-items:center}
+    #tile-help .help-back{margin-inline-start:auto;flex:0 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:10px 16px;border-radius:999px;border:0;background:#f8fafc;color:#0f172a;font-weight:900;font-size:1.02rem;font-family:inherit;box-shadow:0 4px 0 #64748b,0 8px 16px rgba(0,0,0,.4)}
+    #tile-help .help-back:active{transform:translateY(3px);box-shadow:0 1px 0 #64748b}
+    #tile-help.help-in .help-demos,#tile-help.open.help-in .help-list.help-grid{display:none!important}
+    #tile-help .help-detail{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;gap:12px;padding:6px 2px 4px}
+    #tile-help .hdt-head{display:flex;align-items:center;gap:12px;color:#7dd3fc;font-weight:900;font-size:1.45rem;line-height:1.2}
+    #tile-help .hdt-ico{font-size:2.6rem;line-height:1}
+    #tile-help .hdt-p{flex:1 1 auto;min-height:0;overflow:auto;margin:0;padding:14px 16px;border-radius:20px;background:rgba(255,255,255,.08);color:#f8fafc;font-weight:600;line-height:1.55}
+    #tile-help .hdt-back{flex:none;min-height:56px;border-radius:999px;border:0;background:radial-gradient(circle at 35% 28%,#7dd3fc,#2563eb 60%,#1e3a8a);color:#fff;font-weight:900;font-size:1.15rem;font-family:inherit;box-shadow:0 5px 0 #1e3a8a}
+    html.lowvision #tile-help .help-tile{background:#000!important;border-color:#fff!important}
     /* M-154 (owner): the Help tile in settings stands out from all the others: bright sky-blue pulsing icon */
     #tile-help .set-ico{outline:3px solid #e0f2fe;outline-offset:-1px;background:radial-gradient(circle at 35% 28%,#e0f2fe,#38bdf8 45%,#1d4ed8)!important;animation:mtHelpGlow 2.2s ease-in-out infinite!important}
     #tile-help .set-title{position:relative;z-index:2;color:#7dd3fc!important;-webkit-text-fill-color:#7dd3fc!important;opacity:1!important;font-weight:900!important;text-shadow:0 2px 0 rgba(0,0,0,.7)!important}
@@ -385,6 +408,7 @@
         try { closeTiles(); } catch (e) { }
         try { closeSettingsPage(); } catch (e) { }
         try { closeListPage(); } catch (e) { }
+        try { const fb = document.querySelector('.fa-bg'); if (fb) { const c = fb.querySelector('.fa-btns button:last-child'); if (c) c.click(); else fb.remove(); } } catch (e) { }
     }
 
     const demos = {
@@ -478,7 +502,10 @@
             await point($('main-add'), tx('h2'), 1800);
             await point($('list-btn'), tx('h3'), 1800);
             await point($('appt-btn'), tx('h4'), 1800);
+            await point($('sb-home'), tx('t1'), 1800);
+            await point($('vt-btn'), tx('t3'), 1800);
             await point($('relax-btn'), tx('q1'), 1800);
+            await point($('fa-home'), tx('x1'), 1800);
             await point($('lv-btn'), tx('r1'), 2000);
             await point($('gear-btn'), tx('h5'), 1500);
             await point($('exit-btn'), tx('h6'), 2600);
@@ -568,6 +595,26 @@
             quiet(); await sleep(300);
             try { closeTiles(); } catch (e) { }
         },
+        async firstaid() {
+            home(); await sleep(450);
+            await say(tx('x1'), true);
+            await tap($('fa-home'), () => window.mtFirstAid && window.mtFirstAid()); await sleep(500);
+            await point(document.querySelector('.fa-calls .c1'), tx('x2'), 1800); // pointed at only: nothing is dialled
+            await point(document.querySelector('.fa-calls .c2'), tx('x3'), 1600);
+            await say(tx('x4'));
+            const g = document.querySelectorAll('.fa-grid button');
+            await tap(g[0], true); await sleep(500);
+            await point(document.querySelector('.fa-steps li'), tx('x5'), 2400);
+            const bk = document.querySelector('.fa-btns button');
+            await tap(bk, true); await sleep(400);
+            await point(document.querySelector('.fa-calls .c3'), tx('x6'), 2600);
+        },
+        async tools() {
+            home(); await sleep(450);
+            await point($('sb-home'), tx('t1'), 2400);
+            await say(tx('t2')); await sleep(2200);
+            await point($('vt-btn'), tx('t3'), 2600);
+        },
         async relax() {
             home(); await sleep(450);
             await point($('relax-btn'), tx('q1'), 2600);
@@ -580,7 +627,7 @@
     };
 
     // ---------- M-110: the guide sheet (from the button on the main screen) ----------
-    const LIST = [['home', 'dHome'], ['add', 'dAdd'], ['edit', 'dEdit'], ['wk', 'dWk'], ['appt', 'dAppt'], ['log', 'dLog'], ['fam', 'dFam'], ['stock', 'dStock'], ['widget', 'dWidget'], ['read', 'dRead'], ['relax', 'dRelax'], ['settings', 'dSet']];
+    const LIST = [['home', 'dHome'], ['add', 'dAdd'], ['firstaid', 'dFa'], ['tools', 'dTools'], ['edit', 'dEdit'], ['wk', 'dWk'], ['appt', 'dAppt'], ['log', 'dLog'], ['fam', 'dFam'], ['stock', 'dStock'], ['widget', 'dWidget'], ['read', 'dRead'], ['relax', 'dRelax'], ['settings', 'dSet']];
     let sheet = null;
     function closeGuide(fromBack) {
         if (!sheet) return;

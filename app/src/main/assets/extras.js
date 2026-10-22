@@ -10,6 +10,8 @@
     const TX = {
         updTitle: ['🔄 עדכונים', '🔄 التحديثات', '🔄 Actualizări', '🔄 Mises à jour', '🔄 Updates', '🔄 Обновления'],
         helpTitle: ['📖 עזרה', '📖 مساعدة', '📖 Ajutor', '📖 Aide', '📖 Help', '📖 Помощь'],
+        helpBack: ['→ למסך הראשי', '→ للشاشة الرئيسية', '← Ecran principal', '← Écran principal', '← Main screen', '← На главный'],
+        helpTopics: ['→ חזרה לנושאים', '→ رجوع للمواضيع', '← Înapoi la subiecte', '← Retour aux sujets', '← Back to topics', '← Назад к темам'],
         helpSub: ['הסבר על כל דבר', 'شرح لكل شيء', 'Explicații pentru tot', 'Tout est expliqué', 'Everything explained', 'Всё объяснено'],
         version: ['גרסה', 'الإصدار', 'Versiunea', 'Version', 'Version', 'Версия'],
         check: ['🔍 בדוק עדכונים עכשיו', '🔍 ابحث عن تحديث الآن', '🔍 Verifică acum', '🔍 Vérifier maintenant', '🔍 Check now', '🔍 Проверить сейчас'],
@@ -127,6 +129,54 @@
                 'Le mode sérénité utilise de vrais enregistrements de Wikimedia Commons, sous licence libre. Merci à : Rain: Zuvji (CC BY-SA 4.0) · Sea: Luftrum (CC BY 3.0) · Forest: Matutinho (CC BY-SA 4.0) · Night: Glaneur de sons (CC BY 3.0) · Storm: Serg Childed (CC BY-SA 4.0) · Stream: Extemporalist (CC0) · Wind: Robert EA Harvey (CC BY-SA 4.0).',
                 'Serenity mode uses real nature recordings from Wikimedia Commons under free licenses. Thanks to: Rain: Zuvji (CC BY-SA 4.0) · Sea: Luftrum (CC BY 3.0) · Forest: Matutinho (CC BY-SA 4.0) · Night: Glaneur de sons (CC BY 3.0) · Storm: Serg Childed (CC BY-SA 4.0) · Stream: Extemporalist (CC0) · Wind: Robert EA Harvey (CC BY-SA 4.0).', 'Режим покоя использует настоящие записи природы с Wikimedia Commons по свободным лицензиям. Спасибо: Дождь: Zuvji (CC BY-SA 4.0) · Море: Luftrum (CC BY 3.0) · Лес: Matutinho (CC BY-SA 4.0) · Ночь: Glaneur de sons (CC BY 3.0) · Гроза: Serg Childed (CC BY-SA 4.0) · Ручей: Extemporalist (CC0) · Ветер: Robert EA Harvey (CC BY-SA 4.0).']],
     ];
+
+    // M-206 (owner): help topics for everything added lately, in a logical order, shown as big tiles (no scrolling)
+    HELP.push(
+        ['💊', ['כבר לקחתי ותמונה', 'تناولته مبكرًا وصورة', 'Luat deja și poză', 'Déjà pris et photo', 'Taken early and photo', 'Уже принял и фото'],
+            ['בכל תזכורת ב"התזכורות שלי": "⏰ כבר לקחתי" מסמן שלקחתם מוקדם, והתזכורת של היום לא תצלצל. "📷 תמונה" שומר תמונה של הכדור, והיא מופיעה גם במסך התזכורת, כדי שלא תתבלבלו.',
+                'في كل تذكير داخل "تذكيراتي": "⏰ تناولته مبكرًا" يسجّل أنك أخذت الدواء، فلا يرنّ تذكير اليوم. "📷 صورة" تحفظ صورة الحبة وتظهر أيضًا في شاشة التذكير حتى لا تخطئ.',
+                'La fiecare memento din „Mementourile mele”: „⏰ Luat deja” notează că l-ați luat mai devreme și mementoul de azi nu mai sună. „📷 Poză” salvează o poză a pastilei, care apare și pe ecranul mementoului.',
+                'Sur chaque rappel de « Mes rappels » : « ⏰ Déjà pris » note que vous l’avez pris en avance, et le rappel du jour ne sonne pas. « 📷 Photo » garde une photo du comprimé, affichée aussi sur l’écran du rappel.',
+                'On each reminder in "My reminders": "⏰ Taken already" marks that you took it early, so today\'s reminder will not ring. "📷 Photo" saves a picture of the pill, shown on the reminder screen too, so you never mix them up.',
+                'В каждом напоминании в «Мои напоминания»: «⏰ Уже принял» отмечает, что вы приняли лекарство раньше, и сегодня напоминание не прозвенит. «📷 Фото» сохраняет снимок таблетки, он виден и на экране напоминания.']],
+        ['📷', ['בדיקת תרופה', 'فحص دواء', 'Verificare medicament', 'Vérifier un médicament', 'Medicine check', 'Проверка лекарства'],
+            ['הכפתור הכחול במסך הראשי: מצלמים את האריזה או כותבים שם, ורואים הסבר פשוט למה התרופה משמשת, אזהרה חשובה, ואת העלון הרשמי של משרד הבריאות. קיבלתם בבית המרקחת תרופה אחרת? "להשוות" בודק אם היא תחליף לתרופה שלכם. בכל תרופה ב"התזכורות שלי" יש גם כפתור "📖 מה זה?".',
+                'الزر الأزرق في الشاشة الرئيسية: صوّر العلبة أو اكتب الاسم، وسترى شرحًا بسيطًا لاستعمال الدواء وتحذيرًا مهمًا والنشرة الرسمية لوزارة الصحة. أعطتك الصيدلية دواءً آخر؟ "قارن" يفحص إن كان بديلًا لدوائك. ولكل دواء في "تذكيراتي" زر "📖 ما هذا؟".',
+                'Butonul albastru de pe ecranul principal: fotografiați cutia sau scrieți numele și vedeți o explicație simplă, o avertizare importantă și prospectul oficial al Ministerului Sănătății. Ați primit alt medicament la farmacie? „Compară” verifică dacă e un înlocuitor. Fiecare medicament din „Mementourile mele” are și „📖 Ce este?”.',
+                'Le bouton bleu de l’écran principal : photographiez la boîte ou écrivez le nom, et voyez une explication simple, un avertissement important et la notice officielle du ministère de la Santé. La pharmacie vous a donné un autre médicament ? « Comparer » vérifie s’il remplace le vôtre. Chaque médicament de « Mes rappels » a aussi « 📖 C’est quoi ? ».',
+                'The blue button on the main screen: photograph the box or type the name, and see a plain explanation of what the medicine is for, an important warning, and the official Ministry of Health leaflet. Got a different medicine at the pharmacy? "Compare" checks if it replaces yours. Every medicine in "My reminders" also has a "📖 What is it?" button.',
+                'Синяя кнопка на главном экране: сфотографируйте упаковку или введите название и увидите простое объяснение, важное предупреждение и официальный вкладыш Минздрава. В аптеке дали другое лекарство? «Сравнить» проверит, заменяет ли оно ваше. У каждого лекарства в «Мои напоминания» есть кнопка «📖 Что это?».']],
+        ['🌡️', ['מדדים', 'القياسات', 'Valori', 'Mesures', 'Vitals', 'Показатели'],
+            ['הכפתור הוורוד במסך הראשי: רושמים לחץ דם, סוכר, דופק ומשקל בלי להקליד. הכפתורים − ו־+ משנים את המספר (לחיצה ארוכה = מהר). רואים גרף ורשימה, והכל נכנס לדוח ה־PDF לרופא.',
+                'الزر الوردي في الشاشة الرئيسية: سجّل ضغط الدم والسكر والنبض والوزن بلا كتابة. الزران − و+ يغيّران الرقم (الضغط المطوّل = أسرع). ترى رسمًا بيانيًا وقائمة، وكل شيء يدخل تقرير PDF للطبيب.',
+                'Butonul roz de pe ecranul principal: notați tensiunea, glicemia, pulsul și greutatea fără să scrieți. Butoanele − și + schimbă numărul (apăsare lungă = repede). Vedeți grafic și listă, iar totul intră în raportul PDF pentru medic.',
+                'Le bouton rose de l’écran principal : notez tension, glycémie, pouls et poids sans taper. Les boutons − et + changent le nombre (appui long = rapide). Vous voyez un graphique et une liste, et tout figure dans le rapport PDF pour le médecin.',
+                'The pink button on the main screen: log blood pressure, sugar, pulse and weight without typing. The − and + buttons change the number (hold = fast). You see a chart and a list, and everything goes into the PDF report for the doctor.',
+                'Розовая кнопка на главном экране: записывайте давление, сахар, пульс и вес без набора текста. Кнопки − и + меняют число (долгое нажатие = быстро). Видны график и список, всё попадает в PDF-отчёт для врача.']],
+        ['🆘', ['עזרה ראשונה', 'إسعاف أولي', 'Prim ajutor', 'Premiers secours', 'First aid', 'Первая помощь'],
+            ['הכפתור האדום במסך הראשי. למעלה: חיוג מהיר למד"א 101 ולמרכז ההרעלות. מתחת בוחרים מה קרה: מינון יתר, תרופה לא נכונה, הרעלה, פרכוס, כאב בחזה, שבץ, אלרגיה, עילפון, סוכר נמוך, חנק או נפילה, ומקבלים 5 צעדים פשוטים. במצב חירום תמיד מתקשרים קודם ל־101.',
+                'الزر الأحمر في الشاشة الرئيسية. في الأعلى: اتصال سريع بنجمة داود الحمراء 101 وبمركز السموم. في الأسفل تختار ما حدث: جرعة زائدة، دواء خاطئ، تسمم، نوبة تشنج، ألم في الصدر، سكتة، حساسية، إغماء، سكر منخفض، اختناق أو سقوط، وتحصل على 5 خطوات بسيطة. في الطوارئ اتصل أولًا بـ 101.',
+                'Butonul roșu de pe ecranul principal. Sus: apel rapid la ambulanță (MDA) 101 și la centrul de toxicologie. Dedesubt alegeți ce s-a întâmplat: supradoză, medicament greșit, otrăvire, criză, durere în piept, AVC, alergie, leșin, zahăr scăzut, sufocare sau cădere, și primiți 5 pași simpli. În urgență sunați întâi la 101.',
+                'Le bouton rouge de l’écran principal. En haut : appel rapide du SAMU israélien (MDA) 101 et du centre antipoison. En dessous, choisissez ce qui s’est passé : surdose, mauvais médicament, intoxication, convulsions, douleur thoracique, AVC, allergie, malaise, hypoglycémie, étouffement ou chute, et suivez 5 étapes simples. En urgence, appelez toujours d’abord le 101.',
+                'The red button on the main screen. At the top: quick call to MDA 101 and the poison center. Below, pick what happened: overdose, wrong medicine, poisoning, seizure, chest pain, stroke, allergy, fainting, low sugar, choking or a fall, and get 5 simple steps. In an emergency always call 101 first.',
+                'Красная кнопка на главном экране. Вверху: быстрый звонок в скорую (МАДА) 101 и в токсикологический центр. Ниже выберите, что случилось: передозировка, не то лекарство, отравление, судороги, боль в груди, инсульт, аллергия, обморок, низкий сахар, удушье или падение, и получите 5 простых шагов. В экстренной ситуации сначала звоните 101.']],
+        ['📇', ['כרטיס חירום ומסך נעילה', 'بطاقة الطوارئ وشاشة القفل', 'Fișă de urgență și ecran blocat', 'Fiche d’urgence et écran verrouillé', 'Emergency card and lock screen', 'Карта экстренной помощи и экран блокировки'],
+            ['בתוך עזרה ראשונה: "📋 הצג לצוות החירום". כרטיס לבן וגדול עם השם, התרופות הקבועות והשעות, אלרגיות ומחלות (לוחצים "עריכה" כדי לכתוב), ואיש הקשר במשפחה עם כפתור חיוג. מדליקים "הצג במסך הנעילה" והמידע יופיע גם כשהטלפון נעול, כדי שצוות רפואי יראה אותו.',
+                'داخل الإسعاف الأولي: "📋 اعرض لفريق الطوارئ". بطاقة بيضاء كبيرة فيها الاسم والأدوية الدائمة ومواعيدها والحساسية والأمراض (اضغط "تعديل" للكتابة) وجهة الاتصال من العائلة مع زر اتصال. فعّل "اعرض في شاشة القفل" لتظهر المعلومات حتى والهاتف مقفل، ليراها الفريق الطبي.',
+                'În Prim ajutor: „📋 Arată echipei de urgență”. O fișă albă, mare, cu numele, medicamentele zilnice și orele, alergiile și bolile (apăsați „Editează” pentru a scrie) și persoana de contact din familie, cu buton de apel. Porniți „Arată pe ecranul blocat” ca informația să apară și cu telefonul blocat.',
+                'Dans Premiers secours : « 📋 Montrer à l’équipe de secours ». Une grande fiche blanche avec le nom, les médicaments habituels et leurs heures, les allergies et maladies (appuyez sur « Modifier » pour écrire) et le contact familial avec un bouton d’appel. Activez « Afficher sur l’écran verrouillé » pour que les secours la voient même téléphone verrouillé.',
+                'Inside First aid: "📋 Show to the emergency team". A big white card with the name, regular medicines and their times, allergies and conditions (tap "Edit" to write them) and the family contact with a call button. Turn on "Show on the lock screen" and the card appears even when the phone is locked, so medical staff can see it.',
+                'В «Первой помощи»: «📋 Показать бригаде скорой». Большая белая карта: имя, постоянные лекарства и время приёма, аллергии и болезни (нажмите «Изменить», чтобы написать) и контакт из семьи с кнопкой звонка. Включите «Показывать на экране блокировки», и медики увидят карту даже на заблокированном телефоне.']]
+    );
+    // the calm topic now covers the real videos and sounds; the old credits topic is replaced by the © button in calm mode
+    (h => { if (h) h[2] = ['כפתור השלווה פותח סרטוני טבע אמיתיים (ים, יער, מפל, גשם, כוכבים ועוד) ועולמות תלת־ממדיים, עם צלילי טבע מוקלטים לבחירה וטיימר שמכבה הכל לבד. צליל מתחיל רק כשבוחרים אותו. שמות היוצרים והרישיונות נמצאים בכפתור © במסך השלווה.',
+        'زر السكينة يفتح فيديوهات طبيعة حقيقية (بحر، غابة، شلال، مطر، نجوم وغيرها) وعوالم ثلاثية الأبعاد، مع أصوات طبيعة مسجّلة تختارها ومؤقت يطفئ كل شيء تلقائيًا. الصوت لا يبدأ إلا عندما تختاره. أسماء المبدعين والتراخيص في زر © بشاشة السكينة.',
+        'Butonul liniște deschide filme reale din natură (mare, pădure, cascadă, ploaie, stele și altele) și lumi 3D, cu sunete reale la alegere și un temporizator care oprește totul singur. Sunetul pornește doar când îl alegeți. Autorii și licențele sunt la butonul © din ecranul de liniște.',
+        'Le bouton Sérénité ouvre de vraies vidéos de nature (mer, forêt, cascade, pluie, étoiles…) et des mondes 3D, avec des sons de nature enregistrés au choix et une minuterie qui éteint tout. Un son ne démarre que si vous le choisissez. Auteurs et licences : bouton © de l’écran Sérénité.',
+        'The Serenity button opens real nature videos (sea, forest, waterfall, rain, stars and more) and 3D worlds, with recorded nature sounds you pick and a timer that turns everything off. A sound starts only when you choose it. Authors and licenses are under the © button on the serenity screen.',
+        'Кнопка «Покой» открывает настоящие видео природы (море, лес, водопад, дождь, звёзды и др.) и 3D-миры, с записанными звуками природы на выбор и таймером, который всё выключает. Звук включается только по вашему выбору. Авторы и лицензии — кнопка © на экране покоя.']; })(HELP.find(h => h[0] === '🌙'));
+    const HELP_ORDER = ['➕', '📋', '⏰', '💊', '📷', '🌡️', '🩺', '🆘', '📇', '🌙', '🌐', '🔊', '🔔', '🎨', '👓', '✅', '🔄', '💡'];
+    HELP.splice(0, HELP.length, ...HELP_ORDER.map(k => HELP.find(h => h[0] === k)).filter(Boolean));
 
     // ---------------- build the two tiles ----------------
     const grid = document.querySelector('#settings-page .set-grid');
@@ -276,21 +326,49 @@
         help.querySelector('.p-title').textContent = tx('helpTitle').replace(/^\S+\s/, '');
         help.querySelector('.set-sub').textContent = tx('helpSub');
         const list = $('help-list');
-        const open = [...list.querySelectorAll('details[open]')].map(d => d.dataset.i);
-        list.innerHTML = '';
+        // M-206 (owner): big tiles in a grid that fill the panel (no scrolling); a tile opens its explanation on the whole panel
+        list.innerHTML = ''; list.classList.add('help-grid');
         HELP.forEach((h, n) => {
-            const d = document.createElement('details');
-            d.className = 'help-item'; d.dataset.i = n;
-            if (open.includes(String(n))) d.open = true;
-            d.innerHTML = '<summary><span class="h-ico">' + h[0] + '</span><span class="h-t"></span><span class="h-chev">⌄</span></summary><p></p>';
-            d.querySelector('.h-t').textContent = h[1][i];
-            d.querySelector('p').textContent = h[2][i];
-            d.addEventListener('toggle', () => {
-                if (d.open) { list.querySelectorAll('details[open]').forEach(o => { if (o !== d) o.open = false; }); if (navigator.vibrate) navigator.vibrate(8); }
-            });
-            list.appendChild(d);
+            const b = document.createElement('button'); b.type = 'button'; b.className = 'help-tile'; b.dataset.i = n;
+            b.innerHTML = '<span class="ht-ico"></span><span class="ht-t"></span>';
+            b.querySelector('.ht-ico').textContent = h[0]; b.querySelector('.ht-t').textContent = h[1][i];
+            b.onclick = () => { if (navigator.vibrate) navigator.vibrate(8); helpOpen(n); };
+            list.appendChild(b);
         });
+        helpHead();
+        if (helpCur >= 0) helpOpen(helpCur);
     }
+    let helpCur = -1;
+    // the panel's ✕ becomes a clear "back to the main screen" button (owner)
+    function helpHead() {
+        const old = help.querySelector('.p-close'); if (old) old.style.display = 'none';
+        let bk = help.querySelector('.help-back');
+        if (!bk) {
+            bk = document.createElement('button'); bk.type = 'button'; bk.className = 'help-back';
+            bk.onclick = () => { if (navigator.vibrate) navigator.vibrate(10); helpShut(); try { closeTiles(); closeSettingsPage(); } catch (e) { } };
+            help.querySelector('.panel-head').appendChild(bk);
+        }
+        bk.textContent = tx('helpBack');
+    }
+    let helpUnBack = null;
+    function helpShut() { if (helpUnBack) { const u = helpUnBack; helpUnBack = null; u(); } helpCur = -1; const d = help.querySelector('.help-detail'); if (d) d.remove(); help.classList.remove('help-in'); }
+    function helpOpen(n) {
+        const h = HELP[n]; if (!h) return;
+        const i = li(); helpCur = n;
+        let d = help.querySelector('.help-detail');
+        if (!d) { d = document.createElement('div'); d.className = 'help-detail'; $('help-list').parentNode.appendChild(d); }
+        d.innerHTML = '<div class="hdt-head"><span class="hdt-ico"></span><span class="hdt-t"></span></div><p class="hdt-p"></p><button type="button" class="hdt-back"></button>';
+        d.querySelector('.hdt-ico').textContent = h[0]; d.querySelector('.hdt-t').textContent = h[1][i];
+        d.querySelector('.hdt-p').textContent = h[2][i];
+        d.querySelector('.hdt-back').textContent = tx('helpTopics');
+        d.querySelector('.hdt-back').onclick = () => { if (navigator.vibrate) navigator.vibrate(8); helpShut(); };
+        help.classList.add('help-in');
+        if (!helpUnBack && window.mtBackPush) helpUnBack = mtBackPush(() => { helpUnBack = null; helpShut(); return false; }); // phone back: to the topics first
+        // long text in a big font: shrink it a little until it fits, never below a readable size
+        const p = d.querySelector('.hdt-p'); let fs = 1.32; p.style.fontSize = fs + 'rem';
+        requestAnimationFrame(() => { while (p.scrollHeight > p.clientHeight + 1 && fs > 1.02) { fs -= 0.04; p.style.fontSize = fs + 'rem'; } });
+    }
+    new MutationObserver(() => { if (!help.classList.contains('open') && helpCur >= 0) helpShut(); }).observe(help, { attributes: true, attributeFilter: ['class'] });
 
     window.xRender = function () { drawUpd(); drawHelp(); };
     xRender();
