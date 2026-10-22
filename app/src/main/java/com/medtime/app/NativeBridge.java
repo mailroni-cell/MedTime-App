@@ -236,6 +236,13 @@ public class NativeBridge {
                 Uri.parse("https://waze.com/ul?navigate=yes&q=" + Uri.encode(query.trim()))));
     }
 
+    // M-200: medical info for the emergency team on the lock screen (a quiet fixed notification)
+    @JavascriptInterface
+    public void setMedicalId(boolean on, String title, String body) { MedicalId.set(activity.getApplicationContext(), on, title, body); }
+
+    @JavascriptInterface
+    public boolean medicalIdOn() { return MedicalId.isOn(activity.getApplicationContext()); }
+
     // M-195: official Ministry of Health medicine page (leaflets) in the browser; only that site is allowed
     @JavascriptInterface
     public void openMohPage(String regNumber) {

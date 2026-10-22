@@ -74,6 +74,35 @@
         a_underwater: ['מתחת למים', 'تحت الماء', 'Sub apă', 'Sous l’eau', 'Underwater', 'Под водой'],
         a_space: ['חלל', 'فضاء', 'Spațiu', 'Espace', 'Space', 'Космос'],
         a_synth: ['גלים אלקטרוניים', 'موجات إلكترونية', 'Sintetizator', 'Nappes synthé', 'Synth pads', 'Синтезатор'],
+        // M-196 (owner): real recorded sounds and real nature videos
+        a_waterfall: ['מפל', 'شلال', 'Cascadă', 'Cascade', 'Waterfall', 'Водопад'],
+        a_lake: ['אגם', 'بحيرة', 'Lac', 'Clapotis du lac', 'Lake lapping', 'Плеск озера'],
+        a_tent: ['גשם על אוהל', 'مطر على خيمة', 'Ploaie pe cort', 'Pluie sur la tente', 'Rain on a tent', 'Дождь по палатке'],
+        a_city: ['רחוב בעיר', 'شارع في المدينة', 'Stradă în oraș', 'Rue en ville', 'City street', 'Городская улица'],
+        a_cafe: ['בית קפה', 'مقهى', 'Cafenea', 'Café', 'Café', 'Кафе'],
+        a_train: ['נסיעה ברכבת', 'رحلة بالقطار', 'Călătorie cu trenul', 'Voyage en train', 'Train ride', 'Поездка на поезде'],
+        a_jungle: ['ג׳ונגל', 'غابة استوائية', 'Junglă', 'Jungle', 'Jungle', 'Джунгли'],
+        a_birds: ['ציוץ בבוקר', 'تغريد الصباح', 'Ciripit de dimineață', 'Chants du matin', 'Morning birds', 'Утреннее пение птиц'],
+        a_frogs: ['צפרדעים בגשם', 'ضفادع تحت المطر', 'Broaște în ploaie', 'Grenouilles sous la pluie', 'Frogs in the rain', 'Лягушки под дождём'],
+        a_cave: ['טיפות במערה', 'قطرات في كهف', 'Picături în peșteră', 'Gouttes dans une grotte', 'Cave drips', 'Капли в пещере'],
+        a_owls: ['ינשוף בלילה', 'بومة في الليل', 'Bufniță noaptea', 'Chouette la nuit', 'Owl at night', 'Сова ночью'],
+        a_cat: ['גרגור חתול', 'خرخرة قطة', 'Tors de pisică', 'Ronronnement de chat', 'Cat purring', 'Мурлыканье кошки'],
+        a_whales: ['שירת לווייתנים', 'غناء الحيتان', 'Cântecul balenelor', 'Chant des baleines', 'Whale song', 'Песни китов'],
+        a_fountain: ['מזרקה', 'نافورة', 'Fântână arteziană', 'Fontaine', 'Fountain', 'Фонтан'],
+        a_tibet: ['קערות טיבטיות (הקלטה)', 'أوعية تبتية (تسجيل)', 'Boluri tibetane (înregistrare)', 'Bols tibétains (enregistrés)', 'Singing bowls (recorded)', 'Поющие чаши (запись)'],
+        a_river: ['נהר וציפורים', 'نهر وطيور', 'Râu și păsări', 'Rivière et oiseaux', 'River and birds', 'Река и птицы'],
+        s_v_ocean: ['חוף סלעי', 'شاطئ صخري', 'Țărm stâncos', 'Côte rocheuse', 'Rocky coast', 'Скалистый берег'],
+        s_v_forest: ['יער אורנים', 'غابة صنوبر', 'Pădure de pini', 'Forêt de pins', 'Pine forest', 'Сосновый лес'],
+        s_v_waterfall: ['מפל ביער', 'شلال في الغابة', 'Cascadă în pădure', 'Cascade en forêt', 'Forest waterfall', 'Лесной водопад'],
+        s_v_rain: ['גשם על החלון', 'مطر على النافذة', 'Ploaie pe geam', 'Pluie sur la vitre', 'Rain on the window', 'Дождь на окне'],
+        s_v_city: ['עיר בלילה', 'مدينة في الليل', 'Oraș noaptea', 'Ville la nuit', 'City at night', 'Ночной город'],
+        s_v_stars: ['שביל החלב', 'درب التبانة', 'Calea Lactee', 'Voie lactée', 'Milky Way', 'Млечный Путь'],
+        s_v_lake: ['אגם מלמעלה', 'بحيرة من الأعلى', 'Lac văzut de sus', 'Lac vu du ciel', 'Lake from above', 'Озеро сверху'],
+        s_v_mountain: ['פסגות האלפים', 'قمم جبال الألب', 'Vârfurile Alpilor', 'Sommets des Alpes', 'Alpine peaks', 'Альпийские вершины'],
+        s_v_underwater: ['מתחת למים', 'تحت الماء', 'Sub apă', 'Sous l’eau', 'Underwater', 'Под водой'],
+        s_v_flamingo: ['להקת פלמינגו', 'سرب فلامنغو', 'Stol de flamingi', 'Flamants roses', 'Flamingos', 'Фламинго'],
+        s_v_clouds: ['אחרי השקיעה', 'بعد الغروب', 'După apus', 'Après le coucher du soleil', 'After sunset', 'После заката'],
+        credits: ['© קרדיטים להקלטות ולסרטונים', '© حقوق التسجيلات والفيديوهات', '© Credite înregistrări și video', '© Crédits sons et vidéos', '© Credits for recordings and videos', '© Авторы записей и видео'],
         go: ['✓ התחלה', '✓ ابدأ', '✓ Începe', '✓ Commencer', '✓ Start', '✓ Начать'],
         back: ['→ חזרה', '→ رجوع', '← Înapoi', '← Retour', '← Back', '← Назад'],
         menu: ['תפריט', 'القائمة', 'Meniu', 'Menu', 'Menu', 'Меню'],
@@ -84,8 +113,8 @@
     const li = () => Math.max(0, L5.indexOf(typeof LANG === 'string' ? LANG : 'he'));
     const tx = k => (TX[k] || [k])[li()];
 
-    const SCENES = [['aurora', '🌌'], ['ocean', '🌊'], ['galaxy', '🌀'], ['lanterns', '🏮'], ['orb', '🔮'], ['snow', '🌲'], ['jelly', '🪼'], ['fireflies', '✨'], ['sunset', '🌅'], ['nebula', '☁️']];
-    const SOUNDS = [['none', '🔇'], ['bowls', '🔔'], ['drone', '🕉️'], ['chimes', '🎐'], ['zen', '🎋'], ['rain', '🌧️'], ['ocean', '🌊'], ['forest', '🌲'], ['night', '🦗'], ['fire', '🔥'], ['wind', '🍃'], ['storm', '⛈️'], ['underwater', '🫧'], ['space', '🪐'], ['synth', '🎹']];
+    const SCENES = [['v_ocean', '🌊'], ['v_forest', '🌲'], ['v_waterfall', '💦'], ['v_rain', '🌧️'], ['v_city', '🌃'], ['v_stars', '🌌'], ['v_lake', '🏞️'], ['v_mountain', '🏔️'], ['v_underwater', '🐠'], ['v_flamingo', '🦩'], ['v_clouds', '🌆'], ['aurora', '🌌'], ['ocean', '🌊'], ['galaxy', '🌀'], ['lanterns', '🏮'], ['orb', '🔮'], ['snow', '🌲'], ['jelly', '🪼'], ['fireflies', '✨'], ['sunset', '🌅'], ['nebula', '☁️']]; // M-196: real videos first (assets/video), then the 3D worlds
+    const SOUNDS = [['none', '🔇'], ['waterfall', '💦'], ['lake', '🏞️'], ['tent', '⛺'], ['river', '🐦'], ['birds', '🐤'], ['jungle', '🦜'], ['frogs', '🐸'], ['owls', '🦉'], ['cave', '💧'], ['whales', '🐋'], ['cat', '🐈'], ['fountain', '⛲'], ['tibet', '🛎️'], ['city', '🏙️'], ['cafe', '☕'], ['train', '🚆'], ['bowls', '🔔'], ['drone', '🕉️'], ['chimes', '🎐'], ['zen', '🎋'], ['rain', '🌧️'], ['ocean', '🌊'], ['forest', '🌲'], ['night', '🦗'], ['fire', '🔥'], ['wind', '🍃'], ['storm', '⛈️'], ['underwater', '🫧'], ['space', '🪐'], ['synth', '🎹']]; // M-196: real recordings first
     const TIMERS = [0, 10, 20, 30, 45, 60];
     const BREATH = { inh: 7, hold: 7, exh: 8 }; // seconds; M-191: matches the slow spoken lines (M-176 was 5 / 4 / 7)
     const BP = BREATH.inh + BREATH.hold + BREATH.exh;
@@ -194,7 +223,7 @@
         transform: translateX(-50%) !important; display: flex !important; flex-direction: column; width: min(460px, 94vw) !important; }
     #relax[data-sec="sound"] .rx-scroll { flex: 1; min-height: 0; max-height: none !important; overflow: hidden !important; display: flex; flex-direction: column; }
     #relax[data-sec="sound"] .rx-sec[data-t="sound"] { flex: 1; min-height: 0; display: flex !important; flex-direction: column; }
-    #relax[data-sec="sound"] .rx-sec[data-t="sound"] .rx-grid { flex: 1; min-height: 0; grid-template-rows: repeat(5, minmax(0, 1fr)); gap: 9px !important; padding: 2px 2px 6px !important; }
+    #relax[data-sec="sound"] .rx-sec[data-t="sound"] .rx-grid { flex: 1; min-height: 0; grid-auto-rows: 104px; overflow-y: auto !important; overscroll-behavior: contain; gap: 9px !important; padding: 2px 2px 6px !important; } /* M-196: 31 sounds, so the list scrolls */
     #relax[data-sec="sound"] .rx-sec[data-t="sound"] .rx-tile { min-height: 0 !important; height: auto; }
     #relax[data-sec="sound"] .rx-panel .rx-line { flex: none; margin-top: 8px; }
     @media (max-height: 640px) { #relax .rx-bar button { height: 50px !important; } #relax .rx-bar button[data-s="go"] { height: 54px !important; } #relax .rx-head { font-size: 1.35rem; } }`;
@@ -208,7 +237,7 @@
         root = document.createElement('div');
         root.id = 'relax';
         root.innerHTML =
-            '<canvas id="rx-canvas"></canvas>' +
+            '<canvas id="rx-canvas"></canvas><video id="rx-video" muted playsinline loop preload="auto"></video>' +
             '<div class="rx-fade"></div>' +
             '<button type="button" class="rx-close" aria-label="close">✕</button>' +
             '<div class="rx-left"></div>' +
@@ -222,6 +251,7 @@
                 '<div class="rx-grid"></div></section>').join('') +
             '<div class="rx-line"><span data-k="vol"></span><input type="range" class="vol" id="rx-vol" min="0" max="100" step="5"></div>' +
             '<label class="rx-line"><span data-k="breath"></span><input type="checkbox" id="rx-br" class="toggle"></label>' +
+            '<button type="button" class="rx-cred" data-k="credits"></button>' +
             '</div>' +
             '<button type="button" class="rx-back"></button>' +
             '<button type="button" class="rx-go"></button>' +
@@ -236,6 +266,7 @@
         root.querySelector('.rx-close').addEventListener('click', e => { e.stopPropagation(); closeRelax(); });
         const vol = root.querySelector('#rx-vol');
         vol.addEventListener('input', () => { st.vol = +vol.value; paintVol(); setVol(st.vol / 100); save(); poke(); });
+        root.querySelector('.rx-cred').addEventListener('click', e => { e.stopPropagation(); showCredits(); });
         const br = root.querySelector('#rx-br');
         br.addEventListener('change', () => { st.breath = br.checked; save(); drawBreath(); poke(); });
         panel.addEventListener('pointerdown', e => { e.stopPropagation(); poke(); });
@@ -275,6 +306,21 @@
             if (!down) return; down = false;
             if (Math.abs(e.clientX - sx) < 8 && Math.abs(e.clientY - sy) < 8 && !e.target.closest('.rx-panel, .rx-close, .rx-mini, .rx-bar, .rx-unlock')) { if (root.classList.contains('rx-locked')) lockMsg(); else if (sec) setSec(''); else togglePanel(); }
         });
+    }
+    // M-196: the free licenses (CC BY / BY-SA) ask to name each author
+    function showCredits() {
+        const go = list => {
+            const bg = document.createElement('div'); bg.className = 'rx-credbox';
+            const inner = document.createElement('div'); bg.appendChild(inner);
+            const h = document.createElement('b'); h.textContent = tx('credits'); inner.appendChild(h);
+            (list || []).forEach(c => { const p = document.createElement('p'); p.textContent = (c.f || '') + ' · ' + (c.a || '?') + ' · ' + (c.l || '') + ' · Wikimedia Commons'; inner.appendChild(p); });
+            const x = document.createElement('button'); x.type = 'button'; x.textContent = '✕'; inner.appendChild(x);
+            const close = () => bg.remove();
+            x.onclick = close; bg.addEventListener('pointerdown', e => e.stopPropagation()); bg.addEventListener('click', e => { e.stopPropagation(); if (e.target === bg) close(); });
+            root.appendChild(bg);
+        };
+        if (window.MT_MEDIA_CREDITS) return go(window.MT_MEDIA_CREDITS);
+        const sc = document.createElement('script'); sc.src = 'media_credits.js'; sc.onload = () => go(window.MT_MEDIA_CREDITS); sc.onerror = () => go([]); document.head.appendChild(sc);
     }
     function paintVol() { const v = root.querySelector('#rx-vol'); v.value = st.vol; v.style.setProperty('--p', st.vol + '%'); }
     const vib = ms => { if (navigator.vibrate) try { navigator.vibrate(ms); } catch (e) { } };
@@ -911,12 +957,24 @@
         });
         scene = null; world = null;
     }
+    // M-196: a real nature video instead of the 3D world (3D drawing pauses meanwhile)
+    let vidOn = false;
+    function setVideo(k) {
+        const v = root.querySelector('#rx-video');
+        vidOn = !!(k && k.indexOf('v_') === 0);
+        root.classList.toggle('rx-vid', vidOn);
+        if (vidOn) {
+            if (v.dataset.k !== k) { v.dataset.k = k; v.src = 'video/' + k + '.mp4'; }
+            v.muted = true; const pr = v.play(); if (pr && pr.catch) pr.catch(() => { });
+        } else if (v.getAttribute('src')) { try { v.pause(); v.removeAttribute('src'); v.load(); } catch (e) { } v.dataset.k = ''; }
+    }
     function setScene(k) {
+        setVideo(k);
         if (!renderer) return;
         disposeScene();
         scene = new THREE.Scene();
         camera.position.set(0, 0, 30); camera.userData = {};
-        world = (WORLDS[k] || WORLDS.aurora)();
+        world = vidOn ? null : (WORLDS[k] || WORLDS.aurora)();
         drawBreath(); root.classList.toggle('rx-orb', k === 'orb');
         root.classList.remove('rx-in'); void root.offsetWidth; root.classList.add('rx-in');
     }
@@ -944,7 +1002,7 @@
             const at = camera.userData.at; camera.lookAt(at.x + look.x * 60, at.y - look.y * 40, at.z);
         }
         if (world) world.update(t, dt);
-        renderer.render(scene, camera);
+        if (!vidOn) renderer.render(scene, camera);
         if (!st.breath) BM.on = false;
         if (st.breath) {
             // M-176 (owner): everything moves with the calm breath: the word and its line fade in and out at the phase edges,
@@ -1050,7 +1108,7 @@
         open = false; window.relaxOn = false;
         cancelAnimationFrame(raf); clearInterval(tickT); clearInterval(fadeI); clearTimeout(hideT); hush(); bPh = ''; bT0 = -1;
         stopSound(); if (ac) { try { ac.suspend(); } catch (e) { } }
-        disposeScene();
+        disposeScene(); setVideo(null);
         if (renderer) { renderer.dispose(); try { renderer.forceContextLoss(); } catch (e) { } renderer = null; }
         root.classList.remove('open', 'rx-ending'); document.documentElement.classList.remove('relax-open');
         if (window.MedTime3D && window.MedTime3D.pause) window.MedTime3D.pause(false);

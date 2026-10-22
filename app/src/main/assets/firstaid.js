@@ -30,6 +30,8 @@
         iSave: ['💾 שמירה', '💾 حفظ', '💾 Salvează', '💾 Enregistrer', '💾 Save', '💾 Сохранить'],
         iPhAll: ['למשל: פניצילין, אגוזים', 'مثلًا: بنسلين، مكسرات', 'de ex.: penicilină, nuci', 'ex. : pénicilline, noix', 'e.g. penicillin, nuts', 'например: пенициллин, орехи'],
         iPhNotes: ['למשל: סוכרת, לחץ דם, קוצב לב', 'مثلًا: سكري، ضغط الدم، منظم ضربات القلب', 'de ex.: diabet, tensiune, stimulator cardiac', 'ex. : diabète, tension, pacemaker', 'e.g. diabetes, blood pressure, pacemaker', 'например: диабет, давление, кардиостимулятор'],
+        iLock: ['🔒 להציג על מסך הנעילה', '🔒 عرض على شاشة القفل', '🔒 Afișează pe ecranul de blocare', '🔒 Afficher sur l\'écran verrouillé', '🔒 Show on the lock screen', '🔒 Показывать на экране блокировки'], // M-200
+        iLockSub: ['צוות החירום יראה את המידע בלי לפתוח את הטלפון. גם כל מי שמחזיק בטלפון יראה אותו.', 'سيرى فريق الطوارئ المعلومات دون فتح الهاتف. وسيراها أيضًا أي شخص يمسك الهاتف.', 'Echipa de urgență vede informațiile fără să deblocheze telefonul. Le vede și oricine ține telefonul.', 'Les secours voient ces informations sans déverrouiller le téléphone. Toute personne qui le tient les voit aussi.', 'The emergency team sees it without unlocking the phone. Anyone holding the phone can see it too.', 'Бригада увидит информацию, не разблокируя телефон. Её также увидит любой, у кого в руках телефон.'],
         back: ['→ חזרה', '→ رجوع', '← Înapoi', '← Retour', '← Back', '← Назад'],
         close: ['סגירה', 'إغلاق', 'Închide', 'Fermer', 'Close', 'Закрыть']
     };
@@ -155,6 +157,8 @@
     .fa-iedit{width:100%;margin-top:10px;min-height:46px;border-radius:12px;border:none;background:#e2e8f0;color:#0f172a;font-size:1.05rem;font-weight:800;font-family:inherit}
     .fa-ice textarea{width:100%;box-sizing:border-box;font:inherit;font-size:1.15rem;border:2px solid #cbd5e1;border-radius:12px;padding:8px 10px}
     .fa-calls .c3{background:linear-gradient(135deg,#f8fafc,#cbd5e1);color:#0f172a;box-shadow:0 4px 0 #64748b;font-size:1.15rem}
+    .fa-ilock{display:flex;align-items:center;gap:10px;padding:10px 0 2px;border-top:1px solid #e2e8f0;margin-top:6px}
+    .fa-ilock span{flex:1}.fa-ilock b{display:block;font-size:1.05rem;color:#0f172a}.fa-ilock small{display:block;color:#64748b;font-size:.85rem;line-height:1.3}
     .fa-disc{color:#cbd5e1;font-size:.88rem;margin:8px 0 4px}
     .fa-btns{display:flex;gap:10px;margin-top:6px}
     .fa-btns button{flex:1;min-height:50px;border-radius:14px;border:none;color:#fff;background:#334155;font-size:1.1rem;font-weight:800;font-family:inherit}
@@ -200,18 +204,41 @@
             const c = document.createElement('button'); c.type = 'button'; c.className = 'fa-icall'; c.textContent = '📞'; c.onclick = () => call(fam.phone); d.appendChild(c);
             row('iCon', d);
         }
+        if (N && typeof N.setMedicalId === 'function') {
+            const lr = document.createElement('label'); lr.className = 'fa-ilock';
+            lr.innerHTML = '<span><b></b><small></small></span><input type="checkbox" class="toggle">';
+            lr.querySelector('b').textContent = tx('iLock'); lr.querySelector('small').textContent = tx('iLockSub');
+            const cb = lr.querySelector('input'); try { cb.checked = !!N.medicalIdOn(); } catch (e) { }
+            cb.onchange = () => { vib(); pushLock(cb.checked); };
+            box.appendChild(lr);
+        }
         const ed = document.createElement('button'); ed.type = 'button'; ed.className = 'fa-iedit'; ed.textContent = tx('iEdit');
         ed.onclick = () => {
             box.innerHTML = '';
             const mk = (k, ph, v) => { const d = document.createElement('div'); d.className = 'fa-ir'; const b = document.createElement('b'); b.textContent = tx(k); const ta = document.createElement('textarea'); ta.rows = 3; ta.placeholder = tx(ph); ta.value = v || ''; d.appendChild(b); d.appendChild(ta); box.appendChild(d); return ta; };
             const a = mk('iAll', 'iPhAll', ice.all), n = mk('iNotes', 'iPhNotes', ice.notes);
             const sv = document.createElement('button'); sv.type = 'button'; sv.className = 'fa-iedit'; sv.textContent = tx('iSave');
-            sv.onclick = () => { try { localStorage.setItem(ICE_KEY, JSON.stringify({ all: a.value.trim(), notes: n.value.trim() })); } catch (e) { } vib(); redraw(); };
+            sv.onclick = () => { try { localStorage.setItem(ICE_KEY, JSON.stringify({ all: a.value.trim(), notes: n.value.trim() })); } catch (e) { } vib(); refreshLock(); redraw(); };
             box.appendChild(sv);
         };
         box.appendChild(ed);
         return box;
     }
+    // M-200: the same information as plain text for the lock-screen notification
+    function lockText() {
+        const ice = loadIce(), out = [];
+        let who = ''; try { who = localStorage.getItem('medtime_name') || ''; } catch (e) { }
+        let fam = {}; try { fam = N && N.getFamily ? JSON.parse(N.getFamily()) : {}; } catch (e) { }
+        if (who) out.push(lab('iName') + ': ' + who);
+        const ml = medsText(); if (ml.length) out.push(lab('iMeds') + ': ' + ml.map(m => m.n).join(', '));
+        if (ice.all) out.push('⚠️ ' + lab('iAll') + ': ' + ice.all);
+        if (ice.notes) out.push(lab('iNotes') + ': ' + ice.notes);
+        if (fam && fam.phone) out.push('📞 ' + lab('iCon') + ': ' + (fam.name ? fam.name + ' ' : '') + fam.phone);
+        return out.join('\n');
+    }
+    function pushLock(on) { try { N.setMedicalId(!!on, '🆘 ' + lab('iceT'), lockText()); } catch (e) { } }
+    function refreshLock() { try { if (N && N.medicalIdOn && N.medicalIdOn()) pushLock(true); } catch (e) { } }
+    setTimeout(refreshLock, 4000); // the medicine list may have changed since last time
     function call(num) { vib(); if (N && typeof N.dial === 'function') N.dial(num); else location.href = 'tel:' + num; }
     function open() {
         vib();

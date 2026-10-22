@@ -59,6 +59,7 @@ public class I18n {
         put("appt_speech_at", "הכתובת: %a.", "العنوان: %a.", "Adresa: %a.", "Adresse : %a.", "Address: %a.", "Адрес: %a.");
         put("appt_waze", "🚗 נווט ב-Waze", "🚗 تنقّل بـ Waze", "🚗 Navighează cu Waze", "🚗 Naviguer avec Waze", "🚗 Navigate with Waze", "🚗 Маршрут в Waze");
         put("appt_call", "📞 התקשר", "📞 اتصل", "📞 Sună", "📞 Appeler", "📞 Call", "📞 Позвонить");
+        put("medid_channel", "מידע רפואי לחירום", "معلومات طبية للطوارئ", "Informații medicale de urgență", "Informations médicales d'urgence", "Emergency medical info", "Медицинская информация для экстренных случаев"); // M-200
         put("appt_ok", "👍 הבנתי", "👍 فهمت", "👍 Am înțeles", "👍 Compris", "👍 Got it", "👍 Понятно");
         put("appt_maps", "🗺️ מפות", "🗺️ خرائط", "🗺️ Hărți", "🗺️ Cartes", "🗺️ Maps", "🗺️ Карты");
         // M-132: pill stock / M-134: widget

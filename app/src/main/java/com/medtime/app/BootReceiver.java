@@ -10,5 +10,6 @@ public class BootReceiver extends BroadcastReceiver {
     public void onReceive(Context ctx, Intent intent) {
         Reminders.scheduleAll(ctx);
         Appointments.scheduleAll(ctx); // M-036
+        MedicalId.show(ctx); // M-200: medical info back on the lock screen
     }
 }

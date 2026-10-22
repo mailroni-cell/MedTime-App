@@ -234,10 +234,10 @@
         if (wt) return;
         if (!document.getElementById('mt-wait-css')) {
             const c = document.createElement('style'); c.id = 'mt-wait-css';
-            c.textContent = '#mt-wait{position:fixed;inset:0;z-index:2147483600;background:radial-gradient(circle at 50% 35%,#1e3a8a,#020617 70%);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center;opacity:0;transition:opacity .3s}' +
+            c.textContent = '#mt-wait{position:fixed!important;left:0!important;right:0!important;top:0!important;bottom:0!important;margin:0!important;width:auto!important;height:auto!important;box-sizing:border-box;z-index:2147483600!important;display:flex!important;background:radial-gradient(circle at 50% 35%,#1e3a8a,#020617 70%);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center;opacity:0;transition:opacity .3s}' +
                 '#mt-wait.in{opacity:1}#mt-wait .w-ico{font-size:4.2rem;will-change:transform;animation:mtWSpin 2.2s linear infinite}@keyframes mtWSpin{to{transform:rotate(360deg)}}' +
                 '#mt-wait b{font-size:1.5rem;line-height:1.4;max-width:420px}#mt-wait small{font-size:1.05rem;color:#bae6fd}' +
-                '#mt-wait .w-bar{width:min(320px,80vw);height:14px;border-radius:9px;background:rgba(255,255,255,.15);overflow:hidden}#mt-wait .w-bar i{display:block;height:100%;width:8%;background:linear-gradient(90deg,#22d3ee,#a78bfa);border-radius:9px;transition:width .3s}' +
+                '#mt-wait>*{margin-left:auto!important;margin-right:auto!important}#mt-wait .w-bar{width:min(320px,80vw);flex:0 0 auto;height:14px;border-radius:9px;background:rgba(255,255,255,.15);overflow:hidden}#mt-wait .w-bar i{display:block;height:100%;width:8%;background:linear-gradient(90deg,#22d3ee,#a78bfa);border-radius:9px;transition:width .3s}' +
                 '#mt-wait .w-pct{font-size:1.2rem;font-weight:800;color:#67e8f9}#mt-wait.done .w-ico{animation:none}';
             document.head.appendChild(c);
         }
