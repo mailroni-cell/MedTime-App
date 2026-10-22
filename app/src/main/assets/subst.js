@@ -17,6 +17,7 @@
         home: ['בדיקת תרופה / חליפית', 'فحص دواء / بديل', 'Verifică medicament / substitut', 'Vérifier un médicament / générique', 'Check a medicine / substitute', 'Проверка лекарства / замены'], // M-187
         homeSub: ['📖 מה התרופה עושה · צילום או הקלדת שם', '📖 ماذا يفعل الدواء · صورة أو اسم', '📖 La ce folosește · poză sau nume', '📖 À quoi sert-il · photo ou nom', '📖 What it does · photo or name', '📖 Для чего лекарство · фото или название'],
         // M-195: medicine dictionary
+        what: ['📖 מה זה?', '📖 ما هذا؟', '📖 Ce este?', '📖 C\'est quoi ?', '📖 What is it?', '📖 Что это?'],
         q0: ['איזו תרופה לבדוק?', 'أي دواء تريد أن تفحص؟', 'Ce medicament verifici?', 'Quel médicament vérifier ?', 'Which medicine to check?', 'Какое лекарство проверить?'],
         dFor: ['📖 למה התרופה משמשת', '📖 لماذا يُستخدم الدواء', '📖 La ce folosește medicamentul', '📖 À quoi sert ce médicament', '📖 What the medicine is for', '📖 Для чего это лекарство'],
         dNone: ['אין לי הסבר פשוט לתרופה הזו. אפשר לקרוא את ההתוויה הרשמית למטה או את העלון.', 'لا يوجد لدي شرح مبسّط لهذا الدواء. يمكن قراءة الدواعي الرسمية أدناه أو النشرة.', 'Nu am o explicație simplă pentru acest medicament. Poți citi indicația oficială mai jos sau prospectul.', 'Je n\'ai pas d\'explication simple pour ce médicament. Lisez l\'indication officielle ci-dessous ou la notice.', 'I have no simple explanation for this medicine. You can read the official indication below or the leaflet.', 'Для этого лекарства нет простого объяснения. Можно прочитать официальные показания ниже или листок-вкладыш.'],
@@ -177,6 +178,7 @@
     .sb-verd .pharm{font-size:1.02rem;font-weight:800;color:#fde68a}
     .sb-verd .sb-src{margin:4px 0 0}
     .sb-btns .ok{background:linear-gradient(135deg,#7c3aed,#5b21b6)}
+    .sb-btn.sb-what{border-color:#bae6fd!important;background:linear-gradient(135deg,#0ea5e9,#0369a1)!important}
     .sb-info{flex:1 1 auto;overflow:auto;min-height:60px}
     .sb-sub{color:#a5b4fc;font-size:.9rem;direction:ltr;text-align:start;margin-bottom:10px}
     .sb-dh{color:#fde68a;font-weight:800;font-size:1.1rem;margin:4px 0}
@@ -323,23 +325,25 @@
             q('.cl').textContent = tx('close'); q('.cl').onclick = () => res(null);
         });
     }
-    async function start(m) {
+    async function start(m, info) { // info: open the dictionary card first (M-197: "📖 what is it?" on a medicine card)
         vib();
         const it = m ? await chooseItem(m) : { name: '' }; if (!it) return; // M-187: from the main screen there is no card
         const s = sheet();
         s.sh.innerHTML = `<div class="sb-t">${esc(tx('loading'))}</div>`;
         await loadDb();
         let step = 0, orig = null, got = null;
+        const dictFirst = !m || info;
+        if (info) { const r = search(it.name, 2); if (r.length && norm(nameOf(r[0])) === norm(it.name) || r.length === 1) { orig = r[0]; step = 3; } }
         for (;;) {
             if (step === 0) {
-                const r = await pickStep(s, tx(m ? 'q1' : 'q0'), orig ? nameOf(orig) : it.name, false);
-                if (!r || r === 'back') break; orig = r; step = m ? 1 : 3; // M-195: from the main screen, the dictionary card first
+                const r = await pickStep(s, tx(dictFirst ? 'q0' : 'q1'), orig ? nameOf(orig) : it.name, false);
+                if (!r || r === 'back') break; orig = r; step = dictFirst ? 3 : 1; // M-195: from the main screen, the dictionary card first
             } else if (step === 3) {
                 const r = await infoStep(s, orig);
                 if (r === 'back') { step = 0; continue; } if (!r) break; step = 1;
             } else if (step === 1) {
                 const r = await pickStep(s, tx('q2'), '', true);
-                if (r === 'back') { step = m ? 0 : 3; continue; } if (!r) break; got = r; step = 2;
+                if (r === 'back') { step = dictFirst ? 3 : 0; continue; } if (!r) break; got = r; step = 2;
             } else {
                 const r = await resultStep(s, m, it, orig, got);
                 if (r === 'back') { step = 1; continue; } break;
@@ -435,7 +439,9 @@
         if (!row) { row = document.createElement('div'); row.className = 'pl-row'; li.classList.add('pl-wrap'); li.appendChild(row); }
         const b = document.createElement('button'); b.type = 'button'; b.className = 'sb-btn'; b.textContent = tx('btn');
         b.onclick = () => start(m);
-        row.appendChild(b);
+        const w = document.createElement('button'); w.type = 'button'; w.className = 'sb-btn sb-what'; w.textContent = tx('what');
+        w.onclick = () => start(m, true);
+        row.appendChild(w); row.appendChild(b);
     };
     if (typeof renderMeds === 'function') try { renderMeds(); } catch (e) { }
     window.mtSubstCompare = compare; // for tests
