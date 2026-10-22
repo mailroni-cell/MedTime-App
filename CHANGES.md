@@ -280,3 +280,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | R-196 | 2026-10-22 | release/stable.txt | Run 196 (M-250) released to everyone | ✅ |
 | M-251 | 2026-10-22 | looks.js | Owner: My reminders never scrolls: after the plus.js tighter steps, the week bar and cards shrink together to the biggest size that fits above Done (stray bottom padding removed) | ⏳ |
 | M-252 | 2026-10-22 | looks.js | Owner: Display screen redesigned: themes in swipeable pages (3x3, 2x3 in low vision) with big arrows and dots, opens on the chosen theme page; each theme card shows a two-colour capsule and a clear name | ⏳ |
+| R-197 | 2026-10-22 | release/stable.txt | Run 197 (M-251, M-252) released to everyone | ✅ |
