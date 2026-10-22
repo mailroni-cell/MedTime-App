@@ -212,16 +212,30 @@
     };
 
     // Single card from a "fix" button or the updater
-    window.mtPermGuide = function (key) {
-        return guide(key, 0, 0).then(ok => { close(); if (typeof renderStatus === 'function') try { renderStatus(); } catch (e) { } return ok; });
+    // owner 2026-10-22: a "fix" button goes through EVERYTHING that is missing, one after another, then back to the main screen
+    window.mtPermGuide = async function (key) {
+        const st = N ? status() : {};
+        let list = FIRST.filter(k => st[k] === false);
+        list = list.indexOf(key) < 0 ? [key] : [key].concat(list.filter(k => k !== key));
+        const n = list.length > 1 ? list.length : 0;
+        let ok = true;
+        for (let i = 0; i < list.length; i++) {
+            if (n && status()[list[i]] !== false) continue;
+            if (!(await guide(list[i], n ? i : 0, n))) ok = false;
+        }
+        close(); if (typeof renderStatus === 'function') try { renderStatus(); } catch (e) { }
+        return ok;
     };
 
     // ---------- first launch: only what is missing ----------
+    // owner 2026-10-22: the permissions come FIRST, the welcome wizard (name, size, look, voice) waits for this promise
+    let setupEnd; window.mtSetupP = new Promise(r => { setupEnd = r; });
     const KEY = 'medtime_setup';
     let done = false;
     try { done = localStorage.getItem(KEY) === '1'; } catch (e) { }
-    if (!N || typeof N.getStatus !== 'function') return;
+    if (!N || typeof N.getStatus !== 'function') { setupEnd(); return; }
     if (done) {
+        setupEnd();
         // M-094: people who finished the setup before: ask once for "on top of everything"
         let asked = false; try { asked = localStorage.getItem('medtime_overlay_asked') === '1'; } catch (e) { }
         if (asked || status().overlay !== false) return;
@@ -238,18 +252,18 @@
         if (document.getElementById('splash')) return false;
         const w = document.getElementById('welcome');
         if (w && w.classList.contains('show')) return false;
-        if (document.querySelector('.ob-bg')) return false; // M-086: welcome wizard first
         return !document.querySelector('.mt-dlg-bg');
     }
     let tries = 0;
     const wait = setInterval(() => {
-        if (++tries > 240) { clearInterval(wait); return; }
+        if (++tries > 240) { clearInterval(wait); setupEnd(); return; }
         if (!ready()) return;
         clearInterval(wait);
         setTimeout(run, 900);
     }, 500);
 
-    async function run() {
+    async function run() { try { await run2(); } finally { setupEnd(); } }
+    async function run2() {
         const st = status();
         const need = FIRST.filter(k => st[k] === false);
         try { localStorage.setItem(KEY, '1'); } catch (e) { }

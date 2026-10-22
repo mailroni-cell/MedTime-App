@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="fonts.css">
     <link rel="stylesheet" href="namefont.css">
     <!-- M-013: Three.js bundled in the app (works offline) -->
+    <script src="store.js"></script>
     <script src="lib/three.min.js"></script>
     <script src="lib/CopyShader.js"></script>
     <script src="lib/LuminosityHighPassShader.js"></script>
@@ -1675,20 +1676,20 @@
         /* ---------- M-032: first launch: choose language ---------- */
         #welcome {
             position: fixed; inset: 0; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center;
-            gap: 2.4vh; padding: calc(16px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));
+            gap: 2vh; padding: calc(16px + env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom)); overflow-y: auto; justify-content: safe center;
             background: radial-gradient(ellipse at 50% 30%, #1e1b4b, #02030a 85%); color: #fff;
             transition: opacity 0.5s ease;
         }
         #welcome.show { display: flex; animation: spFade 0.6s ease both; }
         #welcome.out { opacity: 0; }
-        #welcome .wl-globe { font-size: 4.2rem; filter: drop-shadow(0 0 18px rgba(103, 232, 249, 0.9)); animation: wlSpin 6s linear infinite; }
+        #welcome .wl-globe { font-size: 3.4rem; filter: drop-shadow(0 0 18px rgba(103, 232, 249, 0.9)); animation: wlSpin 6s linear infinite; }
         @keyframes wlSpin { 0%, 100% { transform: rotateY(0) } 50% { transform: rotateY(180deg) } }
         #welcome .wl-title { font-size: clamp(1.6rem, 7vmin, 2.4rem); font-weight: 800; text-align: center; min-height: 1.4em;
             text-shadow: 0 0 16px rgba(103, 232, 249, 0.8); transition: opacity 0.35s; }
-        #welcome .wl-langs { display: grid; grid-template-columns: 1fr; gap: 1.6vh; width: min(100%, 420px); }
+        #welcome .wl-langs { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4vh; width: min(100%, 420px); }
         #welcome .wl-langs button {
-            display: flex; align-items: center; justify-content: center; gap: 14px; font-size: 1.5rem; font-weight: 700; color: #fff;
-            padding: 2vh 14px; border-radius: 22px; border: 2px solid rgba(103, 232, 249, 0.35);
+            display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.3rem; font-weight: 700; color: #fff;
+            padding: 2.2vh 8px; border-radius: 22px; border: 2px solid rgba(103, 232, 249, 0.35);
             background: linear-gradient(180deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
             box-shadow: 0 5px 0 #020617, 0 0 18px rgba(var(--gA), 0.35); transition: transform 0.12s, box-shadow 0.2s;
         }
@@ -1696,7 +1697,8 @@
         #welcome .wl-langs button:active { transform: translateY(4px); box-shadow: 0 1px 0 #020617; }
         #welcome .wl-langs button.sel { border-color: #67e8f9; background: linear-gradient(180deg, #0e7490, #0c4a6e);
             box-shadow: 0 5px 0 #082f49, 0 0 28px rgba(var(--gA), 0.9); }
-        #welcome .wl-note { font-size: 1.1rem; text-align: center; color: #c7d2fe; min-height: 2.6em; max-width: 420px; }
+        #welcome .wl-note { font-size: 1.05rem; text-align: center; color: #c7d2fe; min-height: 2.6em; max-width: 420px; }
+        #welcome .wl-go { flex: none; margin-bottom: 4px; }
         #welcome .wl-go { font-size: 1.5rem; font-weight: 800; padding: 1.8vh 48px; border-radius: 999px; border: none; color: #022c22;
             background: linear-gradient(180deg, #6ee7b7, #10b981); box-shadow: 0 5px 0 #065f46, 0 0 30px rgba(16, 185, 129, 0.9);
             visibility: hidden; }
@@ -2763,7 +2765,7 @@
                     var rm = function () { sp.remove(); };
                     if (window.requestIdleCallback) requestIdleCallback(rm, { timeout: 3000 }); else rm();
                 }, 4500);
-                if (first && window.mtOnboard) setTimeout(window.mtOnboard, 700); // M-086 wizard, after the opening
+                if (first && window.mtOnboard) setTimeout(function () { (window.mtSetupP || Promise.resolve()).then(function () { setTimeout(window.mtOnboard, 500); }); }, 700); // M-086 wizard; owner 2026-10-22: after the permissions
             };
             // M-057: the timeline starts on the first real frame (splash3d.js adds .go and ends it at 7.6 s); safety net here
             window.__spGo = function () { if (sp.classList.contains('go')) return; sp.classList.add('go'); setTimeout(function () { if (!window.__sp3d) window.endSplash(); }, 9800); }; // M-078: with 3D, splash3d.js ends it after the finale on its own clock
@@ -2783,7 +2785,7 @@
                 var cyc = setInterval(function () {
                     if (chosen) return;
                     title.style.opacity = 0;
-                    setTimeout(function () { if (chosen) return; k = (k + 1) % 5; title.textContent = TX[order[k]].pick; title.dir = TX[order[k]].dir; title.style.opacity = 1; }, 350);
+                    setTimeout(function () { if (chosen) return; k = (k + 1) % order.length; title.textContent = TX[order[k]].pick; title.dir = TX[order[k]].dir; title.style.opacity = 1; }, 350);
                 }, 1600);
                 w.querySelectorAll('.wl-langs button').forEach(function (b) {
                     b.addEventListener('click', function () {
@@ -3754,7 +3756,8 @@
         }
 
         const TYPES = ['pill', 'injection', 'drops', 'syrup', 'cream', 'inhaler'];
-        const TYPE_ICON = { pill: '💊', injection: '💉', drops: '💧', syrup: '🥄', cream: '🧴', inhaler: '🌬️' };
+        const TYPE_ICON = window.MT_STORE ? { pill: '⏰', injection: '⏰', drops: '⏰', syrup: '⏰', cream: '⏰', inhaler: '⏰' } // Play edition
+            : { pill: '💊', injection: '💉', drops: '💧', syrup: '🥄', cream: '🧴', inhaler: '🌬️' };
         const itemRows = document.getElementById('item-rows');
 
         // M-010: one big readable card per medicine: type buttons with icons, labelled fields

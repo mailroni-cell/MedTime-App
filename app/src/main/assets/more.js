@@ -432,7 +432,7 @@
     // ---------------- 📤 share ----------------
     const sh = tile('tile-share', '📤', 'linear-gradient(135deg,#25d366,#128c7e)',
         '<div class="mo-x" id="sh-x"></div><div class="mo-msg" id="sh-msg"></div><button type="button" class="mo-btn" id="sh-go"></button>');
-    const shareMsg = () => tx('shMsg') + LINK;
+    const shareMsg = () => window.MT_STORE && window.mtStoreShare ? window.mtStoreShare() : tx('shMsg') + LINK; // Play edition: store link
     function drawShare() {
         heads(sh, 'shT', tx('shSub'));
         document.getElementById('sh-x').textContent = tx('shX');

@@ -58,7 +58,7 @@ jobs:
         run: |
           set -o pipefail
           test -f app/medtime-upload.keystore || { echo "::error::No upload key yet - run 'Play - create upload key (once)' first"; exit 1; }
-          gradle bundlePlayRelease --stacktrace 2>&1 | tee build.log
+          gradle bundlePlayRelease assemblePlayRelease --stacktrace 2>&1 | tee build.log
 
       - name: Report build errors
         if: failure()
@@ -70,6 +70,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cp app/build/outputs/bundle/playRelease/*.aab MedTime-play.aab
+          # preview APK for the owner's phone (installs next to MedTime; uninstall it before installing from Play)
+          cp app/build/outputs/apk/play/release/*.apk MyTime-preview.apk
           echo "run ${{ github.run_number }} / ${{ github.sha }} / versionCode $((100 + ${{ github.run_number }}))" > play-info.txt
           gh release delete play --yes --cleanup-tag || true
-          gh release create play MedTime-play.aab play-info.txt --target "${{ github.sha }}" --title "MedTime for Google Play (run ${{ github.run_number }})" --notes "Store bundle - upload this AAB in Play Console" --prerelease
+          gh release create play MedTime-play.aab MyTime-preview.apk play-info.txt --target "${{ github.sha }}" --title "MedTime for Google Play (run ${{ github.run_number }})" --notes "Store bundle - upload this AAB in Play Console" --prerelease

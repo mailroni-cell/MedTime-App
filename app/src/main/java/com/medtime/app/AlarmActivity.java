@@ -88,7 +88,7 @@ public class AlarmActivity extends Activity {
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dp(200), dp(200));
             lp.bottomMargin = dp(12);
             root.addView(iv, lp);
-        } else root.addView(text("💊", 72, "#38bdf8"));
+        } else root.addView(text(BuildConfig.STORE ? "⏰" : "💊", 72, "#38bdf8"));
         root.addView(text(I18n.t(this, lines.length > 1 ? "screen_many" : "screen_one"), 22, "#94a3b8"));
         int size = lines.length > 3 ? 22 : (lines.length > 1 ? 28 : 34);
         for (String l : lines) root.addView(text(l, size, lowVision ? "#FFE500" : "#f8fafc"));

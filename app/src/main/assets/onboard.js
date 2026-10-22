@@ -25,7 +25,7 @@
         ts: [['רגיל', 'גדול', 'גדול מאוד'], ['عادي', 'كبير', 'كبير جدًا'], ['Normal', 'Mare', 'Foarte mare'], ['Normal', 'Grand', 'Très grand'], ['Normal', 'Large', 'Extra large'], ['Обычный', 'Крупный', 'Очень крупный']],
         lv: ['👓 כפתורים גדולים במיוחד', '👓 أزرار كبيرة جدًا', '👓 Butoane foarte mari', '👓 Très gros boutons', '👓 Extra big buttons', '👓 Очень крупные кнопки'],
         lookT: ['איזה עיצוב אוהבים?', 'أي تصميم تحب؟', 'Ce aspect vă place?', 'Quel style aimez-vous ?', 'Which look do you like?', 'Какой вид вам нравится?'],
-        lookX: ['לחצו כדי לראות ברקע. יש עוד 30 עיצובים בהגדרות.', 'اضغط لترى في الخلفية. يوجد 30 تصميمًا آخر في الإعدادات.', 'Apăsați ca să vedeți în fundal. Mai sunt 30 în Setări.', 'Appuyez pour voir en fond. 30 autres styles dans Réglages.', 'Tap to see it behind. 30 more looks in Settings.', 'Нажмите, чтобы увидеть его на фоне. Ещё 30 вариантов в Настройках.'],
+        lookX: ['לחצו על עיצוב והאפליקציה תתחלף מאחור. אפשר לשנות בכל עת בהגדרות ⚙️.', 'اضغط على تصميم ليتغيّر التطبيق في الخلفية. يمكن تغييره دائمًا في الإعدادات ⚙️.', 'Apăsați un aspect și aplicația se schimbă în spate. Se poate schimba oricând din Setări ⚙️.', 'Touchez un style et l\'appli change derrière. Modifiable à tout moment dans Réglages ⚙️.', 'Tap a look and the app changes behind it. You can change it any time in Settings ⚙️.', 'Нажмите на вид, и приложение сменится сзади. Изменить можно в любое время в Настройках ⚙️.'],
         auto: ['🌅🌙 לפי שעות היום', '🌅🌙 حسب ساعات اليوم', '🌅🌙 După ora zilei', '🌅🌙 Selon l\'heure', '🌅🌙 By time of day', '🌅🌙 По времени суток'],
         voiceT: ['להקריא את התזכורת בקול?', 'قراءة التذكير بصوت عالٍ؟', 'Citim mementoul cu voce tare?', 'Lire le rappel à voix haute ?', 'Read the reminder out loud?', 'Зачитывать напоминание вслух?'],
         voiceX: ['בזמן התזכורת הטלפון יגיד את שם התרופה והמינון. לחצו ▶ כדי לשמוע.', 'وقت التذكير يقول الهاتف اسم الدواء والجرعة. اضغط ▶ للاستماع.', 'La memento telefonul spune numele medicamentului și doza. Apăsați ▶.', 'Au rappel, le téléphone dit le nom du médicament et la dose. Appuyez ▶.', 'At reminder time the phone says the medicine name and dose. Tap ▶ to hear.', 'Во время напоминания телефон произносит название лекарства и дозу. Нажмите ▶, чтобы послушать.'],
@@ -34,7 +34,7 @@
         sample: ['הגיע הזמן לקחת אקמול, כדור אחד.', 'حان وقت تناول الدواء، حبة واحدة.', 'Este timpul pentru medicament, o pastilă.', 'C\'est l\'heure du médicament, un comprimé.', 'It is time to take your medicine, one tablet.', 'Пора принять лекарство, одну таблетку.'],
         doneT: ['שלום {n}! הכל מוכן 🎉', 'أهلًا {n}! كل شيء جاهز 🎉', 'Bună, {n}! Totul e gata 🎉', 'Bonjour {n} ! Tout est prêt 🎉', 'Hi {n}! All set 🎉', 'Привет, {n}! Всё готово 🎉'],
         doneT0: ['הכל מוכן 🎉', 'كل شيء جاهز 🎉', 'Totul e gata 🎉', 'Tout est prêt 🎉', 'All set 🎉', 'Всё готово 🎉'],
-        doneX: ['עכשיו נאשר לטלפון לשלוח תזכורות, ואז מוסיפים את התרופה הראשונה ➕.', 'الآن نسمح للهاتف بإرسال التذكيرات، ثم نضيف أول دواء ➕.', 'Acum permitem telefonului să trimită mementouri, apoi adăugăm primul medicament ➕.', 'Autorisons maintenant les rappels, puis ajoutons le premier médicament ➕.', 'Now let the phone send reminders, then add your first medicine ➕.', 'Теперь разрешите телефону присылать напоминания, затем добавьте первое лекарство ➕.'],
+        doneX: ['עכשיו מוסיפים את התרופה הראשונה ➕.', 'الآن نضيف أول دواء ➕.', 'Acum adăugăm primul medicament ➕.', 'Ajoutons maintenant le premier médicament ➕.', 'Now add your first medicine ➕.', 'Теперь добавьте первое лекарство ➕.'],
         again: ['✨ אשף הפתיחה מההתחלה (שם, כתב, עיצוב, קול)', '✨ معالج البداية من جديد (الاسم، الخط، التصميم، الصوت)', '✨ Asistentul de început din nou', '✨ Relancer l\'assistant de bienvenue', '✨ Run the welcome setup again', '✨ Пройти начальную настройку снова'],
         doneB: ['יוצאים לדרך', 'هيا بنا', 'Începem', 'C\'est parti', 'Let\'s go', 'Поехали'],
         // home greeting by time of day
@@ -67,6 +67,16 @@
     .ob-th button{border:2px solid rgba(255,255,255,.18);border-radius:18px;padding:0;overflow:hidden;color:#fff;font-weight:700;font-size:.85rem;background:#111}
     .ob-th button span{display:block;height:54px}.ob-th button em{display:block;font-style:normal;padding:6px 4px;background:rgba(0,0,0,.45);line-height:1.2}
     .ob-th button.sel{border-color:#22d3ee;box-shadow:0 0 14px rgba(34,211,238,.6)}
+    .ob-card.ob-tall{display:flex;flex-direction:column;height:88vh;max-height:88vh;overflow:hidden;padding-bottom:14px}
+    .ob-x-s{font-size:.95rem;margin-bottom:10px}
+    .ob-th-all{flex:1;min-height:0;overflow-y:auto;grid-auto-rows:max-content;-webkit-overflow-scrolling:touch;align-content:start;padding:4px 2px 8px;margin-bottom:12px}
+    .ob-th-all button{position:relative;border-radius:20px;transition:transform .15s}
+    .ob-th-all button:active{transform:scale(.95)}
+    .ob-th-all button span{height:78px;display:flex;align-items:center;justify-content:center;font-size:1.5rem}
+    .ob-th-all button span i{width:22px;height:22px;border-radius:50%}
+    .ob-th-all button em{font-size:.82rem;min-height:2.4em;display:flex;align-items:center;justify-content:center}
+    .ob-th-all button.sel{border-color:#fff;box-shadow:0 0 0 2px #22d3ee,0 0 18px rgba(34,211,238,.8);transform:scale(1.03)}
+    .ob-tall .ob-go{flex:none}
     .ob-row{display:flex;gap:8px;align-items:center;margin-bottom:16px}
     .ob-row .ob-opt{font-size:1.1rem;padding:15px 6px}
     .ob-play{flex:none;width:54px;height:54px;border-radius:50%;border:0;font-size:1.3rem;color:#fff;background:linear-gradient(135deg,#22c55e,#0d9488)}
@@ -187,18 +197,23 @@
     }
 
     async function stepLook() {
+        // owner 2026-10-22: all the looks (not 6), as big live swatches in a scrolling grid; tap = the app changes behind at once
         const TH = window.MED_THEMES || [];
-        const picks = ['auto', 0, 1, 2, 8, 4].filter(i => i === 'auto' || TH[i]);
+        const picks = ['auto'].concat(TH.map((t, i) => i));
         let cur = 'auto'; try { cur = localStorage.getItem('medtime_theme') || 'auto'; } catch (e) { }
         const name = th => th.n[li()] || th.n[4];
-        card(3, '<div class="ob-ico">🎨</div><div class="ob-t">' + esc(pick(T.lookT)) + '</div><div class="ob-x">' + esc(pick(T.lookX)) + '</div>' +
-            '<div class="ob-th">' + picks.map(i => {
-                if (i === 'auto') return '<button type="button" data-th="auto"><span style="background:linear-gradient(135deg,#f59e0b,#ec4899 45%,#1e3a8a)"></span><em>' + esc(pick(T.auto)) + '</em></button>';
+        const sw = th => 'radial-gradient(circle at 30% 25%,' + th.neb[0] + 'cc,transparent 55%),radial-gradient(circle at 75% 45%,' + th.neb[1] + 'aa,transparent 50%),' +
+            'radial-gradient(circle at 50% 85%,' + th.neb[2] + '88,transparent 55%),linear-gradient(180deg,' + th.sky[2] + ',' + th.sky[1] + ' 60%,' + th.sky[0] + ')';
+        card(3, '<div class="ob-t">🎨 ' + esc(pick(T.lookT)) + '</div><div class="ob-x ob-x-s">' + esc(pick(T.lookX)) + '</div>' +
+            '<div class="ob-th ob-th-all">' + picks.map(i => {
+                if (i === 'auto') return '<button type="button" data-th="auto"><span style="background:linear-gradient(135deg,#f59e0b,#ec4899 45%,#1e3a8a)">🌅🌙</span><em>' + esc(pick(T.auto)) + '</em></button>';
                 const th = TH[i];
-                return '<button type="button" data-th="' + i + '"><span style="background:linear-gradient(135deg,' + th.sky[2] + ',' + th.ga + ',' + th.gb + ')"></span><em>' + esc(name(th)) + '</em></button>';
+                return '<button type="button" data-th="' + i + '"><span style="background:' + sw(th) + '"><i style="background:linear-gradient(135deg,' + th.hero[0] + ' 50%,' + th.hero[1] + ' 50%);box-shadow:0 0 12px ' + th.ga + '"></i></span><em>' + esc(name(th)) + '</em></button>';
             }).join('') + '</div><button type="button" class="ob-go">' + esc(pick(T.next)) + '</button>');
+        bg.querySelector('.ob-card').classList.add('ob-tall');
         const mark = () => bg.querySelectorAll('.ob-th button').forEach(b => b.classList.toggle('sel', b.dataset.th === String(cur)));
         mark();
+        const selB = bg.querySelector('.ob-th button.sel'); if (selB) try { selB.scrollIntoView({ block: 'center' }); } catch (e) { }
         bg.querySelectorAll('.ob-th button').forEach(b => b.onclick = () => {
             vib(); cur = b.dataset.th; mark();
             try { localStorage.setItem('medtime_theme', cur); } catch (e) { }

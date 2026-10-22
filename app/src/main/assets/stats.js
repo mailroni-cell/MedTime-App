@@ -4,6 +4,7 @@
 // docs/stats.html; survey answers also arrive as a notification on the owner's survey topic.
 (function () {
     'use strict';
+    if (window.MT_STORE) return; // Play edition: nothing is sent anywhere (Data safety: no data collected)
     const NT = 'https://ntfy.sh/', TOPIC = 'medtime-v3tqzebpancz9djidfg7bh', STOPIC = 'medtime-s-pj9eh8jegcpcfn6wbkpp';
     const FORM = NT + TOPIC; // the survey is on when this is set
     const N = window.MedTimeNative;
