@@ -196,6 +196,7 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | R-163 | 2026-10-22 | release/stable.txt | Run 163 (M-182..M-188) released to everyone 01:59 UTC | ✅ |
 | M-189 | 2026-10-22 | NativeBridge.java | Owner: after allowing "install from this source" in the phone settings, come back to the app by itself (the M-095 watcher now also covers the install screen; the update then continues) | ⏳ |
 | M-190 | 2026-10-22 | index.html, plus.js | Owner: the main-screen warning only opened bare settings, and the main screen was crowded (buttons on top of each other). The warning button is now "Fix" and opens the friendly explanation of the missing setting first (then Android's screen, then back by itself). When the main screen is still too full (warning + my reminders + medicine check), the tour button (also in Help) and the greeting step aside and buttons get slimmer (fit5) | ⏳ |
+| R-165 | 2026-10-22 | release/stable.txt | Run 165 (M-189, M-190) released to everyone | ✅ |
 | R-156 | 2026-10-21 | release/stable.txt | Run 156 (M-175) released to everyone | ✅ |
 | R-155 | 2026-10-21 | release/stable.txt | Run 155 (M-172..M-174) released to everyone (standing rule) | ✅ |
 | R-154 | 2026-10-21 | release/stable.txt | Owner: run 154 (M-169..M-171) released to everyone | ✅ |
