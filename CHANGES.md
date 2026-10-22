@@ -263,3 +263,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-239 | 2026-10-22 | homelayout.js | Owner: symbols bigger and floating freely in every direction (drift + tilt on all axes + turn); menu up to 150 px when there is room | ⏳ |
 | M-240 | 2026-10-22 | homelayout.js | Owner: no "no appointments" line; when there are appointments the line glows fluorescent green | ⏳ |
 | M-241 | 2026-10-22 | homelayout.js | Owner: menu icons are glossy two-colour tilted 3D pills (capsules) with the floating symbol on them; the passing light follows the pill | ⏳ |
+| R-189 | 2026-10-22 | release/stable.txt | Run 189 (M-223..M-241) released to everyone | ✅ |
