@@ -383,7 +383,7 @@ public class NativeBridge {
                 watchId++;
                 try {
                     Intent back = new Intent(activity, MainActivity.class)
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP); // M-192: closes the settings screen left behind
                     activity.getApplicationContext().startActivity(back);
                 } catch (Exception ignored) { }
             }

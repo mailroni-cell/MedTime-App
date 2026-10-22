@@ -21,13 +21,13 @@
             ['Inspiră adânc pe nas… {n} secunde', 'Umple-ți burta cu aer, încet', 'O inspirație moale și liniștită', 'Simte cum se lărgește pieptul'],
             ['Inspirez profondément par le nez… {n} secondes', 'Remplissez le ventre d\'air, lentement', 'Une inspiration douce et calme', 'Sentez la poitrine s\'ouvrir'],
             ['Breathe in deeply through your nose… {n} seconds', 'Fill your belly with air, slowly', 'A soft, quiet breath in', 'Feel your chest expand'],
-            ['Глубокий вдох через нос… {n} секунды', 'Медленно наполните живот воздухом', 'Мягкий, спокойный вдох', 'Почувствуйте, как расширяется грудь']],
+            ['Глубокий вдох через нос… {n} секунд', 'Медленно наполните живот воздухом', 'Мягкий, спокойный вдох', 'Почувствуйте, как расширяется грудь']],
         gHold: [['מחזיקים בעדינות… {n} שניות', 'עוצרים רגע, בלי מאמץ', 'נשארים כאן, רגועים', 'הכתפיים רפויות'],
             ['احبس بلطف… {n} ثوانٍ', 'توقف لحظة، دون جهد', 'ابقَ هنا، هادئًا', 'أرخِ كتفيك'],
             ['Ține ușor… {n} secunde', 'Oprește-te o clipă, fără efort', 'Rămâi aici, liniștit', 'Umerii relaxați'],
             ['Retenez doucement… {n} secondes', 'Une pause, sans effort', 'Restez là, détendu', 'Les épaules relâchées'],
             ['Hold gently… {n} seconds', 'Pause for a moment, no effort', 'Stay here, calm', 'Let your shoulders drop'],
-            ['Мягко задержите… {n} секунды', 'Пауза, без усилий', 'Оставайтесь здесь, спокойно', 'Плечи расслаблены']],
+            ['Мягко задержите… {n} секунд', 'Пауза, без усилий', 'Оставайтесь здесь, спокойно', 'Плечи расслаблены']],
         gOut: [['משחררים לאט דרך הפה… {n} שניות', 'נושפים החוצה את כל המתח', 'משחררים… לאט… עד הסוף', 'הגוף נרגע ונעשה כבד'],
             ['أخرج الهواء ببطء من الفم… {n} ثوانٍ', 'أخرج كل التوتر', 'ببطء… حتى النهاية', 'جسدك يسترخي ويثقل'],
             ['Expiră încet pe gură… {n} secunde', 'Dă afară toată tensiunea', 'Încet… până la capăt', 'Corpul se relaxează și devine greu'],
@@ -87,7 +87,7 @@
     const SCENES = [['aurora', '🌌'], ['ocean', '🌊'], ['galaxy', '🌀'], ['lanterns', '🏮'], ['orb', '🔮'], ['snow', '🌲'], ['jelly', '🪼'], ['fireflies', '✨'], ['sunset', '🌅'], ['nebula', '☁️']];
     const SOUNDS = [['none', '🔇'], ['bowls', '🔔'], ['drone', '🕉️'], ['chimes', '🎐'], ['zen', '🎋'], ['rain', '🌧️'], ['ocean', '🌊'], ['forest', '🌲'], ['night', '🦗'], ['fire', '🔥'], ['wind', '🍃'], ['storm', '⛈️'], ['underwater', '🫧'], ['space', '🪐'], ['synth', '🎹']];
     const TIMERS = [0, 10, 20, 30, 45, 60];
-    const BREATH = { inh: 5, hold: 4, exh: 7 }; // seconds; M-176: slower and calmer, 5 in / 4 hold / 7 out
+    const BREATH = { inh: 7, hold: 7, exh: 8 }; // seconds; M-191: matches the slow spoken lines (M-176 was 5 / 4 / 7)
     const BP = BREATH.inh + BREATH.hold + BREATH.exh;
 
     // M-074: calm mode always opens fresh (quiet, nothing pre-chosen); "Last mode" brings back the last choices
@@ -542,7 +542,27 @@
     const NOISE = 'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}' +
         'float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1.,0.)),f.x),mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),f.x),f.y);}' +
         'float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*noise(p);p*=2.03;a*=.5;}return v;}';
+    // M-191 (owner): the breathing follows the voice: a phase lasts its seconds, but never ends before the spoken line has
+    // finished (plus a calm pause); only then the next line and the next phase come
+    const BM = { on: false, ph: 'inhale', t0: 0, len: BREATH.inh, end: 0, cyc: 0 };
+    const NEXT = { inhale: ['hold', 'hold'], hold: ['exhale', 'exh'], exhale: ['inhale', 'inh'] };
+    let nowT = 0;
+    function bmTick(t) {
+        nowT = t;
+        if (!BM.on) return false;
+        if (t < Math.max(BM.t0 + BM.len, BM.end)) return false;
+        const [ph, key] = NEXT[BM.ph];
+        if (ph === 'inhale') BM.cyc++;
+        Object.assign(BM, { ph: ph, t0: t, len: BREATH[key], end: 0 });
+        return true;
+    }
+    function bmStart(t) { Object.assign(BM, { on: true, ph: 'inhale', t0: t, len: BREATH.inh, end: 0, cyc: 0 }); nowT = t; }
+    function bmK(t) {
+        const u = Math.min(1, Math.max(0, (t - BM.t0) / BM.len));
+        return BM.ph === 'inhale' ? 0.5 - 0.5 * Math.cos(u * Math.PI) : BM.ph === 'hold' ? 1 : 0.5 + 0.5 * Math.cos(u * Math.PI);
+    }
     function breathK(t) { // 0..1 orb size and phase name
+        if (BM.on) return [bmK(t), BM.ph];
         const x = t % BP;
         if (x < BREATH.inh) { const k = x / BREATH.inh; return [0.5 - 0.5 * Math.cos(k * Math.PI), 'inhale']; }
         if (x < BREATH.inh + BREATH.hold) return [1, 'hold'];
@@ -925,17 +945,15 @@
         }
         if (world) world.update(t, dt);
         renderer.render(scene, camera);
+        if (!st.breath) BM.on = false;
         if (st.breath) {
             // M-176 (owner): everything moves with the calm breath: the word and its line fade in and out at the phase edges,
             // grow and shrink with the air; the line stays still for the whole phase (no ticking numbers)
             // M-182 (owner): the guide counts from its own start, so every phase lasts exactly the seconds it says
-            if (bT0 < 0) bT0 = t;
-            const tb = t - bT0;
-            const [k, ph] = breathK(tb);
-            const x = tb % BP, cyc = Math.floor(tb / BP);
-            const start = ph === 'inhale' ? 0 : ph === 'hold' ? BREATH.inh : BREATH.inh + BREATH.hold;
-            const total = ph === 'inhale' ? BREATH.inh : ph === 'hold' ? BREATH.hold : BREATH.exh;
-            const u = Math.min(1, Math.max(0, (x - start) / total));
+            if (bT0 < 0) { bT0 = t; bmStart(t); bPh = ''; }
+            if (bmTick(t)) bPh = '';
+            const ph = BM.ph, k = bmK(t), cyc = BM.cyc, total = BM.len;
+            const u = Math.min(1, Math.max(0, (t - BM.t0) / Math.max(BM.len, BM.end - BM.t0)));
             let e = Math.max(0, Math.min(1, u / 0.2, (1 - u) / 0.2)); e = e * e * (3 - 2 * e);
             const ring = root.querySelector('.rx-ring'), txt = root.querySelector('.rx-btext'), sub = root.querySelector('.rx-bsub');
             ring.style.transform = 'scale(' + (0.6 + 0.4 * k).toFixed(3) + ')';
@@ -958,10 +976,11 @@
     // M-176 (owner): calm mode has its own voice choice, separate from the reminder voice
     let vList = null;
     function voiceItems() {
-        return [['__off', '🔕']].concat(CALMV.map(v => ['c:' + v[0], v[1]]), [['', '🗣️']]); // M-182: recorded calm voices first
+        return [['__off', '🔕']].concat(calmV().map(v => ['c:' + v[0], v[1]]), [['', '🗣️']]); // M-182: recorded calm voices first
     }
     // M-182: recorded voices (assets/calm/<lang>/<id>/<line>.mp3, tools/make_calm.py): native woman, native man, Ava, Andrew, soft whisper
     const CALMV = [['f', '👩'], ['m', '👨'], ['ava', '👩'], ['andrew', '👨'], ['soft', '🤫']];
+    const calmV = () => CALMV.filter(v => L5[li()] === 'en' || (v[0] !== 'ava' && v[0] !== 'andrew')); // M-191: Ava / Andrew only in English
     const CALMN = { f: ['הילה', 'زارية', 'Alina', 'Denise', 'Jenny', 'Светлана'], m: ['אברי', 'حامد', 'Emil', 'Henri', 'Ryan', 'Дмитрий'],
         ava: ['אווה', 'آفا', 'Ava', 'Ava', 'Ava', 'Ава'], andrew: ['אנדרו', 'أندرو', 'Andrew', 'Andrew', 'Andrew', 'Эндрю'] };
     function voiceLabel(k) { if (k === '__off') return tx('vOff'); if (!k) return tx('vPhone');
@@ -981,10 +1000,13 @@
     let clip = null;
     function calmSay(text, key, secs) {
         const N = window.MedTimeNative;
+        if (/^c:(ava|andrew)$/.test(st.bvname || '') && L5[li()] !== 'en') st.bvname = 'c:f';
         if (/^c:/.test(st.bvname || '')) { // M-182: a ready recording, starts at once (exact timing)
             try { if (clip) clip.pause(); const a = clip = new Audio('calm/' + L5[li()] + '/' + st.bvname.slice(2) + '/' + (key || 'sample') + '.mp3'); a.volume = 1;
-                // a line never runs into the next phase: a slightly long one is spoken a little faster (pitch kept)
-                if (secs) a.addEventListener('loadedmetadata', () => { const r = a.duration / (secs - 0.2); if (r > 1) a.playbackRate = Math.min(1.2, r); });
+                // M-191: the phase waits until the line is fully spoken, then a calm pause, then the next line
+                if (secs) { const t0 = BM.t0; BM.end = t0 + secs + 0.01;
+                    a.addEventListener('loadedmetadata', () => { if (BM.t0 === t0 && isFinite(a.duration)) BM.end = Math.max(BM.end, t0 + a.duration + 1.2); });
+                    a.addEventListener('ended', () => { if (BM.t0 === t0) BM.end = Math.max(BM.t0 + BM.len, nowT + 0.9); }); }
                 a.play().catch(() => { }); } catch (e) { }
             return;
         }
