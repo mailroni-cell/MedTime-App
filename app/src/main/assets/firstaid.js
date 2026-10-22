@@ -16,6 +16,20 @@
         poison: ['☎️ מרכז הרעלות', '☎️ مركز السموم', '☎️ Centrul de otrăviri', '☎️ Centre antipoison', '☎️ Poison center', '☎️ Токсикологический центр'],
         pick: ['מה קרה?', 'ماذا حدث؟', 'Ce s-a întâmplat?', 'Que s\'est-il passé ?', 'What happened?', 'Что случилось?'],
         disc: ['בחירום, תמיד חייגו קודם 101. המידע כאן לא מחליף את הנחיות המוקדן או הרופא.', 'في حالة الطوارئ اتصل أولًا دائمًا بـ 101. هذه المعلومات لا تغني عن تعليمات المُرسِل أو الطبيب.', 'În urgență, sună întâi la 101. Aceste informații nu înlocuiesc instrucțiunile dispecerului sau ale medicului.', 'En urgence, appelez toujours d\'abord le 101. Ces informations ne remplacent pas les consignes du régulateur ou du médecin.', 'In an emergency, always call 101 first. This information does not replace the dispatcher\'s or doctor\'s instructions.', 'В экстренной ситуации всегда сначала звоните 101. Эта информация не заменяет указаний диспетчера или врача.'],
+        // M-199: medical info card to show the emergency team
+        ice: ['📋 הצג לצוות החירום', '📋 اعرض على فريق الطوارئ', '📋 Arată echipei de urgență', '📋 Montrer à l\'équipe de secours', '📋 Show to the emergency team', '📋 Показать бригаде скорой'],
+        iceT: ['מידע רפואי לחירום', 'معلومات طبية للطوارئ', 'Informații medicale de urgență', 'Informations médicales d\'urgence', 'Emergency medical information', 'Медицинская информация для экстренных случаев'],
+        iName: ['שם', 'الاسم', 'Nume', 'Nom', 'Name', 'Имя'],
+        iMeds: ['תרופות קבועות', 'أدوية دائمة', 'Medicamente zilnice', 'Médicaments réguliers', 'Regular medicines', 'Постоянные лекарства'],
+        iAll: ['אלרגיות', 'الحساسية', 'Alergii', 'Allergies', 'Allergies', 'Аллергии'],
+        iNotes: ['מחלות ומידע חשוב', 'أمراض ومعلومات مهمة', 'Boli și informații importante', 'Maladies et informations importantes', 'Conditions and important info', 'Болезни и важная информация'],
+        iCon: ['איש קשר לחירום', 'جهة اتصال للطوارئ', 'Contact de urgență', 'Contact d\'urgence', 'Emergency contact', 'Контакт для экстренной связи'],
+        iNone: ['לא צוין', 'غير محدد', 'Nespecificat', 'Non indiqué', 'Not given', 'Не указано'],
+        iNoMeds: ['אין תרופות ברשימה', 'لا توجد أدوية في القائمة', 'Nu sunt medicamente în listă', 'Aucun médicament dans la liste', 'No medicines in the list', 'В списке нет лекарств'],
+        iEdit: ['✏️ עריכת אלרגיות ומחלות', '✏️ تعديل الحساسية والأمراض', '✏️ Editează alergii și boli', '✏️ Modifier allergies et maladies', '✏️ Edit allergies and conditions', '✏️ Изменить аллергии и болезни'],
+        iSave: ['💾 שמירה', '💾 حفظ', '💾 Salvează', '💾 Enregistrer', '💾 Save', '💾 Сохранить'],
+        iPhAll: ['למשל: פניצילין, אגוזים', 'مثلًا: بنسلين، مكسرات', 'de ex.: penicilină, nuci', 'ex. : pénicilline, noix', 'e.g. penicillin, nuts', 'например: пенициллин, орехи'],
+        iPhNotes: ['למשל: סוכרת, לחץ דם, קוצב לב', 'مثلًا: سكري، ضغط الدم، منظم ضربات القلب', 'de ex.: diabet, tensiune, stimulator cardiac', 'ex. : diabète, tension, pacemaker', 'e.g. diabetes, blood pressure, pacemaker', 'например: диабет, давление, кардиостимулятор'],
         back: ['→ חזרה', '→ رجوع', '← Înapoi', '← Retour', '← Back', '← Назад'],
         close: ['סגירה', 'إغلاق', 'Închide', 'Fermer', 'Close', 'Закрыть']
     };
@@ -131,6 +145,16 @@
     .fa-steps li{counter-increment:s;position:relative;padding:10px 12px;padding-inline-start:46px;margin-bottom:8px;border-radius:14px;background:rgba(255,255,255,.07);font-size:1.15rem;line-height:1.45}
     .fa-steps li::before{content:counter(s);position:absolute;inset-inline-start:10px;top:10px;width:26px;height:26px;border-radius:50%;background:#ef4444;display:grid;place-items:center;font-weight:800;font-size:.95rem}
     .fa-steps li.hot{background:rgba(239,68,68,.22);border:1px solid rgba(248,113,113,.6)}
+    .fa-ice{background:#fff;color:#0f172a;border-radius:18px;padding:12px 14px;margin-top:2px}
+    .fa-ir{padding:8px 0;border-bottom:1px solid #e2e8f0}.fa-ir:last-of-type{border-bottom:none}
+    .fa-ir b{display:block;color:#b91c1c;font-size:.95rem;margin-bottom:2px}
+    .fa-iv{font-size:1.35rem;font-weight:800;line-height:1.35;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .fa-iv.red{color:#b91c1c}.fa-iv.none{color:#94a3b8;font-weight:600;font-size:1.1rem}
+    .fa-ice ul{margin:0;padding-inline-start:22px;font-size:1.3rem;font-weight:800;line-height:1.45}
+    .fa-icall{border:none;border-radius:12px;background:#16a34a;color:#fff;font-size:1.3rem;padding:4px 14px}
+    .fa-iedit{width:100%;margin-top:10px;min-height:46px;border-radius:12px;border:none;background:#e2e8f0;color:#0f172a;font-size:1.05rem;font-weight:800;font-family:inherit}
+    .fa-ice textarea{width:100%;box-sizing:border-box;font:inherit;font-size:1.15rem;border:2px solid #cbd5e1;border-radius:12px;padding:8px 10px}
+    .fa-calls .c3{background:linear-gradient(135deg,#f8fafc,#cbd5e1);color:#0f172a;box-shadow:0 4px 0 #64748b;font-size:1.15rem}
     .fa-disc{color:#cbd5e1;font-size:.88rem;margin:8px 0 4px}
     .fa-btns{display:flex;gap:10px;margin-top:6px}
     .fa-btns button{flex:1;min-height:50px;border-radius:14px;border:none;color:#fff;background:#334155;font-size:1.1rem;font-weight:800;font-family:inherit}
@@ -144,6 +168,50 @@
     html.fit6 #fa-home small{display:none}`;
     document.head.appendChild(css);
 
+    const ICE_KEY = 'medtime_ice';
+    const loadIce = () => { try { return JSON.parse(localStorage.getItem(ICE_KEY) || '{}') || {}; } catch (e) { return {}; } };
+    function medsText() {
+        let meds = []; try { meds = JSON.parse(localStorage.getItem('medtime_list') || '[]') || []; } catch (e) { }
+        const by = {};
+        meds.forEach(m => (m.items || []).forEach(it => {
+            if (!it || !it.name) return;
+            const k = (it.name + ' ' + (it.dose || '')).trim();
+            (by[k] = by[k] || []).push(m.time || '');
+        }));
+        return Object.keys(by).map(k => ({ n: k, t: by[k].filter(Boolean).sort().join(', ') }));
+    }
+    // labels in the user's language, plus Hebrew for the Israeli emergency team
+    const lab = k => li() === 0 ? tx(k) : tx(k) + ' · ' + T[k][0];
+    function iceView(redraw) {
+        const ice = loadIce();
+        let who = ''; try { who = localStorage.getItem('medtime_name') || ''; } catch (e) { }
+        let fam = {}; try { fam = N && N.getFamily ? JSON.parse(N.getFamily()) : {}; } catch (e) { }
+        const box = document.createElement('div'); box.className = 'fa-ice';
+        const row = (k, body) => { const d = document.createElement('div'); d.className = 'fa-ir'; const b = document.createElement('b'); b.textContent = lab(k); d.appendChild(b); d.appendChild(body); box.appendChild(d); };
+        const txt = (v, cls) => { const p = document.createElement('div'); p.className = 'fa-iv' + (cls ? ' ' + cls : ''); p.textContent = v || tx('iNone'); if (!v) p.classList.add('none'); return p; };
+        if (who) row('iName', txt(who));
+        const ml = medsText();
+        if (ml.length) { const ul = document.createElement('ul'); ml.forEach(m => { const x = document.createElement('li'); x.textContent = m.n + (m.t ? '  (' + m.t + ')' : ''); ul.appendChild(x); }); row('iMeds', ul); }
+        else row('iMeds', txt(tx('iNoMeds')));
+        row('iAll', txt(ice.all, 'red'));
+        row('iNotes', txt(ice.notes));
+        if (fam && fam.phone) {
+            const d = document.createElement('div'); d.className = 'fa-iv'; d.textContent = (fam.name ? fam.name + ' · ' : '') + fam.phone;
+            const c = document.createElement('button'); c.type = 'button'; c.className = 'fa-icall'; c.textContent = '📞'; c.onclick = () => call(fam.phone); d.appendChild(c);
+            row('iCon', d);
+        }
+        const ed = document.createElement('button'); ed.type = 'button'; ed.className = 'fa-iedit'; ed.textContent = tx('iEdit');
+        ed.onclick = () => {
+            box.innerHTML = '';
+            const mk = (k, ph, v) => { const d = document.createElement('div'); d.className = 'fa-ir'; const b = document.createElement('b'); b.textContent = tx(k); const ta = document.createElement('textarea'); ta.rows = 3; ta.placeholder = tx(ph); ta.value = v || ''; d.appendChild(b); d.appendChild(ta); box.appendChild(d); return ta; };
+            const a = mk('iAll', 'iPhAll', ice.all), n = mk('iNotes', 'iPhNotes', ice.notes);
+            const sv = document.createElement('button'); sv.type = 'button'; sv.className = 'fa-iedit'; sv.textContent = tx('iSave');
+            sv.onclick = () => { try { localStorage.setItem(ICE_KEY, JSON.stringify({ all: a.value.trim(), notes: n.value.trim() })); } catch (e) { } vib(); redraw(); };
+            box.appendChild(sv);
+        };
+        box.appendChild(ed);
+        return box;
+    }
     function call(num) { vib(); if (N && typeof N.dial === 'function') N.dial(num); else location.href = 'tel:' + num; }
     function open() {
         vib();
@@ -154,12 +222,13 @@
         const close = () => { bg.remove(); if (unBack) unBack(); };
         const draw = () => {
             const i = li();
-            sh.innerHTML = `<div class="fa-t"></div><div class="fa-calls"><button type="button" class="c1"></button><button type="button" class="c2"></button></div>
+            sh.innerHTML = `<div class="fa-t"></div><div class="fa-calls"><button type="button" class="c1"></button><button type="button" class="c2"></button><button type="button" class="c3"></button></div>
                 <div class="fa-body"><div class="fa-h"></div><div class="fa-in"></div><div class="fa-disc"></div></div><div class="fa-btns"></div>`;
             const q = c => sh.querySelector(c);
             q('.c1').textContent = tx('mda'); q('.c1').onclick = () => call(MDA);
             q('.c2').textContent = tx('poison') + ' '; const pn = document.createElement('span'); pn.dir = 'ltr'; pn.style.whiteSpace = 'nowrap'; pn.textContent = POISON_SHOW; q('.c2').appendChild(pn); q('.c2').onclick = () => call(POISON);
             q('.fa-disc').textContent = tx('disc');
+            q('.c3').textContent = tx('ice'); q('.c3').onclick = () => { vib(); topic = 'ice'; draw(); };
             const btns = q('.fa-btns'), inn = q('.fa-in');
             if (!topic) {
                 q('.fa-t').textContent = tx('title'); q('.fa-h').textContent = tx('pick');
@@ -171,6 +240,11 @@
                     g.appendChild(b);
                 });
                 inn.appendChild(g);
+            } else if (topic === 'ice') {
+                q('.fa-t').textContent = '📋 ' + tx('iceT'); q('.fa-h').remove(); q('.c3').remove(); q('.fa-disc').remove();
+                inn.appendChild(iceView(draw));
+                const bb = document.createElement('button'); bb.type = 'button'; bb.textContent = tx('back'); bb.onclick = () => { topic = null; draw(); };
+                btns.appendChild(bb);
             } else {
                 q('.fa-t').textContent = topic[1] + ' ' + topic[2][i]; q('.fa-h').remove();
                 const ol = document.createElement('ol'); ol.className = 'fa-steps';
