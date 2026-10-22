@@ -15,7 +15,15 @@
         none: ['לא נמצא במאגר משרד הבריאות. נסו לכתוב את השם כמו על האריזה.', 'غير موجود في سجل وزارة الصحة. جرّب كتابة الاسم كما على العلبة.', 'Nu există în registrul Ministerului Sănătății. Scrie numele ca pe cutie.', 'Introuvable dans le registre du ministère de la Santé. Tapez le nom comme sur la boîte.', 'Not found in the Ministry of Health registry. Type the name as on the box.', 'Не найдено в реестре Министерства здравоохранения. Введите название как на коробке.'],
         prev: ['→ חזרה', '→ رجوع', '← Înapoi', '← Retour', '← Back', '← Назад'],
         home: ['בדיקת תרופה / חליפית', 'فحص دواء / بديل', 'Verifică medicament / substitut', 'Vérifier un médicament / générique', 'Check a medicine / substitute', 'Проверка лекарства / замены'], // M-187
-        homeSub: ['צילום הקופסה או הקלדת שם', 'صوّر العلبة أو اكتب الاسم', 'Fotografiază cutia sau scrie numele', 'Photographiez la boîte ou tapez le nom', 'Photo of the box or type the name', 'Сфотографируйте упаковку или введите название'],
+        homeSub: ['📖 מה התרופה עושה · צילום או הקלדת שם', '📖 ماذا يفعل الدواء · صورة أو اسم', '📖 La ce folosește · poză sau nume', '📖 À quoi sert-il · photo ou nom', '📖 What it does · photo or name', '📖 Для чего лекарство · фото или название'],
+        // M-195: medicine dictionary
+        q0: ['איזו תרופה לבדוק?', 'أي دواء تريد أن تفحص؟', 'Ce medicament verifici?', 'Quel médicament vérifier ?', 'Which medicine to check?', 'Какое лекарство проверить?'],
+        dFor: ['📖 למה התרופה משמשת', '📖 لماذا يُستخدم الدواء', '📖 La ce folosește medicamentul', '📖 À quoi sert ce médicament', '📖 What the medicine is for', '📖 Для чего это лекарство'],
+        dNone: ['אין לי הסבר פשוט לתרופה הזו. אפשר לקרוא את ההתוויה הרשמית למטה או את העלון.', 'لا يوجد لدي شرح مبسّط لهذا الدواء. يمكن قراءة الدواعي الرسمية أدناه أو النشرة.', 'Nu am o explicație simplă pentru acest medicament. Poți citi indicația oficială mai jos sau prospectul.', 'Je n\'ai pas d\'explication simple pour ce médicament. Lisez l\'indication officielle ci-dessous ou la notice.', 'I have no simple explanation for this medicine. You can read the official indication below or the leaflet.', 'Для этого лекарства нет простого объяснения. Можно прочитать официальные показания ниже или листок-вкладыш.'],
+        dOff: ['ההתוויה הרשמית (באנגלית, ממשרד הבריאות)', 'الدواعي الرسمية (بالإنجليزية، من وزارة الصحة)', 'Indicația oficială (în engleză, de la Ministerul Sănătății)', 'Indication officielle (en anglais, du ministère de la Santé)', 'Official indication (Ministry of Health)', 'Официальные показания (на английском, от Минздрава)'],
+        dLeaf: ['📄 עלון רשמי באתר משרד הבריאות', '📄 النشرة الرسمية في موقع وزارة الصحة', '📄 Prospect oficial pe site-ul Ministerului Sănătății', '📄 Notice officielle sur le site du ministère', '📄 Official leaflet on the Ministry of Health site', '📄 Официальный листок-вкладыш на сайте Минздрава'],
+        dCmp: ['🔄 קיבלתי תרופה אחרת - להשוות', '🔄 استلمت دواءً آخر - قارن', '🔄 Am primit alt medicament - compară', '🔄 J\'ai reçu un autre médicament - comparer', '🔄 I got a different medicine - compare', '🔄 Мне дали другое - сравнить'],
+        dDisc: ['מידע כללי בלבד, לא תחליף לרופא או לרוקח.', 'معلومات عامة فقط، وليست بديلًا عن الطبيب أو الصيدلي.', 'Doar informații generale, nu înlocuiesc medicul sau farmacistul.', 'Information générale uniquement, ne remplace pas le médecin ou le pharmacien.', 'General information only, not a substitute for a doctor or pharmacist.', 'Только общая информация, не заменяет врача или фармацевта.'],
         scan: ['📷 סריקה', '📷 مسح', '📷 Scanează', '📷 Scanner', '📷 Scan', '📷 Сканировать'],
         hintScan: ['מקלידים את השם כמו על האריזה, או 📷 מצלמים את הברקוד שעל הקופסה', 'اكتب الاسم كما على العلبة أو 📷 صوّر الباركود', 'Scrie numele ca pe cutie sau 📷 fotografiază codul de bare', 'Tapez le nom comme sur la boîte ou 📷 photographiez le code-barres', 'Type the name as on the box, or 📷 photograph the barcode on the box', 'Введите название как на коробке или 📷 сфотографируйте штрихкод на коробке'],
         noRead: ['לא הצלחתי לקרוא ברקוד בתמונה. צלמו מקרוב את הברקוד, באור טוב, או הקלידו את השם.', 'تعذرت قراءة الباركود. صوّره عن قرب وبإضاءة جيدة أو اكتب الاسم.', 'Codul nu a putut fi citit. Fotografiază-l de aproape, la lumină bună, sau scrie numele.', 'Code illisible. Photographiez-le de près, avec une bonne lumière, ou tapez le nom.', 'Could not read a barcode. Photograph it up close in good light, or type the name.', 'Не удалось прочитать штрихкод. Сфотографируйте его вблизи при хорошем свете или введите название.'],
@@ -57,7 +65,7 @@
         if (DB) return Promise.resolve(DB);
         return new Promise(res => {
             const done = () => {
-                DB = (window.IL_DRUGS || []).map(r => ({ h: r[0], e: r[1], fe: r[2], f: r[3], a: r[4], b: r[5] || [], s: norm(r[0] + ' ' + r[1]) }));
+                DB = (window.IL_DRUGS || []).map((r, i) => ({ i: i, h: r[0], e: r[1], fe: r[2], f: r[3], a: r[4], b: r[5] || [], s: norm(r[0] + ' ' + r[1]) }));
                 res(DB);
             };
             if (window.IL_DRUGS) return done();
@@ -169,6 +177,17 @@
     .sb-verd .pharm{font-size:1.02rem;font-weight:800;color:#fde68a}
     .sb-verd .sb-src{margin:4px 0 0}
     .sb-btns .ok{background:linear-gradient(135deg,#7c3aed,#5b21b6)}
+    .sb-info{flex:1 1 auto;overflow:auto;min-height:60px}
+    .sb-sub{color:#a5b4fc;font-size:.9rem;direction:ltr;text-align:start;margin-bottom:10px}
+    .sb-dh{color:#fde68a;font-weight:800;font-size:1.1rem;margin:4px 0}
+    .sb-dict p{margin:0 0 8px;font-size:1.2rem;line-height:1.5}
+    .sb-dict .sb-warn{font-size:1.05rem;color:#fecaca;background:rgba(239,68,68,.14);border-radius:12px;padding:8px 10px}
+    .sb-off{background:rgba(255,255,255,.06);border-radius:14px;padding:10px 12px;margin:8px 0}
+    .sb-off b{display:block;color:#c4b5fd;font-size:.85rem;margin-bottom:4px}
+    .sb-off p{margin:0;font-size:.95rem;line-height:1.45;color:#e2e8f0;text-align:left}
+    .sb-disc{color:#94a3b8;font-size:.85rem;margin:6px 0}
+    .sb-col{flex-direction:column}.sb-row2{display:flex;gap:10px}
+    .sb-btns .lf{background:linear-gradient(135deg,#0ea5e9,#0369a1)}
     `;
     document.head.appendChild(css);
 
@@ -267,6 +286,43 @@
             if (navigator.vibrate) try { navigator.vibrate(lv === 'full' ? 20 : [15, 40, 15]); } catch (e) { }
         });
     }
+    // M-195: dictionary card for one medicine: plain explanation (dict.js), official indication (drugs_ind.js), leaflet link
+    let IND = null;
+    function loadInd() {
+        if (IND) return Promise.resolve(IND);
+        return new Promise(res => {
+            const s = document.createElement('script'); s.src = 'drugs_ind.js';
+            s.onload = () => { IND = window.IL_IND || []; res(IND); }; s.onerror = () => { IND = []; res(IND); };
+            document.head.appendChild(s);
+        });
+    }
+    async function infoStep(s, d) {
+        await loadInd();
+        return new Promise(res => {
+            s.onBack = () => { res('back'); return true; };
+            const ind = IND[d.i] || ['', ''];
+            const dc = window.mtDict ? window.mtDict(d) : null;
+            s.sh.innerHTML = `<div class="sb-info"><div class="sb-t"></div><div class="sb-sub"></div>
+                <div class="sb-dh"></div><div class="sb-dict"></div><div class="sb-off"><b></b><p dir="ltr"></p></div><div class="sb-disc"></div></div>
+                <div class="sb-btns sb-col"><button type="button" class="lf"></button><button type="button" class="ok cmp"></button><div class="sb-row2"><button type="button" class="pv"></button><button type="button" class="cl"></button></div></div>`;
+            const q = c => s.sh.querySelector(c);
+            q('.sb-t').textContent = nameOf(d); q('.sb-sub').textContent = ingText(d) + ' · ' + formOf(d);
+            q('.sb-dh').textContent = tx('dFor');
+            const box = q('.sb-dict');
+            if (dc) dc.forEach(x => {
+                const p = document.createElement('p'); p.textContent = x.text; box.appendChild(p);
+                if (x.warn) { const w = document.createElement('p'); w.className = 'sb-warn'; w.textContent = '⚠️ ' + x.warn; box.appendChild(w); }
+            });
+            else box.textContent = tx('dNone');
+            if (ind[0]) { q('.sb-off b').textContent = tx('dOff'); q('.sb-off p').textContent = ind[0]; } else q('.sb-off').remove();
+            q('.sb-disc').textContent = tx('dDisc');
+            const lf = q('.lf');
+            if (ind[1] && N && typeof N.openMohPage === 'function') { lf.textContent = tx('dLeaf'); lf.onclick = () => { vib(); N.openMohPage(ind[1]); }; } else lf.remove();
+            q('.cmp').textContent = tx('dCmp'); q('.cmp').onclick = () => { vib(); res('cmp'); };
+            q('.pv').textContent = tx('prev'); q('.pv').onclick = () => res('back');
+            q('.cl').textContent = tx('close'); q('.cl').onclick = () => res(null);
+        });
+    }
     async function start(m) {
         vib();
         const it = m ? await chooseItem(m) : { name: '' }; if (!it) return; // M-187: from the main screen there is no card
@@ -276,11 +332,14 @@
         let step = 0, orig = null, got = null;
         for (;;) {
             if (step === 0) {
-                const r = await pickStep(s, tx('q1'), orig ? nameOf(orig) : it.name, false);
-                if (!r || r === 'back') break; orig = r; step = 1;
+                const r = await pickStep(s, tx(m ? 'q1' : 'q0'), orig ? nameOf(orig) : it.name, false);
+                if (!r || r === 'back') break; orig = r; step = m ? 1 : 3; // M-195: from the main screen, the dictionary card first
+            } else if (step === 3) {
+                const r = await infoStep(s, orig);
+                if (r === 'back') { step = 0; continue; } if (!r) break; step = 1;
             } else if (step === 1) {
                 const r = await pickStep(s, tx('q2'), '', true);
-                if (r === 'back') { step = 0; continue; } if (!r) break; got = r; step = 2;
+                if (r === 'back') { step = m ? 0 : 3; continue; } if (!r) break; got = r; step = 2;
             } else {
                 const r = await resultStep(s, m, it, orig, got);
                 if (r === 'back') { step = 1; continue; } break;

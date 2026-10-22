@@ -236,6 +236,14 @@ public class NativeBridge {
                 Uri.parse("https://waze.com/ul?navigate=yes&q=" + Uri.encode(query.trim()))));
     }
 
+    // M-195: official Ministry of Health medicine page (leaflets) in the browser; only that site is allowed
+    @JavascriptInterface
+    public void openMohPage(String regNumber) {
+        if (regNumber == null || regNumber.trim().isEmpty()) return;
+        Appointments.open(activity, new Intent(Intent.ACTION_VIEW,
+                Uri.parse("https://registries.health.gov.il/Medicines/" + Uri.encode(regNumber.trim()))));
+    }
+
     @JavascriptInterface
     public void openMaps(String query) {
         if (query == null || query.trim().isEmpty()) return;
