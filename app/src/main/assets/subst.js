@@ -14,7 +14,7 @@
         hint: ['מקלידים את השם כמו על האריזה, ובוחרים מהרשימה', 'اكتب الاسم كما على العلبة واختر من القائمة', 'Scrie numele ca pe cutie și alege din listă', 'Tapez le nom comme sur la boîte et choisissez dans la liste', 'Type the name as on the box and pick from the list', 'Введите название как на коробке и выберите из списка'],
         none: ['לא נמצא במאגר משרד הבריאות. נסו לכתוב את השם כמו על האריזה.', 'غير موجود في سجل وزارة الصحة. جرّب كتابة الاسم كما على العلبة.', 'Nu există în registrul Ministerului Sănătății. Scrie numele ca pe cutie.', 'Introuvable dans le registre du ministère de la Santé. Tapez le nom comme sur la boîte.', 'Not found in the Ministry of Health registry. Type the name as on the box.', 'Не найдено в реестре Министерства здравоохранения. Введите название как на коробке.'],
         prev: ['→ חזרה', '→ رجوع', '← Înapoi', '← Retour', '← Back', '← Назад'],
-        home: ['בדיקת תרופה / חליפית', 'فحص دواء / بديل', 'Verifică medicament / substitut', 'Vérifier un médicament / générique', 'Check a medicine / substitute', 'Проверка лекарства / замены'], // M-187
+        home: ['בדיקת תרופה', 'فحص دواء', 'Verifică medicament', 'Vérifier un médicament', 'Check a medicine', 'Проверка лекарства'], // M-187; M-209: short, under a floating symbol
         homeSub: ['📖 מה התרופה עושה · צילום או הקלדת שם', '📖 ماذا يفعل الدواء · صورة أو اسم', '📖 La ce folosește · poză sau nume', '📖 À quoi sert-il · photo ou nom', '📖 What it does · photo or name', '📖 Для чего лекарство · фото или название'],
         // M-195: medicine dictionary
         what: ['📖 מה זה?', '📖 ما هذا؟', '📖 Ce este?', '📖 C\'est quoi ?', '📖 What is it?', '📖 Что это?'],
