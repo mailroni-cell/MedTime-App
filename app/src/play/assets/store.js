@@ -14,7 +14,8 @@
         '#sb-home', '#vt-btn', '#fa-home', '#appt-btn',           // medicine check, vitals, first aid, doctor appointments
         '#tile-vitals', '#tile-stock', '#tile-upd', '#lg-pdf',    // vitals, pill stock, self-update, report for the doctor
         '#row-dose', '#dose-sheet', '.type-grid', '.dose-wrap', '.dose-units', '.sug-dose',
-        '#splash .sp-ecg', '#splash .sp-cap', '.mt-word', '.lg-ecg', '.ba-ecg'
+        '#splash .sp-ecg', '#splash .sp-cap', '.mt-word', '.lg-ecg', '.ba-ecg',
+        '.sb-btn', '.sb-now'                                       // "what is this medicine" and "I got a substitute" on the cards
     ];
     const css = document.createElement('style');
     css.id = 'mt-store-css';
