@@ -209,6 +209,7 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-198 | 2026-10-22 | firstaid.js, index.html | Owner: red "🆘 First aid" button on the main screen: quick dial MDA 101 and the poison center 04-7771900, and short steps for 11 situations (overdose, wrong medicine, poisoning, seizure, chest pain, stroke, severe allergy, fainting, low sugar, choking, fall), 6 languages | ⏳ |
 | R-176 | 2026-10-22 | release/stable.txt | Run 176 (M-197 "What is it?", M-198 first aid) released to everyone | ✅ |
 | M-199 | 2026-10-22 | firstaid.js | Owner: "📋 Show to the emergency team" in first aid: big white card with name, regular medicines (from the reminders, with times), allergies and conditions (user fills in, saved on the phone), emergency contact with a call button; labels also in Hebrew for the team; 6 languages | ⏳ |
+| R-177 | 2026-10-22 | release/stable.txt | Run 177 (M-199 emergency info card) released to everyone | ✅ |
 | R-156 | 2026-10-21 | release/stable.txt | Run 156 (M-175) released to everyone | ✅ |
 | R-155 | 2026-10-21 | release/stable.txt | Run 155 (M-172..M-174) released to everyone (standing rule) | ✅ |
 | R-154 | 2026-10-21 | release/stable.txt | Owner: run 154 (M-169..M-171) released to everyone | ✅ |
