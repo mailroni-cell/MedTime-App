@@ -272,3 +272,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | R-192 | 2026-10-22 | release/stable.txt | Run 192 (M-242..M-246) released to everyone | ✅ |
 | M-247 | 2026-10-22 | setpills.js | Owner: settings capsules longer and thinner with room between them, dark outline and deeper shadow to lift them off the background; back-to-main button moved to the bottom left with a margin | ⏳ |
 | R-193 | 2026-10-22 | release/stable.txt | Run 193 (M-247) released to everyone | ✅ |
+| M-248 | 2026-10-22 | homelayout.js | Owner: main screen capsules get the same dark outline and deeper shadow as the settings capsules | ⏳ |

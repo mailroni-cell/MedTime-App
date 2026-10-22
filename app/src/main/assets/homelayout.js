@@ -49,7 +49,7 @@
         linear-gradient(90deg,rgba(0,0,0,.28) 0,rgba(0,0,0,0) 12%,rgba(0,0,0,0) 88%,rgba(0,0,0,.28) 100%),
         linear-gradient(90deg,var(--c2) 0,var(--c2) 49.4%,rgba(0,0,0,.4) 49.4%,rgba(0,0,0,.4) 50.6%,#f8fafc 50.6%,#e2e8f0 100%),
         linear-gradient(180deg,var(--c1),var(--c2) 45%,var(--c3));
-      box-shadow:inset 0 -9px 14px rgba(0,0,0,.3),inset 0 7px 10px rgba(255,255,255,.55),0 0 0 3px rgba(255,255,255,.92),0 0 0 5.5px rgba(0,0,0,.55),0 18px 18px -6px rgba(0,0,0,.65),0 0 26px var(--c2)}
+      box-shadow:inset 0 -9px 14px rgba(0,0,0,.3),inset 0 7px 10px rgba(255,255,255,.55),0 0 0 3px rgba(255,255,255,.92),0 0 0 6px rgba(0,0,0,.8),0 0 0 7px rgba(0,0,0,.35),0 18px 18px -4px rgba(0,0,0,.85),0 5px 26px rgba(0,0,0,.6),0 0 26px var(--c2)} /* M-248: dark outline and deeper shadow, like the settings capsules */
     /* M-243 (owner): each capsule floats on its own, slowly, with a very gentle sway; the label stays still */
     @keyframes hmPill{0%,100%{transform:translate(-50%,-50%) rotate(-24deg)}25%{transform:translate(calc(-50% + 3px),calc(-50% - 6px)) rotate(-19deg)}
       50%{transform:translate(calc(-50% - 2px),calc(-50% - 9px)) rotate(-27deg)}75%{transform:translate(calc(-50% - 4px),calc(-50% - 3px)) rotate(-21deg)}}
@@ -66,7 +66,7 @@
     html body .home-card .hm-float .hm-pill::after{content:'';position:absolute;left:10%;top:9%;width:72%;height:20%;border-radius:999px;background:linear-gradient(rgba(255,255,255,.95),rgba(255,255,255,0))}
     html body .home-card .hm-float .hm-pill::before{content:'';position:absolute;left:14%;bottom:12%;width:60%;height:10%;border-radius:999px;background:linear-gradient(rgba(255,255,255,0),rgba(255,255,255,.35))}
     html body .home-card .hm-float :is(${ICO}) > :not(.hm-pill){position:relative;z-index:2}
-    html body .home-card .hm-float #fa-home .hm-pill{box-shadow:0 0 0 4px #f4ff1a,0 0 0 7px rgba(0,0,0,.6),0 16px 16px -4px rgba(0,0,0,.6),0 0 28px 6px #ff1744}
+    html body .home-card .hm-float #fa-home .hm-pill{box-shadow:0 0 0 4px #f4ff1a,0 0 0 7.5px rgba(0,0,0,.8),0 16px 16px -4px rgba(0,0,0,.85),0 0 28px 6px #ff1744}
     /* M-223 (owner): the symbols are solid 3D objects (a stack of layers gives them thickness) that turn all the way round,
        slowly, as if floating in liquid or in space, with a gentle tilt up and down. Each ball has its own speed and start */
     html .home-card .hm-float :is(${ICO}){perspective:300px}
