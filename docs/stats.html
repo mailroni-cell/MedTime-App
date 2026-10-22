@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>MedTime - נתוני שימוש</title>
+<style>
+body{font-family:system-ui,Arial,sans-serif;margin:0;padding:16px;background:#0f172a;color:#e2e8f0;line-height:1.5}
+h1{font-size:1.5rem;margin:0 0 4px}.up{color:#94a3b8;font-size:.9rem;margin-bottom:14px}
+.g{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:640px}
+.k{background:#1e293b;border-radius:16px;padding:12px}.k b{display:block;font-size:2rem;color:#4ade80}.k span{color:#cbd5e1}
+h2{font-size:1.1rem;margin:18px 0 6px}.row{display:flex;justify-content:space-between;max-width:640px;padding:6px 10px;border-bottom:1px solid #334155}
+</style>
+</head>
+<body>
+<h1>📊 MedTime: נתוני שימוש</h1>
+<div class="up" id="up">טוען…</div>
+<div class="g">
+  <div class="k"><b id="a7">-</b><span>פעילות השבוע</span></div>
+  <div class="k"><b id="a30">-</b><span>פעילות החודש</span></div>
+  <div class="k"><b id="tot">-</b><span>התקנות שנרשמו מאז ההתחלה</span></div>
+  <div class="k"><b id="sh">-</b><span>שיתופים</span></div>
+  <div class="k"><b id="sv">-</b><span>סקרים שמולאו</span></div>
+  <div class="k"><b id="st">-</b><span>ממוצע כוכבים</span></div>
+</div>
+<h2>לפי גרסה (פעילות השבוע)</h2><div id="ver"></div>
+<h2>לפי שפה (פעילות השבוע)</h2><div id="lang"></div>
+<h2>מה כדאי לשפר (מהסקר)</h2><div id="imp"></div>
+<script>
+const SRC = 'https://raw.githubusercontent.com/mailroni-cell/MedTime-App/main/docs/stats/summary.json';
+const LN = { he: 'עברית', ar: 'ערבית', ro: 'רומנית', fr: 'צרפתית', en: 'אנגלית', ru: 'רוסית' };
+const rows = (id, o, f) => { const el = document.getElementById(id); el.innerHTML = '';
+  Object.entries(o || {}).forEach(([k, v]) => { const r = document.createElement('div'); r.className = 'row'; r.innerHTML = '<span></span><b></b>';
+    r.firstChild.textContent = f ? f(k) : k; r.lastChild.textContent = v; el.appendChild(r); });
+  if (!el.children.length) el.textContent = 'אין עדיין נתונים'; };
+fetch(SRC + '?t=' + Date.now()).then(r => r.json()).then(s => {
+  document.getElementById('up').textContent = 'עודכן: ' + s.updated + ' (מתעדכן לבד כל 3 שעות)';
+  const set = (id, v) => document.getElementById(id).textContent = v == null ? '-' : v;
+  set('a7', s.active_7d); set('a30', s.active_30d); set('tot', s.installs_total); set('sh', s.shares_total); set('sv', s.surveys); set('st', s.stars_avg);
+  rows('ver', s.active_7d_by_version, k => 'גרסה ' + k); rows('lang', s.active_7d_by_language, k => LN[k] || k); rows('imp', s.improve);
+}).catch(() => { document.getElementById('up').textContent = 'אין עדיין נתונים. הם יופיעו אחרי שהגרסה החדשה תותקן אצל משתמשים.'; });
+</script>
+</body>
+</html>

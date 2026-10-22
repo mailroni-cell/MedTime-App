@@ -1,10 +1,11 @@
-// M-229 (owner): a small share button on the main screen, anonymous usage numbers and, after a week of use, a short
-// satisfaction survey. Everything goes to the owner's Google Form (sheet): a random install id, app version, language,
-// and the survey answers. No name, no medicines, nothing else. FORM is empty until the owner's form is connected.
+// M-229 (owner): anonymous usage numbers and, after a week of use, a short satisfaction survey.
+// M-238 (owner approved ntfy.sh 2026-10-22): sent to ntfy.sh (free, no account): a random install id, app version,
+// language and the survey answers. No name, no medicines, nothing else. stats.yml collects them into stats/ and
+// docs/stats.html; survey answers also arrive as a notification on the owner's survey topic.
 (function () {
     'use strict';
-    const FORM = ''; // https://docs.google.com/forms/d/e/<id>/formResponse
-    const F = { kind: '', id: '', ver: '', lang: '', stars: '', improve: '', text: '' }; // entry.NNN of each field
+    const NT = 'https://ntfy.sh/', TOPIC = 'medtime-v3tqzebpancz9djidfg7bh', STOPIC = 'medtime-s-pj9eh8jegcpcfn6wbkpp';
+    const FORM = NT + TOPIC; // the survey is on when this is set
     const N = window.MedTimeNative;
     const L5 = ['he', 'ar', 'ro', 'fr', 'en', 'ru'];
     const li = () => Math.max(0, L5.indexOf(typeof LANG === 'string' ? LANG : 'he'));
@@ -33,11 +34,12 @@
     if (!get('medtime_first', '')) put('medtime_first', today());
     const ver = () => { try { return N && N.getVersion ? String(N.getVersion()) : ''; } catch (e) { return ''; } };
 
+    function post(url, body, hdr) { try { fetch(url, { method: 'POST', body: body, headers: hdr || {} }).catch(() => { }); } catch (e) { } }
     function send(kind, extra) {
-        if (!FORM || !F.kind) return;
         const v = Object.assign({ kind: kind, id: iid, ver: ver(), lang: L5[li()] }, extra || {});
-        const body = Object.keys(F).filter(k => F[k] && v[k] !== undefined && v[k] !== '').map(k => encodeURIComponent(F[k]) + '=' + encodeURIComponent(v[k])).join('&');
-        try { fetch(FORM, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body }).catch(() => { }); } catch (e) { }
+        post(NT + TOPIC, JSON.stringify(v));
+        if (kind === 'survey') // a readable copy for the owner's phone
+            post(NT + STOPIC, '⭐'.repeat(+v.stars || 0) + ' (' + v.lang + ', v' + v.ver + ')\n' + (v.improve || '') + (v.text ? '\n💬 ' + v.text : ''), { Title: 'MedTime survey' });
     }
     // once a day: "this install is alive" (the sheet counts active installs per version)
     function daily() {

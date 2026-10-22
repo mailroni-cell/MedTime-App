@@ -256,3 +256,10 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-232 | 2026-10-22 | homelayout.js, stats.js | Owner: share button placement: now a glowing green ball at the end of the animated tour line, one unit with it | ⏳ |
 | M-233 | 2026-10-22 | homelayout.js | Owner: the My reminders ball shows ⏰ and the time of the next reminder instead of the count; the line under it is gone | ⏳ |
 | M-234 | 2026-10-22 | stats.js, homelayout.js | Owner: share button removed from the main screen; the settings share tile pulses slowly in fluorescent green; its send button is counted | ⏳ |
+| M-235 | 2026-10-22 | homelayout.js | Owner: low vision lost the tour button: greeting goes first, then the title gets smaller (hm-slim), the tour button only last | ⏳ |
+| M-236 | 2026-10-22 | homelayout.js | Owner: tour line without a frame: soft blurred green halo, a hand drifting in space, 3D words | ⏳ |
+| M-237 | 2026-10-22 | backbtn.js, homelayout.js | Owner (check every screen, normal + low vision): back button centred above the title on list/appointment pages, wizard exit above its title, low-vision settings without the big gear and with bigger icons, no floating in low vision | ⏳ |
+| M-238 | 2026-10-22 | stats.js, tools/collect_stats.py, .github/workflows/stats.yml, docs/stats.html, docs/privacy.html | Owner approved ntfy.sh: anonymous daily ping (random id, version, language), share count and survey go to ntfy.sh; stats.yml collects every 3 h into docs/stats (hashed ids, no free text); summary page docs/stats.html; survey answers also as a notification on the owner's survey topic; privacy page updated in 6 languages (Russian added) | ⏳ |
+| M-239 | 2026-10-22 | homelayout.js | Owner: symbols bigger and floating freely in every direction (drift + tilt on all axes + turn); menu up to 150 px when there is room | ⏳ |
+| M-240 | 2026-10-22 | homelayout.js | Owner: no "no appointments" line; when there are appointments the line glows fluorescent green | ⏳ |
+| M-241 | 2026-10-22 | homelayout.js | Owner: menu icons are glossy two-colour tilted 3D pills (capsules) with the floating symbol on them; the passing light follows the pill | ⏳ |

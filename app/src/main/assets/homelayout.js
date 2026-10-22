@@ -39,13 +39,25 @@
       background:radial-gradient(ellipse 30% 9% at 50% 84%,rgba(0,0,0,.42),rgba(0,0,0,0) 100%),radial-gradient(circle at 34% 26%,#fff 0,var(--c1) 22%,var(--c2) 62%,var(--c3) 100%)!important;border:0!important;
       box-shadow:inset 0 -8px 14px rgba(0,0,0,.35),inset 0 5px 8px rgba(255,255,255,.45),0 0 0 3px rgba(255,255,255,.92),0 0 0 6px rgba(0,0,0,.6),0 14px 18px -6px rgba(0,0,0,.75),0 0 24px var(--c2)!important;will-change:auto!important}
     html .home-card .hm-float :is(${ICO})::after{content:'';position:absolute;left:22%;top:9%;width:42%;height:24%;border-radius:50%;background:linear-gradient(rgba(255,255,255,.85),rgba(255,255,255,0));pointer-events:none}
+    /* M-241 (owner): every menu symbol sits on a glossy two-colour 3D capsule (a pill), tilted, instead of a ball */
+    html body .home-card .hm-float :is(${ICO}){background:none!important;box-shadow:none!important;border-radius:0!important}
+    html body .home-card .hm-float :is(${ICO})::after{display:none!important}
+    html body .home-card .hm-float .hm-pill{position:absolute;left:50%;top:50%;width:calc(var(--hm-o,118px) * 1.1);height:calc(var(--hm-o,118px) * .6);border-radius:999px;pointer-events:none;z-index:0;
+      transform:translate(-50%,-50%) rotate(-35deg);
+      background:linear-gradient(180deg,rgba(255,255,255,.75) 0,rgba(255,255,255,.12) 30%,rgba(255,255,255,0) 52%,rgba(0,0,0,.28) 100%),
+        linear-gradient(90deg,var(--c2) 0,var(--c2) 49.2%,rgba(0,0,0,.35) 49.2%,rgba(0,0,0,.35) 50.8%,#f8fafc 50.8%,#e2e8f0 100%),
+        linear-gradient(180deg,var(--c1),var(--c2) 45%,var(--c3));
+      box-shadow:0 0 0 3px rgba(255,255,255,.92),0 0 0 5.5px rgba(0,0,0,.55),0 16px 16px -4px rgba(0,0,0,.6),0 0 24px var(--c2)}
+    html body .home-card .hm-float .hm-pill::after{content:'';position:absolute;left:9%;top:12%;width:70%;height:22%;border-radius:999px;background:linear-gradient(rgba(255,255,255,.9),rgba(255,255,255,0))}
+    html body .home-card .hm-float :is(${ICO}) > :not(.hm-pill){position:relative;z-index:2}
+    html body .home-card .hm-float #fa-home .hm-pill{box-shadow:0 0 0 4px #f4ff1a,0 0 0 7px rgba(0,0,0,.6),0 16px 16px -4px rgba(0,0,0,.6),0 0 28px 6px #ff1744}
     /* M-223 (owner): the symbols are solid 3D objects (a stack of layers gives them thickness) that turn all the way round,
        slowly, as if floating in liquid or in space, with a gentle tilt up and down. Each ball has its own speed and start */
     html .home-card .hm-float :is(${ICO}){perspective:300px}
-    html .home-card .hm-float .hm-3d{display:grid;place-items:center;transform-style:preserve-3d;will-change:transform;animation:hmSpin var(--hm-sp,11s) linear infinite;animation-delay:var(--hm-dl,0s)}
-    html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > *{grid-area:1/1;display:block;font-size:calc(var(--hm-o,118px) * .56)!important;width:auto!important;height:auto!important;line-height:1!important;font-style:normal;
+    html .home-card .hm-float .hm-3d{display:grid;place-items:center;transform-style:preserve-3d;will-change:transform;animation:hmSpin var(--hm-sp,13s) cubic-bezier(.45,.05,.55,.95) infinite;animation-delay:var(--hm-dl,0s)}
+    html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > *{grid-area:1/1;display:block;font-size:calc(var(--hm-o,118px) * .62)!important;width:auto!important;height:auto!important;line-height:1!important;font-style:normal;
       filter:none!important;text-shadow:none!important;-webkit-text-stroke:0!important;animation:none!important;margin:0!important;backface-visibility:visible;flex:none!important}
-    html body .home-card .hm-float #main-add .hm-3d > svg{width:calc(var(--hm-o) * .6)!important;height:calc(var(--hm-o) * .6)!important}
+    html body .home-card .hm-float #main-add .hm-3d > svg{width:calc(var(--hm-o) * .64)!important;height:calc(var(--hm-o) * .64)!important}
     html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l1{transform:translateZ(4.5px)!important}
     html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l2{transform:translateZ(3px)!important;filter:brightness(.6)!important}
     html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l3{transform:translateZ(1.5px)!important;filter:brightness(.5)!important}
@@ -53,14 +65,14 @@
     html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l5{transform:translateZ(-1.5px)!important;filter:brightness(.5)!important}
     html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l6{transform:translateZ(-3px)!important;filter:brightness(.6)!important}
     html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l7{transform:translateZ(-4.5px)!important}
-    @keyframes hmSpin{0%{transform:translateZ(16px) translateY(2px) rotateY(0deg) rotateX(12deg)}25%{transform:translateZ(22px) translateY(-5px) rotateY(90deg) rotateX(-10deg)}
-      50%{transform:translateZ(16px) translateY(2px) rotateY(180deg) rotateX(12deg)}75%{transform:translateZ(22px) translateY(-5px) rotateY(270deg) rotateX(-10deg)}100%{transform:translateZ(16px) translateY(2px) rotateY(360deg) rotateX(12deg)}}
+    /* M-239 (owner): the symbols float freely in every direction, as in space: drifting up/down/sideways, tilting on all axes and turning round */
+    @keyframes hmSpin{0%{transform:translate3d(calc(var(--hm-o,118px) * 0),calc(var(--hm-o,118px) * .02),16px) rotateX(10deg) rotateY(0deg) rotateZ(-6deg)}20%{transform:translate3d(calc(var(--hm-o,118px) * -.07),calc(var(--hm-o,118px) * -.06),26px) rotateX(-14deg) rotateY(80deg) rotateZ(5deg)}45%{transform:translate3d(calc(var(--hm-o,118px) * .05),calc(var(--hm-o,118px) * -.09),18px) rotateX(16deg) rotateY(170deg) rotateZ(-4deg)}65%{transform:translate3d(calc(var(--hm-o,118px) * .08),calc(var(--hm-o,118px) * .03),28px) rotateX(-8deg) rotateY(250deg) rotateZ(8deg)}85%{transform:translate3d(calc(var(--hm-o,118px) * -.04),calc(var(--hm-o,118px) * .06),20px) rotateX(12deg) rotateY(320deg) rotateZ(-3deg)}100%{transform:translate3d(calc(var(--hm-o,118px) * 0),calc(var(--hm-o,118px) * .02),16px) rotateX(10deg) rotateY(360deg) rotateZ(-6deg)}}
     html .home-card .hm-float > :nth-child(2){--hm-sp:12.5s;--hm-dl:-3s}html .home-card .hm-float > :nth-child(3){--hm-sp:10s;--hm-dl:-6s}
     html .home-card .hm-float > :nth-child(4){--hm-sp:13s;--hm-dl:-2s}html .home-card .hm-float > :nth-child(5){--hm-sp:11.5s;--hm-dl:-8s}
     html .home-card .hm-float > :nth-child(6){--hm-sp:12s;--hm-dl:-4.5s}html .home-card .hm-float > :nth-child(7){--hm-sp:10.5s;--hm-dl:-1s}html .home-card .hm-float > :nth-child(8){--hm-sp:14s;--hm-dl:-7s}
     /* M-224 (owner): the light that runs round a menu now and then follows the ball, not the invisible square around it */
     ${BT}{position:relative!important}
-    ${B} > button > .mt-glint{inset:auto!important;top:0!important;left:50%!important;width:var(--hm-o,118px)!important;height:var(--hm-o,118px)!important;margin-left:calc(var(--hm-o,118px) / -2)!important;border-radius:50%!important;padding:3px!important}
+    ${B} > button > .mt-glint{inset:auto!important;top:calc(var(--hm-o,118px) * .2)!important;left:50%!important;width:calc(var(--hm-o,118px) * 1.1)!important;height:calc(var(--hm-o,118px) * .6)!important;margin-left:calc(var(--hm-o,118px) * -.55)!important;border-radius:999px!important;padding:3px!important;transform:rotate(-35deg)}
     html .home-card .hm-float #main-add{--hm-o:var(--hm-big,140px)}
     html .home-card .hm-float #list-btn .lb-count{color:#fff!important;font-size:calc(var(--hm-o,118px) * .46)!important;font-weight:900!important;animation:none!important;text-shadow:0 1px 0 #e2e8f0,0 2px 0 #cbd5e1,0 3px 0 #94a3b8,0 4px 0 #64748b,0 5px 0 #475569,0 7px 8px rgba(0,0,0,.6)!important;min-height:0!important}
     #main-add{--c1:#bbf7d0;--c2:#10b981;--c3:#065f46}
@@ -87,6 +99,9 @@
     html body .home-card .hm-float #list-btn.hm-next .lb-count small{font-size:calc(var(--hm-o,118px) * .2)!important;line-height:1!important;color:inherit!important;text-shadow:none!important;-webkit-text-stroke:0!important;margin-bottom:2px}
     html body .home-card .hm-float #list-btn.hm-next .lb-count b{font-family:'MTBall','MTUI',sans-serif!important;font-weight:700!important;font-size:calc(var(--hm-o,118px) * .27)!important;line-height:1!important;color:#fff!important;direction:ltr;
       text-shadow:0 1px 0 #e2e8f0,0 2px 0 #94a3b8,0 3px 0 #475569,0 4px 5px rgba(0,0,0,.7)!important;-webkit-text-stroke:0!important}
+    /* M-240 (owner): no "no appointments" line; when there are appointments the line glows fluorescent green */
+    ${B} #appt-btn:not(:has(.ab-count)) .ab-sub{display:none!important}
+    html body .home-card .hm-float #appt-btn:has(.ab-count) .ab-sub{color:#a3ff6b!important;font-size:1.05rem!important;text-shadow:0 0 2px #000,0 1px 2px #000,0 0 10px #4ade80,0 0 18px #22c55e!important}
     /* M-210: all of today's reminders taken */
     #list-btn.hm-done .lb-count::before{content:'✓';position:absolute;right:-12px;bottom:-8px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
       font-size:1.2rem;font-weight:900;color:#fff;background:radial-gradient(circle at 35% 30%,#86efac,#16a34a 60%,#14532d);box-shadow:0 0 0 3px rgba(0,0,0,.5),0 0 14px #22c55e;z-index:2}
@@ -96,13 +111,23 @@
     html.fit6 .home-card{--hm-o:70px;--hm-big:82px;--hm-gap:6px;--hm-t:1.1rem;--hm-tb:1.25rem}
     /* M-217 (owner): SOS is fluorescent and impossible to miss: neon red ball, neon-yellow ring, a beating glow halo */
     html body .home-card .hm-float #fa-home{--c1:#fff1f2;--c2:#ff1744;--c3:#b0001e}
-    html body .home-card .hm-float #fa-home .fah-ico{box-shadow:inset 0 -8px 14px rgba(0,0,0,.3),inset 0 5px 8px rgba(255,255,255,.5),0 0 0 4px #f4ff1a,0 0 0 7px rgba(0,0,0,.65),0 0 26px 6px #ff1744!important}
-    html body .home-card .hm-float #fa-home .fah-ico::before{content:'';position:absolute;inset:-14px;border-radius:50%;pointer-events:none;
+        html body .home-card .hm-float #fa-home .fah-ico::before{content:'';position:absolute;inset:-14px;border-radius:50%;pointer-events:none;
       background:radial-gradient(circle,rgba(255,23,68,0) 52%,rgba(255,40,80,.85) 62%,rgba(244,255,26,.55) 70%,rgba(255,23,68,0) 78%);animation:faNeon 1.4s ease-in-out infinite;will-change:transform,opacity}
     @keyframes faNeon{0%,100%{opacity:.35;transform:scale(.92)}50%{opacity:1;transform:scale(1.1)}}
     html body .home-card .hm-float #fa-home :is(b,.fah-txt){color:#f4ff1a!important;text-shadow:0 1px 0 #fde047,0 2px 0 #ca8a04,0 3px 0 #a16207,0 4px 0 #7f1d1d,0 5px 0 #450a0a,0 6px 6px rgba(0,0,0,.85),0 0 18px #ff1744!important;background:none!important}
-    @media (prefers-reduced-motion: reduce){${B} > button{animation:none}}
-    html.lowvision ${B} > button{animation:none}`;
+    /* M-236 (owner): the tour line has no frame: a soft, blurred green halo, a hand that drifts in space and the 3D words */
+    html body .home-card #guide-btn{border:0!important;box-shadow:none!important;overflow:visible!important;padding:6px 10px!important;
+      background:radial-gradient(ellipse 58% 75% at 50% 50%,rgba(74,222,128,.28),rgba(34,197,94,.1) 55%,rgba(34,197,94,0) 78%)!important}
+    html body .home-card #guide-btn::after{display:none!important}
+    html body .home-card #guide-btn .gl-h{font-size:2rem!important;filter:none!important;text-shadow:0 0 14px #4ade80,0 0 4px #bbf7d0;display:inline-block;animation:glDrift 5.5s ease-in-out infinite!important;will-change:transform}
+    @keyframes glDrift{0%,100%{transform:translate(0,0) rotate(-12deg)}25%{transform:translate(-6px,-7px) rotate(8deg) scale(1.08)}50%{transform:translate(3px,-2px) rotate(-4deg)}75%{transform:translate(6px,-8px) rotate(14deg) scale(1.05)}}
+    html body .home-card #guide-btn .gl-t{font-family:'MTBall','MTUI',sans-serif!important;font-weight:700!important;font-size:1.15rem!important;color:#dcfce7!important;letter-spacing:.3px;
+      text-shadow:0 1px 0 #bbf7d0,0 2px 0 #4ade80,0 3px 0 #15803d,0 4px 5px rgba(0,0,0,.8),0 0 14px rgba(74,222,128,.7)!important;-webkit-text-stroke:0!important;overflow:visible!important}
+    html.lowvision body .home-card #guide-btn{background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(0,0,0,.75),rgba(0,0,0,0) 80%)!important}
+    html.lowvision body .home-card #guide-btn .gl-t{color:#fff!important;font-size:1.3rem!important}
+    html.hm-slim h1.mt-logo{font-size:min(3.7rem,calc((100vw - 28px) / 6.2))!important;margin-bottom:.35em!important}
+        @media (prefers-reduced-motion: reduce){${B} > button{animation:none}}
+    html.lowvision ${BT}{animation:none!important}`;
     document.head.appendChild(css);
 
     function arrange() {
@@ -124,6 +149,12 @@
         return ORDER.every(id => id === 'hm-now' || $(id));
     }
 
+    // M-241: a pill shape under every symbol (a real element, so the ball's own ::before / ::after stay free)
+    function addPills() {
+        document.querySelectorAll(ICO.split(',').map(x => '.home-card .hm-float ' + x.trim()).join(',')).forEach(o => {
+            if (!o.querySelector(':scope > .hm-pill')) { const p = document.createElement('span'); p.className = 'hm-pill'; p.setAttribute('aria-hidden', 'true'); o.insertBefore(p, o.firstChild); }
+        });
+    }
     // M-223: wrap each symbol in a turning box with 5 copies at different depths (front and back bright, the middle darker = its edge)
     function make3d() {
         document.querySelectorAll(ICO.split(',').map(x => '.home-card .hm-float ' + x.trim()).join(',')).forEach(o => {
@@ -133,6 +164,7 @@
             sym.replaceWith(w);
             for (let k = 1; k <= 7; k++) { const c = k === 1 ? sym : sym.cloneNode(true); c.classList.add('hm-l' + k); w.appendChild(c); }
         });
+        addPills();
     }
     // M-210: ✓ when every reminder due today has a "taken" entry for today
     function markDone() {
@@ -154,6 +186,7 @@
             if (c.dataset.t !== m[0]) { c.dataset.t = m[0]; c.innerHTML = '<small>⏰</small><b></b>'; c.querySelector('b').textContent = m[0]; }
             btn.classList.add('hm-next');
         } else btn.classList.remove('hm-next');
+        addPills();
     }
     // M-211 (owner approved idea): "💊 Taken now" ball, only in the 30 minutes before a reminder that was not taken yet today
     const L5 = ['he', 'ar', 'ro', 'fr', 'en', 'ru'];
@@ -284,7 +317,7 @@
         const box = document.querySelector('.home-card .hm-float'), ex = $('exit-btn');
         if (!box || !ex || !box.offsetParent || ex.getBoundingClientRect().height < 10) return false; // M-226: another screen is open: keep the size
         const lim = ex.getBoundingClientRect().top - 8, colW = box.clientWidth / 3 - 8;
-        let o = Math.min(136, Math.floor(colW));
+        let o = Math.min(150, Math.floor(colW)); // M-239: a little bigger when there is room
         const set = () => { box.style.setProperty('--hm-o', o + 'px'); box.style.setProperty('--hm-big', Math.round(o * 1.15) + 'px'); };
         set();
         while (o > 64 && (low() > lim || document.body.scrollHeight > innerHeight + 2)) { o -= 4; set(); }
@@ -311,7 +344,10 @@
             R.classList.remove('fit5', 'fit6');
             if (!sizeBalls() && o0) box.style.setProperty('--hm-o', o0);
             const over = () => low() > ex.getBoundingClientRect().top - 8 || document.body.scrollHeight > innerHeight + 2;
-            if ((had5 || had6) && over()) { R.classList.add('fit6'); sizeBalls(); if (over()) { R.classList.add('fit5'); sizeBalls(); } } // greeting goes first, the tour button stays when it can
+            // M-235 (owner: low vision lost the tour button): greeting goes first, then the title gets smaller, the tour button only last
+            R.classList.remove('hm-slim');
+            if ((had5 || had6) && over()) { R.classList.add('fit6'); sizeBalls();
+                if (over()) { R.classList.add('hm-slim'); sizeBalls(); if (over()) { R.classList.add('fit5'); sizeBalls(); } } }
             sig = look();
         };
         w.mtBalls = true; window.fitMain = w;
@@ -322,6 +358,11 @@
     new MutationObserver(refit).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
     const sp = document.getElementById('settings-page'); if (sp) new MutationObserver(refit).observe(sp, { attributes: true, attributeFilter: ['class'] });
 
+    // a button that redraws itself (appointments, reminders) gets its 3D symbol and pill back
+    let m3q = 0;
+    const watch3d = () => { const box = document.querySelector('.home-card .hm-float'); if (!box || box.dataset.w3) return; box.dataset.w3 = '1';
+        new MutationObserver(() => { if (!m3q) m3q = requestAnimationFrame(() => { m3q = 0; make3d(); }); }).observe(box, { childList: true, subtree: true }); };
+    setTimeout(watch3d, 1000);
     let n = 0;
     const tick = () => { const done = arrange(); if (!done && ++n < 20) setTimeout(tick, 300); };
     tick(); setTimeout(arrange, 2500);

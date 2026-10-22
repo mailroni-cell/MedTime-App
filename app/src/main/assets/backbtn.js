@@ -20,8 +20,16 @@
       text-shadow:0 1px 0 #0e7490,0 2px 0 #155e75,0 3px 0 #164e63,0 4px 5px rgba(0,0,0,.6)!important;-webkit-text-stroke:0!important;
       box-shadow:inset 0 3px 4px rgba(255,255,255,.65),inset 0 -5px 8px rgba(8,51,68,.55),0 6px 0 #0c4a5e,0 14px 18px rgba(0,0,0,.5),0 0 18px rgba(34,211,238,.55)!important;
       animation:mtBkFloat 3.4s ease-in-out infinite!important;will-change:transform;display:inline-flex!important;align-items:center!important;gap:7px!important}
-    html body #settings-page .settings-hero > .close-3d.mt-backbtn{position:relative!important;top:auto!important;left:auto!important;right:auto!important;inset-inline-end:auto!important;
+    html body .settings-hero > .close-3d.mt-backbtn{position:relative!important;top:auto!important;left:auto!important;right:auto!important;inset-inline-end:auto!important;
       margin:0 auto 8px!important;display:flex!important;width:fit-content!important}
+    /* M-237 (owner: checked one by one, normal and low vision): wizard heads put the exit button above the title, so it never covers it */
+    html body .af-head{display:flex!important;flex-direction:column!important;align-items:center!important}
+    html body .af-head > .close-3d.mt-backbtn{position:relative!important;top:auto!important;left:auto!important;right:auto!important;inset-inline-end:auto!important;
+      margin:0 auto 4px!important;min-height:42px!important;padding:6px 16px 8px!important;font-size:1rem!important}
+    /* low vision settings: no big gear on top, so the tiles can be bigger */
+    html.lowvision #settings-page .settings-hero .hero-gear{display:none!important}
+    html.lowvision body #settings-page .set-grid .set-ico{width:min(26vw,8.6vh,104px)!important;height:min(26vw,8.6vh,104px)!important;font-size:min(12vw,4.4vh,3rem)!important}
+    html.lowvision body #settings-page .set-grid .set-title{font-size:min(1.35rem,5.2vw,2.7vh)!important}
     @keyframes mtBkFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
     html body :is(.close-3d,.p-close).mt-backbtn:active{animation:none!important;transform:translateY(5px)!important;box-shadow:inset 0 3px 4px rgba(255,255,255,.5),0 1px 0 #0c4a5e,0 4px 8px rgba(0,0,0,.5)!important}
     html body .close-3d.mt-backbtn.mt-exit{background:linear-gradient(180deg,#fecaca 0%,#f87171 22%,#dc2626 60%,#7f1d1d 100%)!important;
