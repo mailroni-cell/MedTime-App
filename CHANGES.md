@@ -267,3 +267,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-242 | 2026-10-22 | homelayout.js | Owner: capsules bigger and thicker, wrapping the symbol, rounded 3D look (cylinder light/shade, darker ends, highlights), less tilt | ⏳ |
 | M-243 | 2026-10-22 | homelayout.js | Owner: buttons no longer move as one block: each capsule floats on its own, slowly, with a very gentle sway; labels stay still | ⏳ |
 | M-244 | 2026-10-22 | tools/collect_stats.py, docs/stats.html | Owner: stats page with a written summary and charts (daily active users, new installs, shares), survey stars, versions, languages, what to improve (in Hebrew) | ⏳ |
+| M-245 | 2026-10-22 | homelayout.js | Owner: labels float too, on their own and a little behind the capsule, like in a liquid (still in low vision) | ⏳ |

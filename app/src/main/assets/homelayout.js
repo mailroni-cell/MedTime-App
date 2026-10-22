@@ -57,6 +57,11 @@
     html body .home-card .hm-float > :nth-child(3){--hm-pd:8.5s;--hm-pdl:-6s}html body .home-card .hm-float > :nth-child(4){--hm-pd:10.5s;--hm-pdl:-2.5s}
     html body .home-card .hm-float > :nth-child(5){--hm-pd:12s;--hm-pdl:-7s}html body .home-card .hm-float > :nth-child(6){--hm-pd:9s;--hm-pdl:-5s}
     html body .home-card .hm-float > :nth-child(7){--hm-pd:11.5s;--hm-pdl:-3s}html body .home-card .hm-float > :nth-child(8){--hm-pd:10s;--hm-pdl:-8s}
+    /* M-245 (owner): the labels float too, on their own, a little behind the capsule, like bodies drifting in a liquid */
+    @keyframes hmLbl{0%,100%{transform:translate(0,0) rotate(0deg)}30%{transform:translate(2px,-4px) rotate(1deg)}60%{transform:translate(-2px,-6px) rotate(-1.2deg)}80%{transform:translate(-3px,-2px) rotate(.6deg)}}
+    ${BT} > :not(.ba-cross):not(.lb-count):not(.ab-ico):not(.sbh-ico):not(.rb-ico):not(.fah-ico):not(.hn-ico):not(.mt-glint){will-change:transform;
+      animation:hmLbl calc(var(--hm-pd,9s) * 1.25) ease-in-out infinite;animation-delay:calc(var(--hm-pdl,0s) - 1.2s)}
+    html.lowvision ${BT} > *{animation:none!important}
     html.lowvision body .home-card .hm-float .hm-pill{animation:none}
     html body .home-card .hm-float .hm-pill::after{content:'';position:absolute;left:10%;top:9%;width:72%;height:20%;border-radius:999px;background:linear-gradient(rgba(255,255,255,.95),rgba(255,255,255,0))}
     html body .home-card .hm-float .hm-pill::before{content:'';position:absolute;left:14%;bottom:12%;width:60%;height:10%;border-radius:999px;background:linear-gradient(rgba(255,255,255,0),rgba(255,255,255,.35))}
