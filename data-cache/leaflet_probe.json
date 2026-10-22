@@ -1,0 +1,39 @@
+{
+ "remote_len": 6840,
+ "all_len": 3980164,
+ ".{0,120}(?:[Bb]rochure|[Ll]eaf": [
+  "nction UX(t,i){return new V4(t,i)}let bg=(()=>{class t{static configure(e){return{ngModule:t,providers:[{provide:\"configFileUrl\",useValue:e},{provide:n.APP_INITIALIZER,useFactory:YX,deps:[vg,\"configFileUrl\"],multi:!0}]}}static forRoot(){return{ngModule:t,providers:[z4,db,RX,HX,_g,Fc,BX,"
+ ],
+ ".{0,80}path:\\s*\"[^\"]*\".{0,80}": [
+  "url.map(r=>r.toString()).join(\"/\")}', path:'${this.routeConfig?this.routeConfig.path:\"\"}')`}}class ce extends mn{constructor(n,t){super(t),this.url=n,ue(this,t)}toStri",
+  "url.map(r=>r.toString()).join(\"/\")}', path:'${this.routeConfig?this.routeConfig.path:\"\"}')`}}class en extends Zn{constructor(n,e){super(e),this.url=n,tn(this,e)}toStri",
+  " 31.25C25.2614 31.25 27.5 33.4886 27.5 36.25Z\" fill=\"#394159\"/></svg>')}`,Ase=[{path:\"\",pathMatch:\"full\",redirectTo:\"Medicines\"},{path:\"Medicines\",component:ise,pathMa",
+  "tch:\"full\"},{path:\"Medicines/comparison\",component:_se},{path:\"Medicines/barkod-scanner\",component:(()=>{class t{constructor(e,r,a,o,c){this.http=e,this.router=r,this.c",
+  "ection:column;gap:10px;align-items:center}'],changeDetection:0})}return t})()},{path:\"Medicines/:regNumber\",component:Vie},{path:\"**\",redirectTo:\"\",pathMatch:\"full\"}];let Ise=(()=>{class ",
+  ",u.openNode(\"v:shapetype\",{id:\"_x0000_t202\",coordsize:\"21600,21600\",\"o:spt\":202,path:\"m,l,21600r21600,l21600,xe\"}),u.leafNode(\"v:stroke\",{joinstyle:\"miter\"}),u.leafNode(\"v:path\",{gradientshape"
+ ],
+ ".{0,60}(?:GetMedicine\\w*|GetBr": [
+  ".maxResult=this.totalRows.value,this.http.post(this.apiUrl+\"GetMedicines\",a).pipe((0,Si.U)(o=>o.returnObject),(0,Ba.K)(o=>(this.errorSubject.next(\"An error occurred: \"+o.me",
+  "s(e){const r=e||new wg;return this.http.post(`${this.apiUrl}GetMedicines`,r).pipe((0,Si.U)(a=>{if(!a||!a.returnObject)throw console.error(\"Invalid response structure:\",a),n",
+  ")))}getMedicineById(e){return this.http.post(`${this.apiUrl}GetMedicineById`,null,{params:{medicineId:e.toString()}}).pipe((0,Si.U)(r=>r.returnObject))}getMedicineDocuments(e)",
+  "{return this.http.get(`${this.apiUrl}GetMedicineDocuments`,{params:{medicineId:e.toString()}}).pipe((0,Si.U)(r=>r.returnObject))}getMedicineImages(e){return ",
+  "this.http.get(`${this.apiUrl}GetMedicineImages`,{params:{medicineId:e.toString()}}).pipe((0,Si.U)(r=>r.returnObject))}getMedicinePackages(e){retur",
+  "n this.http.get(`${this.apiUrl}GetMedicinePackages`,{params:{medicineId:e.toString()}}).pipe((0,Si.U)(r=>r.returnObject))}getMedicineByRegNumber(e){re",
+  "turn this.http.get(`${this.apiUrl}GetMedicineByRegNumber`,{params:{regNumber:e}}).pipe((0,Si.U)(r=>r.returnObject))}getTradeNames(e){const r={};return e&&(r",
+  "t))}getMedicineSites(e){return this.http.get(`${this.apiUrl}GetMedicineSites`,{params:{medicineId:e.toString()}}).pipe((0,Si.U)(r=>r.returnObject||[]))}getMedicineBasketIndicat",
+  "ions(e){return this.http.get(`${this.apiUrl}GetMedicineBasketIndications`,{params:{medicineId:e.toString()}}).pipe((0,Si.U)(r=>r.returnObject||[]))}getMedicineAtc(e){return",
+  " this.http.get(`${this.apiUrl}GetMedicineAtc`,{params:{medicineId:e.toString()}}).pipe((0,Si.U)(r=>r.returnObject||[]))}ngOnDestroy(){this.searc",
+  "hing\",this.cdr.markForCheck(),this.http.post(`${this.apiUrl}GetMedicines`,{barkod:e,maxResult:1,includeActive:!0,includeCanceled:!1}).pipe(ti(this.destroy$)).subscribe({nex"
+ ],
+ "cfg": {
+  "moh-package": {
+   "servicesApiURL": "https://MohServicesApi.health.gov.il/",
+   "umbracoApiURL": "https://umbracoapi.health.gov.il/",
+   "appName": "MohBase,Registries Application",
+   "jsonListsPrefixURL": "./assets/i18n/",
+   "jsonListsSuffixURL": ".json",
+   "lang": "he",
+   "medicinesApiUrl": "api/Medicines/"
+  }
+ }
+}
