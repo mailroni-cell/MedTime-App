@@ -206,6 +206,7 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-195 | 2026-10-22 | dict.js, subst.js, drugs_ind.js, NativeBridge.java, tools/make_ind_js.py | Owner: medicine dictionary. Main-screen check button: pick a medicine, card shows a plain explanation (~55 groups, ~300 ingredients, 6 languages) with a warning, the official indication from the MoH registry, a button to the official MoH page with the leaflet, and "I got a different medicine - compare"; disclaimer in 6 languages | ⏳ |
 | R-174 | 2026-10-22 | release/stable.txt | Run 174 (M-195 medicine dictionary) released to everyone | ✅ |
 | M-197 | 2026-10-22 | subst.js | Owner: "📖 What is it?" button on each medicine card opens the dictionary card (straight to it when the name matches one registry entry), 6 languages | ⏳ |
+| M-198 | 2026-10-22 | firstaid.js, index.html | Owner: red "🆘 First aid" button on the main screen: quick dial MDA 101 and the poison center 04-7771900, and short steps for 11 situations (overdose, wrong medicine, poisoning, seizure, chest pain, stroke, severe allergy, fainting, low sugar, choking, fall), 6 languages | ⏳ |
 | R-156 | 2026-10-21 | release/stable.txt | Run 156 (M-175) released to everyone | ✅ |
 | R-155 | 2026-10-21 | release/stable.txt | Run 155 (M-172..M-174) released to everyone (standing rule) | ✅ |
 | R-154 | 2026-10-21 | release/stable.txt | Owner: run 154 (M-169..M-171) released to everyone | ✅ |
