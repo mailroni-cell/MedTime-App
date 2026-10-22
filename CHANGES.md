@@ -215,6 +215,7 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-201 | 2026-10-22 | extras.js | Owner: the "updating, please wait" screen sat at the bottom and the bar was off-centre; now fixed full screen and centred | ⏳ |
 | R-178 | 2026-10-22 | release/stable.txt | Run 178 (M-196 real sounds and videos, M-200 lock screen info, M-201 update screen) released to everyone | ✅ |
 | M-202 | 2026-10-22 | relax.js | Owner: after picking a background, a small offer "🎵 Add the sound: …?" for the matching sound; it plays only if tapped (never automatically), hides after 9 s; 6 languages | ⏳ |
+| R-179 | 2026-10-22 | release/stable.txt | Run 179 (M-202 sound offer) released to everyone | ✅ |
 | R-156 | 2026-10-21 | release/stable.txt | Run 156 (M-175) released to everyone | ✅ |
 | R-155 | 2026-10-21 | release/stable.txt | Run 155 (M-172..M-174) released to everyone (standing rule) | ✅ |
 | R-154 | 2026-10-21 | release/stable.txt | Owner: run 154 (M-169..M-171) released to everyone | ✅ |
