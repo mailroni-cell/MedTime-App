@@ -53,6 +53,10 @@
     if (!page) return;
     const LAST = 6;
     let step = 0;
+    // Google Play edition (store.js): no type, dose or 'another medicine' steps
+    const SKIP = window.MT_STORE ? [0, 2, 3] : [];
+    const FIRST = window.MT_STORE ? 1 : 0;
+    const SHOWN = [0, 1, 2, 3, 4, 5, 6].filter(i => !SKIP.includes(i));
     const vib = p => { if (navigator.vibrate) try { navigator.vibrate(p); } catch (e) { } };
     const QUICK = [['qMorning', '07:00'], ['qMorning', '08:00'], ['qMorning', '09:00'], ['qNoon', '12:00'], ['qNoon', '14:00'], ['qEvening', '18:00'], ['qEvening', '20:00'], ['qNight', '22:00']];
 
@@ -159,17 +163,18 @@
     function draw() {
         page.dataset.s = step;
         $('mw-title').textContent = tx(window.mwEditing ? 'editTitle' : 'title');
-        $('mw-step-title').textContent = tx('s' + step);
+        $('mw-step-title').textContent = SKIP.length ? (SHOWN.indexOf(step) + 1) + '. ' + tx('s' + step).replace(/^\d+\.\s*/, '') : tx('s' + step);
         const dots = $('mw-dots'); dots.innerHTML = '';
         for (let i = 0; i <= LAST; i++) {
+            if (SKIP.includes(i)) continue;
             const d = document.createElement('button');
-            d.type = 'button'; d.textContent = i + 1;
+            d.type = 'button'; d.textContent = SHOWN.indexOf(i) + 1;
             d.className = i === step ? 'cur' : (i < step ? 'done' : '');
             d.onclick = () => { if (i > 1 && !nameOk()) return; jump(i); };
             dots.appendChild(d);
         }
         $('mw-back').textContent = tx('back');
-        $('mw-back').disabled = step === 0;
+        $('mw-back').disabled = step === FIRST;
         $('mw-next').textContent = tx('next');
         $('mw-next').style.display = step === LAST ? 'none' : '';
         page.querySelector('.wz-nav').classList.toggle('one', step === LAST);
@@ -190,7 +195,9 @@
     }
     function jump(i) {
         if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
-        step = Math.max(0, Math.min(LAST, i)); vib(10); draw();
+        const dir = i < step ? -1 : 1;
+        while (SKIP.includes(i)) i += dir;
+        step = Math.max(FIRST, Math.min(LAST, i)); vib(10); draw();
     }
     window.mwGo = function (d) {
         if (d > 0 && step === 1) {
@@ -205,7 +212,7 @@
         const r = cur();
         if (r && r.querySelector('.it-name').value.trim()) collapseRow(r);
         if (!cur()) addItemRow();
-        step = 0; draw();
+        step = FIRST; draw();
     };
     // tapping a type goes on to the name
     itemRows.addEventListener('click', e => {
@@ -273,7 +280,7 @@
 
     window.openMedPage = function () {
         if (window.mwEditing) { window.mwEditing = null; clearForm(); }
-        step = 0;
+        step = FIRST;
         if (!itemRows.querySelector('.item-row')) addItemRow();
         page.classList.add('open'); document.documentElement.classList.add('med-open');
         // notes inside the steps

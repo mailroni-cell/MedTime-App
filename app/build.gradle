@@ -30,8 +30,8 @@ android {
     // "play" = the store edition (no self-update, no automatic SMS, no USE_EXACT_ALARM), signed with the upload key
     flavorDimensions 'store'
     productFlavors {
-        full { dimension 'store'; buildConfigField 'boolean', 'STORE', 'false' }
-        play { dimension 'store'; buildConfigField 'boolean', 'STORE', 'true'; applicationId 'io.github.mailronicell.medtime' } // com.medtime.app is taken on Google Play
+        full { dimension 'store'; buildConfigField 'boolean', 'STORE', 'false'; manifestPlaceholders = [appLabel: 'MedTime'] }
+        play { dimension 'store'; buildConfigField 'boolean', 'STORE', 'true'; applicationId 'io.github.mailronicell.medtime'; manifestPlaceholders = [appLabel: 'MyTime'] } // com.medtime.app is taken on Google Play
     }
     buildFeatures { buildConfig true }
     if (System.getenv('UPLOAD_KEYSTORE')) {

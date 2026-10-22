@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="fonts.css">
     <link rel="stylesheet" href="namefont.css">
     <!-- M-013: Three.js bundled in the app (works offline) -->
+    <script src="store.js"></script>
     <script src="lib/three.min.js"></script>
     <script src="lib/CopyShader.js"></script>
     <script src="lib/LuminosityHighPassShader.js"></script>
@@ -3754,7 +3755,8 @@
         }
 
         const TYPES = ['pill', 'injection', 'drops', 'syrup', 'cream', 'inhaler'];
-        const TYPE_ICON = { pill: '💊', injection: '💉', drops: '💧', syrup: '🥄', cream: '🧴', inhaler: '🌬️' };
+        const TYPE_ICON = window.MT_STORE ? { pill: '⏰', injection: '⏰', drops: '⏰', syrup: '⏰', cream: '⏰', inhaler: '⏰' } // Play edition
+            : { pill: '💊', injection: '💉', drops: '💧', syrup: '🥄', cream: '🧴', inhaler: '🌬️' };
         const itemRows = document.getElementById('item-rows');
 
         // M-010: one big readable card per medicine: type buttons with icons, labelled fields
