@@ -216,6 +216,7 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | R-178 | 2026-10-22 | release/stable.txt | Run 178 (M-196 real sounds and videos, M-200 lock screen info, M-201 update screen) released to everyone | ✅ |
 | M-202 | 2026-10-22 | relax.js | Owner: after picking a background, a small offer "🎵 Add the sound: …?" for the matching sound; it plays only if tapped (never automatically), hides after 9 s; 6 languages | ⏳ |
 | R-179 | 2026-10-22 | release/stable.txt | Run 179 (M-202 sound offer) released to everyone | ✅ |
+| M-203 | 2026-10-22 | docs/download.html | People could not install from the Drive link (Drive app shows "unsupported file" + virus-scan warning at 160MB). New Pages download page: direct GitHub APK button, Drive uc fallback, 5 install steps, 6 languages. Share link is now https://mailroni-cell.github.io/MedTime-App/download.html | ⏳ |
 | R-156 | 2026-10-21 | release/stable.txt | Run 156 (M-175) released to everyone | ✅ |
 | R-155 | 2026-10-21 | release/stable.txt | Run 155 (M-172..M-174) released to everyone (standing rule) | ✅ |
 | R-154 | 2026-10-21 | release/stable.txt | Owner: run 154 (M-169..M-171) released to everyone | ✅ |
