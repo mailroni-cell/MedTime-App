@@ -1,0 +1,22 @@
+name: Calm voices
+
+# M-182: records the calm-mode breathing guidance with natural voices and commits it (app/src/main/assets/calm)
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  make:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg && pip install -q edge-tts
+      - run: python tools/make_calm.py
+      - name: Commit
+        run: |
+          du -sh app/src/main/assets/calm
+          git config user.name "github-actions[bot]" && git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/src/main/assets/calm
+          git commit -m "M-182 recorded calm voices [skip ci]" && git pull --rebase -q origin main && git push
