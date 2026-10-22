@@ -3621,14 +3621,21 @@
             }
         }
 
+        // M-190 (owner): the main-screen warning opens the friendly explanation of what is missing (then Android's screen), not bare settings
+        window.mtFixFirst = function (k) {
+            if (k && window.mtPermGuide) mtPermGuide(k).then(() => { renderStatus(); });
+            else if (!k && Native) { try { Native.openSettings('tts'); } catch (e) { } }
+            else openSettingsPage();
+        };
         function renderStatus() {
             const box = document.getElementById('status-box');
             if (!Native) { box.innerHTML = ''; return; }
             let st = {};
             try { st = JSON.parse(Native.getStatus()); } catch (e) { }
-            let html = '';
+            let html = '', first = '';
             ['notifications', 'exact', 'fullScreen', 'overlay', 'battery'].forEach(k => {
                 if (st[k] === false) {
+                    if (!first) first = k;
                     html += `<div class="status-line"><span>⚠️ ${t('st_' + k)}</span>` +
                         `<button onclick="window.mtPermGuide ? mtPermGuide('${k}') : MedTimeNative.openSettings('${k}')">${t('fix')}</button></div>`;
                 }
@@ -3641,9 +3648,10 @@
             lastStatusProblem = problem;
             // Main screen: only a short line when something needs fixing; details live in settings
             document.getElementById('main-warn').innerHTML = problem
-                ? `<div class="status-line"><span>${t('problemMain')}</span><button onclick="openSettingsPage()">${t('openSettings')}</button></div>`
+                ? `<div class="status-line"><span>${t('problemMain')}</span><button onclick="mtFixFirst('${first}')">${t('fix')}</button></div>`
                 : '';
             document.getElementById('gear-btn').classList.toggle('warn', problem);
+            if (typeof window.fitMain === 'function') setTimeout(window.fitMain, 60); // M-190: the warning line changes the room on the main screen
             if (!html) html = `<div class="status-line ok"><span>${t('allOk')}</span></div>`;
             html += `<button class="btn-test" onclick="testReminder()">${t('test')}</button>`;
             box.innerHTML = html;

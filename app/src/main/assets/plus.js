@@ -343,10 +343,15 @@
         if (typeof fitMain === 'function') {
             const fm = fitMain;
             window.fitMain = function () {
-                document.documentElement.classList.remove('fit4');
+                const R = document.documentElement;
+                R.classList.remove('fit4', 'fit5');
                 fm();
                 const ex = document.getElementById('exit-btn'), gl = document.getElementById('guide-btn');
-                if (ex && gl && gl.offsetParent && gl.getBoundingClientRect().bottom > ex.getBoundingClientRect().top - 10) document.documentElement.classList.add('fit4');
+                if (ex && gl && gl.offsetParent && gl.getBoundingClientRect().bottom > ex.getBoundingClientRect().top - 10) R.classList.add('fit4');
+                // M-190 (owner): still too full (warning line + my reminders + medicine check): the tour button goes (it is also in settings)
+                // and the buttons get slimmer, so nothing ever lies on top of the bottom buttons
+                const card = document.querySelector('.home-card');
+                if (ex && card && card.getBoundingClientRect().bottom > ex.getBoundingClientRect().top - 6) R.classList.add('fit5');
             };
             let lv = document.documentElement.classList.contains('lowvision');
             new MutationObserver(() => {
@@ -360,6 +365,12 @@
         #tile-vitals > .set-tile-head{display:none!important}
         .home-pair{display:flex;gap:10px;width:100%}
         html.fit4 .hero-space{height:0!important;min-height:0!important}
+        html.fit5 #guide-btn{display:none!important}
+        html.fit5 .hello-line{display:none!important}
+        html.fit5 #sb-home{min-height:50px!important}html.fit5 #sb-home .sbh-ico{flex-basis:40px!important;height:40px!important}
+        html.fit5 .home-card{gap:7px!important}
+        html.fit5 .home-card > button, html.fit5 .home-card .nav-row > button, html.fit5 .home-pair > .relax-btn{min-height:52px!important;padding-top:2px!important;padding-bottom:2px!important}
+        html.fit5 #main-warn .status-line{padding:6px 10px!important;font-size:.9rem!important}
         html.fit4 .home-card{gap:6px!important}
         html.fit4 .home-pair > .relax-btn{min-height:0!important;padding-top:3px!important;padding-bottom:3px!important}
         html.fit4 .home-pair .rb-ico{transform:scale(.78);margin:-4px 0}
