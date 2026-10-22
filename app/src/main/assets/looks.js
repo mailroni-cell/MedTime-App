@@ -190,7 +190,17 @@
       filter:drop-shadow(0 4px 3px rgba(0,0,0,.6)) drop-shadow(0 0 10px var(--tc));animation:twFloat var(--td,6s) ease-in-out infinite;animation-delay:var(--tl,0s)}
     html.lowvision body #settings-page #theme-grid .tw-world{animation:none;font-size:min(3.2rem,14vw)}
     @keyframes twFloat{0%,100%{transform:translate(-50%,-50%) rotate(-6deg)}33%{transform:translate(calc(-50% + 3px),calc(-50% - 6px)) rotate(5deg) scale(1.06)}66%{transform:translate(calc(-50% - 3px),calc(-50% - 3px)) rotate(-2deg)}}
-    html body #settings-page #theme-grid .tw-name{color:#fff!important;text-shadow:0 2px 0 #000,0 0 10px var(--tc),0 0 2px var(--tc)!important}`;
+    html body #settings-page #theme-grid .tw-name{color:#fff!important;text-shadow:0 2px 0 #000,0 0 10px var(--tc),0 0 2px var(--tc)!important}
+    /* M-260 (owner: the sideways swipe still showed frames): the cards are drawn once and only slide; no blurred glows, filters or floating
+       symbols to redraw while the finger moves (only the chosen theme's symbol floats), and no press-shrink under a swiping finger */
+    html body #settings-page #theme-grid{will-change:scroll-position;scroll-behavior:auto!important}
+    html body #settings-page #theme-grid > .theme-sw{transition:none!important;transform:translateZ(0);backface-visibility:hidden;
+      box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.35),0 0 0 2px color-mix(in srgb,var(--tc) 80%,#000),0 0 0 4px rgba(0,0,0,.7),0 6px 0 rgba(0,0,0,.45)!important}
+    html body #settings-page #theme-grid > .theme-sw.sel{box-shadow:inset 0 0 0 2px #fff,0 0 0 3px #fff,0 0 0 5.5px rgba(0,0,0,.75),0 6px 0 rgba(0,0,0,.45),0 0 18px 3px var(--tc)!important}
+    html body #settings-page #theme-grid > .theme-sw:active{transform:translateZ(0)!important}
+    html body #settings-page #theme-grid .tw-world{filter:none!important;animation:none!important;text-shadow:0 4px 3px rgba(0,0,0,.6),0 0 10px var(--tc)}
+    html:not(.lowvision) body #settings-page #theme-grid > .theme-sw.sel .tw-world{animation:twFloat 6s ease-in-out infinite!important}
+    html body #settings-page #theme-grid .tw-name{text-shadow:0 2px 0 #000,0 0 3px var(--tc)!important}`;
     function pager() {
         const g = document.getElementById('theme-grid'); if (!g) return setTimeout(pager, 400);
         let bar = document.querySelector('#settings-page .tg-pager');
@@ -206,8 +216,10 @@
         const cur = () => Math.min(pages() - 1, Math.round(Math.abs(g.scrollLeft) / Math.max(1, pageW())));
         const to = (i, smooth) => g.scrollTo({ left: (rtl() ? -1 : 1) * i * pageW(), behavior: smooth ? 'smooth' : 'auto' });
         const go = d => to(Math.max(0, Math.min(pages() - 1, cur() + d)), true);
+        let last = '';
         const draw = () => {
             const n = pages(), c = cur(), dots = bar.querySelector('.tg-dots');
+            if (last === n + ':' + c + ':' + rtl()) return; last = n + ':' + c + ':' + rtl();
             if (dots.children.length !== n) dots.innerHTML = '<i></i>'.repeat(n);
             [...dots.children].forEach((d, i) => d.classList.toggle('on', i === c));
             const pv = bar.querySelector('.tg-prev'), nx = bar.querySelector('.tg-next');
@@ -218,8 +230,8 @@
         bar.querySelector('.tg-prev').onclick = () => go(-1);
         bar.querySelector('.tg-next').onclick = () => go(1);
         // M-257 (owner: the pages did not glide): the phone's own snapping moves page by page (CSS scroll-snap), the floating symbols rest while it moves
-        let q = 0, rest = 0;
-        g.addEventListener('scroll', () => { if (!q) q = requestAnimationFrame(() => { q = 0; draw(); }); g.classList.add('tg-moving'); clearTimeout(rest); rest = setTimeout(() => g.classList.remove('tg-moving'), 220); }, { passive: true });
+        let rest = 0;
+        g.addEventListener('scroll', () => { clearTimeout(rest); rest = setTimeout(draw, 90); }, { passive: true }); // M-260: nothing changes on the page while the finger moves
         // the chosen theme's page is shown when the screen opens
         const show = () => { const sel = g.querySelector('.theme-sw.sel'); to(sel ? Math.floor([...g.children].indexOf(sel) / per()) : 0); draw(); };
         new MutationObserver(() => { dress(); setTimeout(show, 60); }).observe(g, { childList: true });
@@ -267,4 +279,63 @@
         set(); new MutationObserver(set).observe(gb, { childList: true, subtree: true, characterData: true });
     }
     handWord();
+    // M-259 (owner): the animated-guide sheet: a clear back button instead of the red ✕, topic buttons as glossy capsules whose words
+    // never run into the next one, the "detailed help" box as one compact button beside "back", and everything fits with no scrolling
+    const G = 'html #mt-guide', GBACK = ['למסך הראשי', 'للشاشة الرئيسية', 'Ecran principal', 'Écran principal', 'Main screen', 'На главный'];
+    css.textContent += `
+    ${G} .g-card{padding:calc(10px + env(safe-area-inset-top)) 12px calc(10px + env(safe-area-inset-bottom))!important;gap:0;
+      background:radial-gradient(ellipse 90% 50% at 50% 0%,rgba(168,85,247,.45),rgba(168,85,247,0) 70%),linear-gradient(170deg,#3b0764,#1e1b4b 55%,#0b1023)!important}
+    ${G} .g-t{font-family:'MTBall','MTUI',sans-serif;font-weight:700;font-size:min(1.6rem,7vw,3.6vh)!important;line-height:1.15;margin:2px 0 2px!important;color:#f5e8ff;
+      text-shadow:0 1px 0 #7e22ce,0 2px 0 #6b21a8,0 3px 0 #581c87,0 5px 8px rgba(0,0,0,.7)}
+    ${G} .g-s{font-size:min(1rem,4.2vw,2.2vh)!important;margin:0 0 8px!important;line-height:1.25}
+    ${G} .g-voice{flex:none;margin:0 0 10px!important;padding:min(11px,1.3vh) 14px!important;font-size:min(1.08rem,4.6vw,2.4vh)!important;border-radius:999px!important;
+      border:2px solid rgba(255,255,255,.85)!important;box-shadow:inset 0 2px 3px rgba(255,255,255,.45),inset 0 -4px 7px rgba(0,0,0,.35),0 0 0 3px rgba(0,0,0,.6),0 6px 12px rgba(0,0,0,.5)!important}
+    ${G} .g-grid{gap:min(10px,1.2vh) 10px!important;padding:3px!important}
+    ${G} .g-grid > button.g-b{display:flex!important;align-items:center;gap:8px;min-width:0;min-height:0;overflow:hidden;padding:2px 12px!important;border-radius:999px!important;text-align:start;
+      font-family:inherit;font-weight:800;font-size:var(--gb-f,min(1.02rem,4.3vw,2.3vh))!important;line-height:1.12!important;color:#fff;
+      border:2px solid rgba(255,255,255,.88)!important;background:linear-gradient(180deg,rgba(255,255,255,.34) 0,rgba(255,255,255,.08) 38%,rgba(0,0,0,0) 60%,rgba(0,0,0,.25) 100%),linear-gradient(170deg,#a855f7,#6d28d9 55%,#3b0764)!important;
+      box-shadow:inset 0 2px 3px rgba(255,255,255,.5),inset 0 -5px 8px rgba(0,0,0,.35),0 0 0 3px rgba(0,0,0,.7),0 6px 10px rgba(0,0,0,.55)!important;text-shadow:0 1px 0 #3b0764,0 2px 3px rgba(0,0,0,.7)}
+    ${G} .g-grid > button.g-b:nth-child(4n+2),${G} .g-grid > button.g-b:nth-child(4n+3){background:linear-gradient(180deg,rgba(255,255,255,.34) 0,rgba(255,255,255,.08) 38%,rgba(0,0,0,0) 60%,rgba(0,0,0,.25) 100%),linear-gradient(170deg,#6366f1,#4338ca 55%,#1e1b4b)!important}
+    ${G} .g-grid > button.g-b:active{transform:translateY(3px)}
+    ${G} .g-b .gb-e{flex:none;font-style:normal;font-size:1.45em;line-height:1;filter:drop-shadow(0 2px 2px rgba(0,0,0,.6))}
+    ${G} .g-b .gb-t{flex:1 1 auto;min-width:0;overflow:hidden;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+    ${G} .g-more{display:none!important}
+    ${G} .g-foot{flex:none;display:flex;gap:10px;align-items:stretch;margin-top:min(12px,1.4vh)}
+    ${G} .g-foot > button{flex:1 1 0;min-width:0;min-height:min(52px,6.4vh);border-radius:999px;padding:6px 12px;font-family:inherit;font-weight:900;font-size:min(1.05rem,4.4vw,2.4vh);line-height:1.1;
+      color:#fff;border:2px solid rgba(255,255,255,.9);overflow:hidden;overflow-wrap:anywhere}
+    ${G} .g-foot > .g-x{position:static!important;width:auto!important;height:auto!important;background:linear-gradient(180deg,#a5f3fc 0%,#22d3ee 22%,#0891b2 60%,#155e75 100%)!important;
+      text-shadow:0 1px 0 #0e7490,0 2px 0 #155e75,0 3px 4px rgba(0,0,0,.6);box-shadow:inset 0 3px 4px rgba(255,255,255,.65),inset 0 -5px 8px rgba(8,51,68,.55),0 5px 0 #0c4a5e,0 10px 14px rgba(0,0,0,.5),0 0 16px rgba(34,211,238,.5)!important}
+    ${G} .g-foot > .g-help{width:auto!important;background:linear-gradient(180deg,#fef3c7 0%,#fbbf24 25%,#d97706 65%,#92400e 100%)!important;color:#fff!important;
+      text-shadow:0 1px 0 #b45309,0 2px 0 #92400e,0 3px 4px rgba(0,0,0,.6);box-shadow:inset 0 3px 4px rgba(255,255,255,.65),inset 0 -5px 8px rgba(120,53,15,.55),0 5px 0 #78350f,0 10px 14px rgba(0,0,0,.5)!important}
+    ${G} .g-foot > button:active{transform:translateY(4px)}
+    html.lowvision #mt-guide .g-grid > button.g-b{background:#000!important;border-color:#fff!important;font-size:var(--gb-f,min(1.15rem,4.8vw,2.5vh))!important}
+    html.lowvision #mt-guide .g-b .gb-e{font-size:1.25em}`;
+    function dressGuide(sh) {
+        const card = sh.querySelector('.g-card'), x = sh.querySelector('.g-x'), help = sh.querySelector('.g-help'), grid = sh.querySelector('.g-grid');
+        if (!card || !x || !help || !grid || sh.querySelector('.g-foot')) return;
+        const i = Math.max(0, L6.indexOf(typeof LANG === 'string' ? LANG : document.documentElement.lang));
+        x.textContent = (i < 2 ? '→ ' : '← ') + '🏠 ' + GBACK[i]; x.setAttribute('aria-label', GBACK[i]);
+        const foot = document.createElement('div'); foot.className = 'g-foot'; foot.append(x, help); card.appendChild(foot);
+        [...grid.children].forEach(b => {
+            const m = b.textContent.match(/^(\S+)\s+(.*)$/); if (!m) return;
+            b.classList.add('g-b'); b.textContent = '';
+            const e = document.createElement('i'); e.className = 'gb-e'; e.setAttribute('aria-hidden', 'true'); e.textContent = m[1];
+            const t = document.createElement('span'); t.className = 'gb-t'; t.textContent = m[2]; b.append(e, t);
+        });
+        fitGuide(sh); [350, 900].forEach(d => setTimeout(() => sh.isConnected && fitGuide(sh), d));
+    }
+    // the words get a little smaller until every topic fits inside its own capsule and the sheet fits the screen
+    function fitGuide(sh) {
+        const grid = sh.querySelector('.g-grid'), card = sh.querySelector('.g-card'); if (!grid) return;
+        grid.style.removeProperty('--gb-f');
+        const bs = [...grid.children], over = () => card.scrollHeight > card.clientHeight + 1 || bs.some(b => { const t = b.querySelector('.gb-t'); return b.scrollHeight > b.clientHeight + 1 || (t && t.scrollHeight > t.clientHeight + 1); });
+        let f = parseFloat(getComputedStyle(bs[0] || grid).fontSize);
+        for (let k = 0; k < 16 && f > 11 && over(); k++) { f -= 1; grid.style.setProperty('--gb-f', f + 'px'); }
+    }
+    function hookGuide() {
+        const og = window.mtGuide; if (typeof og !== 'function') return setTimeout(hookGuide, 500);
+        window.mtGuide = function () { const r = og.apply(this, arguments); const sh = document.getElementById('mt-guide'); if (sh) dressGuide(sh); return r; };
+        addEventListener('resize', () => { const sh = document.getElementById('mt-guide'); if (sh) fitGuide(sh); });
+    }
+    hookGuide();
 })();
