@@ -4,3 +4,4 @@ date,run,downloads
 2026-10-22,165,2
 2026-10-22,169,2
 2026-10-22,172,0
+2026-10-22,174,{"message":"Not Found","documentation_url":"https://docs.github.com/rest/releases/releases#get-a-release-by-tag-name","status":"404"}
