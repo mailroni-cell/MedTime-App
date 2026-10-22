@@ -25,5 +25,5 @@ jobs:
         run: |
           git config user.name "github-actions[bot]" && git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           rm -rf media-cache/raw sound-cache/raw
-          for p in media-cache app/src/main/assets/ambient app/src/main/assets/video app/src/main/assets/media_credits.js; do [ -e "$p" ] && git add -f "$p"; done
+          for p in media-cache app/src/main/assets/ambient app/src/main/assets/video app/src/main/assets/media_credits.js; do [ -e "$p" ] && git add -f "$p"; done; true
           git commit -m "M-196 media ${{ github.event.inputs.mode }} [skip ci]" && git pull --rebase -q origin main && git push
