@@ -255,3 +255,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-231 | 2026-10-22 | homelayout.js, fonts/fredoka-hebrew-700, fonts/rubik-cyrillic-800 | Owner: nicer label font: rounded bold Fredoka (Hebrew/Latin), Rubik ExtraBold for Arabic/Russian, with the 3D letters | ⏳ |
 | M-232 | 2026-10-22 | homelayout.js, stats.js | Owner: share button placement: now a glowing green ball at the end of the animated tour line, one unit with it | ⏳ |
 | M-233 | 2026-10-22 | homelayout.js | Owner: the My reminders ball shows ⏰ and the time of the next reminder instead of the count; the line under it is gone | ⏳ |
+| M-234 | 2026-10-22 | stats.js, homelayout.js | Owner: share button removed from the main screen; the settings share tile pulses slowly in fluorescent green; its send button is counted | ⏳ |

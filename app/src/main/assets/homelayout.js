@@ -118,7 +118,6 @@
         if (!bar) { bar = document.createElement('div'); bar.className = 'hm-bar'; }
         card.appendChild(bar);
         const gl = $('guide-btn'); if (gl && gl.parentNode !== bar) bar.insertBefore(gl, bar.firstChild);
-        const shb = $('mt-share'); if (shb && shb.parentNode !== bar) bar.appendChild(shb);
         card.querySelectorAll('.nav-row, .home-pair, .hm-meds, .hm-grid').forEach(d => d.classList.toggle('hm-empty', !d.querySelector('button')));
         markDone(); make3d();
         if (typeof window.fitMain === 'function') setTimeout(window.fitMain, 60);

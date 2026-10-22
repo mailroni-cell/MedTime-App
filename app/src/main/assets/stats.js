@@ -50,12 +50,12 @@
 
     const css = document.createElement('style');
     css.textContent = `
-    html body #mt-share{position:relative!important;flex:0 0 auto;width:54px;height:54px;border-radius:50%;border:2.5px solid #4ade80;margin:0!important;padding:0;
-      display:grid;place-items:center;font-size:1.5rem;color:#fff;background:radial-gradient(circle at 34% 26%,#fff 0,#86efac 18%,#16a34a 60%,#052e16 100%);
-      box-shadow:inset 0 -5px 8px rgba(0,0,0,.35),0 0 14px rgba(74,222,128,.75),0 6px 12px rgba(0,0,0,.5);-webkit-tap-highlight-color:transparent;animation:mtShF 3.6s ease-in-out infinite}
-    @keyframes mtShF{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-    html body #mt-share:active{animation:none;transform:scale(.92)}
-        #mt-sv{position:fixed;inset:0;z-index:9000;display:flex;align-items:flex-end;justify-content:center;background:rgba(2,6,23,.6);opacity:0;transition:opacity .25s}
+    #tile-share .set-ico{position:relative;overflow:visible!important}
+    #tile-share .set-ico::before{content:'';position:absolute;inset:-7px;border-radius:inherit;pointer-events:none;border:3px solid #a3ff6b;
+      box-shadow:0 0 16px 4px #4ade80,inset 0 0 12px #4ade80;opacity:.25;transform:scale(.94);animation:mtShP 3.4s ease-in-out infinite;will-change:transform,opacity}
+    @keyframes mtShP{0%,100%{opacity:.2;transform:scale(.94)}50%{opacity:1;transform:scale(1.06)}}
+    html.lowvision #tile-share .set-ico::before{animation:none;opacity:.8}
+    #mt-sv{position:fixed;inset:0;z-index:9000;display:flex;align-items:flex-end;justify-content:center;background:rgba(2,6,23,.6);opacity:0;transition:opacity .25s}
     #mt-sv.in{opacity:1}
     #mt-sv .sv-card{width:100%;max-width:520px;box-sizing:border-box;background:linear-gradient(180deg,#1e293b,#0f172a);color:#fff;border-radius:26px 26px 0 0;
       padding:18px 16px calc(16px + env(safe-area-inset-bottom));box-shadow:0 -10px 30px rgba(0,0,0,.5);font-family:inherit}
@@ -75,17 +75,12 @@
     #mt-sv .sv-no{background:rgba(255,255,255,.12);color:#fff}`;
     document.head.appendChild(css);
 
+    // M-234 (owner): no share button on the main screen; the settings share tile glows and pulses slowly instead.
+    // A tap on its send button is counted (anonymous)
     function shareBtn() {
-        if (document.getElementById('mt-share')) return;
-        const b = document.createElement('button'); b.type = 'button'; b.id = 'mt-share'; b.textContent = '📤';
-        b.setAttribute('aria-label', tx('share'));
-        b.onclick = () => {
-            if (navigator.vibrate) try { navigator.vibrate(12); } catch (e) { }
-            const go = document.getElementById('sh-go');
-            if (go && N && N.shareText) { go.click(); put('medtime_shares', String(+get('medtime_shares', '0') + 1)); send('share'); }
-        };
-        (document.querySelector('.home-card') || document.body).appendChild(b);
-        if (window.mtHomeLayout) window.mtHomeLayout();
+        const old = document.getElementById('mt-share'); if (old) old.remove();
+        const go = document.getElementById('sh-go');
+        if (go && !go.dataset.mtCount) { go.dataset.mtCount = '1'; go.addEventListener('click', () => { put('medtime_shares', String(+get('medtime_shares', '0') + 1)); send('share'); }); }
     }
 
     function survey() {
