@@ -82,6 +82,11 @@
     ${B} #sb-home small,${B} #fa-home small,${B} .ba-ecg,${B} .ab-count{display:none!important}
     ${B} #list-btn{flex-wrap:nowrap!important}
     ${B} #list-btn .lb-next{flex-basis:auto!important}
+    ${B} #list-btn.hm-next .lb-next{display:none!important}
+    html body .home-card .hm-float #list-btn.hm-next .lb-count{display:flex!important;flex-direction:column!important;gap:0!important;line-height:1!important}
+    html body .home-card .hm-float #list-btn.hm-next .lb-count small{font-size:calc(var(--hm-o,118px) * .2)!important;line-height:1!important;color:inherit!important;text-shadow:none!important;-webkit-text-stroke:0!important;margin-bottom:2px}
+    html body .home-card .hm-float #list-btn.hm-next .lb-count b{font-family:'MTBall','MTUI',sans-serif!important;font-weight:700!important;font-size:calc(var(--hm-o,118px) * .27)!important;line-height:1!important;color:#fff!important;direction:ltr;
+      text-shadow:0 1px 0 #e2e8f0,0 2px 0 #94a3b8,0 3px 0 #475569,0 4px 5px rgba(0,0,0,.7)!important;-webkit-text-stroke:0!important}
     /* M-210: all of today's reminders taken */
     #list-btn.hm-done .lb-count::before{content:'✓';position:absolute;right:-12px;bottom:-8px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
       font-size:1.2rem;font-weight:900;color:#fff;background:radial-gradient(circle at 35% 30%,#86efac,#16a34a 60%,#14532d);box-shadow:0 0 0 3px rgba(0,0,0,.5),0 0 14px #22c55e;z-index:2}
@@ -143,6 +148,13 @@
             done = due.length > 0 && due.every(m => taken.has(String(m.id))); // weekend copies have id + 100000000
         } catch (e) { }
         btn.classList.toggle('hm-done', done);
+        // M-233 (owner): the ball shows the time of the next reminder instead of how many there are; the line under it goes
+        const c = btn.querySelector('.lb-count'), nx = btn.querySelector('.lb-next');
+        const m = nx && /\b\d{1,2}:\d{2}\b/.exec(nx.textContent || '');
+        if (c && m) {
+            if (c.dataset.t !== m[0]) { c.dataset.t = m[0]; c.innerHTML = '<small>⏰</small><b></b>'; c.querySelector('b').textContent = m[0]; }
+            btn.classList.add('hm-next');
+        } else btn.classList.remove('hm-next');
     }
     // M-211 (owner approved idea): "💊 Taken now" ball, only in the 30 minutes before a reminder that was not taken yet today
     const L5 = ['he', 'ar', 'ro', 'fr', 'en', 'ru'];
