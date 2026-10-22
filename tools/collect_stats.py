@@ -12,6 +12,7 @@ state = load('state.json', {'since': 'all'})
 ids = load('ids.json', {})
 surveys = load('surveys.json', [])
 shares = load('shares.json', {})
+daily = load('daily.json', {})  # day -> list of id hashes seen that day (daily active users)
 url = 'https://ntfy.sh/%s/json?poll=1&since=%s' % (TOPIC, state['since'])
 raw = urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': 'medtime-stats'}), timeout=60).read().decode()
 n = 0
@@ -26,6 +27,8 @@ for line in raw.splitlines():
     h = hashlib.sha256(str(m.get('id', '')).encode()).hexdigest()[:16]
     r = ids.setdefault(h, {'first': day})
     r.update({'last': day, 'v': str(m.get('ver', ''))[:8], 'l': str(m.get('lang', ''))[:3]})
+    dl = daily.setdefault(day, [])
+    if h not in dl: dl.append(h)
     k = m.get('kind')
     if k == 'share': shares[day] = shares.get(day, 0) + 1
     if k == 'survey':
@@ -44,11 +47,13 @@ summary = {
     'active_7d_by_version': dict(collections.Counter(r['v'] for r in act7).most_common()),
     'active_7d_by_language': dict(collections.Counter(r['l'] for r in act7).most_common()),
     'new_installs_by_day': dict(sorted(collections.Counter(r['first'] for r in ids.values()).items())[-30:]),
+    'active_by_day': {d: len(v) for d, v in sorted(daily.items())[-30:]},
     'shares_total': sum(shares.values()), 'shares_by_day': dict(sorted(shares.items())[-30:]),
     'surveys': len(surveys), 'stars_avg': round(sum(s['stars'] for s in surveys) / len(surveys), 2) if surveys else None,
     'stars_count': dict(sorted(collections.Counter(s['stars'] for s in surveys).items())),
     'improve': dict(imp.most_common()),
 }
-for name, obj in [('state.json', state), ('ids.json', ids), ('surveys.json', surveys), ('shares.json', shares), ('summary.json', summary)]:
+daily = dict(sorted(daily.items())[-40:])
+for name, obj in [('daily.json', daily), ('state.json', state), ('ids.json', ids), ('surveys.json', surveys), ('shares.json', shares), ('summary.json', summary)]:
     json.dump(obj, open(os.path.join(D, name), 'w'), ensure_ascii=False, indent=1)
 print('messages', n, 'installs', len(ids), 'active7', len(act7))

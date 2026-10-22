@@ -25,7 +25,7 @@
     ${B}{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--hm-gap,14px) 6px;width:100%;align-items:start}
     ${BT}{all:unset;box-sizing:border-box;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-start!important;gap:6px!important;
       min-width:0;min-height:0!important;height:auto!important;width:100%!important;margin:0!important;padding:0!important;background:none!important;border:0!important;box-shadow:none!important;outline:none;cursor:pointer;
-      text-align:center!important;grid-column:span 2;-webkit-tap-highlight-color:transparent;animation:hmFloat 4.2s ease-in-out infinite;will-change:transform}
+      text-align:center!important;grid-column:span 2;-webkit-tap-highlight-color:transparent}
     ${BT}::before,${BT}::after{display:none!important}
     ${B} > #main-add{grid-column:1 / -1}
     ${B}.hm-has-now > #main-add,${B} > #hm-now{grid-column:span 3}
@@ -42,20 +42,31 @@
     /* M-241 (owner): every menu symbol sits on a glossy two-colour 3D capsule (a pill), tilted, instead of a ball */
     html body .home-card .hm-float :is(${ICO}){background:none!important;box-shadow:none!important;border-radius:0!important}
     html body .home-card .hm-float :is(${ICO})::after{display:none!important}
-    html body .home-card .hm-float .hm-pill{position:absolute;left:50%;top:50%;width:calc(var(--hm-o,118px) * 1.1);height:calc(var(--hm-o,118px) * .6);border-radius:999px;pointer-events:none;z-index:0;
-      transform:translate(-50%,-50%) rotate(-35deg);
-      background:linear-gradient(180deg,rgba(255,255,255,.75) 0,rgba(255,255,255,.12) 30%,rgba(255,255,255,0) 52%,rgba(0,0,0,.28) 100%),
-        linear-gradient(90deg,var(--c2) 0,var(--c2) 49.2%,rgba(0,0,0,.35) 49.2%,rgba(0,0,0,.35) 50.8%,#f8fafc 50.8%,#e2e8f0 100%),
+    /* M-242 (owner): bigger, thicker capsules that wrap the symbol and look round (cylinder light and shade, rounded ends) */
+    html body .home-card .hm-float .hm-pill{position:absolute;left:50%;top:50%;width:calc(var(--hm-o,118px) * 1.12);height:calc(var(--hm-o,118px) * .8);border-radius:999px;pointer-events:none;z-index:0;
+      transform:translate(-50%,-50%) rotate(-24deg);will-change:transform;animation:hmPill var(--hm-pd,9s) ease-in-out infinite;animation-delay:var(--hm-pdl,0s);
+      background:linear-gradient(180deg,rgba(255,255,255,.9) 0,rgba(255,255,255,.35) 14%,rgba(255,255,255,0) 36%,rgba(0,0,0,0) 58%,rgba(0,0,0,.22) 80%,rgba(0,0,0,.5) 100%),
+        linear-gradient(90deg,rgba(0,0,0,.28) 0,rgba(0,0,0,0) 12%,rgba(0,0,0,0) 88%,rgba(0,0,0,.28) 100%),
+        linear-gradient(90deg,var(--c2) 0,var(--c2) 49.4%,rgba(0,0,0,.4) 49.4%,rgba(0,0,0,.4) 50.6%,#f8fafc 50.6%,#e2e8f0 100%),
         linear-gradient(180deg,var(--c1),var(--c2) 45%,var(--c3));
-      box-shadow:0 0 0 3px rgba(255,255,255,.92),0 0 0 5.5px rgba(0,0,0,.55),0 16px 16px -4px rgba(0,0,0,.6),0 0 24px var(--c2)}
-    html body .home-card .hm-float .hm-pill::after{content:'';position:absolute;left:9%;top:12%;width:70%;height:22%;border-radius:999px;background:linear-gradient(rgba(255,255,255,.9),rgba(255,255,255,0))}
+      box-shadow:inset 0 -9px 14px rgba(0,0,0,.3),inset 0 7px 10px rgba(255,255,255,.55),0 0 0 3px rgba(255,255,255,.92),0 0 0 5.5px rgba(0,0,0,.55),0 18px 18px -6px rgba(0,0,0,.65),0 0 26px var(--c2)}
+    /* M-243 (owner): each capsule floats on its own, slowly, with a very gentle sway; the label stays still */
+    @keyframes hmPill{0%,100%{transform:translate(-50%,-50%) rotate(-24deg)}25%{transform:translate(calc(-50% + 3px),calc(-50% - 6px)) rotate(-19deg)}
+      50%{transform:translate(calc(-50% - 2px),calc(-50% - 9px)) rotate(-27deg)}75%{transform:translate(calc(-50% - 4px),calc(-50% - 3px)) rotate(-21deg)}}
+    html body .home-card .hm-float > :nth-child(1){--hm-pd:9.5s;--hm-pdl:-1s}html body .home-card .hm-float > :nth-child(2){--hm-pd:11s;--hm-pdl:-4s}
+    html body .home-card .hm-float > :nth-child(3){--hm-pd:8.5s;--hm-pdl:-6s}html body .home-card .hm-float > :nth-child(4){--hm-pd:10.5s;--hm-pdl:-2.5s}
+    html body .home-card .hm-float > :nth-child(5){--hm-pd:12s;--hm-pdl:-7s}html body .home-card .hm-float > :nth-child(6){--hm-pd:9s;--hm-pdl:-5s}
+    html body .home-card .hm-float > :nth-child(7){--hm-pd:11.5s;--hm-pdl:-3s}html body .home-card .hm-float > :nth-child(8){--hm-pd:10s;--hm-pdl:-8s}
+    html.lowvision body .home-card .hm-float .hm-pill{animation:none}
+    html body .home-card .hm-float .hm-pill::after{content:'';position:absolute;left:10%;top:9%;width:72%;height:20%;border-radius:999px;background:linear-gradient(rgba(255,255,255,.95),rgba(255,255,255,0))}
+    html body .home-card .hm-float .hm-pill::before{content:'';position:absolute;left:14%;bottom:12%;width:60%;height:10%;border-radius:999px;background:linear-gradient(rgba(255,255,255,0),rgba(255,255,255,.35))}
     html body .home-card .hm-float :is(${ICO}) > :not(.hm-pill){position:relative;z-index:2}
     html body .home-card .hm-float #fa-home .hm-pill{box-shadow:0 0 0 4px #f4ff1a,0 0 0 7px rgba(0,0,0,.6),0 16px 16px -4px rgba(0,0,0,.6),0 0 28px 6px #ff1744}
     /* M-223 (owner): the symbols are solid 3D objects (a stack of layers gives them thickness) that turn all the way round,
        slowly, as if floating in liquid or in space, with a gentle tilt up and down. Each ball has its own speed and start */
     html .home-card .hm-float :is(${ICO}){perspective:300px}
     html .home-card .hm-float .hm-3d{display:grid;place-items:center;transform-style:preserve-3d;will-change:transform;animation:hmSpin var(--hm-sp,13s) cubic-bezier(.45,.05,.55,.95) infinite;animation-delay:var(--hm-dl,0s)}
-    html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > *{grid-area:1/1;display:block;font-size:calc(var(--hm-o,118px) * .62)!important;width:auto!important;height:auto!important;line-height:1!important;font-style:normal;
+    html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > *{grid-area:1/1;display:block;font-size:calc(var(--hm-o,118px) * .66)!important;width:auto!important;height:auto!important;line-height:1!important;font-style:normal;
       filter:none!important;text-shadow:none!important;-webkit-text-stroke:0!important;animation:none!important;margin:0!important;backface-visibility:visible;flex:none!important}
     html body .home-card .hm-float #main-add .hm-3d > svg{width:calc(var(--hm-o) * .64)!important;height:calc(var(--hm-o) * .64)!important}
     html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l1{transform:translateZ(4.5px)!important}
@@ -72,7 +83,7 @@
     html .home-card .hm-float > :nth-child(6){--hm-sp:12s;--hm-dl:-4.5s}html .home-card .hm-float > :nth-child(7){--hm-sp:10.5s;--hm-dl:-1s}html .home-card .hm-float > :nth-child(8){--hm-sp:14s;--hm-dl:-7s}
     /* M-224 (owner): the light that runs round a menu now and then follows the ball, not the invisible square around it */
     ${BT}{position:relative!important}
-    ${B} > button > .mt-glint{inset:auto!important;top:calc(var(--hm-o,118px) * .2)!important;left:50%!important;width:calc(var(--hm-o,118px) * 1.1)!important;height:calc(var(--hm-o,118px) * .6)!important;margin-left:calc(var(--hm-o,118px) * -.55)!important;border-radius:999px!important;padding:3px!important;transform:rotate(-35deg)}
+    ${B} > button > .mt-glint{inset:auto!important;top:calc(var(--hm-o,118px) * .1)!important;left:50%!important;width:calc(var(--hm-o,118px) * 1.12)!important;height:calc(var(--hm-o,118px) * .8)!important;margin-left:calc(var(--hm-o,118px) * -.56)!important;border-radius:999px!important;padding:3px!important;transform:rotate(-24deg)}
     html .home-card .hm-float #main-add{--hm-o:var(--hm-big,140px)}
     html .home-card .hm-float #list-btn .lb-count{color:#fff!important;font-size:calc(var(--hm-o,118px) * .46)!important;font-weight:900!important;animation:none!important;text-shadow:0 1px 0 #e2e8f0,0 2px 0 #cbd5e1,0 3px 0 #94a3b8,0 4px 0 #64748b,0 5px 0 #475569,0 7px 8px rgba(0,0,0,.6)!important;min-height:0!important}
     #main-add{--c1:#bbf7d0;--c2:#10b981;--c3:#065f46}
@@ -317,7 +328,7 @@
         const box = document.querySelector('.home-card .hm-float'), ex = $('exit-btn');
         if (!box || !ex || !box.offsetParent || ex.getBoundingClientRect().height < 10) return false; // M-226: another screen is open: keep the size
         const lim = ex.getBoundingClientRect().top - 8, colW = box.clientWidth / 3 - 8;
-        let o = Math.min(150, Math.floor(colW)); // M-239: a little bigger when there is room
+        let o = Math.min(140, Math.floor(colW / 1.1)); // M-239/M-242: as big as the room allows; the capsule is wider than the box
         const set = () => { box.style.setProperty('--hm-o', o + 'px'); box.style.setProperty('--hm-big', Math.round(o * 1.15) + 'px'); };
         set();
         while (o > 64 && (low() > lim || document.body.scrollHeight > innerHeight + 2)) { o -= 4; set(); }

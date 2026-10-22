@@ -264,3 +264,6 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-240 | 2026-10-22 | homelayout.js | Owner: no "no appointments" line; when there are appointments the line glows fluorescent green | ⏳ |
 | M-241 | 2026-10-22 | homelayout.js | Owner: menu icons are glossy two-colour tilted 3D pills (capsules) with the floating symbol on them; the passing light follows the pill | ⏳ |
 | R-189 | 2026-10-22 | release/stable.txt | Run 189 (M-223..M-241) released to everyone | ✅ |
+| M-242 | 2026-10-22 | homelayout.js | Owner: capsules bigger and thicker, wrapping the symbol, rounded 3D look (cylinder light/shade, darker ends, highlights), less tilt | ⏳ |
+| M-243 | 2026-10-22 | homelayout.js | Owner: buttons no longer move as one block: each capsule floats on its own, slowly, with a very gentle sway; labels stay still | ⏳ |
+| M-244 | 2026-10-22 | tools/collect_stats.py, docs/stats.html | Owner: stats page with a written summary and charts (daily active users, new installs, shares), survey stars, versions, languages, what to improve (in Hebrew) | ⏳ |
