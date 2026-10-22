@@ -59,6 +59,7 @@ public class I18n {
         put("appt_speech_at", "הכתובת: %a.", "العنوان: %a.", "Adresa: %a.", "Adresse : %a.", "Address: %a.", "Адрес: %a.");
         put("appt_waze", "🚗 נווט ב-Waze", "🚗 تنقّل بـ Waze", "🚗 Navighează cu Waze", "🚗 Naviguer avec Waze", "🚗 Navigate with Waze", "🚗 Маршрут в Waze");
         put("appt_call", "📞 התקשר", "📞 اتصل", "📞 Sună", "📞 Appeler", "📞 Call", "📞 Позвонить");
+        put("upd_done", "עודכן לגרסה החדשה. לחצו כדי לפתוח", "تم التحديث إلى الإصدار الجديد. اضغط للفتح", "Actualizat la versiunea nouă. Atingeți pentru a deschide", "Mis à jour. Touchez pour ouvrir", "Updated to the new version. Tap to open", "Обновлено до новой версии. Нажмите, чтобы открыть"); // M-212
         put("medid_channel", "מידע רפואי לחירום", "معلومات طبية للطوارئ", "Informații medicale de urgență", "Informations médicales d'urgence", "Emergency medical info", "Медицинская информация для экстренных случаев"); // M-200
         put("appt_ok", "👍 הבנתי", "👍 فهمت", "👍 Am înțeles", "👍 Compris", "👍 Got it", "👍 Понятно");
         put("appt_maps", "🗺️ מפות", "🗺️ خرائط", "🗺️ Hărți", "🗺️ Cartes", "🗺️ Maps", "🗺️ Карты");

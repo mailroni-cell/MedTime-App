@@ -72,6 +72,8 @@
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info" />
         </receiver>
+        <!-- M-212: result of an in-app update (PackageInstaller session) -->
+        <receiver android:name=".InstallReceiver" android:exported="false" />
         <receiver android:name=".BootReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

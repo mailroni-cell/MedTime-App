@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try { ((android.app.NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancel(7714); } catch (Exception ignored) { } // M-212: the app is open, the 'tap to open' note is not needed
 
         // M-004: turn the screen on and show the app above the lock screen (like an alarm clock),
         // and ask Android to remove a swipe-only lock. A PIN / fingerprint lock stays (security).

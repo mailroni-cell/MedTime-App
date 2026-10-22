@@ -119,6 +119,9 @@ class Updater {
                 c.disconnect();
                 if (total > 0 && got != total) throw new Exception("short");
                 send(a, wv, "{\"type\":\"ready\"}");
+                // M-212 (owner): install by itself and open the app again afterwards
+                a.getSharedPreferences("medtime_upd", 0).edit().putBoolean("relaunch", true).apply();
+                if (InstallReceiver.installSession(a, f)) return;
                 Uri uri = FileProvider.getUriForFile(a, a.getPackageName() + ".updates", f);
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setDataAndType(uri, "application/vnd.android.package-archive");

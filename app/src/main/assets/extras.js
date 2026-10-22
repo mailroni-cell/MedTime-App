@@ -38,6 +38,13 @@
         doneT: ['✅ MedTime עודכן לגרסה {v}', '✅ تم تحديث MedTime إلى الإصدار {v}', '✅ MedTime a fost actualizat la versiunea {v}', '✅ MedTime a été mis à jour (version {v})', '✅ MedTime was updated to version {v}', '✅ MedTime обновлён до версии {v}'],
         doneX: ['העדכון מתחיל עכשיו. אם הטלפון מבקש אישור, לחצו "עדכון", "אישור" או "אפשר". התזכורות, התורים וההגדרות שלכם נשמרים.', 'سيبدأ التحديث الآن. إذا طلب الهاتف موافقة، اضغط "تحديث" أو "موافق" أو "سماح". تذكيراتك ومواعيدك وإعداداتك محفوظة.', 'Actualizarea începe acum. Dacă telefonul cere confirmare, apăsați "Actualizează", "OK" sau "Permite". Mementourile, programările și setările rămân.', 'La mise à jour commence maintenant. Si le téléphone demande une confirmation, touchez « Mettre à jour », « OK » ou « Autoriser ». Vos rappels, rendez-vous et réglages sont conservés.', 'The update starts now. If the phone asks to confirm, tap "Update", "OK" or "Allow". Your reminders, appointments and settings stay.', 'Обновление начинается. Если телефон просит подтверждение, нажмите «Обновить», «ОК» или «Разрешить». Ваши напоминания, записи и настройки сохранятся.'],
         doneOk: ['הבנתי 👍', 'فهمت 👍', 'Am înțeles 👍', 'Compris 👍', 'Got it 👍', 'Понятно 👍'],
+        // M-212 (owner): choose now or later; after "now" everything happens by itself, including closing and reopening
+        upQ: ['העדכון לוקח בערך דקה. האפליקציה תיסגר ותיפתח מחדש לבד. התזכורות, התורים וההגדרות נשמרים. בפעם הראשונה הטלפון עלול לבקש אישור אחד: לחצו "עדכון".',
+            'يستغرق التحديث نحو دقيقة. سيُغلق التطبيق ويُفتح من جديد تلقائيًا. التذكيرات والمواعيد والإعدادات محفوظة. في المرة الأولى قد يطلب الهاتف موافقة واحدة: اضغط "تحديث".',
+            'Actualizarea durează cam un minut. Aplicația se închide și se redeschide singură. Mementourile, programările și setările rămân. Prima dată telefonul poate cere o confirmare: apăsați „Actualizează”.',
+            'La mise à jour prend environ une minute. L’appli se ferme et se rouvre toute seule. Rappels, rendez-vous et réglages sont conservés. La première fois, le téléphone peut demander une confirmation : appuyez sur « Mettre à jour ».',
+            'The update takes about a minute. The app closes and opens again by itself. Reminders, appointments and settings are kept. The first time, the phone may ask once: tap "Update".',
+            'Обновление займёт около минуты. Приложение само закроется и снова откроется. Напоминания, записи и настройки сохранятся. В первый раз телефон может попросить подтверждение: нажмите «Обновить».'],
         now: ['עדכן עכשיו', 'حدّث الآن', 'Actualizează', 'Mettre à jour', 'Update now', 'Обновить сейчас']
     };
     const tx = k => (TX[k] || [k])[li()];
@@ -265,7 +272,11 @@
             // M-169 (owner): before the update, and only when there is one: say the phone may ask to approve, then update
             if (fromAuto && latest > cur && cur) {
                 const go = () => { waitShow(); install(); };
-                if (window.mtDialog) mtDialog({ icon: '🎉', title: tx('preT'), text: tx('doneX'), ok: tx('preOk'), cancel: false }).then(go); else go();
+                // M-212: "Later" waits 4 hours before asking again (the update stays available in settings ⚙️ → Updates)
+                if ((st.later || 0) > Date.now()) return;
+                if (window.mtDialog) mtDialog({ icon: '🎉', title: tx('preT'), text: tx('upQ'), ok: '🔄 ' + tx('now'), cancel: '⏰ ' + tx('later') }).then(v => {
+                    if (v) go(); else { st.later = Date.now() + 4 * 3600e3; save(); }
+                }); else go();
             }
         } else if (r.type === 'progress') { mode = 'loading'; pct = r.pct; drawUpd(); waitDraw(); }
         else if (r.type === 'ready') { mode = 'idle'; msgKey = 'ready'; drawUpd(); waitDraw(true); }
