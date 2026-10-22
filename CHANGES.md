@@ -281,3 +281,6 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-251 | 2026-10-22 | looks.js | Owner: My reminders never scrolls: after the plus.js tighter steps, the week bar and cards shrink together to the biggest size that fits above Done (stray bottom padding removed) | ⏳ |
 | M-252 | 2026-10-22 | looks.js | Owner: Display screen redesigned: themes in swipeable pages (3x3, 2x3 in low vision) with big arrows and dots, opens on the chosen theme page; each theme card shows a two-colour capsule and a clear name | ⏳ |
 | R-197 | 2026-10-22 | release/stable.txt | Run 197 (M-251, M-252) released to everyone | ✅ |
+| M-253 | 2026-10-22 | looks.js | Owner: greeting stays on the main screen (smaller on short screens instead of hidden); the tour line is one big floating 3D hand with the word inside (6 languages), never hidden | ⏳ |
+| M-254 | 2026-10-22 | looks.js | Owner: a soft dark halo behind the main menu calms the busy 3D background so the capsules stand out | ⏳ |
+| M-255 | 2026-10-22 | looks.js | Owner: theme cards styled: each shows its own floating symbol, glows and writes its name in the theme colour | ⏳ |

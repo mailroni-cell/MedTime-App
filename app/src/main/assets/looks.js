@@ -154,8 +154,37 @@
     html body #settings-page .tg-pager button:disabled{opacity:.3}
     html body #settings-page .tg-dots{display:flex;flex-wrap:wrap;justify-content:center;gap:7px}
     html body #settings-page .tg-dots i{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.3);box-shadow:0 0 0 1.5px rgba(0,0,0,.5)}
-    html.lowvision body #settings-page .panel-head .p-close.mt-backbtn{font-size:min(1.08rem,4.3vw)!important;padding:8px 13px 10px!important}
+    html.lowvision body #settings-page .panel-head .p-close.mt-backbtn{font-size:min(1.08rem,3.9vw)!important;padding:8px 11px 10px!important}
     html body #settings-page .tg-dots i.on{background:#67e8f9;box-shadow:0 0 0 2px #fff,0 0 10px #22d3ee}`;
+    // M-255 (owner: the theme cards looked too generic): every card shows its own world as a floating 3D symbol,
+    // glows in the theme's own colour and writes its name in that light
+    const WORLD = { space: '🪐', clouds: '☁️', synth: '🌆', ocean: '🐠', planets: '🪐', fire: '🔥', forest: '🌲', snow: '❄️', hearts: '💖', storm: '⚡',
+        crystals: '💎', sakura: '🌸', dna: '🧬', blackhole: '🕳️', butterflies: '🦋', bubbles: '🫧', tunnel: '🌀', molecules: '⚛️', balloons: '🎈', galaxy3d: '🌌' };
+    const BYNAME = { 'Cosmic nebula': '✨', 'Northern lights': '🌌', 'Golden sunset': '🌅', 'Deep ocean': '🐋', 'Fire & lava': '🌋', 'Enchanted forest': '🍄',
+        'Snowy winter': '⛄', 'Matrix': '💻', 'Dreamy pink': '💗', 'Thunderstorm': '⛈️', 'Desert dawn': '🏜️', 'Emerald': '💚', 'Midnight sun': '☀️', 'Cyberpunk': '🤖',
+        'Coral reef': '🐠', 'Lavender': '💜', 'Gold & black': '👑', 'Polar ice': '🧊', 'Violet space': '🔮', 'Blooming spring': '🌷', 'Tropical turquoise': '🏝️',
+        'Ruby red': '❤️', 'Moonlit night': '🌙', 'Retro neon': '🕹️', 'Electric energy': '⚡', 'White calm': '🕊️' };
+    function dress() {
+        const g = document.getElementById('theme-grid'); if (!g || !window.MED_THEMES) return;
+        [...g.children].forEach((b, k) => {
+            if (b.querySelector('.tw-world')) return;
+            const th = b.classList.contains('theme-auto') ? null : MED_THEMES[k - 1];
+            const w = document.createElement('span'); w.className = 'tw-world'; w.setAttribute('aria-hidden', 'true');
+            w.textContent = th ? (BYNAME[th.n[4]] || WORLD[th.world] || '✨') : '🌗';
+            b.style.setProperty('--tc', th ? th.ga : '#facc15');
+            b.style.setProperty('--td', (5 + (k % 5) * 0.7) + 's'); b.style.setProperty('--tl', (-(k % 7)) + 's');
+            b.insertBefore(w, b.firstChild);
+        });
+    }
+    css.textContent += `
+    html body #settings-page #theme-grid > .theme-sw{box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.35),inset 0 0 22px color-mix(in srgb,var(--tc) 45%,transparent),0 0 0 2px color-mix(in srgb,var(--tc) 80%,#000),0 0 0 4px rgba(0,0,0,.7),0 8px 14px rgba(0,0,0,.6),0 0 16px color-mix(in srgb,var(--tc) 50%,transparent)!important}
+    html body #settings-page #theme-grid > .theme-sw.sel{box-shadow:inset 0 0 0 2px #fff,inset 0 0 26px color-mix(in srgb,var(--tc) 60%,transparent),0 0 0 3px #fff,0 0 0 5.5px rgba(0,0,0,.75),0 8px 14px rgba(0,0,0,.6),0 0 24px 4px var(--tc)!important}
+    html body #settings-page #theme-grid .tw-dot,html body #settings-page #theme-grid .ta-ico{display:none!important}
+    html body #settings-page #theme-grid .tw-world{position:absolute;left:50%;top:40%;font-size:min(2.6rem,11vw);line-height:1;transform:translate(-50%,-50%);
+      filter:drop-shadow(0 4px 3px rgba(0,0,0,.6)) drop-shadow(0 0 10px var(--tc));animation:twFloat var(--td,6s) ease-in-out infinite;animation-delay:var(--tl,0s)}
+    html.lowvision body #settings-page #theme-grid .tw-world{animation:none;font-size:min(3.2rem,14vw)}
+    @keyframes twFloat{0%,100%{transform:translate(-50%,-50%) rotate(-6deg)}33%{transform:translate(calc(-50% + 3px),calc(-50% - 6px)) rotate(5deg) scale(1.06)}66%{transform:translate(calc(-50% - 3px),calc(-50% - 3px)) rotate(-2deg)}}
+    html body #settings-page #theme-grid .tw-name{color:#fff!important;text-shadow:0 2px 0 #000,0 0 10px var(--tc),0 0 2px var(--tc)!important}`;
     function pager() {
         const g = document.getElementById('theme-grid'); if (!g) return setTimeout(pager, 400);
         let bar = document.querySelector('#settings-page .tg-pager');
@@ -190,10 +219,40 @@
         g.addEventListener('scroll', () => { if (!q) q = requestAnimationFrame(() => { q = 0; draw(); }); clearTimeout(st); st = setTimeout(settle, 160); }, { passive: true });
         // the chosen theme's page is shown when the screen opens
         const show = () => { const sel = g.querySelector('.theme-sw.sel'); to(sel ? Math.floor([...g.children].indexOf(sel) / per()) : 0); draw(); };
-        new MutationObserver(() => setTimeout(show, 60)).observe(g, { childList: true });
+        new MutationObserver(() => { dress(); setTimeout(show, 60); }).observe(g, { childList: true });
+        dress();
         const tile = g.closest('.set-tile');
         if (tile) new MutationObserver(() => { if (tile.classList.contains('open')) setTimeout(show, 120); }).observe(tile, { attributes: true, attributeFilter: ['class'] });
         addEventListener('resize', () => setTimeout(draw, 80));
     }
     pager();
+
+    // M-253 (owner): the tour line is one big floating hand with the word inside it, instead of a small hand and a sentence
+    const HAND_URI = "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20112'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='0'%20x2='0'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%23bbf7d0'/%3E%3Cstop%20offset='.45'%20stop-color='%234ade80'/%3E%3Cstop%20offset='1'%20stop-color='%2315803d'/%3E%3C/linearGradient%3E%3Csymbol%20id='h'%3E%3Crect%20x='29'%20y='10'%20width='15'%20height='56'%20rx='7.5'/%3E%3Crect%20x='45.5'%20y='3'%20width='15'%20height='60'%20rx='7.5'/%3E%3Crect%20x='62'%20y='9'%20width='14.5'%20height='56'%20rx='7.25'/%3E%3Crect%20x='78'%20y='24'%20width='13'%20height='46'%20rx='6.5'/%3E%3Crect%20x='4'%20y='52'%20width='15'%20height='40'%20rx='7.5'%20transform='rotate%28-38%2011.5%2072%29'/%3E%3Crect%20x='24'%20y='42'%20width='68'%20height='64'%20rx='24'/%3E%3C/symbol%3E%3C/defs%3E%3Cuse%20href='%23h'%20fill='%23052e16'%20stroke='%23052e16'%20stroke-width='9'%20stroke-linejoin='round'/%3E%3Cuse%20href='%23h'%20fill='%23fff'%20stroke='%23fff'%20stroke-width='4.5'%20stroke-linejoin='round'/%3E%3Cuse%20href='%23h'%20fill='url%28%23g%29'/%3E%3Cellipse%20cx='48'%20cy='56'%20rx='18'%20ry='7'%20fill='%23fff'%20opacity='.45'/%3E%3Crect%20x='33'%20y='15'%20width='5'%20height='18'%20rx='2.5'%20fill='%23fff'%20opacity='.55'/%3E%3Crect%20x='50'%20y='8'%20width='5'%20height='18'%20rx='2.5'%20fill='%23fff'%20opacity='.55'/%3E%3Crect%20x='66'%20y='14'%20width='5'%20height='17'%20rx='2.5'%20fill='%23fff'%20opacity='.55'/%3E%3C/svg%3E";
+    const HAND = ['הדרכה', 'شرح', 'Ghid', 'Guide', 'Guide', 'Гид'], L6 = ['he', 'ar', 'ro', 'fr', 'en', 'ru'];
+    css.textContent += `
+    html body .home-card #guide-btn{flex:0 0 auto!important;width:min(80px,21vw)!important;height:min(86px,23vw)!important;min-height:0!important;padding:0!important;margin:0 auto!important;position:relative!important;
+      background:url("${HAND_URI}") center/contain no-repeat!important;filter:drop-shadow(0 10px 10px rgba(0,0,0,.55)) drop-shadow(0 0 14px rgba(74,222,128,.55));
+      animation:glHand 6s ease-in-out infinite!important;will-change:transform;justify-content:center!important}
+    html body .home-card #guide-btn > *{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important}
+    html body .home-card #guide-btn::before{content:attr(data-hand);position:absolute;left:24%;right:8%;top:56%;text-align:center;font-family:'MTBall','MTUI',sans-serif;font-weight:700;
+      font-size:min(1.05rem,4.3vw);line-height:1;color:#fff;letter-spacing:.2px;text-shadow:0 1px 0 #166534,0 2px 0 #14532d,0 3px 3px rgba(0,0,0,.8),0 0 8px rgba(0,0,0,.4);pointer-events:none}
+    @keyframes glHand{0%,100%{transform:translate(0,0) rotate(-8deg)}25%{transform:translate(-5px,-6px) rotate(4deg) scale(1.04)}50%{transform:translate(3px,-9px) rotate(-3deg)}75%{transform:translate(5px,-4px) rotate(9deg) scale(1.03)}}
+    html.hm-slim body .home-card #guide-btn{width:62px!important;height:66px!important}
+    html.fit5 body .home-card #guide-btn{display:flex!important;width:56px!important;height:60px!important}
+    html body .home-card > .hm-bar{justify-content:center!important}
+    /* M-254 (owner): the busy 3D background is calmed behind the menu, so the capsules stand out clearly */
+    html body .home-card .hm-float{isolation:isolate}
+    html body .home-card .hm-float::before{content:'';position:absolute;inset:-14px -10px;z-index:-1;pointer-events:none;border-radius:40px;
+      background:radial-gradient(ellipse 72% 64% at 50% 50%,rgba(3,6,20,.72) 0%,rgba(3,6,20,.5) 55%,rgba(3,6,20,0) 100%);filter:blur(6px)}
+    html.lowvision body .home-card #guide-btn{animation:none!important;background:url("${HAND_URI}") center/contain no-repeat!important}
+    /* M-253 (owner): the greeting stays on the main screen; on short screens it just gets a little smaller */
+    html.fit6 body .hello-line.hello-line{display:table!important;padding:4px 14px 5px!important;font-size:.98rem!important;margin:0 auto 4px!important}
+    html.fit6 body .hello-line.hello-line b{font-size:1.3em!important}`;
+    function handWord() {
+        const gb = document.getElementById('guide-btn'); if (!gb) return setTimeout(handWord, 500);
+        const set = () => { const i = Math.max(0, L6.indexOf(typeof LANG === 'string' ? LANG : document.documentElement.lang)); if (gb.dataset.hand !== HAND[i]) gb.dataset.hand = HAND[i]; };
+        set(); new MutationObserver(set).observe(gb, { childList: true, subtree: true, characterData: true });
+    }
+    handWord();
 })();
