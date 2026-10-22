@@ -288,3 +288,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-256 | 2026-10-22 | homelayout.js | Owner: no stripes when a symbol turns edge-on: 13 layers 0.7px apart instead of 7 | ⏳ |
 | M-257 | 2026-10-22 | looks.js | Owner: Display pages glide with the phone native page snapping; floating symbols pause while moving | ⏳ |
 | M-258 | 2026-10-22 | homelayout.js, looks.js | Owner: main capsules longer (1.36 x .72); the tour hand is a detailed pointing hand that taps (press + ripple at the fingertip) and drifts freely in every direction, word on its back | ⏳ |
+| R-199 | 2026-10-22 | release/stable.txt | Run 199 (M-256..M-258) released to everyone | ✅ |
