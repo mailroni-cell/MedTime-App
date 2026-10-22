@@ -69,7 +69,7 @@
     .ob-th button.sel{border-color:#22d3ee;box-shadow:0 0 14px rgba(34,211,238,.6)}
     .ob-card.ob-tall{display:flex;flex-direction:column;height:88vh;max-height:88vh;overflow:hidden;padding-bottom:14px}
     .ob-x-s{font-size:.95rem;margin-bottom:10px}
-    .ob-th-all{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;align-content:start;padding:4px 2px 8px;margin-bottom:12px}
+    .ob-th-all{flex:1;min-height:0;overflow-y:auto;grid-auto-rows:max-content;-webkit-overflow-scrolling:touch;align-content:start;padding:4px 2px 8px;margin-bottom:12px}
     .ob-th-all button{position:relative;border-radius:20px;transition:transform .15s}
     .ob-th-all button:active{transform:scale(.95)}
     .ob-th-all button span{height:78px;display:flex;align-items:center;justify-content:center;font-size:1.5rem}
