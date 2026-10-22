@@ -12,6 +12,12 @@
     const B = 'html .home-card .hm-float';
     const BT = B + ' > :is(#hm-now,#main-add,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home)'; // ids: beats the old per-button colours
     css.textContent = `
+    /* M-231 (owner: nicer font): labels in the rounded bold Fredoka (Hebrew, Latin); Arabic and Russian in Rubik ExtraBold */
+    @font-face{font-family:'MTBall';font-weight:700;font-display:swap;src:url(fonts/fredoka-hebrew-700-normal.woff2) format('woff2');unicode-range:U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
+    @font-face{font-family:'MTBall';font-weight:700;font-display:swap;src:url(fonts/fredoka-latin-700-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+    @font-face{font-family:'MTBall';font-weight:700;font-display:swap;src:url(fonts/rubik-arabic-800-normal.woff2) format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFF}
+    @font-face{font-family:'MTBall';font-weight:700;font-display:swap;src:url(fonts/rubik-cyrillic-800-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+    @font-face{font-family:'MTBall';font-weight:700;font-display:swap;src:url(fonts/rubik-latin-ext-800-normal.woff2) format('woff2');unicode-range:U+0100-02AF,U+0218-021B,U+1E00-1EFF}
     .home-card .hm-empty{display:none!important}
     ${B}{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--hm-gap,14px) 6px;width:100%;align-items:start}
     ${BT}{all:unset;box-sizing:border-box;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-start!important;gap:6px!important;
@@ -34,15 +40,16 @@
        slowly, as if floating in liquid or in space, with a gentle tilt up and down. Each ball has its own speed and start */
     html .home-card .hm-float :is(${ICO}){perspective:300px}
     html .home-card .hm-float .hm-3d{display:grid;place-items:center;transform-style:preserve-3d;will-change:transform;animation:hmSpin var(--hm-sp,11s) linear infinite;animation-delay:var(--hm-dl,0s)}
-    html .home-card .hm-float .hm-3d > *{grid-area:1/1;display:block;font-size:calc(var(--hm-o,118px) * .56)!important;width:auto!important;height:auto!important;line-height:1!important;font-style:normal;
-      filter:none!important;text-shadow:none!important;-webkit-text-stroke:0!important;animation:none!important;margin:0!important;backface-visibility:visible}
-    html .home-card .hm-float .hm-3d > .hm-l1{transform:translateZ(4.5px)}
-    html .home-card .hm-float .hm-3d > .hm-l2{transform:translateZ(3px);filter:brightness(.6)!important}
-    html .home-card .hm-float .hm-3d > .hm-l3{transform:translateZ(1.5px);filter:brightness(.5)!important}
-    html .home-card .hm-float .hm-3d > .hm-l4{transform:translateZ(0);filter:brightness(.45)!important}
-    html .home-card .hm-float .hm-3d > .hm-l5{transform:translateZ(-1.5px);filter:brightness(.5)!important}
-    html .home-card .hm-float .hm-3d > .hm-l6{transform:translateZ(-3px);filter:brightness(.6)!important}
-    html .home-card .hm-float .hm-3d > .hm-l7{transform:translateZ(-4.5px)}
+    html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > *{grid-area:1/1;display:block;font-size:calc(var(--hm-o,118px) * .56)!important;width:auto!important;height:auto!important;line-height:1!important;font-style:normal;
+      filter:none!important;text-shadow:none!important;-webkit-text-stroke:0!important;animation:none!important;margin:0!important;backface-visibility:visible;flex:none!important}
+    html body .home-card .hm-float #main-add .hm-3d > svg{width:calc(var(--hm-o) * .6)!important;height:calc(var(--hm-o) * .6)!important}
+    html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l1{transform:translateZ(4.5px)!important}
+    html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l2{transform:translateZ(3px)!important;filter:brightness(.6)!important}
+    html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l3{transform:translateZ(1.5px)!important;filter:brightness(.5)!important}
+    html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l4{transform:translateZ(0)!important;filter:brightness(.45)!important}
+    html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l5{transform:translateZ(-1.5px)!important;filter:brightness(.5)!important}
+    html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l6{transform:translateZ(-3px)!important;filter:brightness(.6)!important}
+    html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l7{transform:translateZ(-4.5px)!important}
     @keyframes hmSpin{0%{transform:translateZ(16px) translateY(2px) rotateY(0deg) rotateX(12deg)}25%{transform:translateZ(22px) translateY(-5px) rotateY(90deg) rotateX(-10deg)}
       50%{transform:translateZ(16px) translateY(2px) rotateY(180deg) rotateX(12deg)}75%{transform:translateZ(22px) translateY(-5px) rotateY(270deg) rotateX(-10deg)}100%{transform:translateZ(16px) translateY(2px) rotateY(360deg) rotateX(12deg)}}
     html .home-card .hm-float > :nth-child(2){--hm-sp:12.5s;--hm-dl:-3s}html .home-card .hm-float > :nth-child(3){--hm-sp:10s;--hm-dl:-6s}
@@ -52,7 +59,6 @@
     ${BT}{position:relative!important}
     ${B} > button > .mt-glint{inset:auto!important;top:0!important;left:50%!important;width:var(--hm-o,118px)!important;height:var(--hm-o,118px)!important;margin-left:calc(var(--hm-o,118px) / -2)!important;border-radius:50%!important;padding:3px!important}
     html .home-card .hm-float #main-add{--hm-o:var(--hm-big,140px)}
-    html body .home-card .hm-float #main-add .ba-cross svg{width:calc(var(--hm-o) * .62)!important;height:calc(var(--hm-o) * .62)!important;flex:none!important;margin:0!important;filter:none!important}
     html .home-card .hm-float #list-btn .lb-count{color:#fff!important;font-size:calc(var(--hm-o,118px) * .46)!important;font-weight:900!important;animation:none!important;text-shadow:0 1px 0 #e2e8f0,0 2px 0 #cbd5e1,0 3px 0 #94a3b8,0 4px 0 #64748b,0 5px 0 #475569,0 7px 8px rgba(0,0,0,.6)!important;min-height:0!important}
     #main-add{--c1:#bbf7d0;--c2:#10b981;--c3:#065f46}
     #hm-now{--c1:#fef9c3;--c2:#f59e0b;--c3:#78350f;--hm-o:var(--hm-big,120px)}
@@ -67,7 +73,7 @@
     #fa-home{--c1:#fecaca;--c2:#ef4444;--c3:#7f1d1d}
     /* labels: bright text with a dark outline and a glow in the symbol's colour */
     ${BT} :is(.hn-t,.ba-txt,.lb-title,.ab-title,.ab-txt,.sbh-txt,.rb-txt,.fah-txt,b){display:flex;flex-direction:column;align-items:center;font-size:var(--hm-t,1.4rem)!important;line-height:1.15!important;letter-spacing:.2px;
-      color:#fff!important;font-weight:900!important;--mtg:var(--c2)!important;text-shadow:0 1px 0 #e2e8f0,0 2px 0 #94a3b8,0 3px 0 #64748b,0 4px 0 #334155,0 5px 0 #1e293b,0 6px 6px rgba(0,0,0,.85),0 0 16px var(--c2),0 0 3px #000!important;-webkit-text-stroke:.6px rgba(0,0,0,.55)!important;margin:0!important;padding:0 4px 4px!important;border-radius:0!important;background:none!important;min-width:0;white-space:normal!important}
+      color:#fff!important;font-family:'MTBall','MTUI',sans-serif!important;font-weight:700!important;letter-spacing:.3px!important;--mtg:var(--c2)!important;text-shadow:0 1px 0 #e2e8f0,0 2px 0 #94a3b8,0 3px 0 #64748b,0 4px 0 #334155,0 5px 0 #1e293b,0 6px 6px rgba(0,0,0,.85),0 0 16px var(--c2),0 0 3px #000!important;-webkit-text-stroke:.6px rgba(0,0,0,.55)!important;margin:0!important;padding:0 4px 4px!important;border-radius:0!important;background:none!important;min-width:0;white-space:normal!important}
     ${B} > #main-add .ba-txt{font-size:var(--hm-tb,1.65rem)!important}
     ${BT} :is(.hn-s,small,.ab-sub,.lb-next){font-size:.95rem!important;font-weight:800!important;color:#fde68a!important;text-shadow:0 0 2px #000,0 1px 2px #000!important;opacity:1!important}
     ${B} #sb-home small,${B} #fa-home small,${B} .ba-ecg,${B} .ab-count{display:none!important}
