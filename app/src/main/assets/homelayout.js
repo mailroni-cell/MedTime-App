@@ -86,6 +86,19 @@
     ${BT}{position:relative!important}
     ${B} > button > .mt-glint{inset:auto!important;top:calc(var(--hm-o,118px) * .14)!important;left:50%!important;width:calc(var(--hm-o,118px) * 1.36)!important;height:calc(var(--hm-o,118px) * .72)!important;margin-left:calc(var(--hm-o,118px) * -.68)!important;border-radius:999px!important;padding:3px!important;transform:rotate(-24deg)}
     html .home-card .hm-float #main-add{--hm-o:var(--hm-big,140px)}
+    /* M-262 (owner): "add reminder" is a round 3D tablet instead of a capsule: a thick disc with a rim, a dividing line and a shine */
+    html body .home-card .hm-float #main-add .hm-pill{width:calc(var(--hm-o) * 1.02);height:calc(var(--hm-o) * 1.02);border-radius:50%;animation-name:hmTab;
+      background:radial-gradient(circle at 34% 26%,rgba(255,255,255,.95) 0,rgba(255,255,255,.35) 16%,rgba(255,255,255,0) 34%),
+        linear-gradient(transparent calc(50% - 1.5px),rgba(0,0,0,.32) calc(50% - 1.5px),rgba(0,0,0,.32) calc(50% + .5px),rgba(255,255,255,.45) calc(50% + .5px),rgba(255,255,255,.45) calc(50% + 2px),transparent calc(50% + 2px)),
+        radial-gradient(circle at 50% 40%,var(--c1) 0,var(--c2) 52%,var(--c3) 100%);
+      box-shadow:inset 0 -10px 16px rgba(0,0,0,.35),inset 0 8px 12px rgba(255,255,255,.55),inset 0 0 0 5px rgba(255,255,255,.18),0 7px 0 var(--c3),0 8px 0 rgba(0,0,0,.55),
+        0 0 0 3px rgba(255,255,255,.92),0 7px 0 3px rgba(255,255,255,.6),0 0 0 6px rgba(0,0,0,.8),0 7px 0 6px rgba(0,0,0,.8),0 22px 20px -4px rgba(0,0,0,.85),0 0 26px var(--c2)}
+    html body .home-card .hm-float #main-add .hm-pill::after{left:18%;top:9%;width:46%;height:22%;transform:rotate(-20deg)}
+    html body .home-card .hm-float #main-add .hm-pill::before{display:none}
+    @keyframes hmTab{0%,100%{transform:translate(-50%,-50%) rotate(-14deg)}25%{transform:translate(calc(-50% + 3px),calc(-50% - 6px)) rotate(-8deg)}
+      50%{transform:translate(calc(-50% - 2px),calc(-50% - 9px)) rotate(-18deg)}75%{transform:translate(calc(-50% - 4px),calc(-50% - 3px)) rotate(-10deg)}}
+    html.lowvision body .home-card .hm-float #main-add .hm-pill{transform:translate(-50%,-50%) rotate(-14deg)}
+    ${B} > #main-add > .mt-glint{top:calc(var(--hm-o) * -.01)!important;width:calc(var(--hm-o) * 1.02)!important;height:calc(var(--hm-o) * 1.02)!important;margin-left:calc(var(--hm-o) * -.51)!important;border-radius:50%!important;transform:none}
     html .home-card .hm-float #list-btn .lb-count{color:#fff!important;font-size:calc(var(--hm-o,118px) * .46)!important;font-weight:900!important;animation:none!important;text-shadow:0 1px 0 #e2e8f0,0 2px 0 #cbd5e1,0 3px 0 #94a3b8,0 4px 0 #64748b,0 5px 0 #475569,0 7px 8px rgba(0,0,0,.6)!important;min-height:0!important}
     #main-add{--c1:#bbf7d0;--c2:#10b981;--c3:#065f46}
     #hm-now{--c1:#fef9c3;--c2:#f59e0b;--c3:#78350f;--hm-o:var(--hm-big,120px)}
