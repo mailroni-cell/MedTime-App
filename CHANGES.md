@@ -293,5 +293,5 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-260 | 2026-10-22 | looks.js | Owner: Display swipe still showed frames. Theme cards: no blurred glows, filters or floating symbols while swiping (only the chosen theme floats), no press-shrink, nothing redrawn during the swipe | ✅ |
 | M-261 | 2026-10-22 | AndroidManifest.xml | Owner: the app opened several times and stayed open behind; MainActivity is now singleTask (one copy only) | ✅ |
 | R-200 | 2026-10-22 | release/stable.txt | Run 200 (M-259..M-261) released to everyone | ✅ |
-| M-262 | 2026-10-22 | homelayout.js | Owner: the main "add reminder" capsule became a round 3D tablet (thick disc, rim, dividing line, shine, gentle sway) | ⏳ |
+| M-262 | 2026-10-22 | homelayout.js | Owner: the main "add reminder" capsule became a round 3D tablet (thick disc, rim, dividing line, shine, gentle sway) | ✅ |
 | R-201 | 2026-10-22 | release/stable.txt | Run 201 (M-262) released to everyone | ✅ |
