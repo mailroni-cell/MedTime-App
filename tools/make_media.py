@@ -9,7 +9,7 @@ import fetch_sounds as fs
 from PIL import Image, ImageDraw
 
 P = json.load(open('tools/media_pick.json', encoding='utf-8'))
-VD, XF = 20.0, 2.5  # video loop length and cross-fade (seconds)
+VDEF, XF = 20.0, 2.5  # video loop length and cross-fade (seconds)
 
 def info(title):
     p = fs.get({'action': 'query', 'titles': title, 'prop': 'videoinfo', 'viprop': 'url|extmetadata|derivatives',
@@ -39,7 +39,7 @@ def strip(key, v):
 
 def video(key, v):
     raw, lic, art = grab(key, v['title'])
-    s = float(v['start'])
+    s, VD = float(v['start']), float(v.get('vd', VDEF))
     out = 'app/src/main/assets/video/%s.mp4' % key
     os.makedirs('app/src/main/assets/video', exist_ok=True)
     # A = [s+XF, s+XF+VD], B = [s, s+XF]; the end of A fades into B, whose last frame leads into the first frame of A -> seamless loop

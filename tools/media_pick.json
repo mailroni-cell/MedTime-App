@@ -100,59 +100,58 @@
  "videos": {
   "v_ocean": {
    "title": "File:Santa Rosa Island Waves.webm",
-   "start": 300
+   "start": 312,
+   "vd": 20
   },
   "v_forest": {
    "title": "File:Forest For the Trees 4K.webm",
-   "start": 80
-  },
-  "v_moss": {
-   "title": "File:A Sense of Place - -1- Argyll Forest Park.webm",
-   "start": 150
+   "start": 102,
+   "vd": 20
   },
   "v_waterfall": {
    "title": "File:Rhaeadr Ewynnol, Betws-y-coed - waterfall in Wales.webm",
-   "start": 60
+   "start": 72,
+   "vd": 20
   },
   "v_rain": {
    "title": "File:Radevormwald - Raindrops on a window 08 (1) ies.webm",
-   "start": 20
+   "start": 20,
+   "vd": 20
   },
   "v_city": {
    "title": "File:Silom Sunset Timelapse by Don Ramey Logan.webm",
-   "start": 170
-  },
-  "v_earth": {
-   "title": "File:Alexander Gerst’s Earth timelapses (2017 reissue).webm",
-   "start": 60
+   "start": 180,
+   "vd": 20
   },
   "v_stars": {
    "title": "File:JAPAN Milk Way 4K - Beautiful Star and Sky at Night Time Lapse.webm",
-   "start": 20
-  },
-  "v_sunset": {
-   "title": "File:Mount Bromo HD Timelapse Movie by Justin Ng.webm",
-   "start": 40
+   "start": 62,
+   "vd": 14
   },
   "v_lake": {
    "title": "File:4K Drone Video, Lake Of The Ozarks , Missouri USA.webm",
-   "start": 40
+   "start": 67,
+   "vd": 20
   },
   "v_mountain": {
    "title": "File:Piz Neir, aerial video 4k.webm",
-   "start": 30
+   "start": 50,
+   "vd": 20
   },
   "v_underwater": {
    "title": "File:Underwater pyramid stones-Strunjan.webm",
-   "start": 90
+   "start": 117,
+   "vd": 20
   },
   "v_flamingo": {
    "title": "File:Lesser flamingos courtship display dance.webm",
-   "start": 5
+   "start": 29,
+   "vd": 14
   },
   "v_clouds": {
    "title": "File:Time-lapse of Sunset, Moonset and Sunrise at Cape Keraudren, Western Australia from September 2022.webm",
-   "start": 0
+   "start": 21,
+   "vd": 18
   }
  }
 }
