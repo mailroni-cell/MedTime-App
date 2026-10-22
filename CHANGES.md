@@ -269,3 +269,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-244 | 2026-10-22 | tools/collect_stats.py, docs/stats.html | Owner: stats page with a written summary and charts (daily active users, new installs, shares), survey stars, versions, languages, what to improve (in Hebrew) | ⏳ |
 | M-245 | 2026-10-22 | homelayout.js | Owner: labels float too, on their own and a little behind the capsule, like in a liquid (still in low vision) | ⏳ |
 | M-246 | 2026-10-22 | setpills.js (new), index.html | Owner: settings icons are big glossy 3D capsules like the main screen, each floating on its own; rows fit their words (no text under the next capsule), gear removed and title a bit smaller; auto-shrink if a language needs more room | ⏳ |
+| R-192 | 2026-10-22 | release/stable.txt | Run 192 (M-242..M-246) released to everyone | ✅ |
