@@ -204,6 +204,7 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-194 | 2026-10-22 | relax.js | Owner: no breathing guide in calm mode (voice and text buttons removed from the menu); tip text without the voice guide, 6 languages | ⏳ |
 | R-172 | 2026-10-22 | release/stable.txt | Run 172 (M-193, M-194) released to everyone | ✅ |
 | M-195 | 2026-10-22 | dict.js, subst.js, drugs_ind.js, NativeBridge.java, tools/make_ind_js.py | Owner: medicine dictionary. Main-screen check button: pick a medicine, card shows a plain explanation (~55 groups, ~300 ingredients, 6 languages) with a warning, the official indication from the MoH registry, a button to the official MoH page with the leaflet, and "I got a different medicine - compare"; disclaimer in 6 languages | ⏳ |
+| R-174 | 2026-10-22 | release/stable.txt | Run 174 (M-195 medicine dictionary) released to everyone | ✅ |
 | R-156 | 2026-10-21 | release/stable.txt | Run 156 (M-175) released to everyone | ✅ |
 | R-155 | 2026-10-21 | release/stable.txt | Run 155 (M-172..M-174) released to everyone (standing rule) | ✅ |
 | R-154 | 2026-10-21 | release/stable.txt | Owner: run 154 (M-169..M-171) released to everyone | ✅ |
