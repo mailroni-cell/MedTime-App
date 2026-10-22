@@ -30,17 +30,30 @@
       background:radial-gradient(ellipse 30% 9% at 50% 84%,rgba(0,0,0,.42),rgba(0,0,0,0) 100%),radial-gradient(circle at 34% 26%,#fff 0,var(--c1) 22%,var(--c2) 62%,var(--c3) 100%)!important;border:0!important;
       box-shadow:inset 0 -8px 14px rgba(0,0,0,.35),inset 0 5px 8px rgba(255,255,255,.45),0 0 0 3px rgba(255,255,255,.92),0 0 0 6px rgba(0,0,0,.6),0 14px 18px -6px rgba(0,0,0,.75),0 0 24px var(--c2)!important;will-change:auto!important}
     html .home-card .hm-float :is(${ICO})::after{content:'';position:absolute;left:22%;top:9%;width:42%;height:24%;border-radius:50%;background:linear-gradient(rgba(255,255,255,.85),rgba(255,255,255,0));pointer-events:none}
-        html .home-card .hm-float :is(${ICO}) :is(i,svg){display:block;font-size:calc(var(--hm-o,118px) * .58)!important;width:auto!important;height:auto!important;line-height:1!important;font-style:normal;
-      filter:none!important;text-shadow:none!important;-webkit-text-stroke:0!important;will-change:transform;animation:hmIn 4.4s ease-in-out infinite!important;backface-visibility:visible}
-    html .home-card .hm-float :is(${ICO}){perspective:240px}
-    /* M-219 (owner): the symbol turns on its own axes, 130 degrees side to side and a little up and down, and comes out of the screen.
-       No filter or glow on the turning symbol (that drew a square on the phone); its shadow is painted on the ball instead */
-    @keyframes hmIn{0%,100%{transform:translateZ(8px) translateY(3px) rotateY(-65deg) rotateX(12deg)}50%{transform:translateZ(30px) translateY(-5px) rotateY(65deg) rotateX(-12deg) scale(1.08)}}
-    html .home-card .hm-float > :nth-child(2n) :is(${ICO}) :is(i,svg){animation-delay:-1.2s!important}
-    html .home-card .hm-float > :nth-child(3n) :is(${ICO}) :is(i,svg){animation-delay:-2.4s!important}
+    /* M-223 (owner): the symbols are solid 3D objects (a stack of layers gives them thickness) that turn all the way round,
+       slowly, as if floating in liquid or in space, with a gentle tilt up and down. Each ball has its own speed and start */
+    html .home-card .hm-float :is(${ICO}){perspective:300px}
+    html .home-card .hm-float .hm-3d{display:grid;place-items:center;transform-style:preserve-3d;will-change:transform;animation:hmSpin var(--hm-sp,11s) linear infinite;animation-delay:var(--hm-dl,0s)}
+    html .home-card .hm-float .hm-3d > *{grid-area:1/1;display:block;font-size:calc(var(--hm-o,118px) * .56)!important;width:auto!important;height:auto!important;line-height:1!important;font-style:normal;
+      filter:none!important;text-shadow:none!important;-webkit-text-stroke:0!important;animation:none!important;margin:0!important;backface-visibility:visible}
+    html .home-card .hm-float .hm-3d > .hm-l1{transform:translateZ(4.5px)}
+    html .home-card .hm-float .hm-3d > .hm-l2{transform:translateZ(3px);filter:brightness(.6)!important}
+    html .home-card .hm-float .hm-3d > .hm-l3{transform:translateZ(1.5px);filter:brightness(.5)!important}
+    html .home-card .hm-float .hm-3d > .hm-l4{transform:translateZ(0);filter:brightness(.45)!important}
+    html .home-card .hm-float .hm-3d > .hm-l5{transform:translateZ(-1.5px);filter:brightness(.5)!important}
+    html .home-card .hm-float .hm-3d > .hm-l6{transform:translateZ(-3px);filter:brightness(.6)!important}
+    html .home-card .hm-float .hm-3d > .hm-l7{transform:translateZ(-4.5px)}
+    @keyframes hmSpin{0%{transform:translateZ(16px) translateY(2px) rotateY(0deg) rotateX(12deg)}25%{transform:translateZ(22px) translateY(-5px) rotateY(90deg) rotateX(-10deg)}
+      50%{transform:translateZ(16px) translateY(2px) rotateY(180deg) rotateX(12deg)}75%{transform:translateZ(22px) translateY(-5px) rotateY(270deg) rotateX(-10deg)}100%{transform:translateZ(16px) translateY(2px) rotateY(360deg) rotateX(12deg)}}
+    html .home-card .hm-float > :nth-child(2){--hm-sp:12.5s;--hm-dl:-3s}html .home-card .hm-float > :nth-child(3){--hm-sp:10s;--hm-dl:-6s}
+    html .home-card .hm-float > :nth-child(4){--hm-sp:13s;--hm-dl:-2s}html .home-card .hm-float > :nth-child(5){--hm-sp:11.5s;--hm-dl:-8s}
+    html .home-card .hm-float > :nth-child(6){--hm-sp:12s;--hm-dl:-4.5s}html .home-card .hm-float > :nth-child(7){--hm-sp:10.5s;--hm-dl:-1s}html .home-card .hm-float > :nth-child(8){--hm-sp:14s;--hm-dl:-7s}
+    /* M-224 (owner): the light that runs round a menu now and then follows the ball, not the invisible square around it */
+    ${BT}{position:relative!important}
+    ${B} > button > .mt-glint{inset:auto!important;top:0!important;left:50%!important;width:var(--hm-o,118px)!important;height:var(--hm-o,118px)!important;margin-left:calc(var(--hm-o,118px) / -2)!important;border-radius:50%!important;padding:3px!important}
     html .home-card .hm-float #main-add{--hm-o:var(--hm-big,140px)}
     html body .home-card .hm-float #main-add .ba-cross svg{width:calc(var(--hm-o) * .62)!important;height:calc(var(--hm-o) * .62)!important;flex:none!important;margin:0!important;filter:none!important}
-    html .home-card .hm-float #list-btn .lb-count{color:#fff!important;font-size:calc(var(--hm-o,118px) * .46)!important;font-weight:900!important;animation:none!important;text-shadow:0 2px 3px rgba(0,0,0,.6)!important;min-height:0!important}
+    html .home-card .hm-float #list-btn .lb-count{color:#fff!important;font-size:calc(var(--hm-o,118px) * .46)!important;font-weight:900!important;animation:none!important;text-shadow:0 1px 0 #e2e8f0,0 2px 0 #cbd5e1,0 3px 0 #94a3b8,0 4px 0 #64748b,0 5px 0 #475569,0 7px 8px rgba(0,0,0,.6)!important;min-height:0!important}
     #main-add{--c1:#bbf7d0;--c2:#10b981;--c3:#065f46}
     #hm-now{--c1:#fef9c3;--c2:#f59e0b;--c3:#78350f;--hm-o:var(--hm-big,120px)}
     #hm-now .hn-ico{animation:hnPulse 1.6s ease-in-out infinite}
@@ -54,7 +67,7 @@
     #fa-home{--c1:#fecaca;--c2:#ef4444;--c3:#7f1d1d}
     /* labels: bright text with a dark outline and a glow in the symbol's colour */
     ${BT} :is(.hn-t,.ba-txt,.lb-title,.ab-title,.ab-txt,.sbh-txt,.rb-txt,.fah-txt,b){display:flex;flex-direction:column;align-items:center;font-size:var(--hm-t,1.4rem)!important;line-height:1.15!important;letter-spacing:.2px;
-      color:#fff!important;font-weight:900!important;--mtg:var(--c2)!important;text-shadow:0 0 2px #000,0 1px 3px #000,0 0 10px var(--c2)!important;margin:0!important;padding:2px 10px!important;border-radius:14px!important;background:rgba(0,0,0,.42)!important;min-width:0;white-space:normal!important}
+      color:#fff!important;font-weight:900!important;--mtg:var(--c2)!important;text-shadow:0 1px 0 #e2e8f0,0 2px 0 #94a3b8,0 3px 0 #64748b,0 4px 0 #334155,0 5px 0 #1e293b,0 6px 6px rgba(0,0,0,.85),0 0 16px var(--c2),0 0 3px #000!important;-webkit-text-stroke:.6px rgba(0,0,0,.55)!important;margin:0!important;padding:0 4px 4px!important;border-radius:0!important;background:none!important;min-width:0;white-space:normal!important}
     ${B} > #main-add .ba-txt{font-size:var(--hm-tb,1.65rem)!important}
     ${BT} :is(.hn-s,small,.ab-sub,.lb-next){font-size:.95rem!important;font-weight:800!important;color:#fde68a!important;text-shadow:0 0 2px #000,0 1px 2px #000!important;opacity:1!important}
     ${B} #sb-home small,${B} #fa-home small,${B} .ba-ecg,${B} .ab-count{display:none!important}
@@ -73,7 +86,7 @@
     html body .home-card .hm-float #fa-home .fah-ico::before{content:'';position:absolute;inset:-14px;border-radius:50%;pointer-events:none;
       background:radial-gradient(circle,rgba(255,23,68,0) 52%,rgba(255,40,80,.85) 62%,rgba(244,255,26,.55) 70%,rgba(255,23,68,0) 78%);animation:faNeon 1.4s ease-in-out infinite;will-change:transform,opacity}
     @keyframes faNeon{0%,100%{opacity:.35;transform:scale(.92)}50%{opacity:1;transform:scale(1.1)}}
-    html body .home-card .hm-float #fa-home :is(b,.fah-txt){color:#f4ff1a!important;text-shadow:0 0 2px #000,0 1px 3px #000,0 0 12px #ff1744!important;background:rgba(80,0,10,.6)!important}
+    html body .home-card .hm-float #fa-home :is(b,.fah-txt){color:#f4ff1a!important;text-shadow:0 1px 0 #fde047,0 2px 0 #ca8a04,0 3px 0 #a16207,0 4px 0 #7f1d1d,0 5px 0 #450a0a,0 6px 6px rgba(0,0,0,.85),0 0 18px #ff1744!important;background:none!important}
     @media (prefers-reduced-motion: reduce){${B} > button{animation:none}}
     html.lowvision ${B} > button{animation:none}`;
     document.head.appendChild(css);
@@ -88,11 +101,21 @@
         ORDER.map($).filter(Boolean).forEach(b => box.appendChild(b));
         const gl = $('guide-btn'); if (gl) card.appendChild(gl);
         card.querySelectorAll('.nav-row, .home-pair, .hm-meds, .hm-grid').forEach(d => d.classList.toggle('hm-empty', !d.querySelector('button')));
-        markDone();
+        markDone(); make3d();
         if (typeof window.fitMain === 'function') setTimeout(window.fitMain, 60);
         return ORDER.every(id => id === 'hm-now' || $(id));
     }
 
+    // M-223: wrap each symbol in a turning box with 5 copies at different depths (front and back bright, the middle darker = its edge)
+    function make3d() {
+        document.querySelectorAll(ICO.split(',').map(x => '.home-card .hm-float ' + x.trim()).join(',')).forEach(o => {
+            if (o.querySelector('.hm-3d')) return;
+            const sym = o.querySelector(':scope > i, :scope > svg'); if (!sym) return;
+            const w = document.createElement('span'); w.className = 'hm-3d'; w.setAttribute('aria-hidden', 'true');
+            sym.replaceWith(w);
+            for (let k = 1; k <= 7; k++) { const c = k === 1 ? sym : sym.cloneNode(true); c.classList.add('hm-l' + k); w.appendChild(c); }
+        });
+    }
     // M-210: ✓ when every reminder due today has a "taken" entry for today
     function markDone() {
         const btn = $('list-btn'); if (!btn) return;
@@ -146,7 +169,7 @@
         if (!s) { if (b) b.remove(); box.classList.remove('hm-has-now'); return; }
         if (!b) {
             b = document.createElement('button'); b.type = 'button'; b.id = 'hm-now';
-            b.innerHTML = '<span class="hn-ico"><i>💊</i></span><span class="hn-t"></span><span class="hn-s"></span>';
+            b.innerHTML = '<span class="hn-ico"><i>💊</i></span><span class="hn-t"></span><span class="hn-s"></span>'; setTimeout(make3d, 0);
             box.insertBefore(b, $('main-add') ? $('main-add').nextSibling : box.firstChild);
         }
         b.querySelector('.hn-t').textContent = nt('t');
@@ -225,25 +248,54 @@
 
     // M-222 (owner: "still not big enough"): the balls take all the room there is. The screen fit first runs with small
     // balls (so it hides nothing that is not needed), then the balls grow until the menu reaches the bottom buttons
+    // the lowest thing of the menu: the balls, or the tour button under them when it is shown
+    function low() {
+        const box = document.querySelector('.home-card .hm-float'), gl = $('guide-btn');
+        let b = box ? box.getBoundingClientRect().bottom : 0;
+        if (gl && gl.offsetParent && getComputedStyle(gl).display !== 'none') b = Math.max(b, gl.getBoundingClientRect().bottom);
+        return b;
+    }
     function sizeBalls() {
         const box = document.querySelector('.home-card .hm-float'), ex = $('exit-btn');
-        if (!box || !ex || !box.offsetParent) return;
+        if (!box || !ex || !box.offsetParent || ex.getBoundingClientRect().height < 10) return false; // M-226: another screen is open: keep the size
         const lim = ex.getBoundingClientRect().top - 8, colW = box.clientWidth / 3 - 8;
         let o = Math.min(136, Math.floor(colW));
         const set = () => { box.style.setProperty('--hm-o', o + 'px'); box.style.setProperty('--hm-big', Math.round(o * 1.15) + 'px'); };
         set();
-        while (o > 64 && (box.getBoundingClientRect().bottom > lim || document.body.scrollHeight > innerHeight + 2)) { o -= 4; set(); }
+        while (o > 64 && (low() > lim || document.body.scrollHeight > innerHeight + 2)) { o -= 4; set(); }
+        return true;
     }
     function hookFit() {
         const fm = window.fitMain; if (typeof fm !== 'function' || fm.mtBalls) return;
+        let sig = '';
+        const look = () => {
+            const card = document.querySelector('.home-card');
+            return innerWidth + 'x' + innerHeight + (document.documentElement.classList.contains('lowvision') ? 'L' : '') + (document.querySelector('.settings-page.open') ? 'S' : '') + '|' +
+                (card ? card.querySelectorAll('*:not(.mt-glint)').length + ':' + card.textContent.length + ':' + card.offsetHeight + ':' + document.body.scrollHeight : '');
+        };
         const w = function () {
+            if (look() === sig) return;
             const box = document.querySelector('.home-card .hm-float');
-            if (box && box.offsetParent && !document.querySelector('.settings-page.open')) { box.style.setProperty('--hm-o', '70px'); box.style.setProperty('--hm-big', '80px'); }
-            fm.apply(this, arguments); sizeBalls();
+            const ex = $('exit-btn'), shown = box && box.offsetParent && ex && ex.getBoundingClientRect().height >= 10 && !document.querySelector('.settings-page.open'); // fixed button: no offsetParent
+            if (!shown) return; // measured only when the main screen is really in front (else the balls shrank, then grew back)
+            const o0 = box.style.getPropertyValue('--hm-o');
+            box.style.setProperty('--hm-o', '70px'); box.style.setProperty('--hm-big', '80px');
+            fm.apply(this, arguments);
+            // M-228 (owner: the animated tour button disappeared): the balls shrink first; the tour button / greeting go only if even the smallest balls do not fit
+            const R = document.documentElement, had5 = R.classList.contains('fit5'), had6 = R.classList.contains('fit6');
+            R.classList.remove('fit5', 'fit6');
+            if (!sizeBalls() && o0) box.style.setProperty('--hm-o', o0);
+            const over = () => low() > ex.getBoundingClientRect().top - 8 || document.body.scrollHeight > innerHeight + 2;
+            if ((had5 || had6) && over()) { R.classList.add('fit6'); sizeBalls(); if (over()) { R.classList.add('fit5'); sizeBalls(); } } // greeting goes first, the tour button stays when it can
+            sig = look();
         };
         w.mtBalls = true; window.fitMain = w;
     }
     hookFit(); setTimeout(() => { hookFit(); window.fitMain && window.fitMain(); }, 600);
+    // M-226 (owner): back on the main screen (from settings, low vision on/off, a page or serenity) it is measured again at once
+    const refit = () => setTimeout(() => window.fitMain && window.fitMain(), 30);
+    new MutationObserver(refit).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    const sp = document.getElementById('settings-page'); if (sp) new MutationObserver(refit).observe(sp, { attributes: true, attributeFilter: ['class'] });
 
     let n = 0;
     const tick = () => { const done = arrange(); if (!done && ++n < 20) setTimeout(tick, 300); };

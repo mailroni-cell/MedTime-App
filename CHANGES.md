@@ -244,3 +244,10 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-221 | 2026-10-22 | smooth.js | Owner: heart line stuck at the start of every beat: the light now enters before the line and leaves past its end, no wait and no jump (logo and opening) | ⏳ |
 | M-222 | 2026-10-22 | homelayout.js | Owner: balls not big enough: their size is measured to fill all the room down to the bottom buttons (up to 136 px) | ⏳ |
 | R-183 | 2026-10-22 | release/stable.txt | Run 183 (M-211..M-222, includes 182) released to everyone | ✅ |
+| M-223 | 2026-10-22 | homelayout.js | Owner: symbols are solid 3D objects (7 stacked layers = thickness) turning a full circle slowly, floating as in liquid / space; each ball its own speed | ⏳ |
+| M-224 | 2026-10-22 | homelayout.js | Owner: the passing light (mt-glint) runs round the ball, not the invisible square button | ⏳ |
+| M-225 | 2026-10-22 | homelayout.js | Owner: small stutters: the screen fit no longer re-runs on every passing light (re-measures only when size/content really changed) | ⏳ |
+| M-226 | 2026-10-22 | homelayout.js | Owner: balls were small for a second when coming back, and the screen did not reset after low vision: size kept while another screen is open, re-measured on return | ⏳ |
+| M-227 | 2026-10-22 | backbtn.js | Owner: back buttons are glossy floating 3D pills (settings "🏠 Main screen" centred above the gear); exit is red | ⏳ |
+| M-228 | 2026-10-22 | homelayout.js | Owner: animated tour button disappeared: balls shrink first, the greeting goes before the tour button | ⏳ |
+| M-229 | 2026-10-22 | stats.js (new), more.js, index.html | Owner: small 📤 share button on the main screen (shares the download page link); anonymous daily ping, share count and a one-time 3-question survey after a week of use, sent to the owner's Google Form (not connected yet: FORM empty, survey off) | ⏳ |

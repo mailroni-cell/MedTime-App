@@ -12,19 +12,29 @@
     };
     const css = document.createElement('style');
     css.textContent = `
-    html body :is(.close-3d,.p-close).mt-backbtn,html body .panel-head .p-close.mt-backbtn{max-width:60vw!important;overflow:hidden!important;text-overflow:ellipsis!important;width:auto!important;height:auto!important;min-width:0!important;min-height:46px!important;flex:0 0 auto!important;border-radius:999px!important;
-      padding:8px 16px!important;background:#f8fafc!important;color:#0f172a!important;border:0!important;font-family:inherit!important;font-weight:900!important;
-      font-size:1.02rem!important;line-height:1.1!important;white-space:nowrap!important;text-shadow:none!important;-webkit-text-stroke:0!important;
-      box-shadow:0 4px 0 #64748b,0 8px 16px rgba(0,0,0,.4)!important;animation:none!important;display:inline-flex!important;align-items:center!important;gap:6px!important}
-    html body :is(.close-3d,.p-close).mt-backbtn:active{transform:translateY(3px)!important;box-shadow:0 1px 0 #64748b!important}
-    html body .close-3d.mt-backbtn.mt-exit{background:#fee2e2!important;color:#7f1d1d!important;box-shadow:0 4px 0 #b91c1c,0 8px 16px rgba(0,0,0,.4)!important}
-    html.lowvision body :is(.close-3d,.p-close).mt-backbtn{background:#fff!important;color:#000!important;font-size:1.2rem!important}`;
+    /* M-227 (owner): a beautiful glossy 3D button that floats, not a plain white box */
+    html body :is(.close-3d,.p-close).mt-backbtn,html body .panel-head .p-close.mt-backbtn{max-width:62vw!important;overflow:hidden!important;text-overflow:ellipsis!important;
+      width:auto!important;height:auto!important;min-width:0!important;min-height:50px!important;flex:0 0 auto!important;border-radius:999px!important;padding:9px 20px 11px!important;
+      background:linear-gradient(180deg,#a5f3fc 0%,#22d3ee 22%,#0891b2 60%,#155e75 100%)!important;color:#fff!important;border:2px solid rgba(255,255,255,.9)!important;
+      font-family:inherit!important;font-weight:900!important;font-size:1.08rem!important;line-height:1.1!important;white-space:nowrap!important;
+      text-shadow:0 1px 0 #0e7490,0 2px 0 #155e75,0 3px 0 #164e63,0 4px 5px rgba(0,0,0,.6)!important;-webkit-text-stroke:0!important;
+      box-shadow:inset 0 3px 4px rgba(255,255,255,.65),inset 0 -5px 8px rgba(8,51,68,.55),0 6px 0 #0c4a5e,0 14px 18px rgba(0,0,0,.5),0 0 18px rgba(34,211,238,.55)!important;
+      animation:mtBkFloat 3.4s ease-in-out infinite!important;will-change:transform;display:inline-flex!important;align-items:center!important;gap:7px!important}
+    html body #settings-page .settings-hero > .close-3d.mt-backbtn{position:relative!important;top:auto!important;left:auto!important;right:auto!important;inset-inline-end:auto!important;
+      margin:0 auto 8px!important;display:flex!important;width:fit-content!important}
+    @keyframes mtBkFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+    html body :is(.close-3d,.p-close).mt-backbtn:active{animation:none!important;transform:translateY(5px)!important;box-shadow:inset 0 3px 4px rgba(255,255,255,.5),0 1px 0 #0c4a5e,0 4px 8px rgba(0,0,0,.5)!important}
+    html body .close-3d.mt-backbtn.mt-exit{background:linear-gradient(180deg,#fecaca 0%,#f87171 22%,#dc2626 60%,#7f1d1d 100%)!important;
+      text-shadow:0 1px 0 #b91c1c,0 2px 0 #991b1b,0 3px 0 #7f1d1d,0 4px 5px rgba(0,0,0,.6)!important;
+      box-shadow:inset 0 3px 4px rgba(255,255,255,.6),inset 0 -5px 8px rgba(69,10,10,.55),0 6px 0 #5f0d0d,0 14px 18px rgba(0,0,0,.5),0 0 18px rgba(248,113,113,.5)!important}
+    html.lowvision body :is(.close-3d,.p-close).mt-backbtn{font-size:1.2rem!important;animation:none!important}
+    @media (prefers-reduced-motion: reduce){html body :is(.close-3d,.p-close).mt-backbtn{animation:none!important}}`;
     document.head.appendChild(css);
 
     const arrow = () => (li() < 2 ? '→ ' : '← ');
     function label(b, kind) {
         b.classList.add('mt-backbtn'); b.classList.toggle('mt-exit', kind === 'exit');
-        b.textContent = (kind === 'exit' ? '✕ ' : arrow()) + T[kind][li()];
+        b.textContent = (kind === 'exit' ? '✕ ' : arrow()) + (kind === 'main' ? '🏠 ' : '') + T[kind][li()];
         b.setAttribute('aria-label', T[kind][li()]);
     }
     const PAGES = { 'med-page': 'exit', 'appt-form-page': 'exit', 'list-page': 'main', 'appt-page': 'main', 'settings-page': 'main' };
