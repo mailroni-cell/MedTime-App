@@ -1,0 +1,17 @@
+name: Probe Google Form
+# M-229: read the owner's form (field ids) from GitHub, since Google is not reachable from Claude's container
+on:
+  workflow_dispatch:
+    inputs:
+      form:
+        description: form edit id
+        required: true
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl -sSL -o v.html -w "FINAL %{http_code} %{url_effective}\n" "https://docs.google.com/forms/d/${{ inputs.form }}/viewform"
+          grep -o '<title>[^<]*' v.html || true
+          grep -o 'FB_PUBLIC_LOAD_DATA_ = .*' v.html | head -c 4000 || true
+          grep -o 'action="[^"]*formResponse"' v.html || true
