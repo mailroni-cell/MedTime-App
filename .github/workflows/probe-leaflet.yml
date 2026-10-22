@@ -1,0 +1,14 @@
+name: Probe leaflet links
+# M-195: one-off probe of the Ministry of Health registry (leaflet links)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python tools/probe_leaflet.py
+      - uses: actions/upload-artifact@v4
+        with: { name: leaflet-probe, path: data-cache/leaflet_probe.json }
