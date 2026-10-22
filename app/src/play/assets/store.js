@@ -52,28 +52,32 @@
     #st-next .sn-n{font-size:1.02rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     #st-next .sn-in{font-size:.92rem;font-weight:700;color:#fde68a}
     html.lowvision #st-next{background:#000!important;border-color:#ffeb3b!important;color:#ffeb3b!important;backdrop-filter:none!important}
-    html.lowvision #st-next .sn-t{text-shadow:none;color:#ffeb3b}`;
+    html.lowvision #st-next .sn-t{text-shadow:none;color:#ffeb3b}
+    #st-sug{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px 0 4px}
+    #st-sug button{border:1.5px solid rgba(165,243,252,.45);background:rgba(14,116,144,.35);color:#fff;border-radius:999px;padding:10px 14px;font-size:1.05rem;font-weight:700}
+    #st-sug button:active{transform:scale(.95)}
+    html.lowvision #st-sug button{background:#000;border-color:#ffeb3b;color:#ffeb3b}`;
     (document.head || document.documentElement).appendChild(css);
 
     // ---------- 2. reminder wording instead of medicine wording ----------
     // [from, to] in order (longer first). Every "to" is free of every "from", so running twice changes nothing.
     const W = {
-        he: [['MedTime', 'MyTime'], ['💊', '⏰'], ['💉', '⏰'], ['🩺', '✅'], ['התרופות', 'התזכורות'], ['תרופות', 'תזכורות'], ['התרופה', 'התזכורת'], ['תרופה', 'תזכורת'],
+        he: [['MedTime', 'MyTime'], ['מה שם התרופה?', 'על מה להזכיר לך?'], ['שם התרופה', 'על מה להזכיר? (למשל: לשתות מים)'], ['💊', '⏰'], ['💉', '⏰'], ['🩺', '✅'], ['התרופות', 'התזכורות'], ['תרופות', 'תזכורות'], ['התרופה', 'התזכורת'], ['תרופה', 'תזכורת'],
             ['תרופת', 'תזכורת'], ['כדורים', 'תזכורות'], ['הכדור', 'התזכורת'], ['כדור', 'תזכורת'], ['שלקחתם', 'שביצעתם'], ['שלקחת', 'שביצעת'], ['לקחתי', 'ביצעתי'],
             ['לקחתם', 'ביצעתם'], ['לקחת', 'לבצע'], ['לקחו', 'ביצעו'], ['לוקח', 'מבצע'], ['נלקחה', 'בוצעה'], ['נלקחו', 'בוצעו'], ['נלקח', 'בוצע'], ['לקיחת', 'ביצוע'],
             ['לקיחה', 'ביצוע'], ['המינון', 'הפרטים'], ['מינון', 'פרטים']],
-        ar: [['MedTime', 'MyTime'], ['💊', '⏰'], ['💉', '⏰'], ['🩺', '✅'], ['الأدوية', 'التذكيرات'], ['أدوية', 'تذكيرات'], ['الدواء', 'التذكير'], ['دواء', 'تذكير'],
+        ar: [['MedTime', 'MyTime'], ['ما اسم الدواء؟', 'بماذا نذكّرك؟'], ['اسم الدواء', 'بماذا نذكّرك؟ (مثلًا: شرب الماء)'], ['💊', '⏰'], ['💉', '⏰'], ['🩺', '✅'], ['الأدوية', 'التذكيرات'], ['أدوية', 'تذكيرات'], ['الدواء', 'التذكير'], ['دواء', 'تذكير'],
             ['تناولتها', 'أنجزتها'], ['تناولته', 'أنجزته'], ['تناولت', 'أنجزت'], ['تناول', 'إنجاز'], ['الحبوب', 'التذكيرات'], ['حبة', 'تذكير'], ['الجرعة', 'التفاصيل'], ['جرعة', 'تفاصيل']],
-        ro: [['MedTime', 'MyTime'], ['💊', '⏰'], ['💉', '⏰'], ['🩺', '✅'], ['medicamentelor', 'mementourilor'], ['medicamentele', 'mementourile'], ['medicamentul', 'mementoul'],
+        ro: [['MedTime', 'MyTime'], ['Numele medicamentului?', 'Ce să vă amintim?'], ['Numele medicamentului', 'Ce să vă amintim? (ex.: să beți apă)'], ['💊', '⏰'], ['💉', '⏰'], ['🩺', '✅'], ['medicamentelor', 'mementourilor'], ['medicamentele', 'mementourile'], ['medicamentul', 'mementoul'],
             ['medicamente', 'mementouri'], ['Medicamente', 'Mementouri'], ['medicament', 'memento'], ['Medicament', 'Memento'], ['pastilele', 'mementourile'], ['pastila', 'mementoul'],
             ['pastile', 'mementouri'], ['pastilă', 'memento'], ['Am luat', 'Gata'], ['Luat', 'Făcut'], ['luat', 'făcut'], ['doza', 'detaliile'], ['doză', 'detalii'], ['Doza', 'Detalii']],
-        fr: [['MedTime', 'MyTime'], ['💊', '⏰'], ['💉', '⏰'], ['🩺', '✅'], ['médicaments', 'rappels'], ['Médicaments', 'Rappels'], ['médicament', 'rappel'], ['Médicament', 'Rappel'],
+        fr: [['MedTime', 'MyTime'], ['Nom du médicament ?', 'De quoi se souvenir ?'], ['Nom du médicament', 'De quoi se souvenir ? (ex. : boire de l’eau)'], ['💊', '⏰'], ['💉', '⏰'], ['🩺', '✅'], ['médicaments', 'rappels'], ['Médicaments', 'Rappels'], ['médicament', 'rappel'], ['Médicament', 'Rappel'],
             ['comprimés', 'rappels'], ['comprimé', 'rappel'], ['Déjà pris', 'Déjà fait'], ['Je l’ai pris', 'C’est fait'], ['Oui, pris', 'Oui, fait'], ['Pris', 'Fait'], [' pris', ' fait'],
             ['la dose', 'le détail'], ['dose', 'détail']],
-        en: [['MedTime', 'MyTime'], ['💊', '⏰'], ['💉', '⏰'], ['🩺', '✅'], ['medications', 'reminders'], ['Medications', 'Reminders'], ['medication', 'reminder'], ['Medication', 'Reminder'],
+        en: [['MedTime', 'MyTime'], ['Medicine name?', 'What should I remind you about?'], ['Medicine name', 'What to remind you about? (e.g. drink water)'], ['💊', '⏰'], ['💉', '⏰'], ['🩺', '✅'], ['medications', 'reminders'], ['Medications', 'Reminders'], ['medication', 'reminder'], ['Medication', 'Reminder'],
             ['medicines', 'reminders'], ['Medicines', 'Reminders'], ['medicine', 'reminder'], ['Medicine', 'Reminder'], ['pills', 'reminders'], ['pill', 'reminder'], ['Pill', 'Reminder'],
             ['Taken', 'Done'], ['taken', 'done'], ['took', 'did'], ['take your', 'do your'], ['doses', 'notes'], ['dose', 'note'], ['Dose', 'Note']],
-        ru: [['MedTime', 'MyTime'], ['💊', '⏰'], ['💉', '⏰'], ['🩺', '✅'], ['лекарствами', 'напоминаниями'], ['лекарствам', 'напоминаниям'], ['лекарством', 'напоминанием'],
+        ru: [['MedTime', 'MyTime'], ['Название лекарства?', 'О чём напомнить?'], ['Название лекарства', 'О чём напомнить? (например: выпить воды)'], ['💊', '⏰'], ['💉', '⏰'], ['🩺', '✅'], ['лекарствами', 'напоминаниями'], ['лекарствам', 'напоминаниям'], ['лекарством', 'напоминанием'],
             ['лекарства', 'напоминания'], ['лекарство', 'напоминание'], ['лекарств', 'напоминаний'], ['Лекарства', 'Напоминания'], ['Лекарство', 'Напоминание'],
             ['таблетки', 'напоминания'], ['таблетку', 'напоминание'], ['таблетка', 'напоминание'], ['Принял(а)', 'Сделал(а)'], ['Принял', 'Сделал'], ['принял', 'сделал'],
             ['Принято', 'Сделано'], ['принять', 'сделать'], ['Пора принять', 'Пора'], ['дозу', 'детали'], ['доза', 'детали'], ['Доза', 'Детали']]
@@ -89,7 +93,7 @@
     }
     window.mtStoreFix = fix;
     // what the user wrote stays exactly as written
-    const OWN = '.med-item li, .chip-txt, .it-chip, .suggest, .lg-list, .ap-card, #fm-name, script, style, textarea';
+    const OWN = '#st-sug, .med-item li, .chip-txt, .it-chip, .suggest, .lg-list, .ap-card, #fm-name, script, style, textarea';
     const ATTRS = ['placeholder', 'title', 'aria-label'];
     function fixAttrs(el) {
         if (!el.getAttribute || (el.closest && el.closest('.med-item li, .chip-txt, .suggest, .lg-list'))) return;
@@ -112,6 +116,35 @@
             acceptNode: x => x.nodeType === 1 && x.matches(OWN) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT
         });
         for (let c = w.nextNode(); c; c = w.nextNode()) { if (c.nodeType === 3) fixText(c); else fixAttrs(c); }
+    }
+
+    // ---------- 2b. quick ideas under the name field of a new reminder (one tap fills it) ----------
+    const SUG = [
+        ['💧 לשתות מים', '🚶 הליכה', '📞 להתקשר למשפחה', '🍽️ ארוחה', '🏋️ תרגילים', '🌱 להשקות עציצים', '🐕 להוציא את הכלב', '😴 ללכת לישון'],
+        ['💧 شرب الماء', '🚶 المشي', '📞 الاتصال بالعائلة', '🍽️ وجبة', '🏋️ تمارين', '🌱 سقي النباتات', '🐕 إخراج الكلب', '😴 وقت النوم'],
+        ['💧 Să beau apă', '🚶 Plimbare', '📞 Sun familia', '🍽️ Masa', '🏋️ Exerciții', '🌱 Ud florile', '🐕 Plimb câinele', '😴 La culcare'],
+        ['💧 Boire de l’eau', '🚶 Marcher', '📞 Appeler la famille', '🍽️ Repas', '🏋️ Exercices', '🌱 Arroser les plantes', '🐕 Sortir le chien', '😴 Se coucher'],
+        ['💧 Drink water', '🚶 Walk', '📞 Call family', '🍽️ Meal', '🏋️ Exercise', '🌱 Water the plants', '🐕 Walk the dog', '😴 Bedtime'],
+        ['💧 Выпить воды', '🚶 Прогулка', '📞 Позвонить родным', '🍽️ Еда', '🏋️ Зарядка', '🌱 Полить цветы', '🐕 Выгулять собаку', '😴 Спать']
+    ];
+    function sugChips() {
+        const wiz = document.querySelector('.med-wiz[data-s="1"]');
+        const old = document.getElementById('st-sug');
+        if (!wiz) { if (old) old.remove(); return; }
+        const row = wiz.querySelector('.item-row:not(.collapsed) .name-wrap');
+        if (!row || (old && old.parentNode === row && old.dataset.l === String(li()))) return;
+        if (old) old.remove();
+        const box = document.createElement('div'); box.id = 'st-sug'; box.dataset.l = String(li());
+        SUG[li()].forEach(t => {
+            const b = document.createElement('button'); b.type = 'button'; b.textContent = t;
+            b.onclick = () => {
+                const inp = row.querySelector('.it-name'); if (!inp) return;
+                inp.value = t.replace(/^\S+\s/, ''); inp.dispatchEvent(new Event('input', { bubbles: true }));
+                if (navigator.vibrate) try { navigator.vibrate(12); } catch (e) { }
+            };
+            box.appendChild(b);
+        });
+        row.appendChild(box);
     }
 
     // ---------- 3. help topics about features the Play edition does not have ----------
@@ -229,7 +262,7 @@
                     else if (m.type === 'attributes') fixNode(m.target);
                     else m.addedNodes.forEach(fixNode);
                 }
-                hideHelp();
+                hideHelp(); sugChips();
             } catch (e) { console.error(e); }
             busy = false;
         });
