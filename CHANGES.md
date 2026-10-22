@@ -253,3 +253,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-229 | 2026-10-22 | stats.js (new), more.js, index.html | Owner: small 📤 share button on the main screen (shares the download page link); anonymous daily ping, share count and a one-time 3-question survey after a week of use, sent to the owner's Google Form (not connected yet: FORM empty, survey off) | ⏳ |
 | M-230 | 2026-10-22 | homelayout.js | Owner: the Add reminder cross was still flat (an old float animation and no-filter rule beat the 3D layers): layer rules now stronger, the cross turns as a solid 3D object like the others | ⏳ |
 | M-231 | 2026-10-22 | homelayout.js, fonts/fredoka-hebrew-700, fonts/rubik-cyrillic-800 | Owner: nicer label font: rounded bold Fredoka (Hebrew/Latin), Rubik ExtraBold for Arabic/Russian, with the 3D letters | ⏳ |
+| M-232 | 2026-10-22 | homelayout.js, stats.js | Owner: share button placement: now a glowing green ball at the end of the animated tour line, one unit with it | ⏳ |

@@ -50,12 +50,12 @@
 
     const css = document.createElement('style');
     css.textContent = `
-    html body #mt-share{position:fixed!important;z-index:41;top:auto!important;bottom:calc(30px + env(safe-area-inset-bottom))!important;left:calc(25% + 6px)!important;right:auto!important;margin:0!important;width:44px;height:44px;border-radius:50%;border:2px solid rgba(255,255,255,.9);
-      display:grid;place-items:center;font-size:1.35rem;color:#fff;background:radial-gradient(circle at 34% 26%,#fff 0,#86efac 20%,#22c55e 60%,#14532d 100%);
-      box-shadow:inset 0 -5px 8px rgba(0,0,0,.3),0 5px 0 #14532d,0 10px 14px rgba(0,0,0,.5);-webkit-tap-highlight-color:transparent;padding:0}
-    #mt-share:active{transform:translateY(4px);box-shadow:0 1px 0 #14532d}
-    html.relax-open #mt-share,html.med-open #mt-share,body:has(.settings-page.open) #mt-share,body:has(.open:is(.list-page,.appt-page)) #mt-share{display:none!important}
-    #mt-sv{position:fixed;inset:0;z-index:9000;display:flex;align-items:flex-end;justify-content:center;background:rgba(2,6,23,.6);opacity:0;transition:opacity .25s}
+    html body #mt-share{position:relative!important;flex:0 0 auto;width:54px;height:54px;border-radius:50%;border:2.5px solid #4ade80;margin:0!important;padding:0;
+      display:grid;place-items:center;font-size:1.5rem;color:#fff;background:radial-gradient(circle at 34% 26%,#fff 0,#86efac 18%,#16a34a 60%,#052e16 100%);
+      box-shadow:inset 0 -5px 8px rgba(0,0,0,.35),0 0 14px rgba(74,222,128,.75),0 6px 12px rgba(0,0,0,.5);-webkit-tap-highlight-color:transparent;animation:mtShF 3.6s ease-in-out infinite}
+    @keyframes mtShF{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+    html body #mt-share:active{animation:none;transform:scale(.92)}
+        #mt-sv{position:fixed;inset:0;z-index:9000;display:flex;align-items:flex-end;justify-content:center;background:rgba(2,6,23,.6);opacity:0;transition:opacity .25s}
     #mt-sv.in{opacity:1}
     #mt-sv .sv-card{width:100%;max-width:520px;box-sizing:border-box;background:linear-gradient(180deg,#1e293b,#0f172a);color:#fff;border-radius:26px 26px 0 0;
       padding:18px 16px calc(16px + env(safe-area-inset-bottom));box-shadow:0 -10px 30px rgba(0,0,0,.5);font-family:inherit}
@@ -84,7 +84,8 @@
             const go = document.getElementById('sh-go');
             if (go && N && N.shareText) { go.click(); put('medtime_shares', String(+get('medtime_shares', '0') + 1)); send('share'); }
         };
-        document.body.appendChild(b);
+        (document.querySelector('.home-card') || document.body).appendChild(b);
+        if (window.mtHomeLayout) window.mtHomeLayout();
     }
 
     function survey() {

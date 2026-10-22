@@ -19,6 +19,9 @@
     @font-face{font-family:'MTBall';font-weight:700;font-display:swap;src:url(fonts/rubik-cyrillic-800-normal.woff2) format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
     @font-face{font-family:'MTBall';font-weight:700;font-display:swap;src:url(fonts/rubik-latin-ext-800-normal.woff2) format('woff2');unicode-range:U+0100-02AF,U+0218-021B,U+1E00-1EFF}
     .home-card .hm-empty{display:none!important}
+    .home-card > .hm-bar{display:flex;align-items:center;gap:10px;width:100%}
+    .home-card > .hm-bar > #guide-btn{flex:1 1 auto;min-width:0;margin:0!important;padding-inline:10px!important;gap:6px!important}
+    .home-card > .hm-bar > #guide-btn .gl-t{font-size:.98rem!important;white-space:nowrap}
     ${B}{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--hm-gap,14px) 6px;width:100%;align-items:start}
     ${BT}{all:unset;box-sizing:border-box;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-start!important;gap:6px!important;
       min-width:0;min-height:0!important;height:auto!important;width:100%!important;margin:0!important;padding:0!important;background:none!important;border:0!important;box-shadow:none!important;outline:none;cursor:pointer;
@@ -105,7 +108,12 @@
         ORDER.forEach(id => { const b = $(id); if (b && b.parentNode !== box) box.appendChild(b); });
         // keep the order even if a script inserted a button later
         ORDER.map($).filter(Boolean).forEach(b => box.appendChild(b));
-        const gl = $('guide-btn'); if (gl) card.appendChild(gl);
+        // M-232 (owner): the share button sits at the end of the tour button's line, as one unit
+        let bar = card.querySelector(':scope > .hm-bar');
+        if (!bar) { bar = document.createElement('div'); bar.className = 'hm-bar'; }
+        card.appendChild(bar);
+        const gl = $('guide-btn'); if (gl && gl.parentNode !== bar) bar.insertBefore(gl, bar.firstChild);
+        const shb = $('mt-share'); if (shb && shb.parentNode !== bar) bar.appendChild(shb);
         card.querySelectorAll('.nav-row, .home-pair, .hm-meds, .hm-grid').forEach(d => d.classList.toggle('hm-empty', !d.querySelector('button')));
         markDone(); make3d();
         if (typeof window.fitMain === 'function') setTimeout(window.fitMain, 60);
