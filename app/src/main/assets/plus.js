@@ -23,10 +23,11 @@
         photoDelQ: ['למחוק את התמונה של {n}?', 'حذف صورة {n}؟', 'Ștergi poza pentru {n}?', 'Supprimer la photo de {n} ?', 'Delete the photo of {n}?', 'Удалить фото {n}?'],
         photoErr: ['לא הצלחתי לשמור את התמונה. נסו שוב.', 'تعذر حفظ الصورة. حاول مرة أخرى.', 'Poza nu a putut fi salvată. Încearcă din nou.', 'Impossible d\'enregistrer la photo. Réessayez.', 'Could not save the photo. Please try again.', 'Не удалось сохранить фото. Попробуйте ещё раз.'],
         vT: ['🌡️ מדדים', '🌡️ القياسات', '🌡️ Măsurători', '🌡️ Mesures', '🌡️ Vitals', '🌡️ Показатели'],
-        vSubNone: ['לחץ דם, סוכר, דופק', 'ضغط، سكر، نبض', 'Tensiune, glicemie, puls', 'Tension, glycémie, pouls', 'Blood pressure, sugar, pulse', 'Давление, сахар, пульс'],
+        vSubNone: ['לחץ דם, סוכר, דופק, משקל', 'ضغط، سكر، نبض، وزن', 'Tensiune, glicemie, puls, greutate', 'Tension, glycémie, pouls, poids', 'Blood pressure, sugar, pulse, weight', 'Давление, сахар, пульс, вес'],
         vSubLast: ['אחרון: {v}', 'الأخير: {v}', 'Ultima: {v}', 'Dernière : {v}', 'Last: {v}', 'Последнее: {v}'],
         bp: ['❤️ לחץ דם', '❤️ ضغط الدم', '❤️ Tensiune', '❤️ Tension', '❤️ Blood pressure', '❤️ Давление'],
         sugar: ['🩸 סוכר', '🩸 السكر', '🩸 Glicemie', '🩸 Glycémie', '🩸 Sugar', '🩸 Сахар'],
+        weight: ['⚖️ משקל', '⚖️ الوزن', '⚖️ Greutate', '⚖️ Poids', '⚖️ Weight', '⚖️ Вес'], // M-183 (owner)
         pulse: ['💓 דופק', '💓 النبض', '💓 Puls', '💓 Pouls', '💓 Pulse', '💓 Пульс'],
         sys: ['עליון', 'الانقباضي', 'Sistolică', 'Systolique', 'Upper', 'Верхнее'],
         dia: ['תחתון', 'الانبساطي', 'Diastolică', 'Diastolique', 'Lower', 'Нижнее'],
@@ -34,7 +35,7 @@
         save: ['💾 שמירה', '💾 حفظ', '💾 Salvează', '💾 Enregistrer', '💾 Save', '💾 Сохранить'],
         bad: ['נא להקליד מספר תקין', 'يرجى إدخال رقم صحيح', 'Introdu un număr valid', 'Entrez un nombre valide', 'Please type a valid number', 'Введите правильное число'],
         last30: ['30 הימים האחרונים', 'آخر 30 يومًا', 'Ultimele 30 de zile', '30 derniers jours', 'Last 30 days', 'Последние 30 дней'],
-        empty: ['עוד אין מדידות. מקלידים מספר ולוחצים "שמירה".', 'لا توجد قياسات بعد.', 'Încă nu sunt măsurători.', 'Pas encore de mesures.', 'No measurements yet.', 'Пока нет измерений.'],
+        empty: ['עוד אין מדידות. בוחרים מספר ב־− / + ולוחצים "שמירה".', 'لا توجد قياسات بعد.', 'Încă nu sunt măsurători.', 'Pas encore de mesures.', 'No measurements yet.', 'Пока нет измерений.'],
         note: ['הצבעים הם הכוונה כללית בלבד. מה תקין עבורכם קובע הרופא.', 'الألوان للإرشاد العام فقط. الطبيب يحدد ما هو طبيعي لك.', 'Culorile sunt doar orientative. Medicul stabilește ce e normal pentru tine.', 'Les couleurs sont indicatives. Votre médecin décide de ce qui est normal pour vous.', 'Colours are only a general guide. Your doctor decides what is normal for you.', 'Цвета — лишь общий ориентир. Что для вас норма, решает ваш врач.'],
         del: ['🗑️', '🗑️', '🗑️', '🗑️', '🗑️', '🗑️'],
         pdfV: ['מדדים', 'القياسات', 'Măsurători', 'Mesures', 'Vitals', 'Показатели'],
@@ -70,7 +71,10 @@
     .vt-tabs button.sel{background:linear-gradient(135deg,#f472b6,#db2777)!important;border-color:#fbcfe8!important}
     .vt-in{display:flex;gap:8px;align-items:flex-end}
     .vt-in label{flex:1;font-size:.85rem;opacity:.85}
-    .vt-in input{width:100%;box-sizing:border-box;font-size:1.5rem;font-weight:800;text-align:center;padding:10px;border-radius:14px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff;direction:ltr}
+    .vt-step{display:flex;align-items:stretch;gap:5px}
+    .vt-step button{flex:0 0 44px;border-radius:14px!important;border:1.5px solid rgba(255,255,255,.3)!important;background:rgba(255,255,255,.12)!important;color:#fff!important;font-size:1.7rem!important;font-weight:800!important;padding:0!important;touch-action:none;user-select:none}
+    .vt-step button:active{background:rgba(244,114,182,.45)!important}
+    .vt-in input{min-width:0;width:100%;box-sizing:border-box;font-size:1.5rem;font-weight:800;text-align:center;padding:10px;border-radius:14px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff;direction:ltr}
     .vt-chart{width:100%;height:150px;margin:12px 0 4px;background:rgba(255,255,255,.05);border-radius:14px}
     /* M-157 (owner): the vitals panel fills the whole screen with no page scrolling; the chart takes the free height,
        only a long list of measurements scrolls inside its own box */
@@ -90,7 +94,7 @@
     .vt-r{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:12px;background:rgba(255,255,255,.05);margin:4px 0}
     .vt-r .d{flex:1;opacity:.8;font-size:.9rem}.vt-r b{font-size:1.15rem;direction:ltr}
     .vt-r button{border:0!important;background:none!important;font-size:1rem!important;padding:2px 6px!important}
-    .vt-g{color:#4ade80}.vt-y{color:#facc15}.vt-rd{color:#f87171}`;
+    .vt-w{color:#7dd3fc}.vt-g{color:#4ade80}.vt-y{color:#facc15}.vt-rd{color:#f87171}`;
     document.head.appendChild(css);
 
     // ---------------- cards in "My reminders" ----------------
@@ -200,12 +204,13 @@
     // general guide only (adults); green / yellow / red
     function level(k, v) {
         if (k === 'bp') { const s = v[0], d = v[1]; if (s >= 140 || d >= 90 || s < 90 || d < 60) return 'rd'; if (s >= 130 || d >= 85) return 'y'; return 'g'; }
+        if (k === 'weight') return 'w'; // weight has no good / bad range
         if (k === 'sugar') { if (v < 60 || v > 180) return 'rd'; if (v < 70 || v > 140) return 'y'; return 'g'; }
         if (v < 50 || v > 120) return 'rd'; if (v < 60 || v > 100) return 'y'; return 'g';
     }
-    const COL = { g: '#16a34a', y: '#d97706', rd: '#dc2626' };
+    const COL = { g: '#16a34a', y: '#d97706', rd: '#dc2626', w: '#0ea5e9' };
     const show = (k, v) => k === 'bp' ? v[0] + '/' + v[1] : String(v);
-    const unit = k => k === 'bp' ? ' mmHg' : k === 'sugar' ? ' mg/dL' : ' bpm';
+    const unit = k => k === 'bp' ? ' mmHg' : k === 'sugar' ? ' mg/dL' : k === 'weight' ? ' kg' : ' bpm';
 
     const s = document.createElement('section');
     s.className = 'set-tile x-tile'; s.id = 'tile-vitals';
@@ -235,7 +240,7 @@
     function draw() {
         heads();
         const tabs = s.querySelector('.vt-tabs'); tabs.innerHTML = '';
-        ['bp', 'sugar', 'pulse'].forEach(k => {
+        ['bp', 'sugar', 'pulse', 'weight'].forEach(k => {
             const b = document.createElement('button'); b.type = 'button'; b.textContent = tx(k);
             if (k === kind) b.className = 'sel';
             b.onclick = () => { vib(); kind = k; try { localStorage.setItem('medtime_vkind', k); } catch (e) { } draw(); };
@@ -247,6 +252,25 @@
             : '<label><span></span><input id="vt-a" type="number" inputmode="decimal" min="20" max="600"></label>';
         const lbl = inp.querySelectorAll('label > span');
         if (kind === 'bp') { lbl[0].textContent = tx('sys'); lbl[1].textContent = tx('dia'); } else lbl[0].textContent = tx('val') + unit(kind);
+        // M-186 (owner): no typing needed: the field starts at the last value (or a usual one) and big - / + change it (hold = fast)
+        const lastOf = load().filter(e => e.k === kind).pop();
+        const start = lastOf ? (kind === 'bp' ? lastOf.v : [lastOf.v]) : ({ bp: [120, 80], sugar: [100], pulse: [72], weight: [70] })[kind];
+        const step = kind === 'weight' ? 0.1 : 1;
+        inp.querySelectorAll('input').forEach((el, i) => {
+            el.value = start[i];
+            const wrap = document.createElement('div'); wrap.className = 'vt-step';
+            el.parentNode.insertBefore(wrap, el);
+            const mk = (d, t) => {
+                const b = document.createElement('button'); b.type = 'button'; b.textContent = t;
+                let rep = 0, n = 0;
+                const bump = () => { const v = (+el.value || 0) + d * step * (n > 12 ? 5 : 1); el.value = kind === 'weight' ? Math.max(0, v).toFixed(1) : Math.max(0, Math.round(v)); n++; };
+                const stop = () => { clearTimeout(rep); n = 0; };
+                b.addEventListener('pointerdown', e => { e.preventDefault(); vib(); bump(); const go = () => { rep = setTimeout(() => { bump(); go(); }, n < 3 ? 380 : 90); }; go(); });
+                ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => b.addEventListener(ev, stop));
+                return b;
+            };
+            wrap.appendChild(mk(-1, '−')); wrap.appendChild(el); wrap.appendChild(mk(1, '+'));
+        });
         document.getElementById('vt-save').textContent = tx('save');
         document.getElementById('vt-note').textContent = tx('note'); document.getElementById('vt-done').textContent = tx('done');
         const since = Date.now() - 30 * 864e5;

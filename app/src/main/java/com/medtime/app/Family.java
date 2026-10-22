@@ -49,7 +49,7 @@ class Family {
         String msg = I18n.t(c, "fam_sms").replace("{who}", who.isEmpty() ? I18n.t(c, "fam_someone") : who)
                 .replace("{items}", items).replace("{time}", time == null ? "" : time);
         if (BuildConfig.STORE) { notifyToSend(c, msg); return; }
-        send(c, msg);
+        if (!send(c, msg)) notifyToSend(c, msg); // M-185: SMS could not go out (no permission / no SIM chosen): a notification opens it ready to send
     }
 
     /** Play edition: a ready SMS to the family member; the user only taps "send" in the SMS app. */

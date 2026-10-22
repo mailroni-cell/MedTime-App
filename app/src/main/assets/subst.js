@@ -14,6 +14,8 @@
         hint: ['מקלידים את השם כמו על האריזה, ובוחרים מהרשימה', 'اكتب الاسم كما على العلبة واختر من القائمة', 'Scrie numele ca pe cutie și alege din listă', 'Tapez le nom comme sur la boîte et choisissez dans la liste', 'Type the name as on the box and pick from the list', 'Введите название как на коробке и выберите из списка'],
         none: ['לא נמצא במאגר משרד הבריאות. נסו לכתוב את השם כמו על האריזה.', 'غير موجود في سجل وزارة الصحة. جرّب كتابة الاسم كما على العلبة.', 'Nu există în registrul Ministerului Sănătății. Scrie numele ca pe cutie.', 'Introuvable dans le registre du ministère de la Santé. Tapez le nom comme sur la boîte.', 'Not found in the Ministry of Health registry. Type the name as on the box.', 'Не найдено в реестре Министерства здравоохранения. Введите название как на коробке.'],
         prev: ['→ חזרה', '→ رجوع', '← Înapoi', '← Retour', '← Back', '← Назад'],
+        home: ['בדיקת תרופה / חליפית', 'فحص دواء / بديل', 'Verifică medicament / substitut', 'Vérifier un médicament / générique', 'Check a medicine / substitute', 'Проверка лекарства / замены'], // M-187
+        homeSub: ['צילום הקופסה או הקלדת שם', 'صوّر العلبة أو اكتب الاسم', 'Fotografiază cutia sau scrie numele', 'Photographiez la boîte ou tapez le nom', 'Photo of the box or type the name', 'Сфотографируйте упаковку или введите название'],
         scan: ['📷 סריקה', '📷 مسح', '📷 Scanează', '📷 Scanner', '📷 Scan', '📷 Сканировать'],
         hintScan: ['מקלידים את השם כמו על האריזה, או 📷 מצלמים את הברקוד שעל הקופסה', 'اكتب الاسم كما على العلبة أو 📷 صوّر الباركود', 'Scrie numele ca pe cutie sau 📷 fotografiază codul de bare', 'Tapez le nom comme sur la boîte ou 📷 photographiez le code-barres', 'Type the name as on the box, or 📷 photograph the barcode on the box', 'Введите название как на коробке или 📷 сфотографируйте штрихкод на коробке'],
         noRead: ['לא הצלחתי לקרוא ברקוד בתמונה. צלמו מקרוב את הברקוד, באור טוב, או הקלידו את השם.', 'تعذرت قراءة الباركود. صوّره عن قرب وبإضاءة جيدة أو اكتب الاسم.', 'Codul nu a putut fi citit. Fotografiază-l de aproape, la lumină bună, sau scrie numele.', 'Code illisible. Photographiez-le de près, avec une bonne lumière, ou tapez le nom.', 'Could not read a barcode. Photograph it up close in good light, or type the name.', 'Не удалось прочитать штрихкод. Сфотографируйте его вблизи при хорошем свете или введите название.'],
@@ -243,7 +245,7 @@
                 <div class="sb-row"><b></b><span class="n2"></span><small class="i2"></small></div></div>
                 <div class="sb-verd v-${lv}"><div class="sb-orb3"><i class="sb-halo"></i><div class="sb-orb"><span>${({ full: '✓', near: '≈', form: '!', dose: '!', diff: '✕' })[lv]}</span></div><i class="sb-shd"></i></div>
                 <div class="sb-vt"></div><div class="sb-res"></div><div class="sb-why"></div><div class="pharm"></div><div class="sb-src"></div></div>
-                <div class="sb-btns"><button type="button" class="pv"></button><button type="button" class="cl"></button>${lv === 'diff' ? '' : '<button type="button" class="ok"></button>'}</div>`;
+                <div class="sb-btns"><button type="button" class="pv"></button><button type="button" class="cl"></button>${lv === 'diff' || !m ? '' : '<button type="button" class="ok"></button>'}</div>`;
             s.sh.querySelector('.sb-vt').textContent = tx('t' + K);
             s.sh.querySelector('.sb-res').textContent = tx(lv).replace(/^\S+\s+/, '').replace(/^[^:.]+\s*:\s*/, '').replace(/^./, c => c.toUpperCase());
             s.sh.querySelector('.sb-why').textContent = tx('w' + K);
@@ -267,7 +269,7 @@
     }
     async function start(m) {
         vib();
-        const it = await chooseItem(m); if (!it) return;
+        const it = m ? await chooseItem(m) : { name: '' }; if (!it) return; // M-187: from the main screen there is no card
         const s = sheet();
         s.sh.innerHTML = `<div class="sb-t">${esc(tx('loading'))}</div>`;
         await loadDb();
@@ -378,4 +380,25 @@
     };
     if (typeof renderMeds === 'function') try { renderMeds(); } catch (e) { }
     window.mtSubstCompare = compare; // for tests
+    // M-187 (owner): checking a medicine / substitute is important: a big button on the main screen (scan the box or type)
+    (function homeBtn() {
+        const add = document.getElementById('main-add');
+        if (!add || document.getElementById('sb-home')) return;
+        const b = document.createElement('button'); b.type = 'button'; b.id = 'sb-home';
+        b.innerHTML = '<span class="sbh-ico"><i>📷</i></span><span class="sbh-txt"><b></b><small></small></span>';
+        const txt = () => { b.querySelector('b').textContent = tx('home'); b.querySelector('small').textContent = tx('homeSub'); };
+        txt(); b.onclick = () => start(null);
+        add.parentNode.insertBefore(b, add.nextSibling);
+        const pr = window.moreRender; window.moreRender = function () { if (pr) pr(); txt(); };
+        const st = document.createElement('style');
+        st.textContent = `#sb-home{display:flex;align-items:center;gap:12px;width:100%;min-height:66px;border-radius:999px;padding:6px 18px 6px 8px;border:2px solid rgba(186,230,253,.75);
+            background:linear-gradient(135deg,#0ea5e9,#1d4ed8);color:#fff;box-shadow:0 6px 0 #1e3a8a,0 10px 24px rgba(14,165,233,.45),inset 0 2px 0 rgba(255,255,255,.35);text-align:start;font:inherit}
+        #sb-home:active{transform:translateY(3px);box-shadow:0 3px 0 #1e3a8a,0 6px 14px rgba(14,165,233,.4)}
+        #sb-home .sbh-ico{flex:0 0 52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:1.7rem;background:radial-gradient(circle at 35% 28%,#fff,#bae6fd 45%,#0284c7)}
+        #sb-home .sbh-txt{display:flex;flex-direction:column;line-height:1.2}
+        #sb-home b{font-size:1.3rem;font-weight:800}#sb-home small{font-size:.9rem;opacity:.9}
+        html.fit4 #sb-home{min-height:54px}html.fit4 #sb-home .sbh-ico{flex-basis:42px;height:42px}`;
+        document.head.appendChild(st);
+        if (typeof window.fitMain === 'function') setTimeout(window.fitMain, 100);
+    })();
 })();
