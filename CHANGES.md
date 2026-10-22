@@ -284,3 +284,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-253 | 2026-10-22 | looks.js | Owner: greeting stays on the main screen (smaller on short screens instead of hidden); the tour line is one big floating 3D hand with the word inside (6 languages), never hidden | ⏳ |
 | M-254 | 2026-10-22 | looks.js | Owner: a soft dark halo behind the main menu calms the busy 3D background so the capsules stand out | ⏳ |
 | M-255 | 2026-10-22 | looks.js | Owner: theme cards styled: each shows its own floating symbol, glows and writes its name in the theme colour | ⏳ |
+| R-198 | 2026-10-22 | release/stable.txt | Run 198 (M-253..M-255) released to everyone | ✅ |
