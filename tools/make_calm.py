@@ -9,22 +9,25 @@ NATIVE = {'he': ('he-IL-HilaNeural', 'he-IL-AvriNeural'), 'ar': ('ar-SA-ZariyahN
           'ro': ('ro-RO-AlinaNeural', 'ro-RO-EmilNeural'), 'fr': ('fr-FR-DeniseNeural', 'fr-FR-HenriNeural'),
           'en': ('en-US-JennyNeural', 'en-GB-RyanNeural'), 'ru': ('ru-RU-SvetlanaNeural', 'ru-RU-DmitryNeural')}
 # id: (voice, rate, pitch, soft) ; soft = quieter, darker, a little room (close to a whisper)
+# M-191 (owner): slower and more natural: native voices only (Ava / Andrew only in English), long pauses at "…"
 def voices(l):
     f, m = NATIVE[l]
-    return {'f': (f, '-14%', '-2Hz', 0), 'm': (m, '-14%', '-4Hz', 0), 'ava': (ML_F, '-12%', '-2Hz', 0),
-            'andrew': (ML_M, '-12%', '-4Hz', 0), 'soft': (ML_F, '-24%', '-8Hz', 1)}
+    v = {'f': (f, '-28%', '-3Hz', 0), 'm': (m, '-28%', '-5Hz', 0), 'soft': (f, '-34%', '-6Hz', 1)}
+    if l == 'en': v.update({'ava': (ML_F, '-26%', '-2Hz', 0), 'andrew': (ML_M, '-26%', '-4Hz', 0)})
+    return v
 SOFT = 'highpass=f=120,lowpass=f=4200,volume=0.8,aecho=0.8:0.6:60:0.18'
 async def one(text, voice, rate, pitch, soft, dst):
     raw = dst + '.raw.mp3'
     for _ in range(4):
         try:
-            await edge_tts.Communicate(text.replace('…', ', '), voice, rate=rate, pitch=pitch).save(raw); break
+            await edge_tts.Communicate(text.replace('…', '... '), voice, rate=rate, pitch=pitch).save(raw); break
         except Exception as e:
             print('retry', dst, e); await asyncio.sleep(3)
     af = (SOFT + ',' if soft else '') + 'apad=pad_dur=0.25,loudnorm=I=-20:TP=-2'
     subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', raw, '-af', af, '-ac', '1', '-ar', '24000', '-b:a', '40k', dst], check=True)
     os.remove(raw)
 async def main():
+    import shutil; shutil.rmtree(OUT, ignore_errors=True)
     for l, lines in LINES.items():
         for vid, (voice, rate, pitch, soft) in voices(l).items():
             d = os.path.join(OUT, l, vid); os.makedirs(d, exist_ok=True)
