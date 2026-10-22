@@ -1,14 +1,15 @@
 name: Probe leaflet links
-# M-195: one-off probe of the Ministry of Health registry (leaflet links)
+# M-195: one-off probe of the Ministry of Health registry (leaflet links); result committed to data-cache/
 on:
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: python tools/probe_leaflet.py
-      - uses: actions/upload-artifact@v4
-        with: { name: leaflet-probe, path: data-cache/leaflet_probe.json }
+      - run: |
+          git config user.name "github-actions[bot]" && git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data-cache/leaflet_probe.json && git commit -m "M-195 leaflet probe [skip ci]" && git pull --rebase -q origin main && git push
