@@ -222,3 +222,7 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | R-154 | 2026-10-21 | release/stable.txt | Owner: run 154 (M-169..M-171) released to everyone | ✅ |
 | R-151 | 2026-10-21 | release/stable.txt | Owner "משחררים לכולם": run 151 (Russian, substitute medicine, auto update on opening, smoothness) released to everyone | ✅ |
 | R-147 | 2026-10-21 | release/stable.txt | Owner: run 147 released to everyone (was run 80) | ✅ |
+| M-204 | 2026-10-22 | firstaid.js | Owner: first aid page spread in full with no scrolling: content shrinks step by step until it fits (any screen, 6 languages); Latin / Cyrillic pages now left to right | ⏳ |
+| M-205 | 2026-10-22 | homelayout.js (new), index.html | Owner: main menu in a logical order: framed, glowing "my medicines" box (Add reminder + My reminders), then 2x2 equal health tiles (appointments, medicine check, vitals, serenity), then first aid on its own, then the guide line; tighter steps when the screen is short | ⏳ |
+| M-206 | 2026-10-22 | extras.js, tour.js | Owner: Help as 18 big tiles in 2 columns, no scrolling; a tile opens its text on the whole panel with "Back to topics" (phone back too); ✕ replaced by "→ Main screen"; new topics: taken early + photo, medicine check, vitals, first aid, emergency card + lock screen; serenity text updated (videos, sounds on choice, © credits); 6 languages | ⏳ |
+| M-207 | 2026-10-22 | tour.js | Owner: animated guide also shows first aid (101 / poison center pointed at only, never dialled), medicine check and vitals; home tour includes the new buttons; 6 languages | ⏳ |
