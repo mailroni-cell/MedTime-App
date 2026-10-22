@@ -275,3 +275,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-248 | 2026-10-22 | homelayout.js | Owner: main screen capsules get the same dark outline and deeper shadow as the settings capsules | ⏳ |
 | R-194 | 2026-10-22 | release/stable.txt | Run 194 (M-248) released to everyone | ✅ |
 | M-249 | 2026-10-22 | looks.js (new), index.html | Owner: My reminders no longer cut (last card clears the Done button, no half-cut side stripe), glass cards with dark outline, glossy edit/delete pills, 3D title font; every settings sub-menu gets a glowing background, glossy outlined buttons, a capsule icon and the 3D title font; low vision keeps its contrast | ⏳ |
+| R-195 | 2026-10-22 | release/stable.txt | Run 195 (M-249) released to everyone | ✅ |
