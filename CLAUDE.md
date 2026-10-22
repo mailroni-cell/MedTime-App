@@ -29,6 +29,7 @@ Every new rule the owner sets is added here right away.
 - Every change made in Hebrew applies to ALL 6 languages (he, ar, ro, fr, en, ru) at the same time (owner rule 2026-10-20; Russian added 2026-10-21, M-167).
 - PROGRESS BAR (owner rule 2026-10-22, every request, no matter what): always show the progress checklist card for the work, and its first line (and the in-progress step line) carries a coloured progress bar, percent and count, e.g. `🟩🟩🟩⬜⬜⬜ 50% · 3/6` (owner asked for something brighter; the card is text only, no animation). Update it as each step finishes. It costs almost nothing (it is part of the checklist update already sent).
 - (2026-10-22 10:19, owner, every project) EVERY reply message also starts with that progress bar line; the card alone scrolls out of sight.
+- (2026-10-22 16:08, owner, 4th time asking, very important) EVERY reply message also ENDS with the progress bar line (start AND end).
 - Each relevant reply has a short **💡 ייעול / רעיון** section. Owner (2026-10-21): after EVERY finished change, always give a concrete efficiency tip about the app or the work process (like 'updates without reinstall').
 - Each reply ends with `[📊 Estimated Session Context / Account Quota Used: ~X%]`.
 - Any script for the owner: PowerShell, full script in the reply, first line `Clear-Host`.
