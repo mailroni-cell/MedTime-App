@@ -2,7 +2,7 @@
 
 ## CURRENT (2026-10-22 18:35 UTC) - read this first; older sections below are history
 - Full app MedTime: run 200 (M-259..M-261) released to everyone and approved by the owner. PAUSED: work only on the Play edition until the owner says "חוזרים לגרסה המלאה".
-- Play edition MyTime (branch play-edition, flavor play, release "play"): closed test Alpha versionCode 104 submitted to Google review 2026-10-22 17:21 UTC. Next: after approval send the join link to testers; need 12 testers (9 now) for 14 days, then Apply for production.
+- Play edition MyTime (branch play-edition, flavor play, release "play"): closed test Alpha versionCode 104 submitted to Google review 2026-10-22 17:21 UTC. Next: after approval send the join link to testers; need 12 testers (8 valid now, 4 missing) for 14 days, then Apply for production.
 - PC: everything in C:\Projects\MedTime (watcher, log, HANDOFF, MyTime-images). Full status: handoff/HANDOFF.md.
 
 ## Where we are
