@@ -35,7 +35,7 @@
             ['Breathe out slowly through your mouth… {n} seconds', 'Let all the tension go', 'Slowly… all the way out', 'Your body relaxes and feels heavy'],
             ['Медленный выдох через рот… {n} секунд', 'Отпустите всё напряжение', 'Медленно… до конца', 'Тело расслабляется и тяжелеет']],
         // M-177 (owner): a small tip on opening, gone after a few seconds
-        tip: ['💡 הכי מרגיע: אוזניות, הנחיה קולית רגועה וצליל "גלים" או "קערות טיבטיות"', '💡 الأكثر استرخاءً: سماعات، إرشاد صوتي هادئ وصوت "الأمواج" أو "الأوعية التبتية"', '💡 Cel mai relaxant: căști, ghid vocal calm și sunetul „Valuri” sau „Boluri tibetane”', '💡 Le plus apaisant : des écouteurs, le guide vocal calme et le son « Vagues » ou « Bols tibétains »', '💡 Most relaxing: headphones, the calm voice guide and the "Waves" or "Singing bowls" sound', '💡 Лучше всего: наушники, спокойный голос и звук «Волны» или «Поющие чаши»'],
+        tip: ['💡 הכי מרגיע: אוזניות וצליל "גלים" או "קערות טיבטיות"', '💡 الأكثر استرخاءً: سماعات وصوت "الأمواج" أو "الأوعية التبتية"', '💡 Cel mai relaxant: căști și sunetul „Valuri” sau „Boluri tibetane”', '💡 Le plus apaisant : un casque et le son « Vagues » ou « Bols tibétains »', '💡 Most relaxing: headphones and the "Waves" or "Singing bowls" sound', '💡 Лучше всего расслабляют наушники и звук «Волны» или «Поющие чаши»'],
         // M-182 (owner): recorded warm voices made for calm mode; names per language
         vSoft: ['לחישה רכה', 'همس ناعم', 'Șoaptă blândă', 'Murmure doux', 'Soft whisper', 'Мягкий шёпот'],
         vOff: ['ללא קול', 'بدون صوت', 'Fără voce', 'Sans voix', 'No voice', 'Без голоса'],
@@ -227,7 +227,7 @@
             '<button type="button" class="rx-go"></button>' +
             '</div>' +
             '<button type="button" class="rx-mini"><span class="rx-mini-ico"></span><span class="rx-mini-t"></span></button>' +
-            '<div class="rx-bar">' + ['scene', 'sound', 'timer', 'breath', 'bvoice', 'lock', 'go'].map(t => '<button type="button" data-s="' + t + '"><span class="rx-bi"></span><small></small></button>').join('') + '</div>' +
+            '<div class="rx-bar">' + ['scene', 'sound', 'timer', 'lock', 'go'] /* M-194 (owner): no breathing guide (voice or text) */.map(t => '<button type="button" data-s="' + t + '"><span class="rx-bi"></span><small></small></button>').join('') + '</div>' +
             '<button type="button" class="rx-unlock" aria-label="unlock"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="29"/></svg><span>🔒</span></button>' +
             '<div class="rx-lockmsg"></div>';
         document.body.appendChild(root);
