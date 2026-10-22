@@ -135,7 +135,10 @@
         if (!row || (old && old.parentNode === row && old.dataset.l === String(li()))) return;
         if (old) old.remove();
         const box = document.createElement('div'); box.id = 'st-sug'; box.dataset.l = String(li());
-        SUG[li()].forEach(t => {
+        // the user's own reminders come first (⭐), so a name written once never has to be typed again
+        let mine = [];
+        try { (JSON.parse(localStorage.getItem('medtime_list')) || []).forEach(r => (r.items || []).forEach(it => { const n = (it.name || '').trim(); if (n && mine.indexOf(n) < 0) mine.push(n); })); } catch (e) { }
+        mine.slice(0, 6).map(n => '⭐ ' + n).concat(SUG[li()]).forEach(t => {
             const b = document.createElement('button'); b.type = 'button'; b.textContent = t;
             b.onclick = () => {
                 const inp = row.querySelector('.it-name'); if (!inp) return;
