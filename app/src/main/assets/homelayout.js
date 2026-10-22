@@ -43,7 +43,7 @@
     html body .home-card .hm-float :is(${ICO}){background:none!important;box-shadow:none!important;border-radius:0!important}
     html body .home-card .hm-float :is(${ICO})::after{display:none!important}
     /* M-242 (owner): bigger, thicker capsules that wrap the symbol and look round (cylinder light and shade, rounded ends) */
-    html body .home-card .hm-float .hm-pill{position:absolute;left:50%;top:50%;width:calc(var(--hm-o,118px) * 1.12);height:calc(var(--hm-o,118px) * .8);border-radius:999px;pointer-events:none;z-index:0;
+    html body .home-card .hm-float .hm-pill{position:absolute;left:50%;top:50%;width:calc(var(--hm-o,118px) * 1.36);height:calc(var(--hm-o,118px) * .72);border-radius:999px;pointer-events:none;z-index:0;
       transform:translate(-50%,-50%) rotate(-24deg);will-change:transform;animation:hmPill var(--hm-pd,9s) ease-in-out infinite;animation-delay:var(--hm-pdl,0s);
       background:linear-gradient(180deg,rgba(255,255,255,.9) 0,rgba(255,255,255,.35) 14%,rgba(255,255,255,0) 36%,rgba(0,0,0,0) 58%,rgba(0,0,0,.22) 80%,rgba(0,0,0,.5) 100%),
         linear-gradient(90deg,rgba(0,0,0,.28) 0,rgba(0,0,0,0) 12%,rgba(0,0,0,0) 88%,rgba(0,0,0,.28) 100%),
@@ -74,13 +74,9 @@
     html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > *{grid-area:1/1;display:block;font-size:calc(var(--hm-o,118px) * .66)!important;width:auto!important;height:auto!important;line-height:1!important;font-style:normal;
       filter:none!important;text-shadow:none!important;-webkit-text-stroke:0!important;animation:none!important;margin:0!important;backface-visibility:visible;flex:none!important}
     html body .home-card .hm-float #main-add .hm-3d > svg{width:calc(var(--hm-o) * .64)!important;height:calc(var(--hm-o) * .64)!important}
-    html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l1{transform:translateZ(4.5px)!important}
-    html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l2{transform:translateZ(3px)!important;filter:brightness(.6)!important}
-    html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l3{transform:translateZ(1.5px)!important;filter:brightness(.5)!important}
-    html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l4{transform:translateZ(0)!important;filter:brightness(.45)!important}
-    html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l5{transform:translateZ(-1.5px)!important;filter:brightness(.5)!important}
-    html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l6{transform:translateZ(-3px)!important;filter:brightness(.6)!important}
-    html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l7{transform:translateZ(-4.5px)!important}
+    /* M-256 (owner: thin stripes showed on the side when a symbol turned edge-on): 13 layers 0.7px apart make one solid body */
+    ${(() => { let o = ''; for (let k = 1; k <= 13; k++) { const z = (4.2 - (k - 1) * 0.7).toFixed(1), b = k === 1 || k === 13 ? '' : 'filter:brightness(' + (0.45 + Math.abs(7 - k) * 0.025).toFixed(3) + ')!important;';
+        o += `html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l${k}{transform:translateZ(${z}px)!important;${b}}\n`; } return o; })()}
     /* M-239 (owner): the symbols float freely in every direction, as in space: drifting up/down/sideways, tilting on all axes and turning round */
     @keyframes hmSpin{0%{transform:translate3d(calc(var(--hm-o,118px) * 0),calc(var(--hm-o,118px) * .02),16px) rotateX(10deg) rotateY(0deg) rotateZ(-6deg)}20%{transform:translate3d(calc(var(--hm-o,118px) * -.07),calc(var(--hm-o,118px) * -.06),26px) rotateX(-14deg) rotateY(80deg) rotateZ(5deg)}45%{transform:translate3d(calc(var(--hm-o,118px) * .05),calc(var(--hm-o,118px) * -.09),18px) rotateX(16deg) rotateY(170deg) rotateZ(-4deg)}65%{transform:translate3d(calc(var(--hm-o,118px) * .08),calc(var(--hm-o,118px) * .03),28px) rotateX(-8deg) rotateY(250deg) rotateZ(8deg)}85%{transform:translate3d(calc(var(--hm-o,118px) * -.04),calc(var(--hm-o,118px) * .06),20px) rotateX(12deg) rotateY(320deg) rotateZ(-3deg)}100%{transform:translate3d(calc(var(--hm-o,118px) * 0),calc(var(--hm-o,118px) * .02),16px) rotateX(10deg) rotateY(360deg) rotateZ(-6deg)}}
     html .home-card .hm-float > :nth-child(2){--hm-sp:12.5s;--hm-dl:-3s}html .home-card .hm-float > :nth-child(3){--hm-sp:10s;--hm-dl:-6s}
@@ -88,7 +84,7 @@
     html .home-card .hm-float > :nth-child(6){--hm-sp:12s;--hm-dl:-4.5s}html .home-card .hm-float > :nth-child(7){--hm-sp:10.5s;--hm-dl:-1s}html .home-card .hm-float > :nth-child(8){--hm-sp:14s;--hm-dl:-7s}
     /* M-224 (owner): the light that runs round a menu now and then follows the ball, not the invisible square around it */
     ${BT}{position:relative!important}
-    ${B} > button > .mt-glint{inset:auto!important;top:calc(var(--hm-o,118px) * .1)!important;left:50%!important;width:calc(var(--hm-o,118px) * 1.12)!important;height:calc(var(--hm-o,118px) * .8)!important;margin-left:calc(var(--hm-o,118px) * -.56)!important;border-radius:999px!important;padding:3px!important;transform:rotate(-24deg)}
+    ${B} > button > .mt-glint{inset:auto!important;top:calc(var(--hm-o,118px) * .14)!important;left:50%!important;width:calc(var(--hm-o,118px) * 1.36)!important;height:calc(var(--hm-o,118px) * .72)!important;margin-left:calc(var(--hm-o,118px) * -.68)!important;border-radius:999px!important;padding:3px!important;transform:rotate(-24deg)}
     html .home-card .hm-float #main-add{--hm-o:var(--hm-big,140px)}
     html .home-card .hm-float #list-btn .lb-count{color:#fff!important;font-size:calc(var(--hm-o,118px) * .46)!important;font-weight:900!important;animation:none!important;text-shadow:0 1px 0 #e2e8f0,0 2px 0 #cbd5e1,0 3px 0 #94a3b8,0 4px 0 #64748b,0 5px 0 #475569,0 7px 8px rgba(0,0,0,.6)!important;min-height:0!important}
     #main-add{--c1:#bbf7d0;--c2:#10b981;--c3:#065f46}
@@ -178,7 +174,7 @@
             const sym = o.querySelector(':scope > i, :scope > svg'); if (!sym) return;
             const w = document.createElement('span'); w.className = 'hm-3d'; w.setAttribute('aria-hidden', 'true');
             sym.replaceWith(w);
-            for (let k = 1; k <= 7; k++) { const c = k === 1 ? sym : sym.cloneNode(true); c.classList.add('hm-l' + k); w.appendChild(c); }
+            for (let k = 1; k <= 13; k++) { const c = k === 1 ? sym : sym.cloneNode(true); c.classList.add('hm-l' + k); w.appendChild(c); }
         });
         addPills();
     }

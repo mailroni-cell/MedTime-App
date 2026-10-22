@@ -140,6 +140,12 @@
       grid-auto-flow:column!important;grid-auto-columns:calc((100% - (var(--tg-c) - 1) * var(--tg-gap)) / var(--tg-c))!important;gap:var(--tg-gap)!important;
       overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none;padding:6px 2px 8px!important;overscroll-behavior:contain}
     html body #settings-page #theme-grid::-webkit-scrollbar{display:none}
+    html body #settings-page #theme-grid{scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+    html body #settings-page #theme-grid > .theme-sw:nth-child(9n+1){scroll-snap-align:start;scroll-snap-stop:always}
+    html.lowvision body #settings-page #theme-grid > .theme-sw:nth-child(9n+1){scroll-snap-align:none;scroll-snap-stop:normal}
+    html.lowvision body #settings-page #theme-grid > .theme-sw:nth-child(6n+1){scroll-snap-align:start;scroll-snap-stop:always}
+    html body #settings-page #theme-grid.tg-moving .tw-world{animation-play-state:paused}
+    html body #settings-page #theme-grid > .theme-sw{contain:layout paint}
     html.lowvision body #settings-page #theme-grid{--tg-c:2}
     html body #settings-page #theme-grid > .theme-sw{aspect-ratio:auto!important;min-height:0;border-radius:22px!important}
     html body #settings-page #theme-grid .tw-dot{top:34%!important;left:50%!important;width:58%!important;height:26%!important;border-radius:999px!important;transform:translate(-50%,-50%) rotate(-24deg);
@@ -211,12 +217,9 @@
         };
         bar.querySelector('.tg-prev').onclick = () => go(-1);
         bar.querySelector('.tg-next').onclick = () => go(1);
-        let q = 0, st = 0, held = false;
-        g.addEventListener('touchstart', () => { held = true; }, { passive: true });
-        g.addEventListener('touchend', () => { held = false; clearTimeout(st); st = setTimeout(settle, 160); }, { passive: true });
-        // a swipe always ends on a whole page
-        const settle = () => { if (held) return; const want = cur() * pageW(); if (Math.abs(Math.abs(g.scrollLeft) - want) > 3) to(cur(), true); };
-        g.addEventListener('scroll', () => { if (!q) q = requestAnimationFrame(() => { q = 0; draw(); }); clearTimeout(st); st = setTimeout(settle, 160); }, { passive: true });
+        // M-257 (owner: the pages did not glide): the phone's own snapping moves page by page (CSS scroll-snap), the floating symbols rest while it moves
+        let q = 0, rest = 0;
+        g.addEventListener('scroll', () => { if (!q) q = requestAnimationFrame(() => { q = 0; draw(); }); g.classList.add('tg-moving'); clearTimeout(rest); rest = setTimeout(() => g.classList.remove('tg-moving'), 220); }, { passive: true });
         // the chosen theme's page is shown when the screen opens
         const show = () => { const sel = g.querySelector('.theme-sw.sel'); to(sel ? Math.floor([...g.children].indexOf(sel) / per()) : 0); draw(); };
         new MutationObserver(() => { dress(); setTimeout(show, 60); }).observe(g, { childList: true });
@@ -228,30 +231,39 @@
     pager();
 
     // M-253 (owner): the tour line is one big floating hand with the word inside it, instead of a small hand and a sentence
-    const HAND_URI = "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20112'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='0'%20x2='0'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%23bbf7d0'/%3E%3Cstop%20offset='.45'%20stop-color='%234ade80'/%3E%3Cstop%20offset='1'%20stop-color='%2315803d'/%3E%3C/linearGradient%3E%3Csymbol%20id='h'%3E%3Crect%20x='29'%20y='10'%20width='15'%20height='56'%20rx='7.5'/%3E%3Crect%20x='45.5'%20y='3'%20width='15'%20height='60'%20rx='7.5'/%3E%3Crect%20x='62'%20y='9'%20width='14.5'%20height='56'%20rx='7.25'/%3E%3Crect%20x='78'%20y='24'%20width='13'%20height='46'%20rx='6.5'/%3E%3Crect%20x='4'%20y='52'%20width='15'%20height='40'%20rx='7.5'%20transform='rotate%28-38%2011.5%2072%29'/%3E%3Crect%20x='24'%20y='42'%20width='68'%20height='64'%20rx='24'/%3E%3C/symbol%3E%3C/defs%3E%3Cuse%20href='%23h'%20fill='%23052e16'%20stroke='%23052e16'%20stroke-width='9'%20stroke-linejoin='round'/%3E%3Cuse%20href='%23h'%20fill='%23fff'%20stroke='%23fff'%20stroke-width='4.5'%20stroke-linejoin='round'/%3E%3Cuse%20href='%23h'%20fill='url%28%23g%29'/%3E%3Cellipse%20cx='48'%20cy='56'%20rx='18'%20ry='7'%20fill='%23fff'%20opacity='.45'/%3E%3Crect%20x='33'%20y='15'%20width='5'%20height='18'%20rx='2.5'%20fill='%23fff'%20opacity='.55'/%3E%3Crect%20x='50'%20y='8'%20width='5'%20height='18'%20rx='2.5'%20fill='%23fff'%20opacity='.55'/%3E%3Crect%20x='66'%20y='14'%20width='5'%20height='17'%20rx='2.5'%20fill='%23fff'%20opacity='.55'/%3E%3C/svg%3E";
     const HAND = ['הדרכה', 'شرح', 'Ghid', 'Guide', 'Guide', 'Гид'], L6 = ['he', 'ar', 'ro', 'fr', 'en', 'ru'];
     css.textContent += `
-    html body .home-card #guide-btn{flex:0 0 auto!important;width:min(80px,21vw)!important;height:min(86px,23vw)!important;min-height:0!important;padding:0!important;margin:0 auto!important;position:relative!important;
-      background:url("${HAND_URI}") center/contain no-repeat!important;filter:drop-shadow(0 10px 10px rgba(0,0,0,.55)) drop-shadow(0 0 14px rgba(74,222,128,.55));
-      animation:glHand 6s ease-in-out infinite!important;will-change:transform;justify-content:center!important}
-    html body .home-card #guide-btn > *{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important}
-    html body .home-card #guide-btn::before{content:attr(data-hand);position:absolute;left:24%;right:8%;top:56%;text-align:center;font-family:'MTBall','MTUI',sans-serif;font-weight:700;
-      font-size:min(1.05rem,4.3vw);line-height:1;color:#fff;letter-spacing:.2px;text-shadow:0 1px 0 #166534,0 2px 0 #14532d,0 3px 3px rgba(0,0,0,.8),0 0 8px rgba(0,0,0,.4);pointer-events:none}
-    @keyframes glHand{0%,100%{transform:translate(0,0) rotate(-8deg)}25%{transform:translate(-5px,-6px) rotate(4deg) scale(1.04)}50%{transform:translate(3px,-9px) rotate(-3deg)}75%{transform:translate(5px,-4px) rotate(9deg) scale(1.03)}}
-    html.hm-slim body .home-card #guide-btn{width:62px!important;height:66px!important}
-    html.fit5 body .home-card #guide-btn{display:flex!important;width:56px!important;height:60px!important}
+    /* M-258 (owner): a real, detailed hand (the phone's own high-resolution emoji) that taps clearly with its finger,
+       drifts freely in every direction on its spot, and carries the word on its back */
+    html body .home-card #guide-btn{flex:0 0 auto!important;width:min(84px,22vw)!important;height:min(92px,24vw)!important;min-height:0!important;padding:0!important;margin:0 auto!important;position:relative!important;
+      background:radial-gradient(circle at 50% 55%,rgba(74,222,128,.35),rgba(74,222,128,0) 68%)!important;perspective:300px;
+      animation:glFree 9s ease-in-out infinite!important;will-change:transform;justify-content:center!important;align-items:center!important;display:flex!important}
+    html body .home-card #guide-btn > :not(.gl-real){position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important}
+    html body .home-card #guide-btn > .gl-real{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:min(4.6rem,20vw);line-height:1;font-style:normal;
+      filter:drop-shadow(0 8px 7px rgba(0,0,0,.6)) drop-shadow(0 0 10px rgba(74,222,128,.6));transform-origin:50% 20%;animation:glPress 2.8s cubic-bezier(.4,0,.2,1) infinite;pointer-events:none}
+    html body .home-card #guide-btn::after{content:'';position:absolute;left:43%;top:12%;right:auto;bottom:auto;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;border:3px solid #bbf7d0;
+      box-shadow:0 0 12px #4ade80,inset 0 0 8px #4ade80;opacity:0;animation:glRipple 2.8s ease-out infinite;pointer-events:none;display:block!important}
+    html body .home-card #guide-btn::before{content:attr(data-hand);position:absolute;left:4%;right:4%;top:66%;z-index:2;text-align:center;font-family:'MTBall','MTUI',sans-serif;font-weight:700;
+      font-size:min(.95rem,4vw);line-height:1;color:#fff;letter-spacing:.2px;text-shadow:0 0 3px #000,0 1px 0 #166534,0 2px 0 #14532d,0 3px 4px rgba(0,0,0,.9);pointer-events:none;animation:glPress 2.8s cubic-bezier(.4,0,.2,1) infinite}
+    @keyframes glFree{0%,100%{transform:translate(0,0) rotate(-6deg) rotateY(0)}18%{transform:translate(-7px,-5px) rotate(5deg) rotateY(18deg)}37%{transform:translate(4px,-10px) rotate(-10deg) rotateY(-12deg)}
+      55%{transform:translate(8px,-2px) rotate(8deg) rotateY(14deg)}74%{transform:translate(-4px,3px) rotate(-3deg) rotateY(-20deg)}88%{transform:translate(-8px,-6px) rotate(10deg) rotateY(6deg)}}
+    @keyframes glPress{0%,30%,100%{transform:translateY(0) scale(1)}40%{transform:translateY(-5px) scale(.9)}48%{transform:translateY(-2px) scale(.95)}58%{transform:translateY(0) scale(1)}}
+    @keyframes glRipple{0%,38%{opacity:0;transform:scale(.3)}42%{opacity:1;transform:scale(.5)}75%{opacity:0;transform:scale(1.9)}100%{opacity:0}}
+    html.hm-slim body .home-card #guide-btn{width:66px!important;height:72px!important}html.hm-slim body .home-card #guide-btn > .gl-real{font-size:3.6rem}
+    html.fit5 body .home-card #guide-btn{display:flex!important;width:60px!important;height:64px!important}html.fit5 body .home-card #guide-btn > .gl-real{font-size:3.2rem}
     html body .home-card > .hm-bar{justify-content:center!important}
     /* M-254 (owner): the busy 3D background is calmed behind the menu, so the capsules stand out clearly */
     html body .home-card .hm-float{isolation:isolate}
     html body .home-card .hm-float::before{content:'';position:absolute;inset:-14px -10px;z-index:-1;pointer-events:none;border-radius:40px;
       background:radial-gradient(ellipse 72% 64% at 50% 50%,rgba(3,6,20,.72) 0%,rgba(3,6,20,.5) 55%,rgba(3,6,20,0) 100%);filter:blur(6px)}
-    html.lowvision body .home-card #guide-btn{animation:none!important;background:url("${HAND_URI}") center/contain no-repeat!important}
+    html.lowvision body .home-card #guide-btn,html.lowvision body .home-card #guide-btn > .gl-real,html.lowvision body .home-card #guide-btn::before{animation:none!important}
     /* M-253 (owner): the greeting stays on the main screen; on short screens it just gets a little smaller */
     html.fit6 body .hello-line.hello-line{display:table!important;padding:4px 14px 5px!important;font-size:.98rem!important;margin:0 auto 4px!important}
     html.fit6 body .hello-line.hello-line b{font-size:1.3em!important}`;
     function handWord() {
         const gb = document.getElementById('guide-btn'); if (!gb) return setTimeout(handWord, 500);
-        const set = () => { const i = Math.max(0, L6.indexOf(typeof LANG === 'string' ? LANG : document.documentElement.lang)); if (gb.dataset.hand !== HAND[i]) gb.dataset.hand = HAND[i]; };
+        const set = () => { const i = Math.max(0, L6.indexOf(typeof LANG === 'string' ? LANG : document.documentElement.lang)); if (gb.dataset.hand !== HAND[i]) gb.dataset.hand = HAND[i];
+            if (!gb.querySelector(':scope > .gl-real')) { const h = document.createElement('span'); h.className = 'gl-real'; h.setAttribute('aria-hidden', 'true'); h.textContent = '👆'; gb.appendChild(h); } };
         set(); new MutationObserver(set).observe(gb, { childList: true, subtree: true, characterData: true });
     }
     handWord();

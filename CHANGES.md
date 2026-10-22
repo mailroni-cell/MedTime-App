@@ -285,3 +285,6 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-254 | 2026-10-22 | looks.js | Owner: a soft dark halo behind the main menu calms the busy 3D background so the capsules stand out | ⏳ |
 | M-255 | 2026-10-22 | looks.js | Owner: theme cards styled: each shows its own floating symbol, glows and writes its name in the theme colour | ⏳ |
 | R-198 | 2026-10-22 | release/stable.txt | Run 198 (M-253..M-255) released to everyone | ✅ |
+| M-256 | 2026-10-22 | homelayout.js | Owner: no stripes when a symbol turns edge-on: 13 layers 0.7px apart instead of 7 | ⏳ |
+| M-257 | 2026-10-22 | looks.js | Owner: Display pages glide with the phone native page snapping; floating symbols pause while moving | ⏳ |
+| M-258 | 2026-10-22 | homelayout.js, looks.js | Owner: main capsules longer (1.36 x .72); the tour hand is a detailed pointing hand that taps (press + ripple at the fingertip) and drifts freely in every direction, word on its back | ⏳ |
