@@ -15,7 +15,14 @@
     #guide-btn { animation: none !important; position: relative; }
     #guide-btn::after { content: ''; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none;
         box-shadow: 0 0 14px rgba(74,222,128,1), 0 0 30px rgba(74,222,128,.6); opacity: 0; will-change: opacity; animation: mtGlFade 3s ease-in-out infinite; }
-    @keyframes mtGlFade { 50% { opacity: 1; } }`;
+    @keyframes mtGlFade { 50% { opacity: 1; } }
+    /* M-221 (owner): the heart line seemed to stick at the start of every beat: the light ran off the line's end, waited,
+       then popped back whole at the start. Now it enters from before the start and leaves past the end, with no wait */
+    html h1.mt-logo .lg-ecg .e-pulse { stroke-dasharray: 46 246 !important; animation: ecgLg 1.5s linear infinite !important;
+        filter: drop-shadow(0 0 3px #ffffff) drop-shadow(0 0 10px #22d3ee) !important; }
+    @keyframes ecgLg { from { stroke-dashoffset: 46; } to { stroke-dashoffset: -246; } }
+    html #splash .sp-ecg .e-pulse { stroke-dasharray: 46 354 !important; animation: ecgSp 1.45s linear 3.4s infinite both !important; }
+    @keyframes ecgSp { from { stroke-dashoffset: 46; } to { stroke-dashoffset: -354; } }`;
     document.head.appendChild(css);
 
     // M-166: while the opening plays, the endless menu animations behind it stand still; at the hand-over they come

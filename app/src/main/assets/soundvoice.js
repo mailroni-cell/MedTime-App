@@ -39,7 +39,19 @@
     .sv-more > summary::after{content:'⌄';float:inline-end;opacity:.7}
     .sv-more[open] > summary::after{content:'⌃'}
     .sv-more > .sv-in{padding:0 10px 10px}
-    .sv-pane .toggle-row:first-child{font-size:1.15rem;font-weight:900}`;
+    .sv-pane .toggle-row:first-child{font-size:1.15rem;font-weight:900}
+    /* M-214 (owner): no settings panel scrolls. Every panel opens on the whole screen; only long choice lists scroll inside their own box */
+    #settings-page .set-tile.open .set-body{top:0!important;max-height:none!important;height:100vh;height:100dvh;border-radius:0!important;box-sizing:border-box;
+      padding-top:calc(10px + env(safe-area-inset-top))!important;display:flex!important;flex-direction:column;overflow-y:auto}
+    #settings-page .set-tile.open .set-body > *{flex:none}
+    .sv-tile.open .set-body{overflow:hidden!important}
+    /* choice lists keep their own scroll: themes */
+    #settings-page .set-tile.open .set-body:has(#theme-grid){overflow:hidden!important}
+    #settings-page .set-tile.open .set-body > :has(#theme-grid),#settings-page .set-tile.open .set-body > #theme-grid{flex:1 1 auto!important;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+    .sv-tile .sv-pane.on{display:flex;flex-direction:column;flex:1 1 auto!important;min-height:0}
+    .sv-tile .sv-pane > *{flex:none}
+    .sv-tile .sv-pane #sound-list,.sv-tile .sv-pane .vc-box{flex:1 1 auto!important;min-height:0;max-height:none!important;height:auto!important;overflow-y:auto;overscroll-behavior:contain}
+    .sv-tile .sv-pane .toggle-row{padding-top:10px!important;padding-bottom:10px!important}`;
     document.head.appendChild(css);
 
     let busy = false;
@@ -96,6 +108,7 @@
         [...sBody.children].forEach(c => { if (c !== head) pS.appendChild(c); }); // anything else stays with the sound
         sBody.append(tabs, pS, pV, pB);
         vTile.classList.add('sv-hidden');
+        sBody.closest('.set-tile').classList.add('sv-tile');
         let cur = 'snd';
         const show = k => {
             cur = k;
@@ -120,6 +133,15 @@
         window.mtSoundVoice = show;
         return true;
     }
+    // M-214: if a panel's content is still taller than the screen, shrink it a little (never below 78%) instead of scrolling
+    function fitPanel(t) {
+        const body = t && t.querySelector('.set-body'); if (!body || t.classList.contains('sv-tile') || t.id === 'tile-help' || body.querySelector('#theme-grid')) return;
+        const parts = [...body.children].filter(c => !c.classList.contains('panel-head'));
+        let z = 1; const set = () => parts.forEach(c => { c.style.zoom = z === 1 ? '' : z; }); set();
+        while (body.scrollHeight > body.clientHeight + 1 && z > 0.8) { z = Math.round((z - 0.03) * 100) / 100; set(); }
+    }
+    new MutationObserver(ms => ms.forEach(m => { const t = m.target; if (t.classList && t.classList.contains('open')) setTimeout(() => fitPanel(t), 380); }))
+        .observe(document.getElementById('settings-page') || document.body, { attributes: true, attributeFilter: ['class'], subtree: true });
     let n = 0;
     const tick = () => { if (!build() && ++n < 20) setTimeout(tick, 300); };
     tick();
