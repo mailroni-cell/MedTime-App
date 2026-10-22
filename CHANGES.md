@@ -278,3 +278,5 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | R-195 | 2026-10-22 | release/stable.txt | Run 195 (M-249) released to everyone | ✅ |
 | M-250 | 2026-10-22 | looks.js | Owner: New reminder step 7 no longer cut (Save moved into the bottom bar next to Back); Doctor appointments, New reminder and New appointment wizards in the app look (3D titles, outlined glossy chips, glass cards); a wizard step taller than the screen shrinks slightly to fit; last appointment card clears Done | ⏳ |
 | R-196 | 2026-10-22 | release/stable.txt | Run 196 (M-250) released to everyone | ✅ |
+| M-251 | 2026-10-22 | looks.js | Owner: My reminders never scrolls: after the plus.js tighter steps, the week bar and cards shrink together to the biggest size that fits above Done (stray bottom padding removed) | ⏳ |
+| M-252 | 2026-10-22 | looks.js | Owner: Display screen redesigned: themes in swipeable pages (3x3, 2x3 in low vision) with big arrows and dots, opens on the chosen theme page; each theme card shows a two-colour capsule and a clear name | ⏳ |

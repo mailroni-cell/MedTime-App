@@ -39,8 +39,6 @@
     html body #list-page .settings-hero .hero-gear{display:none!important}
     html body #list-page .settings-hero h2{${T3};font-size:min(1.9rem,8vw)!important;margin-top:2px!important}
     html body #list-page .settings-hero{padding-bottom:8px!important}
-    /* the last card is never hidden under the Done button */
-    html body #list-page #med-list{padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))!important}
     /* cards: no half-cut stripe on the side; a glass card with a light rim, a dark outline and a deep shadow */
     ${N} #list-page .med-item{border:1.5px solid rgba(255,255,255,.26)!important;border-inline-start:1.5px solid rgba(255,255,255,.26)!important;
       background:linear-gradient(160deg,rgba(255,255,255,.13),rgba(255,255,255,.03) 45%),linear-gradient(180deg,rgba(30,41,59,.82),rgba(15,23,42,.78))!important;
@@ -61,7 +59,6 @@
     html body #appt-page .settings-hero .hero-gear{display:none!important}
     html body #appt-page .settings-hero{padding-bottom:8px!important}
     html.lowvision body :is(#med-page,#appt-form-page,#appt-page) :is(.af-head h2,.wz-step-title,.settings-hero h2){text-shadow:0 2px 0 #000!important}
-    html body #appt-page #appt-list{padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))!important}
     ${N} #appt-page .ap-card,${N} :is(#med-page,#appt-form-page) :is(.mw-summary,.af-summary){border:1.5px solid rgba(255,255,255,.26)!important;
       box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -10px 24px rgba(var(--gA),.12),0 0 0 1.5px rgba(0,0,0,.7),0 16px 28px rgba(0,0,0,.6),0 0 18px rgba(var(--gA),.25)!important}
     ${N} :is(${WB}){border:1.5px solid rgba(255,255,255,.3)!important;
@@ -105,4 +102,98 @@
         });
     }
     watchWiz();
+
+    // M-251 (owner: "My reminders" must never scroll): after the two tighter steps of plus.js, if the page still
+    // would scroll, the week bar and the cards shrink together just enough to fit above the Done button
+    function fitAll() {
+        const pg = document.getElementById('list-page'); if (!pg || !pg.classList.contains('open')) return;
+        const parts = ['wk-bar', 'med-list'].map(id => document.getElementById(id)).filter(Boolean);
+        parts.forEach(x => { x.style.zoom = ''; });
+        const fits = () => pg.scrollHeight - pg.clientHeight <= 2;
+        if (fits()) return;
+        let lo = 0.4, hi = 1; // the biggest size that still fits, found in a few tries
+        for (let i = 0; i < 7; i++) {
+            const z = (lo + hi) / 2; parts.forEach(x => { x.style.zoom = z.toFixed(3); });
+            if (fits()) lo = z; else hi = z;
+        }
+        parts.forEach(x => { x.style.zoom = lo.toFixed(3); });
+    }
+    function watchList() {
+        const pg = document.getElementById('list-page'); if (!pg) return setTimeout(watchList, 400);
+        let q = 0; const go = () => { if (!q) q = setTimeout(() => { q = 0; fitAll(); }, 90); };
+        new MutationObserver(go).observe(pg, { attributes: true, attributeFilter: ['class'], childList: true, subtree: true });
+        addEventListener('resize', go);
+        // opening the page is the main moment: fit right after it is drawn, and again after plus.js's own steps
+        const op = window.openListPage;
+        if (typeof op === 'function' && !op.mtFit) {
+            const w = function () { const r = op.apply(this, arguments); setTimeout(fitAll, 120); setTimeout(fitAll, 450); return r; };
+            w.mtFit = 1; window.openListPage = w;
+        }
+    }
+    watchList();
+
+    // M-252 (owner: the Display screen was not nice and not handy): the themes are pages you swipe sideways
+    // (3 x 3, or 2 x 3 in low vision) with big arrows and dots, never a long list to scroll. Each theme is a card
+    // with its colours, a small two-colour capsule and a clear name.
+    css.textContent += `
+    html body #settings-page #theme-grid{--tg-c:3;--tg-gap:10px;display:grid!important;grid-template-columns:none!important;grid-template-rows:repeat(3,minmax(0,1fr))!important;
+      grid-auto-flow:column!important;grid-auto-columns:calc((100% - (var(--tg-c) - 1) * var(--tg-gap)) / var(--tg-c))!important;gap:var(--tg-gap)!important;
+      overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none;padding:6px 2px 8px!important;overscroll-behavior:contain}
+    html body #settings-page #theme-grid::-webkit-scrollbar{display:none}
+    html.lowvision body #settings-page #theme-grid{--tg-c:2}
+    html body #settings-page #theme-grid > .theme-sw{aspect-ratio:auto!important;min-height:0;border-radius:22px!important}
+    html body #settings-page #theme-grid .tw-dot{top:34%!important;left:50%!important;width:58%!important;height:26%!important;border-radius:999px!important;transform:translate(-50%,-50%) rotate(-24deg);
+      box-shadow:inset 0 4px 5px rgba(255,255,255,.6),inset 0 -6px 9px rgba(0,0,0,.35),0 0 0 2px rgba(255,255,255,.9),0 0 0 4px rgba(0,0,0,.6),0 8px 10px rgba(0,0,0,.55)!important}
+    html body #settings-page #theme-grid .ta-ico{top:22%!important;font-size:2rem!important}
+    html body #settings-page #theme-grid .tw-name{font-family:'MTBall','MTUI',sans-serif!important;font-weight:700!important;font-size:min(1rem,4.2vw)!important;line-height:1.15!important;
+      padding:8px 4px 9px!important;background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.82) 40%)!important;text-shadow:0 2px 0 #000!important;white-space:normal}
+    html.lowvision body #settings-page #theme-grid .tw-name{font-size:min(1.25rem,5.4vw)!important}
+    html body #settings-page .tg-pager{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 2px calc(8px + env(safe-area-inset-bottom,0px))}
+    html body #settings-page .tg-pager button{flex:0 0 auto;width:64px;height:52px;border-radius:999px!important;border:2px solid rgba(255,255,255,.85)!important;color:#fff!important;font-size:1.6rem!important;font-weight:900;
+      background:linear-gradient(180deg,#a5f3fc 0%,#22d3ee 22%,#0891b2 60%,#155e75 100%)!important;box-shadow:inset 0 3px 4px rgba(255,255,255,.6),inset 0 -5px 8px rgba(8,51,68,.55),0 0 0 2px rgba(0,0,0,.6),0 8px 12px rgba(0,0,0,.5)!important}
+    html body #settings-page .tg-pager button:disabled{opacity:.3}
+    html body #settings-page .tg-dots{display:flex;flex-wrap:wrap;justify-content:center;gap:7px}
+    html body #settings-page .tg-dots i{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.3);box-shadow:0 0 0 1.5px rgba(0,0,0,.5)}
+    html.lowvision body #settings-page .panel-head .p-close.mt-backbtn{font-size:min(1.08rem,4.3vw)!important;padding:8px 13px 10px!important}
+    html body #settings-page .tg-dots i.on{background:#67e8f9;box-shadow:0 0 0 2px #fff,0 0 10px #22d3ee}`;
+    function pager() {
+        const g = document.getElementById('theme-grid'); if (!g) return setTimeout(pager, 400);
+        let bar = document.querySelector('#settings-page .tg-pager');
+        if (!bar) {
+            bar = document.createElement('div'); bar.className = 'tg-pager';
+            bar.innerHTML = '<button type="button" class="tg-prev" aria-label="previous"></button><div class="tg-dots"></div><button type="button" class="tg-next" aria-label="next"></button>';
+            g.after(bar);
+        }
+        const rtl = () => getComputedStyle(g).direction === 'rtl';
+        const per = () => (getComputedStyle(g).getPropertyValue('--tg-c').trim() === '2' ? 2 : 3) * 3;
+        const pageW = () => { const c = g.children[0], gap = parseFloat(getComputedStyle(g).columnGap) || 10; return c ? (c.offsetWidth + gap) * (per() / 3) : g.clientWidth; };
+        const pages = () => Math.max(1, Math.ceil(g.children.length / per()));
+        const cur = () => Math.min(pages() - 1, Math.round(Math.abs(g.scrollLeft) / Math.max(1, pageW())));
+        const to = (i, smooth) => g.scrollTo({ left: (rtl() ? -1 : 1) * i * pageW(), behavior: smooth ? 'smooth' : 'auto' });
+        const go = d => to(Math.max(0, Math.min(pages() - 1, cur() + d)), true);
+        const draw = () => {
+            const n = pages(), c = cur(), dots = bar.querySelector('.tg-dots');
+            if (dots.children.length !== n) dots.innerHTML = '<i></i>'.repeat(n);
+            [...dots.children].forEach((d, i) => d.classList.toggle('on', i === c));
+            const pv = bar.querySelector('.tg-prev'), nx = bar.querySelector('.tg-next');
+            pv.textContent = rtl() ? '→' : '←'; nx.textContent = rtl() ? '←' : '→';
+            pv.disabled = c === 0; nx.disabled = c >= n - 1;
+            bar.style.display = n > 1 ? '' : 'none';
+        };
+        bar.querySelector('.tg-prev').onclick = () => go(-1);
+        bar.querySelector('.tg-next').onclick = () => go(1);
+        let q = 0, st = 0, held = false;
+        g.addEventListener('touchstart', () => { held = true; }, { passive: true });
+        g.addEventListener('touchend', () => { held = false; clearTimeout(st); st = setTimeout(settle, 160); }, { passive: true });
+        // a swipe always ends on a whole page
+        const settle = () => { if (held) return; const want = cur() * pageW(); if (Math.abs(Math.abs(g.scrollLeft) - want) > 3) to(cur(), true); };
+        g.addEventListener('scroll', () => { if (!q) q = requestAnimationFrame(() => { q = 0; draw(); }); clearTimeout(st); st = setTimeout(settle, 160); }, { passive: true });
+        // the chosen theme's page is shown when the screen opens
+        const show = () => { const sel = g.querySelector('.theme-sw.sel'); to(sel ? Math.floor([...g.children].indexOf(sel) / per()) : 0); draw(); };
+        new MutationObserver(() => setTimeout(show, 60)).observe(g, { childList: true });
+        const tile = g.closest('.set-tile');
+        if (tile) new MutationObserver(() => { if (tile.classList.contains('open')) setTimeout(show, 120); }).observe(tile, { attributes: true, attributeFilter: ['class'] });
+        addEventListener('resize', () => setTimeout(draw, 80));
+    }
+    pager();
 })();
