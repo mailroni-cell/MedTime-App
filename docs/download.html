@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MedTime – הורדה</title>
+<meta property="og:title" content="MedTime 💊">
+<meta property="og:description" content="תזכורות תרופות · להורדה ישירה לאנדרואיד">
+<meta property="og:image" content="https://mailroni-cell.github.io/MedTime-App/store/icon-512.png">
+<!-- M-203: one download page for everyone (direct APK, no Drive preview), with simple steps in 6 languages -->
+<style>
+  :root { --bg: #0b1024; --card: #131a3a; --tx: #f1f5f9; --mut: #a5b4fc; --ok: #22c55e; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: radial-gradient(circle at 50% 0, #1e3a8a, var(--bg) 60%); color: var(--tx); font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; min-height: 100vh; }
+  main { max-width: 520px; margin: 0 auto; padding: 24px 16px 40px; }
+  .langs { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 18px; }
+  .langs button { border: 1px solid #334155; background: transparent; color: var(--mut); border-radius: 999px; padding: 6px 12px; font-size: .95rem; }
+  .langs button.on { background: #334155; color: #fff; }
+  .logo { text-align: center; font-size: 3.4rem; }
+  h1 { text-align: center; margin: 4px 0 4px; font-size: 2rem; }
+  .sub { text-align: center; color: var(--mut); margin: 0 0 22px; font-size: 1.05rem; }
+  .dl { display: block; text-align: center; text-decoration: none; color: #fff; font-weight: 800; font-size: 1.35rem; padding: 18px 16px; border-radius: 18px;
+        background: linear-gradient(135deg, #22c55e, #15803d); box-shadow: 0 6px 0 #14532d, 0 12px 28px rgba(34,197,94,.35); }
+  .dl:active { transform: translateY(3px); box-shadow: 0 3px 0 #14532d; }
+  .dl2 { display: block; text-align: center; color: var(--mut); margin: 14px 0 24px; font-size: .98rem; }
+  ol { background: var(--card); border-radius: 18px; padding: 16px 18px; padding-inline-start: 40px; margin: 0 0 16px; line-height: 1.55; font-size: 1.08rem; }
+  ol li { margin-bottom: 8px; }
+  .note { background: rgba(250,204,21,.1); border: 1px solid rgba(250,204,21,.4); border-radius: 14px; padding: 12px 14px; color: #fde68a; font-size: .98rem; line-height: 1.5; }
+  .ver { text-align: center; color: #64748b; font-size: .85rem; margin-top: 18px; }
+</style>
+</head>
+<body>
+<main>
+  <div class="langs" id="langs"></div>
+  <div class="logo">💊</div>
+  <h1>MedTime</h1>
+  <p class="sub" id="sub"></p>
+  <a class="dl" id="dl" href="https://github.com/mailroni-cell/MedTime-App/releases/download/latest/MedTime-latest.apk" download="MedTime.apk"></a>
+  <a class="dl2" id="dl2" href="https://drive.google.com/uc?export=download&amp;id=1apKoeQwAAktW8kWhakTzHdviexF_qoqx"></a>
+  <ol id="steps"></ol>
+  <div class="note" id="note"></div>
+  <div class="ver" id="ver"></div>
+</main>
+<script>
+  const L = ['he', 'ar', 'ro', 'fr', 'en', 'ru'];
+  const NAMES = ['עברית', 'العربية', 'Română', 'Français', 'English', 'Русский'];
+  const T = {
+    sub: ['תזכורות תרופות פשוטות וברורות', 'تذكيرات أدوية بسيطة وواضحة', 'Mementouri simple pentru medicamente', 'Rappels de médicaments simples et clairs', 'Simple, clear medicine reminders', 'Простые и понятные напоминания о лекарствах'],
+    dl: ['⬇️ הורדת האפליקציה', '⬇️ تنزيل التطبيق', '⬇️ Descarcă aplicația', '⬇️ Télécharger l’application', '⬇️ Download the app', '⬇️ Скачать приложение'],
+    dl2: ['ההורדה איטית? קישור חלופי (Google Drive)', 'التنزيل بطيء؟ رابط بديل (Google Drive)', 'Descărcare lentă? Link alternativ (Google Drive)', 'Téléchargement lent ? Lien alternatif (Google Drive)', 'Slow download? Alternative link (Google Drive)', 'Медленно качается? Запасная ссылка (Google Drive)'],
+    steps: [
+      ['פותחים את הדף הזה בדפדפן Chrome (לא מתוך WhatsApp או Drive).', 'לוחצים על הכפתור הירוק ומחכים שההורדה תסתיים (כ־160MB).', 'לוחצים "פתיחה" בהודעה שמופיעה למטה, או פותחים את הקובץ MedTime.apk מתיקיית ההורדות.', 'אם הטלפון מבקש: "הגדרות" ← מאפשרים התקנה מהמקור הזה ← חוזרים.', 'לוחצים "התקנה". אם מופיע Play Protect: "פרטים נוספים" ← "להתקין בכל זאת".'],
+      ['افتح هذه الصفحة في متصفح Chrome (وليس من واتساب أو Drive).', 'اضغط الزر الأخضر وانتظر حتى ينتهي التنزيل (حوالي 160MB).', 'اضغط "فتح" في الإشعار بالأسفل، أو افتح الملف MedTime.apk من مجلد التنزيلات.', 'إذا طلب الهاتف: "الإعدادات" ← اسمح بالتثبيت من هذا المصدر ← ارجع.', 'اضغط "تثبيت". إذا ظهر Play Protect: "مزيد من التفاصيل" ← "التثبيت على أي حال".'],
+      ['Deschide această pagină în Chrome (nu din WhatsApp sau Drive).', 'Apasă butonul verde și așteaptă să se termine descărcarea (circa 160MB).', 'Apasă „Deschide” în notificarea de jos sau deschide fișierul MedTime.apk din Descărcări.', 'Dacă telefonul cere: „Setări” → permite instalarea din această sursă → înapoi.', 'Apasă „Instalează”. Dacă apare Play Protect: „Mai multe detalii” → „Instalează oricum”.'],
+      ['Ouvrez cette page dans Chrome (pas depuis WhatsApp ou Drive).', 'Appuyez sur le bouton vert et attendez la fin du téléchargement (environ 160 Mo).', 'Appuyez sur « Ouvrir » dans la notification en bas, ou ouvrez MedTime.apk dans Téléchargements.', 'Si le téléphone le demande : « Paramètres » → autorisez l’installation depuis cette source → retour.', 'Appuyez sur « Installer ». Si Play Protect apparaît : « Plus de détails » → « Installer quand même ».'],
+      ['Open this page in Chrome (not inside WhatsApp or Drive).', 'Tap the green button and wait for the download to finish (about 160MB).', 'Tap "Open" in the notification at the bottom, or open MedTime.apk from your Downloads folder.', 'If the phone asks: "Settings" → allow installing from this source → go back.', 'Tap "Install". If Play Protect appears: "More details" → "Install anyway".'],
+      ['Откройте эту страницу в Chrome (не из WhatsApp и не из Drive).', 'Нажмите зелёную кнопку и дождитесь окончания загрузки (около 160 МБ).', 'Нажмите «Открыть» в уведомлении внизу или откройте файл MedTime.apk в папке «Загрузки».', 'Если телефон попросит: «Настройки» → разрешите установку из этого источника → назад.', 'Нажмите «Установить». Если появится Play Protect: «Подробнее» → «Всё равно установить».']
+    ],
+    note: ['האזהרות מופיעות כי האפליקציה לא מחנות Play. זה רגיל. האפליקציה לא אוספת מידע, והכול נשמר רק בטלפון. לאנדרואיד בלבד.', 'تظهر التحذيرات لأن التطبيق ليس من متجر Play. هذا طبيعي. التطبيق لا يجمع أي معلومات، وكل شيء يُحفظ في الهاتف فقط. لأندرويد فقط.', 'Avertismentele apar pentru că aplicația nu e din Magazin Play. E normal. Aplicația nu colectează date, totul rămâne în telefon. Doar pentru Android.', 'Les avertissements apparaissent car l’application ne vient pas du Play Store. C’est normal. Elle ne collecte aucune donnée, tout reste sur le téléphone. Android uniquement.', 'The warnings appear because the app is not from the Play Store. That is normal. The app collects no data; everything stays on the phone. Android only.', 'Предупреждения появляются, потому что приложение не из Play Маркета. Это нормально. Приложение не собирает данные, всё хранится только в телефоне. Только для Android.']
+  };
+  function set(l) {
+    const i = Math.max(0, L.indexOf(l));
+    document.documentElement.lang = L[i]; document.documentElement.dir = i < 2 ? 'rtl' : 'ltr';
+    document.getElementById('sub').textContent = T.sub[i];
+    document.getElementById('dl').textContent = T.dl[i];
+    document.getElementById('dl2').textContent = T.dl2[i];
+    document.getElementById('note').textContent = T.note[i];
+    const ol = document.getElementById('steps'); ol.innerHTML = '';
+    T.steps[i].forEach(s => { const li = document.createElement('li'); li.textContent = s; ol.appendChild(li); });
+    document.querySelectorAll('#langs button').forEach((b, k) => b.classList.toggle('on', k === i));
+  }
+  const box = document.getElementById('langs');
+  L.forEach((l, k) => { const b = document.createElement('button'); b.textContent = NAMES[k]; b.onclick = () => set(l); box.appendChild(b); });
+  const q = new URLSearchParams(location.search).get('lang');
+  const nav = (navigator.language || 'he').slice(0, 2).replace('iw', 'he');
+  set(L.includes(q) ? q : L.includes(nav) ? nav : 'he');
+  fetch('https://api.github.com/repos/mailroni-cell/MedTime-App/releases/tags/latest').then(r => r.json()).then(j => {
+    const a = (j.assets || []).find(x => /\.apk$/.test(x.name)); if (!a) return;
+    document.getElementById('ver').textContent = (j.name || '') + ' · ' + Math.round(a.size / 1048576) + 'MB · ' + (a.updated_at || '').slice(0, 10);
+  }).catch(() => { });
+</script>
+</body>
+</html>
