@@ -104,6 +104,6 @@
 ממשיכים את פרויקט MedTime בדיוק מהנקודה שעצרנו. עונים רק בעברית.
 המאגר: github.com/mailroni-cell/MedTime-App (main).
 קודם כול קרא את handoff/HANDOFF.md, CLAUDE.md, STATE.md, CHANGES.md ו-handoff/project-memory.md, ופעל לפיהם בדיוק.
-כל בנייה הולכת רק לגרסה test (הטלפון שלי). המתקין במחשב מוריד ומתקין לבד. היומן נמצא ב-C:\Users\Roni\Downloads\MedTime\install_log.txt.
+כל בנייה הולכת רק לגרסה test (הטלפון שלי). המתקין במחשב מוריד ומתקין לבד. היומן נמצא ב-C:\Projects\MedTime\install_log.txt.
 כל שינוי בעברית חל על כל 6 השפות (כולל רוסית). אחרי כל סבב שינויים עדכן את handoff/HANDOFF.md.
 ```
