@@ -194,6 +194,7 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-187 | 2026-10-22 | subst.js | Owner: medicine / substitute check must stand out, especially photo + identify: big blue "📷 Check a medicine / substitute" button on the main screen (scan the box or type), works without a medicine card | ⏳ |
 | M-188 | 2026-10-22 | simple.js (new), index.html | Owner: "Simple mode" button (top corner): main screen only with add reminder, doctor appointments and vitals, no 3D / animations / serenity / tour; tap again for full mode | ⏳ |
 | R-163 | 2026-10-22 | release/stable.txt | Run 163 (M-182..M-188) released to everyone 01:59 UTC | ✅ |
+| M-189 | 2026-10-22 | NativeBridge.java | Owner: after allowing "install from this source" in the phone settings, come back to the app by itself (the M-095 watcher now also covers the install screen; the update then continues) | ⏳ |
 | R-156 | 2026-10-21 | release/stable.txt | Run 156 (M-175) released to everyone | ✅ |
 | R-155 | 2026-10-21 | release/stable.txt | Run 155 (M-172..M-174) released to everyone (standing rule) | ✅ |
 | R-154 | 2026-10-21 | release/stable.txt | Owner: run 154 (M-169..M-171) released to everyone | ✅ |

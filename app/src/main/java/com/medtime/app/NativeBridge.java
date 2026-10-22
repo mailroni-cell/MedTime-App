@@ -62,6 +62,7 @@ public class NativeBridge {
         try {
             activity.startActivity(new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
                     Uri.parse("package:" + activity.getPackageName())));
+            watchAndReturn("install"); // M-189 (owner): once allowed, come back to the app by itself (the update then continues)
         } catch (Exception e) { openSettings(""); }
     }
 
