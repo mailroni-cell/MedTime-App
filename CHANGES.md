@@ -199,6 +199,7 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | R-165 | 2026-10-22 | release/stable.txt | Run 165 (M-189, M-190) released to everyone | ✅ |
 | M-191 | 2026-10-22 | relax.js, tools/make_calm.py, assets/calm/* | Owner: calm voices not natural and too fast; lines came and went without regard to what was said. Voices re-recorded slower (-28%, soft -34%) with long pauses at "…", native voices only (Ava / Andrew only in English). The breathing now follows the voice: a phase lasts its seconds but never ends before its line is fully spoken (+ ~1 s pause); only then the next line and phase. No more speeding up of long lines | ⏳ |
 | M-192 | 2026-10-22 | NativeBridge.java, index.html, simple.js (removed) | Owner: simple / full mode button removed, main screen back as before. Coming back from Android settings now closes the settings screen that stayed open behind (CLEAR_TOP instead of REORDER_TO_FRONT) | ⏳ |
+| R-169 | 2026-10-22 | release/stable.txt | Run 169 (M-191, M-192) released to everyone | ✅ |
 | R-156 | 2026-10-21 | release/stable.txt | Run 156 (M-175) released to everyone | ✅ |
 | R-155 | 2026-10-21 | release/stable.txt | Run 155 (M-172..M-174) released to everyone (standing rule) | ✅ |
 | R-154 | 2026-10-21 | release/stable.txt | Owner: run 154 (M-169..M-171) released to everyone | ✅ |
