@@ -102,6 +102,7 @@
         s_v_underwater: ['מתחת למים', 'تحت الماء', 'Sub apă', 'Sous l’eau', 'Underwater', 'Под водой'],
         s_v_flamingo: ['להקת פלמינגו', 'سرب فلامنغو', 'Stol de flamingi', 'Flamants roses', 'Flamingos', 'Фламинго'],
         s_v_clouds: ['אחרי השקיעה', 'بعد الغروب', 'După apus', 'Après le coucher du soleil', 'After sunset', 'После заката'],
+        pairQ: ['🎵 להוסיף צליל: {n}?', '🎵 إضافة صوت: {n}؟', '🎵 Adaugi sunetul: {n}?', '🎵 Ajouter le son : {n} ?', '🎵 Add the sound: {n}?', '🎵 Добавить звук: {n}?'], // M-202
         credits: ['© קרדיטים להקלטות ולסרטונים', '© حقوق التسجيلات والفيديوهات', '© Credite înregistrări și video', '© Crédits sons et vidéos', '© Credits for recordings and videos', '© Авторы записей и видео'],
         go: ['✓ התחלה', '✓ ابدأ', '✓ Începe', '✓ Commencer', '✓ Start', '✓ Начать'],
         back: ['→ חזרה', '→ رجوع', '← Înapoi', '← Retour', '← Back', '← Назад'],
@@ -205,6 +206,9 @@
         background: rgba(15,23,42,.72); border: 1px solid rgba(165,243,252,.35); box-shadow: 0 6px 18px rgba(0,0,0,.4);
         opacity: 0; transition: opacity .9s ease, transform .9s ease; }
     #relax .rx-tip.show { opacity: 1; }
+    #relax .rx-pair { position: absolute; left: 50%; bottom: calc(112px + env(safe-area-inset-bottom)); transform: translate(-50%, 10px); z-index: 30; opacity: 0; pointer-events: none; transition: opacity .35s, transform .35s;
+        border: 1.5px solid rgba(186,230,253,.8); border-radius: 999px; padding: 12px 20px; font: inherit; font-size: 1.1rem; font-weight: 800; color: #fff; background: linear-gradient(135deg, rgba(14,165,233,.92), rgba(109,40,217,.92)); box-shadow: 0 8px 24px rgba(0,0,0,.4); white-space: nowrap; }
+    #relax .rx-pair.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
     #relax .rx-tip.gone { opacity: 0; transform: translate(-50%, 12px); }
     #relax .rx-bsub { position: absolute; left: 50%; top: calc(100% - 26px); width: min(340px, 90vw); transform: translateX(-50%); text-align: center;
         font: 400 1.35rem/1.5 'MTCalm', 'MTUI', sans-serif; letter-spacing: .02em; color: #e0f2fe; will-change: transform, opacity;
@@ -243,7 +247,7 @@
             '<div class="rx-left"></div>' +
             '<div class="rx-breath"><div class="rx-ring"></div><div class="rx-btext"></div><div class="rx-bsub"></div></div>' +
             '<div class="rx-hint"></div>' +
-            '<div class="rx-head"></div><div class="rx-tip"></div>' +
+            '<div class="rx-head"></div><div class="rx-tip"></div><button type="button" class="rx-pair"></button>' +
             '<div class="rx-panel">' +
             '<div class="rx-title"></div>' +
             '<div class="rx-scroll">' +
@@ -290,6 +294,7 @@
         const holdEnd = () => { clearTimeout(holdT); ul.classList.remove('hold'); };
         ul.addEventListener('pointerdown', e => { e.stopPropagation(); ul.classList.add('hold'); holdT = setTimeout(() => { holdEnd(); lockOff(); }, 1200); });
         ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => ul.addEventListener(ev, holdEnd));
+        root.querySelector('.rx-pair').addEventListener('pointerdown', e => e.stopPropagation());
         const mini = root.querySelector('.rx-mini');
         mini.addEventListener('pointerdown', e => e.stopPropagation());
         mini.addEventListener('click', e => { e.stopPropagation(); poke(); });
@@ -321,6 +326,19 @@
         };
         if (window.MT_MEDIA_CREDITS) return go(window.MT_MEDIA_CREDITS);
         const sc = document.createElement('script'); sc.src = 'media_credits.js'; sc.onload = () => go(window.MT_MEDIA_CREDITS); sc.onerror = () => go([]); document.head.appendChild(sc);
+    }
+    // M-202 (owner): after picking a background, offer its matching sound; it plays only if the user taps the offer
+    const PAIR = { v_ocean: 'ocean', v_forest: 'birds', v_waterfall: 'waterfall', v_rain: 'rain', v_city: 'city', v_stars: 'night', v_lake: 'lake',
+        v_mountain: 'wind', v_underwater: 'underwater', v_flamingo: 'lake', v_clouds: 'ocean', ocean: 'ocean', snow: 'wind', fireflies: 'night', sunset: 'ocean', jelly: 'underwater' };
+    let pairT = 0;
+    function offerPair(k) {
+        const b = root.querySelector('.rx-pair'), snd = PAIR[k];
+        clearTimeout(pairT); b.classList.remove('show');
+        if (!snd || (chosen.sound && st.sound === snd)) return;
+        b.textContent = tx('pairQ').replace('{n}', (SOUNDS.find(x => x[0] === snd) || ['', ''])[1] + ' ' + tx('a_' + snd));
+        b.onclick = e => { e.stopPropagation(); vib(12); st.sound = snd; chosen.sound = 1; save(); playSound(snd); drawPanel(); b.classList.remove('show'); };
+        setTimeout(() => b.classList.add('show'), 450);
+        pairT = setTimeout(() => b.classList.remove('show'), 9000);
     }
     function paintVol() { const v = root.querySelector('#rx-vol'); v.value = st.vol; v.style.setProperty('--p', st.vol + '%'); }
     const vib = ms => { if (navigator.vibrate) try { navigator.vibrate(ms); } catch (e) { } };
@@ -354,7 +372,7 @@
             if (k === '__off') { st.bvoice = false; hush(); } else { st.bvoice = true; st.bvname = k; calmSay(tx('vSample')); }
             save(); bPh = ''; bT0 = -1; drawPanel();
         });
-        grid('scene', SCENES, chosen.scene ? st.scene : '', k => tx('s_' + k), k => { st.scene = k; chosen.scene = 1; save(); setScene(k); drawPanel(); done(); });
+        grid('scene', SCENES, chosen.scene ? st.scene : '', k => tx('s_' + k), k => { st.scene = k; chosen.scene = 1; save(); setScene(k); drawPanel(); done(); offerPair(k); });
         grid('sound', SOUNDS, chosen.sound ? st.sound : '', k => tx('a_' + k), k => { st.sound = k; chosen.sound = 1; save(); playSound(k); drawPanel(); });
         grid('timer', TIMERS.map(m => [String(m), m ? '⏳' : '♾️']), chosen.timer ? String(st.timer) : '', k => +k ? k + ' ' + tx('min') : tx('off'),
             k => { st.timer = +k; chosen.timer = 1; save(); startTimer(); drawPanel(); done(); });
