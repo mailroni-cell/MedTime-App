@@ -1,0 +1,24 @@
+name: Scout real sounds and nature videos (Wikimedia Commons)
+# M-196: finds candidates and makes preview pictures (spectrograms / video frames); commits media-cache/ for picking.
+on:
+  workflow_dispatch:
+    inputs:
+      keys:
+        description: 'Keys to rescout (space separated, empty = all missing)'
+        required: false
+        default: ''
+permissions:
+  contents: write
+jobs:
+  scout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg && pip3 install -q pillow
+      - run: python3 tools/scout_media.py ${{ github.event.inputs.keys }}
+      - if: always()
+        run: |
+          git config user.name "github-actions[bot]" && git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -rf media-cache/raw
+          git add -f media-cache && git commit -m "M-196 media scout [skip ci]" && git pull --rebase -q origin main && git push
