@@ -1,0 +1,29 @@
+name: Make calm sounds and videos (Wikimedia Commons)
+# M-196: 'strip' makes frame strips to choose video windows; 'make' builds sounds, videos and credits from tools/media_pick.json.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'strip or make'
+        required: true
+        default: 'strip'
+      keys:
+        description: 'Only these keys (space separated, empty = all)'
+        required: false
+        default: ''
+permissions:
+  contents: write
+jobs:
+  make:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg && pip3 install -q pillow numpy
+      - run: python3 tools/make_media.py ${{ github.event.inputs.mode }} ${{ github.event.inputs.keys }}
+      - if: always()
+        run: |
+          git config user.name "github-actions[bot]" && git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -rf media-cache/raw sound-cache/raw
+          git add -f media-cache app/src/main/assets/ambient app/src/main/assets/video app/src/main/assets/media_credits.js 2>/dev/null || true
+          git commit -m "M-196 media ${{ github.event.inputs.mode }} [skip ci]" && git pull --rebase -q origin main && git push

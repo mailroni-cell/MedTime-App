@@ -1,0 +1,158 @@
+{
+ "sounds": {
+  "waterfall": [
+   {
+    "title": "File:Relaxing Iguaza Falls Waterfall ASMR - JD Savanyu.webm",
+    "start": 300
+   }
+  ],
+  "lake": [
+   {
+    "title": "File:Het kabbelen van water - SoundCloud - Beeld en Geluid.ogg",
+    "start": 30
+   }
+  ],
+  "tent": [
+   {
+    "title": "File:Regen in de tent - SoundCloud - luc de bruijn.ogg",
+    "start": 60
+   }
+  ],
+  "city": [
+   {
+    "title": "File:Karlova 0001.ogg",
+    "start": 30
+   }
+  ],
+  "cafe": [
+   {
+    "title": "File:Restaurant ambience.ogg",
+    "start": 0
+   }
+  ],
+  "train": [
+   {
+    "title": "File:Northern Trains 323239 DMSO A, on the Crewe to Manchester line, Jan 2022.ogg",
+    "start": 120
+   }
+  ],
+  "jungle": [
+   {
+    "title": "File:Jungle audio.wav",
+    "start": 0
+   }
+  ],
+  "birds": [
+   {
+    "title": "File:Early morning Birdsong Leersum.wav",
+    "start": 30
+   }
+  ],
+  "frogs": [
+   {
+    "title": "File:Tree frogs and rain 75 sec.wav",
+    "start": 0
+   }
+  ],
+  "owls": [
+   {
+    "title": "File:Tawny owl calling at night in Tuntorp, Brastad, Sweden.ogg",
+    "start": 30
+   }
+  ],
+  "cat": [
+   {
+    "title": "File:Purr-Rent-Ambient-Yoik-2022 09 19 13 38 13.wav",
+    "start": 10
+   }
+  ],
+  "whales": [
+   {
+    "title": "File:Whales and Dolphins whale nature sounds songs nueva esparta.ogg",
+    "start": 60
+   }
+  ],
+  "fountain": [
+   {
+    "title": "File:La fontaine de la place.ogg",
+    "start": 0
+   }
+  ],
+  "tibet": [
+   {
+    "title": "File:Cuencos tibetanos al ser percutidos.wav",
+    "start": 30
+   }
+  ],
+  "river": [
+   {
+    "title": "File:Aves junto al río Mantanay.flac",
+    "start": 10
+   }
+  ],
+  "cave": [
+   {
+    "title": "File:Water drips in Treak Cliff Cavern, Derbyshire.flac",
+    "start": 0
+   }
+  ]
+ },
+ "videos": {
+  "v_ocean": {
+   "title": "File:Santa Rosa Island Waves.webm",
+   "start": 300
+  },
+  "v_forest": {
+   "title": "File:Forest For the Trees 4K.webm",
+   "start": 80
+  },
+  "v_moss": {
+   "title": "File:A Sense of Place - -1- Argyll Forest Park.webm",
+   "start": 150
+  },
+  "v_waterfall": {
+   "title": "File:Rhaeadr Ewynnol, Betws-y-coed - waterfall in Wales.webm",
+   "start": 60
+  },
+  "v_rain": {
+   "title": "File:Radevormwald - Raindrops on a window 08 (1) ies.webm",
+   "start": 20
+  },
+  "v_city": {
+   "title": "File:Silom Sunset Timelapse by Don Ramey Logan.webm",
+   "start": 170
+  },
+  "v_earth": {
+   "title": "File:Alexander Gerst’s Earth timelapses (2017 reissue).webm",
+   "start": 60
+  },
+  "v_stars": {
+   "title": "File:JAPAN Milk Way 4K - Beautiful Star and Sky at Night Time Lapse.webm",
+   "start": 20
+  },
+  "v_sunset": {
+   "title": "File:Mount Bromo HD Timelapse Movie by Justin Ng.webm",
+   "start": 40
+  },
+  "v_lake": {
+   "title": "File:4K Drone Video, Lake Of The Ozarks , Missouri USA.webm",
+   "start": 40
+  },
+  "v_mountain": {
+   "title": "File:Piz Neir, aerial video 4k.webm",
+   "start": 30
+  },
+  "v_underwater": {
+   "title": "File:Underwater pyramid stones-Strunjan.webm",
+   "start": 90
+  },
+  "v_flamingo": {
+   "title": "File:Lesser flamingos courtship display dance.webm",
+   "start": 5
+  },
+  "v_clouds": {
+   "title": "File:Time-lapse of Sunset, Moonset and Sunrise at Cape Keraudren, Western Australia from September 2022.webm",
+   "start": 0
+  }
+ }
+}
