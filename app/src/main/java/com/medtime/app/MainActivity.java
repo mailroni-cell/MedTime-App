@@ -194,10 +194,18 @@ public class MainActivity extends AppCompatActivity {
         if (hasFocus) FullScreen.apply(this); // M-012: hide the bars again after a swipe
     }
 
+    // M-323 (battery): when the app goes to the background the page stops its animations and work
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (webView != null) webView.onPause();
+    }
+
     // M-076: tell the page when we come back from an Android permission screen
     @Override
     protected void onResume() {
         super.onResume();
+        if (webView != null) webView.onResume(); // M-323: the page runs again
         NativeBridge.stopWatch(); // M-095
         Piper.ensure(this); // M-087: offline voices download once by themselves (Wi-Fi only)
         if (webView != null) webView.evaluateJavascript("window.mtResumed && mtResumed()", null);

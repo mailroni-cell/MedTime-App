@@ -28,6 +28,24 @@ public class NativeBridge {
         this.web = web;
     }
 
+    /** M-323: battery saver mode of the phone is on. */
+    @JavascriptInterface
+    public boolean isPowerSave() {
+        try { android.os.PowerManager pm = (android.os.PowerManager) activity.getSystemService(android.content.Context.POWER_SERVICE); return pm != null && pm.isPowerSaveMode(); } catch (Exception e) { return false; }
+    }
+
+    /** M-323: battery level in percent (-1 if unknown). */
+    @JavascriptInterface
+    public int batteryLevel() {
+        try { android.os.BatteryManager bm = (android.os.BatteryManager) activity.getSystemService(android.content.Context.BATTERY_SERVICE); return bm == null ? -1 : bm.getIntProperty(android.os.BatteryManager.BATTERY_PROPERTY_CAPACITY); } catch (Exception e) { return -1; }
+    }
+
+    /** M-323: the phone is charging. */
+    @JavascriptInterface
+    public boolean isCharging() {
+        try { android.os.BatteryManager bm = (android.os.BatteryManager) activity.getSystemService(android.content.Context.BATTERY_SERVICE); return bm != null && bm.isCharging(); } catch (Exception e) { return false; }
+    }
+
     /** M-058: this build's run number (versionCode - 100). */
     @JavascriptInterface
     public int getVersion() { return Updater.currentRun(activity); }
