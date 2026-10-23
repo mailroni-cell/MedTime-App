@@ -19,6 +19,8 @@ h2{font-size:1.1rem;margin:18px 0 6px}.ch{max-width:640px;background:#1e293b;bor
 <div class="up" id="up">טוען…</div>
 <div class="sum" id="sum">…</div>
 <div class="g">
+  <div class="k"><b id="vis">-</b><span>כניסות לדף ההורדה</span></div>
+  <div class="k"><b id="dls">-</b><span>הורדות מהדף</span></div>
   <div class="k"><b id="a7">-</b><span>פעילות השבוע</span></div>
   <div class="k"><b id="a30">-</b><span>פעילות החודש</span></div>
   <div class="k"><b id="tot">-</b><span>התקנות שנרשמו מאז ההתחלה</span></div>
@@ -26,6 +28,8 @@ h2{font-size:1.1rem;margin:18px 0 6px}.ch{max-width:640px;background:#1e293b;bor
   <div class="k"><b id="sv">-</b><span>סקרים שמולאו</span></div>
   <div class="k"><b id="st">-</b><span>ממוצע כוכבים</span></div>
 </div>
+<h2>הורדות בכל יום</h2><div class="ch" id="c-dl"></div>
+<h2>כניסות לדף ההורדה בכל יום</h2><div class="ch" id="c-vis"></div>
 <h2>משתמשים פעילים בכל יום (30 יום)</h2><div class="ch" id="c-act"></div>
 <h2>התקנות חדשות בכל יום</h2><div class="ch" id="c-new"></div>
 <h2>שיתופים בכל יום</h2><div class="ch" id="c-sh"></div>
@@ -54,11 +58,12 @@ fetch(SRC + '?t=' + Date.now()).then(r => r.json()).then(s => {
   document.getElementById('up').textContent = 'עודכן: ' + s.updated + ' (מתעדכן לבד כל 3 שעות)';
   const set = (id, v) => document.getElementById(id).textContent = v == null ? '-' : v;
   set('a7', s.active_7d); set('a30', s.active_30d); set('tot', s.installs_total); set('sh', s.shares_total); set('sv', s.surveys); set('st', s.stars_avg);
+  set('vis', s.visits_total || 0); set('dls', s.downloads_total || 0); bars('c-dl', s.downloads_by_day, '#facc15'); bars('c-vis', s.visits_by_day, '#a78bfa');
   bars('c-act', s.active_by_day, '#4ade80'); bars('c-new', s.new_installs_by_day, '#38bdf8'); bars('c-sh', s.shares_by_day, '#f472b6');
   const sc = s.stars_count || {}; rows('stars', [5,4,3,2,1].map(n => [n, sc[n] || 0]), k => '⭐'.repeat(+k), true);
   const days = Object.values(s.active_by_day || {}), avg = days.length ? Math.round(days.reduce((a, b) => a + b, 0) / days.length) : 0;
   const top = o => (Object.entries(o || {}).sort((a, b) => b[1] - a[1])[0] || [])[0], topV = top(s.active_7d_by_version), topI = IMP[top(s.improve)] || top(s.improve);
-  document.getElementById('sum').textContent = s.installs_total ? `בשבוע האחרון היו ${s.active_7d} משתמשים פעילים (בממוצע ${avg} ביום). מאז ההתחלה נרשמו ${s.installs_total} התקנות ו־${s.shares_total} שיתופים.` +
+  document.getElementById('sum').textContent = s.installs_total ? `בשבוע האחרון היו ${s.active_7d} משתמשים פעילים (בממוצע ${avg} ביום). ${s.downloads_total ? `${s.visits_total} נכנסו לדף ההורדה ו־${s.downloads_total} הורידו. ` : ''}מאז ההתחלה נרשמו ${s.installs_total} התקנות ו־${s.shares_total} שיתופים.` +
     (topV ? ` הגרסה הנפוצה: ${topV}.` : '') + (s.surveys ? ` ${s.surveys} סקרים, ממוצע ${s.stars_avg} כוכבים` + (topI ? `, הכי מבוקש לשפר: ${topI}.` : '.') : '') :
     'עדיין אין נתונים. הם יתחילו להגיע כשמשתמשים יפתחו את גרסה 189 ומעלה.';
   rows('ver', s.active_7d_by_version, k => 'גרסה ' + k); rows('lang', s.active_7d_by_language, k => LN[k] || k); rows('imp', s.improve, k => IMP[k] || k);

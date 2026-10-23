@@ -115,6 +115,8 @@
   }
   // M-309: the green button downloads from a fast mirror in parts, 4 at a time, with a progress bar.
   // A part that gets no data for 12 s is retried; if the mirror fails, the button switches to GitHub by itself.
+  // M-315: anonymous counts for the stats page (no id, no personal data): a page visit and each download with its source
+  const ping = (kind, src) => { try { fetch('https://ntfy.sh/medtime-v3tqzebpancz9djidfg7bh', { method: 'POST', keepalive: true, body: JSON.stringify({ kind: kind, src: src || '', lang: L[LI] }) }).catch(() => { }); } catch (e) { } };
   const OWN = 'mailroni-cell/MedTime-App', RAW = 'https://raw.githubusercontent.com/' + OWN + '/';
   const btn = document.getElementById('dl'), REL = btn.href;
   let busy = false, file = null;
@@ -153,16 +155,18 @@
   }
   function save() { const a = document.createElement('a'); a.href = URL.createObjectURL(file); a.download = 'MedTime.apk'; document.body.appendChild(a); a.click(); a.remove(); }
   btn.addEventListener('click', e => {
-    if (!window.fetch || !window.ReadableStream) return;  // old browser: plain GitHub download
+    if (!window.fetch || !window.ReadableStream) { ping('dl', 'gh'); return; }  // old browser: plain GitHub download
     e.preventDefault();
     if (file) return save();
     if (busy) return;
     busy = true; btn.classList.add('go'); btn.textContent = T.prep[LI];
-    fast().then(b => { file = b; save(); btn.style.setProperty('--p', '100%'); btn.textContent = T.done[LI]; busy = false; })
-      .catch(() => { btn.classList.remove('go'); btn.textContent = T.alt[LI]; setTimeout(() => { busy = false; location.href = REL; }, 900); });
+    fast().then(b => { file = b; save(); ping('dl', 'fast'); btn.style.setProperty('--p', '100%'); btn.textContent = T.done[LI]; busy = false; })
+      .catch(() => { btn.classList.remove('go'); btn.textContent = T.alt[LI]; ping('dl', 'gh'); setTimeout(() => { busy = false; location.href = REL; }, 900); });
   });
   // M-314: links opened inside Facebook / Instagram / other in-app browsers often cannot download files: offer Chrome first
   if (/FBAN|FBAV|FB_IAB|Instagram|Line\/|TikTok|musical_ly|; wv\)/.test(navigator.userAgent) && /Android/.test(navigator.userAgent)) document.getElementById('inapp').style.display = 'block';
+  document.getElementById('dl2').addEventListener('click', () => ping('dl', 'drive'));
+  try { if (!sessionStorage.getItem('mt_v')) { sessionStorage.setItem('mt_v', '1'); setTimeout(() => ping('visit'), 300); } } catch (e) { ping('visit'); }
   const box = document.getElementById('langs');
   L.forEach((l, k) => { const b = document.createElement('button'); b.textContent = NAMES[k]; b.onclick = () => set(l); box.appendChild(b); });
   const q = new URLSearchParams(location.search).get('lang');
