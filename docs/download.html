@@ -182,7 +182,8 @@
   L.forEach((l, k) => { const b = document.createElement('button'); b.textContent = NAMES[k]; b.onclick = () => set(l); box.appendChild(b); });
   const q = new URLSearchParams(location.search).get('lang');
   const nav = (navigator.language || 'he').slice(0, 2).replace('iw', 'he');
-  set(L.includes(q) ? q : L.includes(nav) ? nav : 'he');
+  // M-328 (owner): Israeli audience: Hebrew unless the link asks (?lang=) or the phone is set to Arabic, Romanian, French or Russian (English phones get Hebrew)
+  set(L.includes(q) ? q : (L.includes(nav) && nav !== 'en') ? nav : 'he');
   fetch('https://api.github.com/repos/mailroni-cell/MedTime-App/releases/tags/latest').then(r => r.json()).then(j => {
     const a = (j.assets || []).find(x => /\.apk$/.test(x.name)); if (!a) return;
     document.getElementById('ver').textContent = (j.name || '') + ' · ' + Math.round(a.size / 1048576) + 'MB · ' + (a.updated_at || '').slice(0, 10);
