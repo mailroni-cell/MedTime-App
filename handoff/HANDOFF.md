@@ -2,7 +2,7 @@
 
 ## איפה אנחנו
 - הגרסה המלאה MedTime (הורדה ישירה) היא הגרסה הראשית (החלטת רוני 2026-10-22 23:40). MyTime/Play מטופל בשיחה אחרת.
-- אחרונה ששוחררה לכולם: run 220 (M-317: מתג תזכורת מים אוטומטית). אין עבודה פתוחה; מחכים לבדיקה של רוני. דף ההורדה שודרג (M-308, M-309).
+- אחרונה ששוחררה לכולם: run 221 (M-318: כתובת רשמית https://medtime.pages.dev). אין עבודה פתוחה; מחכים לבדיקה של רוני. דף ההורדה שודרג (M-308, M-309).
 - תיקיית המחשב: C:\Projects\MedTime. המתקין מושך את הקבצים האלה מ־GitHub כל 5 דקות.
 
 ## מה מחכה לבדיקה של רוני
@@ -22,6 +22,7 @@
 14. דף ההורדה: כפתור כתום "פתחו ב-Chrome" בדפדפנים פנימיים (M-314). נבדקה הורדה אמיתית מלאה: 186MB ב-5 שניות, קובץ זהה. הודעת וואטסאפ להפצה: /mnt/project-files/medtime-share/whatsapp_he.txt. רוני מתכנן הפצה המונית בקבוצות וואטסאפ.
 15. פרסומת: תמונה /mnt/project-files/medtime-share/MedTime-ad.png (1080x1350, QR לדף ההורדה) + טקסט whatsapp_ad_he.txt. סטטיסטיקה (M-315): דף ההורדה סופר כניסות והורדות (מהיר/GitHub/Drive) בלי זיהוי; מוצג ב-https://mailroni-cell.github.io/MedTime-App/stats.html (מתעדכן כל 3 שעות).
 16. גרסה 220: הגדרות ← "💧 תזכורת לשתות מים": מתג אחד, כל שעתיים 9:00–21:00, בלי חזרות, בלי יומן ובלי SMS (M-317). פרסומות: 3D (MedTime-ad-3d.png) וסרטון 12 שניות (MedTime-ad.mp4) ב-/mnt/project-files/medtime-share/. ממתין מרוני: מייל ל"יצירת קשר", הרשמה ל-Cloudflare עבור medtime.pages.dev.
+17. M-318: הכתובת הרשמית https://medtime.pages.dev (Cloudflare Pages מתוך docs; השורש פותח את דף ההורדה). Cloudflare מדלג על commit עם [skip ci], אז שינוי ב-docs נדחף בלי זה. פרסומת ניאון/זוהר (ים, יאכטה, זיקוקים, 6 שפות, מסגרת זהב): MedTime-ad.mp4, MedTime-ad-neon.png, MedTime-ad-neon-phone.png, whatsapp_ad_he.txt ב-/mnt/project-files/medtime-share/. מקור: scratchpad/t/anim.html. ממתין מרוני: מייל ל"יצירת קשר".
 
 ## ידוע
 - הפצה: מסמך השוואת חנויות https://claude.ai/artifact/B9PK7gXurZpLGjT9hExbTq . Uptodown מתאימה (פרטי, חינם, קוד סגור); Aptoide בתשלום ואוסרת עדכון עצמי; Huawei לא כדאי; F-Droid רק מ-~20.1.2027 עם קוד פתוח. מחכים לבחירה של רוני (QR+שיתוף או Uptodown קודם).

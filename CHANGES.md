@@ -363,3 +363,5 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-316 | 2026-10-23 | docs/download.html, docs/store/og-ad.png | Owner: yellow ad (medicines, older people, SMS to family when a dose is missed); the download link's preview in WhatsApp / Facebook now shows that ad picture (1200x630), so the ad is a live link | ⏳ |
 | M-317 | 2026-10-23 | index.html, more.js, Reminders.java, ReminderService.java, MedLog.java | Owner: one switch in Settings '💧 תזכורת לשתות מים': automatic water reminders every 2 hours 09:00-21:00, no setup; they ring once (no repeats), are not written in the medicine log and never send the family SMS (6 languages) | ⏳ |
 | R-220 | 2026-10-23 | release/stable.txt | Run 220 (M-317) released to everyone | ✅ |
+| M-318 | 2026-10-23 | docs/_redirects, docs/download.html, more.js | Official address https://medtime.pages.dev (Cloudflare Pages, Git integration, output dir docs; root rewrites to download.html; og/canonical/intent links; in-app share link). Note: Cloudflare skips commits with [skip ci] | ⏳ |
+| R-221 | 2026-10-23 | release/stable.txt | Run 221 (M-318) released to everyone | ✅ |
