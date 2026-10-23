@@ -442,6 +442,7 @@
         running = true; aborted = false;
         ensure();
         veil = document.createElement('div'); veil.id = 'mt-veil';
+        veil.addEventListener('pointerdown', e => { if (e.isTrusted) { aborted = true; vib(15); } }); // M-312 (owner): a touch anywhere stops the guide
         stopBtn = document.createElement('button'); stopBtn.type = 'button'; stopBtn.id = 'mt-stop'; stopBtn.textContent = tx('stop');
         stopBtn.onclick = () => { aborted = true; vib(15); }; stopAt = '';
         document.documentElement.append(veil, stopBtn); stopAt = ''; stopSpot([-999, -999, 0, 0]);
