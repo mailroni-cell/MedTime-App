@@ -42,6 +42,10 @@
         gSub: ['בחרו נושא, ויד על המסך תראה לכם איך עושים', 'اختر موضوعًا، ويد على الشاشة تريك كيف', 'Alegeți un subiect și o mână vă arată cum', 'Choisissez un sujet, une main vous montre comment', 'Pick a topic and a hand on the screen shows you how', 'Выберите тему, и рука на экране покажет как'],
         gMore: ['📖 רוצים הסבר מפורט בכתב? יש עזרה גם בתוך ההגדרות ⚙️', '📖 تريد شرحًا مكتوبًا مفصلًا؟ توجد مساعدة داخل الإعدادات ⚙️', '📖 Explicații scrise detaliate: Ajutor în setări ⚙️', '📖 Explications détaillées : Aide dans les réglages ⚙️', '📖 Want detailed written help? There is Help inside Settings ⚙️', '📖 Нужна подробная письменная помощь? Она есть в Настройках ⚙️'],
         gOpenHelp: ['לפתוח עזרה מפורטת', 'افتح المساعدة المفصلة', 'Deschide ajutorul', "Ouvrir l'aide", 'Open detailed help', 'Открыть подробную помощь'],
+        gSpeed: ['⏱️ מהירות ההדרכה', '⏱️ سرعة الشرح', '⏱️ Viteza ghidului', '⏱️ Vitesse du guide', '⏱️ Guide speed', '⏱️ Скорость подсказок'],
+        spSlow: ['איטי', 'بطيء', 'Lent', 'Lent', 'Slow', 'Медленно'],
+        spNormal: ['רגיל', 'عادي', 'Normal', 'Normal', 'Normal', 'Обычно'],
+        spFast: ['מהיר', 'سريع', 'Rapid', 'Rapide', 'Fast', 'Быстро'],
         gVoice: ['🔊 הקראה קולית של ההסברים', '🔊 قراءة الشرح بصوت', '🔊 Citire cu voce a explicațiilor', '🔊 Lecture des explications à voix haute', '🔊 Read the explanations aloud', '🔊 Читать объяснения вслух'],
         vOn: ['פועל', 'مفعّل', 'Pornit', 'Activé', 'On', 'Вкл.'],
         vOff: ['כבוי', 'متوقف', 'Oprit', 'Désactivé', 'Off', 'Выкл.'],
@@ -100,10 +104,13 @@
     };
     const tx = k => (T[k] || [k])[li()];
     const $ = id => document.getElementById(id);
-    const PACE = 1.8; // M-111: owner found the demos too fast
+    // M-111: owner found the demos too fast. M-298 (owner): the pace is chosen in the guide sheet: slow / normal / fast
+    const PACES = { slow: 2.5, normal: 1.8, fast: 1.2 };
+    const paceKey = () => { try { const v = localStorage.getItem('medtime_guide_speed'); return PACES[v] ? v : 'normal'; } catch (e) { return 'normal'; } };
+    const PACE_ = () => PACES[paceKey()];
     // M-118: optional voice that reads each caption aloud, in the app language, with the voice chosen in settings
     const voiceOn = () => { try { return localStorage.getItem('medtime_guide_voice') === '1'; } catch (e) { return false; } };
-    const sleep = ms => new Promise(r => setTimeout(r, ms * (voiceOn() ? PACE * 1.15 : PACE)));
+    const sleep = ms => new Promise(r => setTimeout(r, ms * (voiceOn() ? PACE_() * 1.15 : PACE_())));
     const LANGS = ['he-IL', 'ar', 'ro-RO', 'fr-FR', 'en-US', 'ru-RU'];
     function speak(text) {
         text = String(text || '').replace(/[\p{Extended_Pictographic}\uFE0F\u200D]/gu, '').replace(/["“”]/g, '').trim();
@@ -196,6 +203,10 @@
     #mt-guide .g-voice{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 14px;padding:13px 16px;border-radius:18px;border:2px solid rgba(125,211,252,.6);
       background:linear-gradient(170deg,rgba(14,165,233,.35),rgba(30,58,138,.55));color:#fff;font-weight:900;font-size:1.12rem;text-align:start;box-shadow:0 4px 0 rgba(0,0,0,.35)}
     #mt-guide .g-voice .gv-t{flex:1}
+    #mt-guide .g-speed{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0 4px;font-weight:800;color:#e9d5ff}
+    #mt-guide .g-speed .gs-c{display:flex;gap:6px;flex:1 1 auto}
+    #mt-guide .g-speed button{flex:1;min-height:42px;border-radius:999px;border:2px solid rgba(233,213,255,.45);background:rgba(255,255,255,.08);color:#fff;font-weight:800;font-size:1rem}
+    #mt-guide .g-speed button.on{background:linear-gradient(135deg,#a855f7,#6d28d9);border-color:#f0abfc;box-shadow:0 0 12px rgba(217,70,239,.6)}
     #mt-guide .g-voice .gv-sw{flex:none;position:relative;width:54px;height:30px;border-radius:999px;background:#475569;transition:background .25s}
     #mt-guide .g-voice .gv-sw i{position:absolute;top:3px;inset-inline-start:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.4);transition:inset-inline-start .25s}
     #mt-guide .g-voice.on .gv-sw{background:#22c55e}
@@ -328,8 +339,14 @@
         place(hx, sy - 150);
         await sleep(700); hand.classList.remove('press'); await sleep(200); check();
     }
+    // M-298 (owner: the SOS demo did not show where to press): a hidden button is shown by the one that took its place on screen
+    function alias(el) {
+        if (el && el.id === 'fa-home' && !el.getBoundingClientRect().width) return $('sos-btn') || el;
+        return el;
+    }
     async function moveTo(el) {
         ensure(); check();
+        el = alias(el);
         if (!el) return;
         await bring(el);
         const [x, y] = centerOf(el);
@@ -349,7 +366,7 @@
     }
     async function tap(el, doClick) {
         if (el) await moveTo(el);
-        await press(el);
+        await press(alias(el));
         if (el && doClick) { if (typeof doClick === 'function') doClick(); else el.click(); }
         await sleep(650); check();
     }
@@ -361,8 +378,9 @@
         await sleep(400);
     }
     async function point(el, text, ms) {
+        await moveTo(el); // M-298: the hand is on the button first, then the words come, so it is always clear what they are about
         if (text) await say(text);
-        await moveTo(el);
+        el = alias(el);
         if (el) { el.classList.add('mt-flash'); await press(el); }
         await sleep(ms || 1600);
         if (el) el.classList.remove('mt-flash');
@@ -388,7 +406,7 @@
         stopBtn = document.createElement('button'); stopBtn.type = 'button'; stopBtn.id = 'mt-stop'; stopBtn.textContent = tx('stop');
         stopBtn.onclick = () => { aborted = true; vib(15); };
         document.documentElement.append(veil, stopBtn);
-        place(innerWidth / 2, innerHeight + 40, true);
+        place(innerWidth / 2, innerHeight * 0.5, true); // M-298: the hand appears in the middle, no trip up from the bottom
         hand.classList.add('on');
         try { await fn(); await sleep(900); quiet(); await sleep(250); } catch (e) { if (e && e.message !== 'stop') console.error(e); }
         cleanUp();
@@ -597,7 +615,7 @@
         },
         async firstaid() {
             home(); await sleep(450);
-            await say(tx('x1'), true);
+            await moveTo($('fa-home')); await say(tx('x1'), true); await sleep(900); // M-298: first show where SOS is
             await tap($('fa-home'), () => window.mtFirstAid && window.mtFirstAid()); await sleep(500);
             await point(document.querySelector('.fa-calls .c1'), tx('x2'), 1800); // pointed at only: nothing is dialled
             await point(document.querySelector('.fa-calls .c2'), tx('x3'), 1600);
@@ -640,7 +658,7 @@
         if (sheet) return;
         sheet = document.createElement('div'); sheet.id = 'mt-guide';
         sheet.dir = li() < 2 ? 'rtl' : 'ltr';
-        sheet.innerHTML = '<div class="g-card"><button type="button" class="g-x" aria-label="close">✕</button><div class="g-t"></div><div class="g-s"></div><button type="button" class="g-voice"><span class="gv-t"></span><span class="gv-sw"><i></i></span><b class="gv-st"></b></button><div class="g-grid"></div>' +
+        sheet.innerHTML = '<div class="g-card"><button type="button" class="g-x" aria-label="close">✕</button><div class="g-t"></div><div class="g-s"></div><button type="button" class="g-voice"><span class="gv-t"></span><span class="gv-sw"><i></i></span><b class="gv-st"></b></button><div class="g-speed"><span class="gs-t"></span><span class="gs-c"></span></div><div class="g-grid"></div>' +
             '<div class="g-more"><div class="g-m"></div><button type="button" class="g-help"></button></div></div>';
         sheet.querySelector('.g-t').textContent = tx('gTitle');
         sheet.querySelector('.g-s').textContent = tx('gSub');
@@ -653,6 +671,13 @@
             try { localStorage.setItem('medtime_guide_voice', on ? '1' : '0'); } catch (e) { }
             drawVoice(); if (on) speak(tx('gVoice') + '. ' + tx('vOn')); else hush();
         };
+        sheet.querySelector('.gs-t').textContent = tx('gSpeed');
+        const drawSpeed = () => { const c = sheet.querySelector('.gs-c'); c.innerHTML = '';
+            [['slow', 'spSlow', '🐢'], ['normal', 'spNormal', '🚶'], ['fast', 'spFast', '🐇']].forEach(([k, l, i]) => {
+                const b = document.createElement('button'); b.type = 'button'; b.textContent = i + ' ' + tx(l); b.classList.toggle('on', paceKey() === k);
+                b.onclick = () => { vib(10); try { localStorage.setItem('medtime_guide_speed', k); } catch (e) { } drawSpeed(); };
+                c.appendChild(b); }); };
+        drawSpeed();
         sheet.querySelector('.g-help').textContent = '📖 ' + tx('gOpenHelp');
         LIST.forEach(([k, l]) => {
             const b = document.createElement('button'); b.type = 'button'; b.textContent = tx(l);
