@@ -82,6 +82,19 @@
     html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > *{font-size:calc(var(--hm-o,118px) * .82)!important}
     html body .home-card .hm-float #main-add .hm-3d > svg{width:calc(var(--hm-o) * .8)!important;height:calc(var(--hm-o) * .8)!important}
     html body .home-card .hm-float #list-btn .lb-count{font-size:calc(var(--hm-o,118px) * .66)!important}
+    /* M-269 (owner: a flat edge showed when a symbol turned side-on): the symbols sway and tilt up to 38° each way but never turn edge-on,
+       so they always look full and round; they still drift gently in space */
+    html .home-card .hm-float .hm-3d{animation-name:hmSway!important}
+    @keyframes hmSway{0%,100%{transform:translate3d(0,calc(var(--hm-o,118px) * .02),16px) rotateX(10deg) rotateY(-30deg) rotateZ(-6deg)}
+      25%{transform:translate3d(calc(var(--hm-o,118px) * -.06),calc(var(--hm-o,118px) * -.06),26px) rotateX(-12deg) rotateY(12deg) rotateZ(5deg)}
+      50%{transform:translate3d(calc(var(--hm-o,118px) * .05),calc(var(--hm-o,118px) * -.08),18px) rotateX(14deg) rotateY(38deg) rotateZ(-4deg)}
+      75%{transform:translate3d(calc(var(--hm-o,118px) * .06),calc(var(--hm-o,118px) * .04),24px) rotateX(-8deg) rotateY(-14deg) rotateZ(7deg)}}
+    /* M-269 (owner: the words got in the way): the names stay, but quieter: smaller, a soft shadow instead of the thick 3D letters, and they stay still */
+    ${BT} :is(.hn-t,.ba-txt,.lb-title,.ab-title,.ab-txt,.sbh-txt,.rb-txt,.fah-txt,b):not(#mt-x){font-size:calc(var(--hm-t,1.4rem) * .78)!important;color:rgba(255,255,255,.9)!important;
+      text-shadow:0 1px 2px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.8)!important;-webkit-text-stroke:0!important;padding:2px 4px 0!important;animation:none!important}
+    ${B} > #main-add .ba-txt:not(#mt-x){font-size:calc(var(--hm-tb,1.65rem) * .8)!important}
+    html body .home-card .hm-float #fa-home :is(b,.fah-txt):not(#mt-x){color:#fde047!important;text-shadow:0 1px 2px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.8)!important}
+    html.lowvision ${BT} :is(.hn-t,.ba-txt,.lb-title,.ab-title,.ab-txt,.sbh-txt,.rb-txt,.fah-txt,b):not(#mt-x){font-size:var(--hm-t,1.4rem)!important;color:#fff!important}
     /* M-239 (owner): the symbols float freely in every direction, as in space: drifting up/down/sideways, tilting on all axes and turning round */
     @keyframes hmSpin{0%{transform:translate3d(calc(var(--hm-o,118px) * 0),calc(var(--hm-o,118px) * .02),16px) rotateX(10deg) rotateY(0deg) rotateZ(-6deg)}20%{transform:translate3d(calc(var(--hm-o,118px) * -.07),calc(var(--hm-o,118px) * -.06),26px) rotateX(-14deg) rotateY(80deg) rotateZ(5deg)}45%{transform:translate3d(calc(var(--hm-o,118px) * .05),calc(var(--hm-o,118px) * -.09),18px) rotateX(16deg) rotateY(170deg) rotateZ(-4deg)}65%{transform:translate3d(calc(var(--hm-o,118px) * .08),calc(var(--hm-o,118px) * .03),28px) rotateX(-8deg) rotateY(250deg) rotateZ(8deg)}85%{transform:translate3d(calc(var(--hm-o,118px) * -.04),calc(var(--hm-o,118px) * .06),20px) rotateX(12deg) rotateY(320deg) rotateZ(-3deg)}100%{transform:translate3d(calc(var(--hm-o,118px) * 0),calc(var(--hm-o,118px) * .02),16px) rotateX(10deg) rotateY(360deg) rotateZ(-6deg)}}
     html .home-card .hm-float > :nth-child(2){--hm-sp:12.5s;--hm-dl:-3s}html .home-card .hm-float > :nth-child(3){--hm-sp:10s;--hm-dl:-6s}

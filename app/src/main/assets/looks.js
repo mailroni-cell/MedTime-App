@@ -287,7 +287,15 @@
     @keyframes glWait{0%,14%,30%,52%,100%{transform:translateY(0) rotate(0) scale(1)}20%{transform:translateY(-2px) rotate(-8deg)}26%{transform:translateY(-2px) rotate(8deg)}
       60%{transform:translateY(-6px) scale(.9)}64%{transform:translateY(0) scale(1)}68%{transform:translateY(-6px) scale(.9)}72%{transform:translateY(0) scale(1)}}
     @keyframes glRip2{0%,58%{opacity:0;transform:scale(.3)}61%{opacity:1;transform:scale(.5)}66%{opacity:0;transform:scale(1.6)}69%{opacity:1;transform:scale(.5)}76%{opacity:0;transform:scale(1.9)}100%{opacity:0}}
-    html.lowvision body .home-card #guide-btn,html.lowvision body .home-card #guide-btn > .gl-real,html.lowvision body .home-card #guide-btn::before,html.lowvision body .home-card #guide-btn::after{animation:none!important}`;
+    html.lowvision body .home-card #guide-btn,html.lowvision body .home-card #guide-btn > .gl-real,html.lowvision body .home-card #guide-btn::before,html.lowvision body .home-card #guide-btn::after{animation:none!important}
+    /* M-270 (owner): a smaller hand with only a thin glow round it */
+    html body .home-card #guide-btn{width:min(66px,18vw)!important;height:min(72px,19vw)!important;background:none!important;box-shadow:none!important;border:0!important;outline:0!important;text-shadow:none!important}
+    html body .home-card #guide-btn > .gl-real{font-size:min(3.3rem,15vw)!important;
+      filter:hue-rotate(285deg) saturate(1.9) brightness(1.08) drop-shadow(1.5px 0 0 #fff) drop-shadow(-1.5px 0 0 #fff) drop-shadow(0 1.5px 0 #fff) drop-shadow(0 -1.5px 0 #fff) drop-shadow(0 4px 3px rgba(0,0,0,.6))!important}
+    html body .home-card #guide-btn::before{font-size:min(.8rem,3.4vw)!important}
+    html body .home-card #guide-btn::after{width:22px;height:22px;margin:-11px 0 0 -11px;box-shadow:0 0 5px #f472b6!important}
+    html.hm-slim body .home-card #guide-btn,html.fit5 body .home-card #guide-btn{width:56px!important;height:60px!important}
+    html.hm-slim body .home-card #guide-btn > .gl-real,html.fit5 body .home-card #guide-btn > .gl-real{font-size:2.8rem!important}`;
     function handWord() {
         const gb = document.getElementById('guide-btn'); if (!gb) return setTimeout(handWord, 500);
         const set = () => { const i = Math.max(0, L6.indexOf(typeof LANG === 'string' ? LANG : document.documentElement.lang)); if (gb.dataset.hand !== HAND[i]) gb.dataset.hand = HAND[i];
