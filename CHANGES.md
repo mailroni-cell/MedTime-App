@@ -295,3 +295,8 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | R-200 | 2026-10-22 | release/stable.txt | Run 200 (M-259..M-261) released to everyone | ✅ |
 | M-262 | 2026-10-22 | homelayout.js | Owner: the main "add reminder" capsule became a round 3D tablet (thick disc, rim, dividing line, shine, gentle sway) | ✅ |
 | R-201 | 2026-10-22 | release/stable.txt | Run 201 (M-262) released to everyone | ✅ |
+| M-263 | 2026-10-23 | homelayout.js | Owner: each main button has its own medicine shape (reminders lozenge, medicine check pill bottle, measurements caplet, calm soft gel; doctor and first aid keep the capsule) | ⏳ |
+| M-264 | 2026-10-23 | looks.js, homelayout.js | Owner: less visual noise: the 3D background is darker and calmer (colour filter), stronger halo behind the menu, buttons may grow a little | ⏳ |
+| M-265 | 2026-10-23 | looks.js | Owner: the hand is bright pink with a white outline and waits restlessly (slow circles, wobble, impatient double tap); the guide sheet has a free-question box (offline keyword index, 6 languages) that finds the topic and "Show me" runs the live demo | ⏳ |
+| M-266 | 2026-10-23 | firstaid.js | Owner: "💊 Pharmacy open now" in First aid opens Google Maps (live opening hours). No open data source for duty pharmacies | ⏳ |
+| R-202 | 2026-10-23 | release/stable.txt | Run 202 (M-263..M-266) released to everyone | ✅ |
