@@ -21,6 +21,8 @@
     }
     function toast() {
         if (told) return; told = true;
+        // M-335 (owner): the phone's own battery saver is often on all the time, so the note shows at most once a day
+        try { const d = new Date().toDateString(); if (localStorage.getItem('mt_saver_told') === d) return; localStorage.setItem('mt_saver_told', d); } catch (e) { }
         const t = document.createElement('div');
         t.textContent = MSG[li()];
         t.style.cssText = 'position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:99999;padding:8px 16px;border-radius:999px;background:rgba(0,0,0,.82);color:#fef08a;font-weight:800;font-size:.95rem;box-shadow:0 2px 12px rgba(0,0,0,.6);pointer-events:none;transition:opacity .5s';
