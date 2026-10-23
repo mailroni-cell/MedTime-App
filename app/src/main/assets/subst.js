@@ -25,7 +25,7 @@
         dLeaf: ['📄 עלון רשמי באתר משרד הבריאות', '📄 النشرة الرسمية في موقع وزارة الصحة', '📄 Prospect oficial pe site-ul Ministerului Sănătății', '📄 Notice officielle sur le site du ministère', '📄 Official leaflet on the Ministry of Health site', '📄 Официальный листок-вкладыш на сайте Минздрава'],
         dCmp: ['🔄 קיבלתי תרופה אחרת - להשוות', '🔄 استلمت دواءً آخر - قارن', '🔄 Am primit alt medicament - compară', '🔄 J\'ai reçu un autre médicament - comparer', '🔄 I got a different medicine - compare', '🔄 Мне дали другое - сравнить'],
         dDisc: ['מידע כללי בלבד, לא תחליף לרופא או לרוקח.', 'معلومات عامة فقط، وليست بديلًا عن الطبيب أو الصيدلي.', 'Doar informații generale, nu înlocuiesc medicul sau farmacistul.', 'Information générale uniquement, ne remplace pas le médecin ou le pharmacien.', 'General information only, not a substitute for a doctor or pharmacist.', 'Только общая информация, не заменяет врача или фармацевта.'],
-        scan: ['📷 סריקה', '📷 مسح', '📷 Scanează', '📷 Scanner', '📷 Scan', '📷 Сканировать'],
+        scan: ['📷 סריקת הברקוד שעל הקופסה', '📷 مسح الباركود على العلبة', '📷 Scanează codul de bare de pe cutie', '📷 Scanner le code-barres de la boîte', '📷 Scan the barcode on the box', '📷 Сканировать штрихкод на коробке'], // M-287: bigger, clearer words
         hintScan: ['מקלידים את השם כמו על האריזה, או 📷 מצלמים את הברקוד שעל הקופסה', 'اكتب الاسم كما على العلبة أو 📷 صوّر الباركود', 'Scrie numele ca pe cutie sau 📷 fotografiază codul de bare', 'Tapez le nom comme sur la boîte ou 📷 photographiez le code-barres', 'Type the name as on the box, or 📷 photograph the barcode on the box', 'Введите название как на коробке или 📷 сфотографируйте штрихкод на коробке'],
         noRead: ['לא הצלחתי לקרוא ברקוד בתמונה. צלמו מקרוב את הברקוד, באור טוב, או הקלידו את השם.', 'تعذرت قراءة الباركود. صوّره عن قرب وبإضاءة جيدة أو اكتب الاسم.', 'Codul nu a putut fi citit. Fotografiază-l de aproape, la lumină bună, sau scrie numele.', 'Code illisible. Photographiez-le de près, avec une bonne lumière, ou tapez le nom.', 'Could not read a barcode. Photograph it up close in good light, or type the name.', 'Не удалось прочитать штрихкод. Сфотографируйте его вблизи при хорошем свете или введите название.'],
         noCode: ['הברקוד נקרא, אבל הוא לא במאגר משרד הבריאות. הקלידו את השם.', 'تمت قراءة الباركود لكنه غير موجود في السجل. اكتب الاسم.', 'Codul a fost citit, dar nu e în registru. Scrie numele.', 'Code lu, mais absent du registre. Tapez le nom.', 'Barcode read, but it is not in the registry. Please type the name.', 'Штрихкод прочитан, но его нет в реестре. Введите название.'],
@@ -145,6 +145,14 @@
     .sb-inrow{display:flex;gap:8px;align-items:stretch}
     .sb-inrow .sb-in{flex:1;min-width:0}
     .sb-scan{flex:0 0 auto;border:none;border-radius:14px;padding:0 14px;font-size:1.05rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#0ea5e9,#0369a1)}
+    /* M-287 (owner asked for barcode scanning; it was there but small): a big scan card under the name box, with barcode stripes on it */
+    .sb-inrow{flex-wrap:wrap}
+    .sb-inrow .sb-in{flex:1 1 100%}
+    .sb-scan{order:2;flex:1 1 100%;position:relative;min-height:92px;margin-top:6px;padding:44px 14px 10px;border-radius:20px;font-size:1.2rem;line-height:1.25;
+      background:linear-gradient(135deg,#0ea5e9,#0369a1);box-shadow:inset 0 2px 3px rgba(255,255,255,.45),0 5px 0 #0c4a6e,0 10px 18px rgba(0,0,0,.45)}
+    .sb-scan::before{content:'';position:absolute;left:50%;top:10px;width:118px;height:28px;transform:translateX(-50%);border-radius:4px;background:#fff
+      repeating-linear-gradient(90deg,#0f172a 0 2px,transparent 2px 4px,#0f172a 4px 7px,transparent 7px 9px,#0f172a 9px 10px,transparent 10px 13px) content-box;padding:3px 6px;box-sizing:border-box}
+    .sb-scan:active{transform:translateY(4px);box-shadow:inset 0 2px 3px rgba(255,255,255,.45),0 1px 0 #0c4a6e}
     .sb-list{overflow:auto;margin-top:10px;flex:1;min-height:120px}
     .sb-it{display:block;width:100%;text-align:start;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;color:#fff;padding:10px 12px;margin-bottom:8px;font-size:1.05rem;font-weight:800}
     .sb-it small{display:block;font-weight:500;color:#a5b4fc;font-size:.85rem;margin-top:2px;direction:ltr;text-align:start}
