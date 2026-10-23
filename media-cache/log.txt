@@ -1,43 +1,6 @@
-waterfall 6
-lake 6
-rainroof 6
-city 5
-cafe 5
-train 6
-jungle 6
-birds 6
-harbor 6
-frogs 6
-cave 2
-audio prev failed cave File:Discarded-ideas-org-wansti-ccbysa-cave.mid CalledProcessError(183, ['ffmpeg', '-y', '-v', 'error', '-ss', '20.5', '-t', '120', '-i', 'media-cache/raw/cave_1', '-lavfi', 'showspectrumpic=s=900x160:legend=0:scale=log', 'media-cache/raw/cave_1.pn
-meadow 6
-owls 6
-cat 6
-whales 6
-fountain 5
-tibet 4
-river 6
-v_ocean 6
-video prev failed v_ocean File:♥♥ Relaxing 3 Hour Video of a Waterfall on an Ocean Beach at Sunset.webm FileNotFoundError(2, 'No such file or directory')
-v_forest 6
-video prev failed v_forest File:Forest walking and outdoor cooking slovenia.webm FileNotFoundError(2, 'No such file or directory')
-v_waterfall 6
-video prev failed v_waterfall File:♥♥ Relaxing 3 Hour Video of a Waterfall on an Ocean Beach at Sunset.webm FileNotFoundError(2, 'No such file or directory')
-video prev failed v_waterfall File:Rapids and Falls of the Youghiogheny at Ohiopyle.webm FileNotFoundError(2, 'No such file or directory')
-v_river 6
-video prev failed v_river File:Inspection of Sitio Magayagaya Creek, Barangay Concepcion Pequeña, Naga City, Camarines Sur, Philippines - President Bongbong Marcos and Mayor Leni Robredo - February 21, 2026.webm FileNotFoundError(2, 'No such file or directory')
-v_rain 6
-v_snow 6
-video prev failed v_snow File:Cicero, IN after a fresh snowfall from the air.webm FileNotFoundError(2, 'No such file or directory')
-v_city 6
-v_clouds 6
-v_stars 6
-v_fire 6
-video prev failed v_fire File:♥♥ Relaxing 3 Hour Video of Geyser at Yellowstone.webm FileNotFoundError(2, 'No such file or directory')
-v_lake 6
-v_underwater 6
-video prev failed v_underwater File:Barack Obama Delivers Remarks at Coral Reef High School (1832).webm FileNotFoundError(2, 'No such file or directory')
-video prev failed v_underwater File:Should You Buy An Underwater Drone – Closer Look At The Gladius Mini with underwater videos.webm FileNotFoundError(2, 'No such file or directory')
-v_field 6
-v_mountain 6
-video prev failed v_mountain File:Coffee challenge on the mountains - Hike to Nanos.webm FileNotFoundError(2, 'No such file or directory')
+crickets 3
+brook 6
+thunder 6
+beach 6
+wind 6
+campfire 5

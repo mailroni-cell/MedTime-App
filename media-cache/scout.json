@@ -2947,5 +2947,593 @@
    "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/2/28/Coffee_challenge_on_the_mountains_-_Hike_to_Nanos.webm/Coffee_challenge_on_the_mountains_-_Hike_to_Nanos.webm.1080p.vp9.webm",
    "err": "FileNotFoundError(2, 'No such file or directory')"
   }
+ ],
+ "crickets": [
+  {
+   "title": "File:Sound of dogs, birds and crickets in early morning.wav",
+   "len": 128.7,
+   "lic": "CC BY-SA 4.0",
+   "mime": "audio/wav",
+   "size": 37086136,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Sound_of_dogs%2C_birds_and_crickets_in_early_morning.wav?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Subhashish Panigrahi",
+   "desc": "Sound of dogs barking and whining in early morning. Vocalization of birds and chirping of crickets can also be heard. Recorded on April 16. 2020 at 03:44 AM loc",
+   "stats": {
+    "max_db": "-6.3",
+    "mean_db": "-28.6",
+    "sr": "48000",
+    "noise_floor": "-inf"
+   }
+  },
+  {
+   "title": "File:91 Mayur Ahuja Remembers a Smell behind Ulhasnagar’s Urban and Environmental Distress.ogg",
+   "len": 2538.7,
+   "lic": "CC BY-SA 4.0",
+   "mime": "application/ogg",
+   "size": 35720950,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/c/c6/91_Mayur_Ahuja_Remembers_a_Smell_behind_Ulhasnagar%E2%80%99s_Urban_and_Environmental_Distress.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "EngProff",
+   "desc": "Mayur Ahuja, a twenty-six-year-old bank manager at Kotak Mahindra Bank, was born and raised in Ulhasnagar and currently resides in a modern residential complex ",
+   "stats": {
+    "max_db": "-4.4",
+    "mean_db": "-23.3",
+    "sr": "44100",
+    "noise_floor": "-38.735949"
+   }
+  },
+  {
+   "title": "File:55 Rajesh Santumal Kamra Recalls His Family’s Journey from Devlali to Ulhasnagar.ogg",
+   "len": 804.0,
+   "lic": "CC BY-SA 4.0",
+   "mime": "application/ogg",
+   "size": 10763397,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/1/11/55_Rajesh_Santumal_Kamra_Recalls_His_Family%E2%80%99s_Journey_from_Devlali_to_Ulhasnagar.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "EngProff",
+   "desc": "Rajesh Santumal Kamra belongs to a partition-affected Sindhi family that migrated from Sindh, Pakistan. Upon their initial displacement, his family was temporar",
+   "stats": {
+    "max_db": "-3.0",
+    "mean_db": "-21.7",
+    "sr": "44100",
+    "noise_floor": "-65.203284"
+   }
+  }
+ ],
+ "brook": [
+  {
+   "title": "File:Catherine Rice Trinity Well etc.opus",
+   "len": 885.0,
+   "lic": "CC0",
+   "mime": "application/ogg",
+   "size": 13491840,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Catherine_Rice_Trinity_Well_etc.opus?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "A.-K. D.",
+   "desc": "Catherine Rice on Trinity Well, The Pattern of the Dinan, mass paths etc. Transcript will be added asap.",
+   "stats": {
+    "max_db": "0.0",
+    "mean_db": "-18.5",
+    "sr": "48000",
+    "noise_floor": "-51.032977"
+   }
+  },
+  {
+   "title": "File:Sonus naturalis - Soundscape XC442756.mp3",
+   "len": 191.5,
+   "lic": "CC BY-SA 4.0",
+   "mime": "audio/mpeg",
+   "size": 7657950,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/1/11/Sonus_naturalis_-_Soundscape_XC442756.mp3?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "James Ray",
+   "desc": ":Duplicate of XC442756.\n\nsulphur-crested cockatoo start, 0:24\neastern yellow robin faint piping from start\nsatin bowerbird 0:40 (faint)\nred wattlebird 1:08\nvery",
+   "stats": {
+    "max_db": "-13.5",
+    "mean_db": "-45.5",
+    "sr": "44100",
+    "noise_floor": "-48.232659"
+   }
+  },
+  {
+   "title": "File:Sonus naturalis - Soundscape XC443104.mp3",
+   "len": 104.3,
+   "lic": "CC BY-SA 4.0",
+   "mime": "audio/mpeg",
+   "size": 4175549,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/1/11/Sonus_naturalis_-_Soundscape_XC443104.mp3?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "James Ray",
+   "desc": ":\nLeucosarcia melanoleuca throughout\nMenura novaehollandiae ongoing (also makes the high-pitched noises at 1:10, I think it's imitating a water sprinkler, \"spur",
+   "stats": {
+    "max_db": "-14.8",
+    "mean_db": "-45.9",
+    "sr": "44100",
+    "noise_floor": "-50.663309"
+   }
+  },
+  {
+   "title": "File:Water flowing pouring trickling.ogg",
+   "len": 96.3,
+   "lic": "Public domain",
+   "mime": "application/ogg",
+   "size": 4765503,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/4/4f/Water_flowing_pouring_trickling.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "stephan",
+   "desc": "Title Water flowing, pouring, trickling\nArtist stephan\nOriginal mp3 data Length:1:24 minutes (2.58 MB) Format:MP3 Stereo 44kHz 256Kbps (CBR)\nUser tags Bath, Buc",
+   "stats": {
+    "max_db": "0.0",
+    "mean_db": "-28.3",
+    "sr": "44100",
+    "noise_floor": "-63.864348"
+   }
+  },
+  {
+   "title": "File:Megaceryle alcyon - Belted Kingfisher XC132870.ogg",
+   "len": 103.2,
+   "lic": "CC BY-SA 3.0",
+   "mime": "application/ogg",
+   "size": 2737088,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Megaceryle_alcyon_-_Belted_Kingfisher_XC132870.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Jonathon Jongsma",
+   "desc": ":Some calls in flight, some while perched. Flying over open water in creek mouth, but the lake is still frozen over.\nRecorded with Sennheiser ME66.\nbird-seen:ye",
+   "stats": {
+    "max_db": "-0.1",
+    "mean_db": "-29.9",
+    "sr": "48000",
+    "noise_floor": "-inf"
+   }
+  },
+  {
+   "title": "File:Megaceryle alcyon - Belted Kingfisher XC132873.ogg",
+   "len": 80.8,
+   "lic": "CC BY-SA 3.0",
+   "mime": "application/ogg",
+   "size": 2166443,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/9/94/Megaceryle_alcyon_-_Belted_Kingfisher_XC132873.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Jonathon Jongsma",
+   "desc": ":Interaction calls from 3 kingfishers chasing eachother around the mouth of the creek. The lake is still frozen, so several kingfishers were congregating around",
+   "stats": {
+    "max_db": "-0.1",
+    "mean_db": "-29.7",
+    "sr": "48000",
+    "noise_floor": "-43.342636"
+   }
+  }
+ ],
+ "thunder": [
+  {
+   "title": "File:Light Rain Distant Thunder July 5th 2016.wav",
+   "len": 110.1,
+   "lic": "CC0",
+   "mime": "audio/wav",
+   "size": 42295240,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/b/b6/Light_Rain_Distant_Thunder_July_5th_2016.wav?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "https://freesound.org/people/kvgarlic/",
+   "desc": "A peaceful, and much-needed July rain in the Midwest, USA. Marantz PMD661 and two Sennheiser ME66s were set up in deep woods recording this around 5:00 in the a",
+   "stats": {
+    "max_db": "-0.0",
+    "mean_db": "-33.3",
+    "sr": "48000",
+    "noise_floor": "-47.202013"
+   }
+  },
+  {
+   "title": "File:Thunderstorm after hot summer day 17 minutes 02 of 04.ogg",
+   "len": 254.4,
+   "lic": "Public domain",
+   "mime": "application/ogg",
+   "size": 7311310,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/b/b1/Thunderstorm_after_hot_summer_day_17_minutes_02_of_04.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "stephan",
+   "desc": "Title Thunderstorm after hot Summer Day, 17 minutes, 02 of 04\nArtist stephan\nOriginal mp3 data Length:4:14 minutes (4.86 MB) Format:MP3 Stereo 44kHz 160Kbps (CB",
+   "stats": {
+    "max_db": "-3.0",
+    "mean_db": "-24.2",
+    "sr": "44100",
+    "noise_floor": "-30.555408"
+   }
+  },
+  {
+   "title": "File:Thunderstorm after hot summer day 17 minutes 03 of 04.ogg",
+   "len": 254.4,
+   "lic": "Public domain",
+   "mime": "application/ogg",
+   "size": 7262874,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/2/26/Thunderstorm_after_hot_summer_day_17_minutes_03_of_04.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "stephan",
+   "desc": "Title Thunderstorm after hot Summer Day, 17 minutes, 03 of 04\nArtist stephan\nOriginal mp3 data Length:4:14 minutes (4.86 MB) Format:MP3 Stereo 44kHz 160Kbps (CB",
+   "stats": {
+    "max_db": "-3.3",
+    "mean_db": "-24.2",
+    "sr": "44100",
+    "noise_floor": "-32.658243"
+   }
+  },
+  {
+   "title": "File:Thunderstorm after hot summer day 17 minutes 01 of 04.ogg",
+   "len": 254.4,
+   "lic": "Public domain",
+   "mime": "application/ogg",
+   "size": 6866442,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Thunderstorm_after_hot_summer_day_17_minutes_01_of_04.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "stephan",
+   "desc": "Title Thunderstorm after hot Summer Day, 17 minutes, 01 of 04\nArtist stephan\nOriginal mp3 data Length:4:14 minutes (4.86 MB) Format:MP3 Stereo 44kHz 160Kbps (CB",
+   "stats": {
+    "max_db": "-1.8",
+    "mean_db": "-26.5",
+    "sr": "44100",
+    "noise_floor": "-26.150663"
+   }
+  },
+  {
+   "title": "File:Thunderstorm after hot summer day 17 minutes 04 of 04.ogg",
+   "len": 253.9,
+   "lic": "Public domain",
+   "mime": "application/ogg",
+   "size": 6856350,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Thunderstorm_after_hot_summer_day_17_minutes_04_of_04.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "stephan",
+   "desc": "Title Thunderstorm after hot Summer Day, 17 minutes, 04 of 04\nArtist stephan\nOriginal mp3 data Length:4:14 minutes (4.85 MB) Format:MP3 Stereo 44kHz 160Kbps (CB",
+   "stats": {
+    "max_db": "-4.8",
+    "mean_db": "-25.8",
+    "sr": "44100",
+    "noise_floor": "-34.377247"
+   }
+  },
+  {
+   "title": "File:Toxostoma rufum - Brown Thrasher XC81305.mp3",
+   "len": 121.0,
+   "lic": "CC BY-SA 3.0",
+   "mime": "audio/mpeg",
+   "size": 2905631,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/f/f9/Toxostoma_rufum_-_Brown_Thrasher_XC81305.mp3?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Jonathon Jongsma",
+   "desc": ":Singing at the beginning of a thunderstorm.  Delivered from a perch high in a dead tree in a lightly-wooded area bordering sandy prairie.  Some thunder and rai",
+   "stats": {
+    "max_db": "-5.2",
+    "mean_db": "-25.8",
+    "sr": "44100",
+    "noise_floor": "-54.891693"
+   }
+  }
+ ],
+ "beach": [
+  {
+   "title": "File:Episode 31-Japan in the New Pacific--maritime history podcast series Revolution at Sea (2021) by John Curtis Perry.wav",
+   "len": 1481.2,
+   "lic": "CC BY-SA 4.0",
+   "mime": "audio/wav",
+   "size": 263367202,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/0/04/Episode_31-Japan_in_the_New_Pacific--maritime_history_podcast_series_Revolution_at_Sea_%282021%29_by_John_Curtis_Perry.wav?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "John Curtis Perry &amp; team",
+   "desc": "Podcast series name: Revolution at Sea\nPodcast series description: Embark on a wondrous exploration of the human history of the sea as a resource, avenue, and a",
+   "stats": {
+    "max_db": "-2.7",
+    "mean_db": "-17.3",
+    "sr": "44100",
+    "noise_floor": "-inf"
+   }
+  },
+  {
+   "title": "File:Episode 06-The Habsburg Castilian Empire--maritime history podcast series Revolution at Sea (2020) by John Curtis Perry.wav",
+   "len": 1337.2,
+   "lic": "CC BY-SA 4.0",
+   "mime": "audio/wav",
+   "size": 237844350,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/0/04/Episode_06-The_Habsburg_Castilian_Empire--maritime_history_podcast_series_Revolution_at_Sea_%282020%29_by_John_Curtis_Perry.wav?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "John Curtis Perry &amp; team",
+   "desc": "Podcast series name: Revolution at Sea\nPodcast series description: Embark on a wondrous exploration of the human history of the sea as a resource, avenue, and a",
+   "stats": {
+    "max_db": "-1.8",
+    "mean_db": "-17.9",
+    "sr": "44100",
+    "noise_floor": "-inf"
+   }
+  },
+  {
+   "title": "File:Episode 04-Iberia and Oceanic Revolution--maritime history podcast series Revolution at Sea (2020) by John Curtis Perry.wav",
+   "len": 1116.3,
+   "lic": "CC BY-SA 4.0",
+   "mime": "audio/wav",
+   "size": 198594634,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/c/ca/Episode_04-Iberia_and_Oceanic_Revolution--maritime_history_podcast_series_Revolution_at_Sea_%282020%29_by_John_Curtis_Perry.wav?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "John Curtis Perry &amp; team",
+   "desc": "*Podcast series name: Revolution at Sea\nPodcast series description: Embark on a wondrous exploration of the human history of the sea as a resource, avenue, and ",
+   "stats": {
+    "max_db": "-0.2",
+    "mean_db": "-16.6",
+    "sr": "44100",
+    "noise_floor": "-76.329334"
+   }
+  },
+  {
+   "title": "File:Episode 08-The Dutch Pelagic State--maritime history podcast series Revolution at Sea (2020) by John Curtis Perry.wav",
+   "len": 1100.1,
+   "lic": "CC BY-SA 4.0",
+   "mime": "audio/wav",
+   "size": 195685266,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Episode_08-The_Dutch_Pelagic_State--maritime_history_podcast_series_Revolution_at_Sea_%282020%29_by_John_Curtis_Perry.wav?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "John Curtis Perry &amp; team",
+   "desc": "Podcast series name: Revolution at Sea\nPodcast series description: Embark on a wondrous exploration of the human history of the sea as a resource, avenue, and a",
+   "stats": {
+    "max_db": "-3.0",
+    "mean_db": "-17.7",
+    "sr": "44100",
+    "noise_floor": "-inf"
+   }
+  },
+  {
+   "title": "File:Episode 09-Characteristics of the Dutch Experience--maritime history podcast series Revolution at Sea (2020) by John Curtis Perry.wav",
+   "len": 951.5,
+   "lic": "CC BY-SA 4.0",
+   "mime": "audio/wav",
+   "size": 169262338,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Episode_09-Characteristics_of_the_Dutch_Experience--maritime_history_podcast_series_Revolution_at_Sea_%282020%29_by_John_Curtis_Perry.wav?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "John Curtis Perry &amp; team",
+   "desc": "Podcast series name: Revolution at Sea\nPodcast series description: Embark on a wondrous exploration of the human history of the sea as a resource, avenue, and a",
+   "stats": {
+    "max_db": "-3.1",
+    "mean_db": "-18.5",
+    "sr": "44100",
+    "noise_floor": "-inf"
+   }
+  },
+  {
+   "title": "File:Episode 11-Early England and the Sea--maritime history podcast series Revolution at Sea (2020) by John Curtis Perry.wav",
+   "len": 957.9,
+   "lic": "CC BY-SA 4.0",
+   "mime": "audio/wav",
+   "size": 170323850,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/5/51/Episode_11-Early_England_and_the_Sea--maritime_history_podcast_series_Revolution_at_Sea_%282020%29_by_John_Curtis_Perry.wav?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "John Curtis Perry &amp; team",
+   "desc": "Podcast series name: Revolution at Sea\nPodcast series description: Embark on a wondrous exploration of the human history of the sea as a resource, avenue, and a",
+   "stats": {
+    "max_db": "-3.2",
+    "mean_db": "-17.3",
+    "sr": "44100",
+    "noise_floor": "-inf"
+   }
+  }
+ ],
+ "wind": [
+  {
+   "title": "File:BioAcoustica 991 1 Gryllus campestris 142r1.flac",
+   "len": 192.1,
+   "lic": "CC BY 3.0",
+   "mime": "audio/x-flac",
+   "size": 16426507,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/c/c0/BioAcoustica_991_1_Gryllus_campestris_142r1.flac?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "",
+   "desc": "Sound recording of Gryllus Gryllus campestris",
+   "stats": {
+    "max_db": "-4.6",
+    "mean_db": "-29.3",
+    "sr": "44100",
+    "noise_floor": "-29.170637"
+   }
+  },
+  {
+   "title": "File:BioAcoustica 991 2 Gryllus campestris 142r2.flac",
+   "len": 189.2,
+   "lic": "CC BY 3.0",
+   "mime": "audio/x-flac",
+   "size": 16988795,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/d/db/BioAcoustica_991_2_Gryllus_campestris_142r2.flac?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "",
+   "desc": "Sound recording of Gryllus Gryllus campestris",
+   "stats": {
+    "max_db": "-3.3",
+    "mean_db": "-29.5",
+    "sr": "44100",
+    "noise_floor": "-29.339898"
+   }
+  },
+  {
+   "title": "File:Whip-poor-will song.wav",
+   "len": 91.1,
+   "lic": "CC BY-SA 4.0",
+   "mime": "audio/wav",
+   "size": 26247212,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/3/3f/Whip-poor-will_song.wav?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Digrpat",
+   "desc": "whip-poor-will song with wind blowing in trees",
+   "stats": {
+    "max_db": "-4.6",
+    "mean_db": "-22.1",
+    "sr": "48000",
+    "noise_floor": "-54.460900"
+   }
+  },
+  {
+   "title": "File:Melospiza georgiana - Swamp Sparrow XC133319.ogg",
+   "len": 880.3,
+   "lic": "CC BY-SA 3.0",
+   "mime": "application/ogg",
+   "size": 23908959,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/0/0a/Melospiza_georgiana_-_Swamp_Sparrow_XC133319.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Jonathon Jongsma",
+   "desc": ":Singing from a perch on a stalk in a patch of dead and dried Typha.  Starts out singing one song type and then switches to another around 2:02.\nVery cool (~45F",
+   "stats": {
+    "max_db": "-7.3",
+    "mean_db": "-30.5",
+    "sr": "48000",
+    "noise_floor": "-50.484212"
+   }
+  },
+  {
+   "title": "File:Wind sounds 2020-05-10 1625.mp3",
+   "len": 811.4,
+   "lic": "CC BY-SA 4.0",
+   "mime": "audio/mpeg",
+   "size": 24253824,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/d/d0/Wind_sounds_2020-05-10_1625.mp3?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Robert EA Harvey",
+   "desc": "Recorded to accompany Geograph image File:The woodland edge - geograph.org.uk - 6469042.jpg\nduring a blustery afternoon of Northerly winds.  The recording was m",
+   "stats": {
+    "max_db": "0.0",
+    "mean_db": "-20.8",
+    "sr": "48000",
+    "noise_floor": "-44.244812"
+   }
+  },
+  {
+   "title": "File:Ru-Russia part 3 History.ogg",
+   "len": 3442.7,
+   "lic": "CC BY-SA 3.0",
+   "mime": "application/ogg",
+   "size": 73148401,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/0/0a/Ru-Russia_part_3_History.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Speaker: Andrew Krizhanovsky and Elena Krizhanovsky (Saint Petersburg), Vasilisa Mizinova (Kurgan), incorporating:\n\nDj Laren - Save the planet / 02 - Ocean (by-",
+   "desc": "This is part of a spoken word version of the Wikipedia article: РоссияListen to this part (audio help) Go to the first part Go to the next part   \n\n.mw-parser-o",
+   "stats": {
+    "max_db": "-0.6",
+    "mean_db": "-20.7",
+    "sr": "48000",
+    "noise_floor": "-inf"
+   }
+  }
+ ],
+ "campfire": [
+  {
+   "title": "File:2025-02-04 Judy Rhatigan from Dunnamaggin.opus",
+   "len": 3731.6,
+   "lic": "CC0",
+   "mime": "application/ogg",
+   "size": 55162410,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/1/11/2025-02-04_Judy_Rhatigan_from_Dunnamaggin.opus?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "A.-K. D.",
+   "desc": "Judy Rhatigan nee Kehoe who grew up in the Lodge of Chapelizod House in parish of Dunnamaggin talks about her childhood in the 1950s, St Leonard's Well, St Leon",
+   "stats": {
+    "max_db": "-6.1",
+    "mean_db": "-26.0",
+    "sr": "48000",
+    "noise_floor": "-inf"
+   }
+  },
+  {
+   "title": "File:Edgar Allan Poe's The Raven.ogg",
+   "len": 472.1,
+   "lic": "CC BY-SA 4.0",
+   "mime": "application/ogg",
+   "size": 9168377,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/f/f3/Edgar_Allan_Poe%27s_The_Raven.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "FergusRossFerrier",
+   "desc": "Dramatised recording of Edgar Allan Poe's classic poem The Raven first published 1845. This is a redux with AI enhanced voice and sound effects and mixing of my",
+   "stats": {
+    "max_db": "0.0",
+    "mean_db": "-15.0",
+    "sr": "44100",
+    "noise_floor": "-66.786908"
+   }
+  },
+  {
+   "title": "File:Silvester fireworks from the street 02 cool stuff.ogg",
+   "len": 102.9,
+   "lic": "Public domain",
+   "mime": "application/ogg",
+   "size": 3449006,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/7/76/Silvester_fireworks_from_the_street_02_cool_stuff.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "stephan",
+   "desc": "Title Silvester Fireworks from the Street 02 - Cool Stuff\nArtist stephan\nOriginal mp3 data Length:1:43 minutes (2.36 MB) Format:MP3 Stereo 44kHz 192Kbps (CBR)\nU",
+   "stats": {
+    "max_db": "-5.3",
+    "mean_db": "-25.6",
+    "sr": "44100",
+    "noise_floor": "-46.614905"
+   }
+  },
+  {
+   "title": "File:Bones breaking wood fire ice crackling.ogg",
+   "len": 74.1,
+   "lic": "Public domain",
+   "mime": "application/ogg",
+   "size": 2401748,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/8/80/Bones_breaking_wood_fire_ice_crackling.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "stephan",
+   "desc": "Title Bones breaking, Wood, Fire, Ice crackling\nArtist stephan\nOriginal mp3 data Length:1:14 minutes (1.98 MB) Format:MP3 Stereo 44kHz 224Kbps (CBR)\nUser tags B",
+   "stats": {
+    "max_db": "0.0",
+    "mean_db": "-31.3",
+    "sr": "44100",
+    "noise_floor": "-49.247165"
+   }
+  },
+  {
+   "title": "File:Mesecraft Theme.ogg",
+   "len": 218.9,
+   "lic": "CC BY-SA 3.0",
+   "mime": "application/ogg",
+   "size": 3089084,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/f/f3/Mesecraft_Theme.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Mesecraft\nMeseCraft (https://content.minetest.net/users/MeseCraft/ / https://web.archive.org/web/20230223114954/https://content.minetest.net/users/MeseCraft/)\nK",
+   "desc": "The theme (in the main menu of) of Mesecraft, a mod for Minetest.",
+   "stats": {
+    "max_db": "-0.0",
+    "mean_db": "-14.4",
+    "sr": "44100",
+    "noise_floor": "-16.570648"
+   }
+  }
  ]
 }
