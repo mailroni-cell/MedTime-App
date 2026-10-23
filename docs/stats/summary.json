@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-23 09:55 UTC",
+ "updated": "2026-10-23 10:20 UTC",
  "installs_total": 3,
  "active_7d": 3,
  "active_30d": 3,
@@ -24,5 +24,14 @@
  "surveys": 0,
  "stars_avg": null,
  "stars_count": {},
- "improve": {}
+ "improve": {},
+ "visits_total": 0,
+ "downloads_total": 0,
+ "downloads_by_source": {
+  "fast": 0,
+  "gh": 0,
+  "drive": 0
+ },
+ "downloads_by_day": {},
+ "visits_by_day": {}
 }
