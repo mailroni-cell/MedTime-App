@@ -30,16 +30,18 @@
         setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 600); }, 3500);
     }
     function check() {
-        const want = low();
+        // M-336 (owner): the beauty is the point, so the animations always run while the app is on screen;
+        // everything stops only in the background (here and in scene3d.js / MainActivity.onPause). low() is kept unused.
+        const want = document.hidden;
         if (want === on) return;
         on = want;
         document.documentElement.classList.toggle('mt-saver', on);
         try { if (window.MedTime3D) MedTime3D.pause(on); } catch (e) { }
-        if (on) toast(); else told = false;
+        if (!on) told = false;
     }
     window.mtSaverCheck = check;
     try { if (navigator.getBattery) navigator.getBattery().then(b => { bat = b; b.addEventListener('levelchange', check); b.addEventListener('chargingchange', check); check(); }).catch(() => { }); } catch (e) { }
     setTimeout(check, 3000);
     setInterval(() => { if (!document.hidden) check(); }, 60000);
-    document.addEventListener('visibilitychange', () => { if (!document.hidden) check(); });
+    document.addEventListener('visibilitychange', check);
 })();

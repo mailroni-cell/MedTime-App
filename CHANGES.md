@@ -382,3 +382,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-333 | 2026-10-23 | docs/ad/index.html, docs/ad/og.jpg | Owner: personal WhatsApp invite with a big preview under the link (wide 1200x630 image under 300KB, personal title) | ⏳ |
 | M-334 | 2026-10-23 | WebUpdate.java, MainActivity.java, Updater.java | Owner: quick web updates come over the internet (no PC/cable): on open/return the app reads web-info.txt of release test; if made for its exact version, downloads web.zip into files/web and reloads (at once right after opening, otherwise on the next return) | ⏳ |
 | M-335 | 2026-10-23 | saver.js | Owner: the battery-saver note popped up on every app open (phone battery saver on); now at most once a day | ⏳ |
+| M-336 | 2026-10-23 | saver.js | Owner: animations always run while the app is on screen (no pause for phone battery saver / low battery, no note); everything stops only in the background | ⏳ |
