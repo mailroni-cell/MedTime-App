@@ -389,3 +389,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-340 | 2026-10-23 | homelayout.js | Owner: no picture next to the greeting; greeting in warm soft peach, name warm amber, dark edge so it reads on any background | ⏳ |
 | M-341 | 2026-10-23 | homelayout.js, scene3d.js | Owner: the glowing arc (3D floor ring) above the bottom buttons removed; instead one quiet text line, no frame/animation: last measurement from מדדים (coloured by range, today/yesterday/N days), or a short hint when none (6 languages) | ⏳ |
 | M-342 | 2026-10-23 | homelayout.js | Owner: the text line above the bottom buttons removed; the space stays empty (arc stays hidden) | ⏳ |
+| M-343 | 2026-10-23 | MainActivity.java | Owner: app 'stuck on opening': an internet web update reloaded the page within 20 s of opening (looked like a hang). Now never reloads in use; the update applies on the next return after 30 s+ in background or next start | ⏳ |

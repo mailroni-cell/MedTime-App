@@ -122,16 +122,13 @@ public class MainActivity extends AppCompatActivity {
         else webView.loadUrl("file:///android_asset/index.html");
     }
 
-    // M-334: a quick web update came over the internet. Right after opening, show it at once;
-    // later in use, wait until the next time the app comes back, so nothing typed is lost.
-    private long shownAt = 0;
+    // M-334: a quick web update came over the internet.
+    // M-343 (owner: "stuck on opening"): never reload while the app is in use, the page restarting looked like a hang;
+    // it is used from the next time the app comes back after 30 s or more in the background (or the next start).
     private boolean webPending = false;
     private long pausedAt = 0;
 
-    private void webUpdateReady() {
-        if (System.currentTimeMillis() - shownAt < 20_000) applyWebUpdate();
-        else webPending = true;
-    }
+    private void webUpdateReady() { webPending = true; }
 
     private void applyWebUpdate() {
         webPending = false;
@@ -244,7 +241,6 @@ public class MainActivity extends AppCompatActivity {
         timers.removeCallbacks(stopTimers); // M-337
         if (webView != null && timersStopped) { webView.resumeTimers(); timersStopped = false; }
         if (webPending && System.currentTimeMillis() - pausedAt > 30_000) applyWebUpdate(); // M-334: not after a quick camera / picker trip
-        if (pausedAt == 0 || System.currentTimeMillis() - pausedAt > 30_000) shownAt = System.currentTimeMillis();
         WebUpdate.check(this, this::webUpdateReady); // M-334
         NativeBridge.stopWatch(); // M-095
         Piper.ensure(this); // M-087: offline voices download once by themselves (Wi-Fi only)
