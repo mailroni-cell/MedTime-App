@@ -266,8 +266,16 @@
       70%{transform:translate(20px,-3px) rotate(-.5deg)}85%{transform:translate(10px,5px) rotate(-1.5deg)}}
     html.lowvision body #hello-line.hello-line:not(#mt-x){animation:none}
     /* M-280 (owner: "the symbols are pressed against the bottom"): the empty space under the title shrinks, so the menu moves up and keeps clear room above the bottom row */
-    html body .hero-space.hero-space:not(#mt-x){height:clamp(8px,2.5vh,26px)!important;min-height:0!important}
-    html body #lv-btn{direction:ltr}`;
+    html body .hero-space.hero-space:not(#mt-x){height:clamp(0px,1vh,10px)!important;min-height:0!important}
+    html body #lv-btn{direction:ltr}
+    /* M-289 (owner): the next time sits inside the 📋, on its paper, not under it */
+    html body .home-card .hm-float #list-btn .hm-3d > .lb-time:not(#mt-x){position:static;grid-area:1/1;align-self:center;justify-self:center;left:auto;bottom:auto;
+      transform:translate3d(0,calc(var(--hm-o,118px) * .1),5px)!important;font-family:'MTBall','MTUI',sans-serif;font-size:calc(var(--hm-o,118px) * .17)!important;font-weight:900;
+      color:#0f172a!important;-webkit-text-stroke:0!important;text-shadow:0 0 1px #fff!important;opacity:1!important;filter:none!important;background:none;border:0;box-shadow:none;padding:0;letter-spacing:-.5px;direction:ltr}
+    /* M-290 (owner): the hand moves away from its neighbour (to the outer side of its place) */
+    ${B} > #guide-btn:not(#mt-x){justify-self:center;position:relative!important;inset-inline-start:calc(var(--hm-o,118px) * .3)}
+    /* M-291 (owner): all the symbols higher still; the bottom row stays where it is */
+    html body .home-card .hm-float:not(#mt-x){margin-top:-6px}`;
     document.head.appendChild(css);
     // M-279: the name under the A+ button, in the app language
     const lvLbl = () => { const b = $('lv-btn'); if (!b) return; const i = Math.max(0, ['he', 'ar', 'ro', 'fr', 'en', 'ru'].indexOf(typeof LANG === 'string' ? LANG : 'he'));
@@ -339,8 +347,10 @@
         const want = m ? m[0] : '';
         if (c && (c.dataset.t !== want || !c.querySelector(':scope > i, :scope > .hm-3d'))) {
             c.dataset.t = want; c.innerHTML = '<i>📋</i>' + (want ? '<b class="lb-time"></b>' : '');
-            if (want) c.querySelector('.lb-time').textContent = '⏰ ' + want;
+            if (want) c.querySelector('.lb-time').textContent = want;
             make3d();
+            // M-289 (owner): the time is written on the clipboard's paper itself and moves with it
+            const t = c.querySelector(':scope > .lb-time'), w = c.querySelector('.hm-3d'); if (t && w) w.appendChild(t);
         }
         btn.classList.toggle('hm-next', !!m);
         addPills();
@@ -473,7 +483,7 @@
     function sizeBalls() {
         const box = document.querySelector('.home-card .hm-float'), ex = $('exit-btn');
         if (!box || !ex || !box.offsetParent || ex.getBoundingClientRect().height < 10) return false; // M-226: another screen is open: keep the size
-        const lim = ex.getBoundingClientRect().top - 34, colW = box.clientWidth / 3 - 8;
+        const lim = ex.getBoundingClientRect().top - 60, colW = box.clientWidth / 3 - 8;
         let o = Math.min(150, Math.floor(colW / 1.02)); // M-264 (owner): bigger still // M-239/M-242: as big as the room allows; the capsule is wider than the box
         const set = () => { box.style.setProperty('--hm-o', o + 'px'); box.style.setProperty('--hm-big', Math.round(o * 1.15) + 'px'); };
         set();
@@ -500,7 +510,7 @@
             const R = document.documentElement, had5 = R.classList.contains('fit5'), had6 = R.classList.contains('fit6');
             R.classList.remove('fit5', 'fit6');
             if (!sizeBalls() && o0) box.style.setProperty('--hm-o', o0);
-            const over = () => low() > ex.getBoundingClientRect().top - 34 || document.body.scrollHeight > innerHeight + 2;
+            const over = () => low() > ex.getBoundingClientRect().top - 60 || document.body.scrollHeight > innerHeight + 2;
             // M-235 (owner: low vision lost the tour button): greeting goes first, then the title gets smaller, the tour button only last
             R.classList.remove('hm-slim');
             if ((had5 || had6) && over()) { R.classList.add('fit6'); sizeBalls();
