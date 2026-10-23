@@ -293,7 +293,11 @@
     html body .home-card .hm-float #appt-btn .ab-sub:not(#mt-x){display:none!important}
     html body .home-card .hm-float #appt-btn .ab-when{position:absolute;left:50%;bottom:-2px;transform:translateX(-50%);z-index:5;white-space:nowrap;unicode-bidi:plaintext;
       padding:2px 9px;border-radius:999px;background:rgba(2,20,12,.82);border:2px solid #4ade80;color:#d9ffe7;font-family:'MTBall','MTUI',sans-serif;font-weight:700;
-      font-size:calc(var(--hm-o,118px) * .15);line-height:1.15;box-shadow:0 0 10px #22c55e,0 2px 6px rgba(0,0,0,.7);text-shadow:0 1px 2px #000;pointer-events:none}`;
+      font-size:calc(var(--hm-o,118px) * .15);line-height:1.15;box-shadow:0 0 10px #22c55e,0 2px 6px rgba(0,0,0,.7);text-shadow:0 1px 2px #000;pointer-events:none}
+    /* M-332 (owner): no appointment count on the symbol; greeting and the add-reminder cross higher still, together */
+    html body .home-card .hm-float #appt-btn .ab-count:not(#mt-x){display:none!important}
+    html body #hello-line.hello-line:not(#mt-x){margin-top:-46px!important}
+    html body .home-card .hm-float:not(#mt-x) > #main-add{margin-top:-18px!important}`;
     document.head.appendChild(css);
     // M-279: the name under the A+ button, in the app language
     const lvLbl = () => { const b = $('lv-btn'); if (!b) return; const i = Math.max(0, ['he', 'ar', 'ro', 'fr', 'en', 'ru'].indexOf(typeof LANG === 'string' ? LANG : 'he'));
