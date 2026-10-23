@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
                     | android.view.WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                     | android.view.WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         }
-        getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        // M-337 (battery): the screen no longer stays on all the time; the phone's own screen timeout applies.
+        // Only calm mode keeps it on (NativeBridge.keepScreenOn from relax.js).
 
         // M-076: no bare permission pop-up at launch any more; the page shows a friendly
         // setup screen first (setup.js) and asks through MedTimeNative.requestNotifications().
@@ -108,6 +109,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private int lastKb = -1;
+
+    // M-337: calm mode is open (set by NativeBridge.keepScreenOn)
+    static volatile boolean calm = false;
+    private final android.os.Handler timers = new android.os.Handler(android.os.Looper.getMainLooper());
+    private boolean timersStopped = false;
+    private final Runnable stopTimers = () -> { if (webView != null && !calm) { webView.pauseTimers(); timersStopped = true; } };
 
     private void loadPage() {
         String upd = webOverride != null ? overridePage() : null;
@@ -223,6 +230,10 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         if (webView != null) webView.onPause();
         pausedAt = System.currentTimeMillis();
+        // M-337 (battery): a few seconds in the background (time for the auto backup), then all page timers stop.
+        // Calm mode keeps running (its sounds and sleep timer). Reminders are native alarms and never depend on this.
+        timers.removeCallbacks(stopTimers);
+        if (!calm) timers.postDelayed(stopTimers, 5000);
     }
 
     // M-076: tell the page when we come back from an Android permission screen
@@ -230,6 +241,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (webView != null) webView.onResume(); // M-323: the page runs again
+        timers.removeCallbacks(stopTimers); // M-337
+        if (webView != null && timersStopped) { webView.resumeTimers(); timersStopped = false; }
         if (webPending && System.currentTimeMillis() - pausedAt > 30_000) applyWebUpdate(); // M-334: not after a quick camera / picker trip
         if (pausedAt == 0 || System.currentTimeMillis() - pausedAt > 30_000) shownAt = System.currentTimeMillis();
         WebUpdate.check(this, this::webUpdateReady); // M-334

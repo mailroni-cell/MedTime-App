@@ -28,6 +28,16 @@ public class NativeBridge {
         this.web = web;
     }
 
+    /** M-337: calm mode keeps the screen on (and its sounds / sleep timer running in the background); off everywhere else. */
+    @JavascriptInterface
+    public void keepScreenOn(boolean on) {
+        MainActivity.calm = on;
+        activity.runOnUiThread(() -> {
+            if (on) activity.getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            else activity.getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        });
+    }
+
     /** M-323: battery saver mode of the phone is on. */
     @JavascriptInterface
     public boolean isPowerSave() {

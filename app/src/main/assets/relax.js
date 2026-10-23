@@ -1127,6 +1127,7 @@
     window.openRelax = function () {
         build(); if (open) return;
         open = true; window.relaxOn = true;
+        try { if (window.MedTimeNative && MedTimeNative.keepScreenOn) MedTimeNative.keepScreenOn(true); } catch (e) { } // M-337
         if (window.amb) try { window.amb.pause(); } catch (e) { }
         if (window.MedTime3D && window.MedTime3D.pause) window.MedTime3D.pause(true);
         root.classList.add('open'); document.documentElement.classList.add('relax-open');
@@ -1147,6 +1148,7 @@
     function closeRelax(fromBack) {
         if (!open) return;
         open = false; window.relaxOn = false;
+        try { if (window.MedTimeNative && MedTimeNative.keepScreenOn) MedTimeNative.keepScreenOn(false); } catch (e) { } // M-337
         cancelAnimationFrame(raf); clearInterval(tickT); clearInterval(fadeI); clearTimeout(hideT); hush(); bPh = ''; bT0 = -1;
         stopSound(); if (ac) { try { ac.suspend(); } catch (e) { } }
         disposeScene(); setVideo(null);
