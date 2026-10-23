@@ -354,3 +354,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-310 | 2026-10-23 | subst.js | Owner: medicine info page had no close/back buttons after typing a search (the 'keyboard open' mode stayed on and hid them). Fixed, plus a round red ✕ at the top corner of the info and result pages | ⏳ |
 | R-217 | 2026-10-23 | release/stable.txt | Run 217 (M-310) released to everyone; fast download mirror refreshed by itself | ✅ |
 | M-311 | 2026-10-23 | tour.js | Owner: guide 'stop' button was big, off-style and covered titles. Now a small glass chip (red square + 'עצירה', 6 languages) that moves on each screen to a free spot: no button or text under it, away from the caption and the hand | ⏳ |
+| R-218 | 2026-10-23 | release/stable.txt | Run 218 (M-311) released to everyone | ✅ |
