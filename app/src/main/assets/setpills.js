@@ -48,7 +48,24 @@
       left:16px!important;bottom:calc(16px + env(safe-area-inset-bottom,0px))!important;margin:0!important;z-index:30!important}
     html body #settings-page:has(.set-tile.open) .settings-hero > .close-3d.mt-backbtn{display:none!important}
     html body #settings-page .set-grid.set-grid{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))!important}
-    html.lowvision body #settings-page .set-grid.set-grid{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))!important}`;
+    html.lowvision body #settings-page .set-grid.set-grid{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))!important}
+    /* M-286 (owner): the capsules are full, clear glass: the tile colour is a see-through body, the symbol floats inside it,
+       a glass coat with a bright shine lies on top, and every capsule slowly turns round itself while a gleam sweeps over the glass */
+    ${S} .set-ico.sp-on > .mt-glint{display:none!important}
+    ${S} .sp-pill{opacity:.5;background:linear-gradient(90deg,rgba(0,0,0,.35) 0,rgba(0,0,0,0) 18%,rgba(0,0,0,0) 82%,rgba(0,0,0,.35) 100%),var(--sp-bg,linear-gradient(#64748b,#334155))!important;animation:spRoll var(--sp-r,22s) linear infinite!important;animation-delay:var(--sp-dl,0s)!important;
+      box-shadow:inset 0 -8px 14px rgba(0,0,0,.35),inset 0 6px 12px rgba(255,255,255,.5),0 0 0 2px rgba(255,255,255,.95),0 10px 16px -4px rgba(0,0,0,.7)!important}
+    ${S} .sp-pill::after{display:none}
+    ${S} .sp-glass{position:absolute;left:50%;top:50%;right:auto;z-index:3;pointer-events:none;width:calc(var(--sp-o) * 1.3);height:calc(var(--sp-o) * .64);border-radius:999px;
+      background:linear-gradient(180deg,rgba(255,255,255,.8) 0,rgba(255,255,255,.22) 20%,rgba(255,255,255,0) 42%,rgba(255,255,255,0) 72%,rgba(255,255,255,.18) 92%,rgba(255,255,255,.35) 100%),
+        linear-gradient(100deg,rgba(255,255,255,0) 38%,rgba(255,255,255,.65) 50%,rgba(255,255,255,0) 62%) no-repeat;
+      background-size:100% 100%,260% 100%;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75),inset 0 0 12px rgba(255,255,255,.35);
+      transform:translate(-50%,-50%) rotate(-24deg);will-change:transform;animation:spRoll var(--sp-r,22s) linear infinite,spSheen 4.2s ease-in-out infinite;animation-delay:var(--sp-dl,0s)}
+    ${S} .sp-sym{z-index:2;filter:drop-shadow(0 2px 2px rgba(0,0,0,.5)) drop-shadow(0 0 8px rgba(255,255,255,.5))!important}
+    @keyframes spRoll{0%{transform:translate(-50%,-50%) rotate(-24deg)}100%{transform:translate(-50%,-50%) rotate(336deg)}}
+    @keyframes spSheen{0%{background-position:0 0,130% 0}55%,100%{background-position:0 0,-30% 0}}
+    ${S} > .set-tile:nth-child(3n+1){--sp-r:24s}${S} > .set-tile:nth-child(3n+2){--sp-r:20s}${S} > .set-tile:nth-child(3n){--sp-r:27s}${S} > .set-tile:nth-child(4n){--sp-r:22s}
+    html.lowvision ${S} .sp-glass{animation:none}
+    @media (prefers-reduced-motion: reduce){${S} .sp-glass{animation:none}}`;
     document.head.appendChild(css);
 
     function wrap() {
@@ -59,7 +76,8 @@
             const sym = document.createElement('span'); sym.className = 'sp-sym';
             while (o.firstChild) sym.appendChild(o.firstChild);
             const p = document.createElement('span'); p.className = 'sp-pill'; p.setAttribute('aria-hidden', 'true');
-            o.append(p, sym); o.classList.add('sp-on');
+            const gl = document.createElement('span'); gl.className = 'sp-glass'; gl.setAttribute('aria-hidden', 'true'); // M-286: the clear glass coat over the symbol
+            o.append(p, sym, gl); o.classList.add('sp-on');
         });
     }
     // the tilted capsule is taller than its box: shrink every capsule a little until no tile spills into the next row

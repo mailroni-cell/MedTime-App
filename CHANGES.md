@@ -323,3 +323,5 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-281 | 2026-10-23 | homelayout.js | Owner: the tour hand is full size like the other symbols, alive (squash, stretch, bend, taps) with the same glow | ⏳ |
 | M-282 | 2026-10-23 | homelayout.js | Owner: the camera symbol has the same glow as the others | ⏳ |
 | M-283 | 2026-10-23 | homelayout.js | Owner: greeting has no frame, soft handwriting like the name, floats slowly as in space | ⏳ |
+| R-209 | 2026-10-23 | release/stable.txt | Run 209 (M-277..M-283) released to everyone | ✅ |
+| M-286 | 2026-10-23 | setpills.js | Owner: settings capsules are clear tinted glass, the symbol inside, a glass coat with a sweeping shine, each slowly turning round itself | ⏳ |
