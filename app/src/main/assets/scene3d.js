@@ -164,6 +164,7 @@
     ring.rotation.x = -Math.PI / 2;
     ring.position.y = -6.45;
     scene.add(ring);
+    ring.visible = false; // M-341 (owner): the glowing arc above the bottom buttons is gone (a text line in homelayout.js instead)
 
     // ---- materials ----
     const glossy = (color, extra) => new THREE.MeshPhysicalMaterial(Object.assign({

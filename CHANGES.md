@@ -387,3 +387,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-338 | 2026-10-23 | homelayout.js | Owner: home symbols swapped: top row תורים לרופא, מדדים, בדיקת תרופה; second row התזכורות שלי, שלווה, הדרכה | ⏳ |
 | M-339 | 2026-10-23 | homelayout.js | Owner: no appointment badge at all on the 'תורים לרופא' symbol (when-pill hidden too) | ⏳ |
 | M-340 | 2026-10-23 | homelayout.js | Owner: no picture next to the greeting; greeting in warm soft peach, name warm amber, dark edge so it reads on any background | ⏳ |
+| M-341 | 2026-10-23 | homelayout.js, scene3d.js | Owner: the glowing arc (3D floor ring) above the bottom buttons removed; instead one quiet text line, no frame/animation: last measurement from מדדים (coloured by range, today/yesterday/N days), or a short hint when none (6 languages) | ⏳ |
