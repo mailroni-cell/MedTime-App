@@ -45,7 +45,7 @@ $nextDrive  = Get-Date
 $nextWeb = Get-Date
 # Docs sync (owner 2026-10-22): the project docs on GitHub main are copied to this folder every 5 minutes, so the PC always has the latest HANDOFF
 $rawBase  = 'https://raw.githubusercontent.com/mailroni-cell/MedTime-App/main/'
-$docFiles = @{ 'handoff/HANDOFF.md' = 'HANDOFF.md'; 'STATE.md' = 'docs\STATE.md'; 'CHANGES.md' = 'docs\CHANGES.md'; 'CLAUDE.md' = 'docs\CLAUDE.md'; 'handoff/project-memory.md' = 'docs\project-memory.md' }
+$docFiles = @{ 'handoff/HANDOFF.md' = 'HANDOFF.md'; 'STATE.md' = 'docs\STATE.md'; 'CHANGES.md' = 'docs\CHANGES.md'; 'CLAUDE.md' = 'docs\CLAUDE.md'; 'handoff/project-memory.md' = 'docs\project-memory.md'; 'handoff/continue.ps1' = 'continue.ps1' }
 $nextDocs = Get-Date
 $hashFor = ''; $hashVal = ''; $lastWebErr = ''
 $myTime = (Get-Item $PSCommandPath).LastWriteTime
@@ -102,6 +102,20 @@ while ($true) {
           }
         } catch { }
       }
+      # M-319: one desktop shortcut "MedTime - continue" (copies the start prompt for the second Claude account)
+      try {
+        $lnk = Join-Path ([Environment]::GetFolderPath('Desktop')) 'MedTime - continue.lnk'
+        $cps = Join-Path $dir 'continue.ps1'
+        if ((Test-Path $cps) -and -not (Test-Path $lnk)) {
+          $sc = (New-Object -ComObject WScript.Shell).CreateShortcut($lnk)
+          $sc.TargetPath = 'powershell.exe'
+          $sc.Arguments = '-NoProfile -ExecutionPolicy Bypass -File "' + $cps + '"'
+          $sc.WorkingDirectory = $dir
+          $sc.IconLocation = 'shell32.dll,134'
+          $sc.Save()
+          Log 'SHORTCUT CREATED MedTime - continue'
+        }
+      } catch { }
     }
     # M-144: quick web updates are checked every 15 seconds (APK builds stay every 60 s)
     if ((Get-Date) -ge $nextWeb) {

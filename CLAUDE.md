@@ -24,6 +24,7 @@ Every new rule the owner sets is added here right away.
 - Fixes (owner rule 2026-10-21): small fixes are done quickly and collected into ONE push = one build; do not build again for every small fix, and do not spend long on checks for a fix. Docs-only commits use [skip ci].
 
 - PC FOLDER (owner rule 2026-10-22, every project): all PC files of a project live in ONE folder under C:\Projects. MedTime: C:\Projects\MedTime (watcher, log, HANDOFF, images).
+- AUTO HANDOFF (owner 2026-10-23, standing rule): after every batch of changes Claude updates handoff/HANDOFF.md (its LAST fenced block is always the Hebrew start prompt) and pushes, without asking. The PC gets it by itself (docs sync), and the desktop shortcut "MedTime - continue" (handoff/continue.ps1, M-319) copies that start prompt to the clipboard, opens claude.ai and HANDOFF.md. If a permanent permission is ever needed for this, ask Roni once.
 - DOCS AUTO-SYNC (owner 2026-10-22): the PC watcher downloads handoff/HANDOFF.md (to C:\Projects\MedTime\HANDOFF.md) and STATE.md, CHANGES.md, CLAUDE.md, project-memory.md (to C:\Projects\MedTime\docs\) from GitHub main every 5 minutes (log line 'DOCS UPDATED'). So pushing the docs to main is enough; no manual copy to the PC needed. Private files (testers.csv) never go to the public repo; copy them to the PC directly.
 
 ## Communication
