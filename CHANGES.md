@@ -331,3 +331,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-289 | 2026-10-23 | homelayout.js | Owner: next reminder time is written on the 📋 paper itself and sways with it | ⏳ |
 | M-290 | 2026-10-23 | homelayout.js | Owner: tour hand moves away from its neighbour (left in Hebrew) | ⏳ |
 | M-291 | 2026-10-23 | homelayout.js | Owner: all menu symbols higher, more room above the bottom row (bottom row unchanged) | ⏳ |
+| R-211 | 2026-10-23 | release/stable.txt | Run 211 (M-289..M-291) released to everyone | ✅ |
