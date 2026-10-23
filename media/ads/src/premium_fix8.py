@@ -120,11 +120,11 @@ spec = nd.binary_dilation(spec, disk(2)) & zone & ~((ci2.min(2) > 170))
 img[spec] = fill[np.clip(np.nonzero(spec)[0] - Y0, 0, Y1-Y0-1), np.clip(np.nonzero(spec)[1] - X0, 0, X1-X0-1)]
 
 # ---- download text, bottom right, in the title's look (no QR) ----
-fhe = ImageFont.truetype(fd + '/fredoka-hebrew-700-normal.ttf', 40)
-fla = ImageFont.truetype(fd + '/fredoka-latin-700-normal.ttf', 40)
-flaB = ImageFont.truetype(fd + '/fredoka-latin-700-normal.ttf', 49)   # the address, bigger
+fhe = ImageFont.truetype(fd + '/fredoka-hebrew-700-normal.ttf', 44)   # round 10: bigger
+fla = ImageFont.truetype(fd + '/fredoka-latin-700-normal.ttf', 44)
+flaB = ImageFont.truetype(fd + '/fredoka-latin-700-normal.ttf', 51)   # the address, bigger
 tl1, tl2 = 'להורדת האפליקציה', 'medtime.pages.dev'   # the ':' comes from the Latin font (not in the Hebrew one)
-cxT, yT1, yT2 = 856, 1052, 1100
+cxT, yT1, yT2 = 842, 1046, 1098
 def tmask(t, f, y, sw, rtl):
     L = Image.new('L', (W, H), 0); dd_ = ImageDraw.Draw(L)
     w_ = dd_.textlength(t, font=f, direction='rtl') if rtl else dd_.textlength(t, font=f)
@@ -141,15 +141,9 @@ lines_ = [(tl1, fhe, yT1, True), (tl2, flaB, yT2, False)]
 red_o = np.maximum.reduce([tmask(*l_[:3], 3, l_[3]) for l_ in lines_])
 dark_o = np.maximum.reduce([tmask(*l_[:3], 1, l_[3]) for l_ in lines_])
 body = np.maximum.reduce([tmask(*l_[:3], 0, l_[3]) for l_ in lines_])
-img = img*(1 - 0.45*np.clip(cv2.GaussianBlur(red_o, (0, 0), 3)*2, 0, 1))[..., None]   # small soft shadow
 img = over(img, (255, 42, 74), red_o)
 img = over(img, (10, 22, 52), dark_o)
-grad = np.zeros((H, W, 3), np.float32)
-for y_ in range(H):
-    for (yy_, h_) in ((yT1, 48), (yT2, 58)):
-        if yy_ <= y_ < yy_ + h_:
-            t_ = (y_ - yy_) / h_
-            grad[y_] = np.array([150, 236, 255])*(1-t_) + np.array([20, 120, 255])*t_ if t_ < 1 else 0
+grad = np.ones((H, W, 3), np.float32)*np.array([45, 196, 255], np.float32)   # round 10: one glowing blue inside, no halo
 img = img*(1 - body[..., None]) + grad*body[..., None]
 
 # ---- round stamp: erase the old one, draw a new one in the same layout, flat ink colour, sharp ----
@@ -189,19 +183,23 @@ for ad in (52, 76, 100):
 cen = Image.new('L', (SZ, SZ), 0); dc = ImageDraw.Draw(cen)
 fB = ImageFont.truetype(fd + '/rubik-hebrew-800-normal.ttf', 58*K); fC = ImageFont.truetype(fd + '/rubik-hebrew-800-normal.ttf', 20*K)
 fL = ImageFont.truetype(fd + '/rubik-latin-800-normal.ttf', 20*K)
+cenG = Image.new('L', (SZ, SZ), 0); dg = ImageDraw.Draw(cenG)   # round 10: "חינם" in fluorescent green
 for t_, f_, y_ in (('חינם', fB, -42), ('רק בהשקה', fC, 24)):
     w_ = dc.textlength(t_, font=f_, direction='rtl')
     extra = dc.textlength('!', font=fL) if f_ is fC else 0
     x_ = c0 - (w_ + extra)/2 + extra
-    dc.text((x_, c0 + y_*K), t_, font=f_, fill=255, direction='rtl')
+    (dg if t_ == 'חינם' else dc).text((x_, c0 + y_*K), t_, font=f_, fill=255, direction='rtl')
     if extra: dc.text((x_ - extra, c0 + y_*K), '!', font=fL, fill=255)
 cen = cen.rotate(10, resample=Image.BICUBIC, center=(c0, c0))
+cenG = cenG.rotate(10, resample=Image.BICUBIC, center=(c0, c0)).rotate(8, resample=Image.BICUBIC, center=(c0, c0)).resize((2*R0, 2*R0), Image.LANCZOS)
 st = Image.fromarray(np.maximum(np.array(st), np.array(cen)))
 st = st.rotate(8, resample=Image.BICUBIC, center=(c0, c0))   # the whole stamp a little tilted
 st = st.resize((2*R0, 2*R0), Image.LANCZOS)
 sa = np.zeros((H, W), np.float32); sa[SY-R0:SY+R0, SC-R0:SC+R0] = np.array(st).astype(np.float32)/255
 INK = (232, 30, 58)
 img = over(img, INK, sa)
+ga = np.zeros((H, W), np.float32); ga[SY-R0:SY+R0, SC-R0:SC+R0] = np.array(cenG).astype(np.float32)/255
+img = over(img, (57, 255, 106), ga)
 im_ = Image.fromarray(np.clip(img, 0, 255).astype(np.uint8))
 ImageDraw.Draw(im_).rectangle((0, 0, W-1, H-1), outline=(15, 184, 255), width=4)   # blue edge frame
 im_.save(out)
