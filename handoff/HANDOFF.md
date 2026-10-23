@@ -162,3 +162,7 @@
 הגרסה הראשית היא MedTime המלאה (הורדה ישירה). אחרי כל סבב: בנייה מלאה ושחרור לכולם (release/stable.txt). כל הודעה אליי נפתחת ונסגרת בסרגל התקדמות צבעוני, ובסוף טיפ ייעול. גרסת Play (MyTime) מטופלת בנפרד.
 כל הקבצים שלי במחשב בתיקייה אחת: C:\Projects\MedTime.
 ```
+
+## 27. 2026-10-23 17:15Z - M-332, M-333
+- M-332 (quick web update, live): home screen hides the appointment count on "תורים לרופא"; greeting and add-reminder cross raised together. Waiting for Roni's check on the phone. The small "when" pill on the symbol stayed.
+- M-333: /ad/ preview for WhatsApp = docs/ad/og.jpg (1200x630, 100KB; WhatsApp drops previews over ~300KB). Personal group invite text: /mnt/project-files/medtime-share/invite_group_he.txt, link https://medtime.pages.dev/ad/?v=2 (?v=2 skips WhatsApp's old cached preview).
