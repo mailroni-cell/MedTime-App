@@ -334,3 +334,8 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | R-211 | 2026-10-23 | release/stable.txt | Run 211 (M-289..M-291) released to everyone | ✅ |
 | M-292 | 2026-10-23 | homelayout.js | Owner: when every reminder due today is taken, a big green ✓ is drawn on the 📋 paper instead of the time | ⏳ |
 | R-212 | 2026-10-23 | release/stable.txt | Run 212 (M-292) released to everyone | ✅ |
+| M-293 | 2026-10-23 | tools/scout_media.py | Owner: scout more real sounds (sea shore, creek, fireplace, night forest, morning forest, gentle rain, om) and beautiful real videos (aurora, nebula, earth from space, jellyfish, beach, snowfall, koi, fog, sunset) | ⏳ |
+| M-294 | 2026-10-23 | setpills.js | Owner: settings symbols turn inside their glass capsules (no longer cut off), the words under them float in the same rhythm | ⏳ |
+| M-295 | 2026-10-23 | subst.js | Owner: medicine check screens bigger and more readable; while the keyboard is up the bottom buttons step aside, once letters are typed the hint and scan card step aside too | ⏳ |
+| M-296 | 2026-10-23 | relax.js | Owner: the OM meditation sound had crackles: tones were above the clipping limit and a 2 s noise loop clicked; now soft fade-in, a limiter, no noise | ⏳ |
+| M-297 | 2026-10-23 | relax.js | Owner: plain-looking 3D worlds removed (snowy forest, fireflies, breathing orb); a new "time tunnel" world, 6 languages | ⏳ |

@@ -61,6 +61,13 @@
       background-size:100% 100%,260% 100%;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75),inset 0 0 12px rgba(255,255,255,.35);
       transform:translate(-50%,-50%) rotate(-24deg);will-change:transform;animation:spRoll var(--sp-r,22s) linear infinite,spSheen 4.2s ease-in-out infinite;animation-delay:var(--sp-dl,0s)}
     ${S} .sp-sym{z-index:2;filter:drop-shadow(0 2px 2px rgba(0,0,0,.5)) drop-shadow(0 0 8px rgba(255,255,255,.5))!important}
+    /* M-294 (owner: the symbols looked cut off from the turning capsules, the words stood still): the symbol sits inside the glass and turns with it,
+       and the words under it float gently in the same rhythm */
+    ${S} .sp-sym{animation:spRollS var(--sp-r,22s) linear infinite!important;animation-delay:var(--sp-dl,0s)!important;transform-origin:50% 50%}
+    @keyframes spRollS{0%{transform:rotate(-24deg)}100%{transform:rotate(336deg)}}
+    ${S} > .set-tile:not(.open) .set-tile-head .set-txt{animation:spWords 5.5s ease-in-out infinite;animation-delay:var(--sp-dl,0s);will-change:transform}
+    @keyframes spWords{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+    html.lowvision ${S} .sp-sym,html.lowvision ${S} > .set-tile .set-tile-head .set-txt{animation:none!important}
     @keyframes spRoll{0%{transform:translate(-50%,-50%) rotate(-24deg)}100%{transform:translate(-50%,-50%) rotate(336deg)}}
     @keyframes spSheen{0%{background-position:0 0,130% 0}55%,100%{background-position:0 0,-30% 0}}
     ${S} > .set-tile:nth-child(3n+1){--sp-r:24s}${S} > .set-tile:nth-child(3n+2){--sp-r:20s}${S} > .set-tile:nth-child(3n){--sp-r:27s}${S} > .set-tile:nth-child(4n){--sp-r:22s}

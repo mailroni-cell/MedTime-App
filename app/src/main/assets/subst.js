@@ -153,6 +153,27 @@
     .sb-scan::before{content:'';position:absolute;left:50%;top:10px;width:118px;height:28px;transform:translateX(-50%);border-radius:4px;background:#fff
       repeating-linear-gradient(90deg,#0f172a 0 2px,transparent 2px 4px,#0f172a 4px 7px,transparent 7px 9px,#0f172a 9px 10px,transparent 10px 13px) content-box;padding:3px 6px;box-sizing:border-box}
     .sb-scan:active{transform:translateY(4px);box-shadow:inset 0 2px 3px rgba(255,255,255,.45),0 1px 0 #0c4a6e}
+    /* M-295 (owner: the medicine screens were not big and readable enough; the keyboard hid "Cancel"):
+       bigger letters everywhere, and while typing the hint, the scan card and the bottom buttons step aside so the results have the room */
+    .sb-sh .sb-t{font-size:1.65rem}
+    .sb-sh .sb-h{font-size:1.1rem;line-height:1.4}
+    .sb-sh .sb-in{font-size:1.4rem;padding:14px 16px}
+    .sb-sh .sb-it{font-size:1.3rem;padding:13px 14px}
+    .sb-sh .sb-it small{font-size:1rem}
+    .sb-sh .sb-msg{font-size:1.15rem}
+    .sb-sh .sb-res{font-size:1.35rem}
+    .sb-sh .sb-row{font-size:1.15rem}.sb-sh .sb-row b{font-size:1rem}
+    .sb-sh .sb-sub{font-size:1.05rem}
+    .sb-sh .sb-dh{font-size:1.35rem}
+    .sb-sh .sb-dict p{font-size:1.35rem;line-height:1.55}
+    .sb-sh .sb-dict .sb-warn{font-size:1.2rem}
+    .sb-sh .sb-off p{font-size:1.15rem;line-height:1.5}.sb-sh .sb-off b{font-size:1rem}
+    .sb-sh .sb-why{font-size:1.2rem}
+    .sb-sh .sb-disc{font-size:1rem}
+    .sb-sh .sb-btns button{font-size:1.25rem;min-height:58px}
+    .sb-sh.sb-typing :is(.sb-h,.sb-scan){display:none!important}
+    .sb-sh.sb-kb .sb-btns{display:none!important}
+    .sb-sh.sb-typing .sb-list{margin-top:8px}
     .sb-list{overflow:auto;margin-top:10px;flex:1;min-height:120px}
     .sb-it{display:block;width:100%;text-align:start;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;color:#fff;padding:10px 12px;margin-bottom:8px;font-size:1.05rem;font-weight:800}
     .sb-it small{display:block;font-weight:500;color:#a5b4fc;font-size:.85rem;margin-top:2px;direction:ltr;text-align:start}
@@ -223,6 +244,9 @@
             s.sh.querySelector('.sb-t').textContent = title;
             s.sh.querySelector('.sb-h').textContent = tx(canScan() ? 'hintScan' : 'hint');
             const inp = s.sh.querySelector('.sb-in'), list = s.sh.querySelector('.sb-list'), btns = s.sh.querySelector('.sb-btns');
+            // M-295: keyboard open = the bottom buttons step aside; once letters are typed the hint and the scan card step aside too (they come back when the box is empty)
+            const kb = on => { s.sh.classList.toggle('sb-kb', on || !!inp.value.trim()); s.sh.classList.toggle('sb-typing', !!inp.value.trim()); };
+            inp.addEventListener('focus', () => kb(true)); inp.addEventListener('blur', () => kb(false)); inp.addEventListener('input', () => kb(true));
             s.onBack = () => { res(canBack ? 'back' : null); return canBack; };
             if (canScan()) {
                 const sc = document.createElement('button'); sc.type = 'button'; sc.className = 'sb-scan'; sc.textContent = tx('scan');

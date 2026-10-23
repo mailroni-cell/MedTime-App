@@ -67,6 +67,7 @@
         s_jelly: ['מדוזות במעמקים', 'قناديل البحر', 'Meduze', 'Méduses', 'Jellyfish deep', 'Глубина с медузами'],
         s_fireflies: ['גחליליות', 'يراعات', 'Licurici', 'Lucioles', 'Fireflies', 'Светлячки'],
         s_sunset: ['שקיעה בים', 'غروب على البحر', 'Apus pe mare', 'Coucher de soleil', 'Sea sunset', 'Закат над морем'],
+        s_tunnel: ['מנהרת זמן', 'نفق الزمن', 'Tunelul timpului', 'Tunnel du temps', 'Time tunnel', 'Тоннель времени'],
         s_nebula: ['ערפילית', 'سديم', 'Nebuloasă', 'Nébuleuse', 'Nebula', 'Туманность'],
         a_chimes: ['פעמוני רוח', 'أجراس الرياح', 'Clopoței de vânt', 'Carillon', 'Wind chimes', 'Музыка ветра'],
         a_wind: ['רוח', 'رياح', 'Vânt', 'Vent', 'Wind', 'Ветер'],
@@ -117,7 +118,8 @@
     const li = () => Math.max(0, L5.indexOf(typeof LANG === 'string' ? LANG : 'he'));
     const tx = k => (TX[k] || [k])[li()];
 
-    const SCENES = [['v_ocean', '🌊'], ['v_forest', '🌲'], ['v_waterfall', '💦'], ['v_rain', '🌧️'], ['v_city', '🌃'], ['v_stars', '🌌'], ['v_lake', '🏞️'], ['v_mountain', '🏔️'], ['v_underwater', '🐠'], ['v_flamingo', '🦩'], ['v_clouds', '🌆'], ['aurora', '🌌'], ['ocean', '🌊'], ['galaxy', '🌀'], ['lanterns', '🏮'], ['orb', '🔮'], ['snow', '🌲'], ['jelly', '🪼'], ['fireflies', '✨'], ['sunset', '🌅'], ['nebula', '☁️']]; // M-196: real videos first (assets/video), then the 3D worlds
+    const SCENES = [['v_ocean', '🌊'], ['v_forest', '🌲'], ['v_waterfall', '💦'], ['v_rain', '🌧️'], ['v_city', '🌃'], ['v_stars', '🌌'], ['v_lake', '🏞️'], ['v_mountain', '🏔️'], ['v_underwater', '🐠'], ['v_flamingo', '🦩'], ['v_clouds', '🌆'], ['aurora', '🌌'], ['ocean', '🌊'], ['galaxy', '🌀'], ['lanterns', '🏮'], ['jelly', '🪼'], ['sunset', '🌅'], ['nebula', '☁️'], ['tunnel', '🌀']]; // M-297 (owner): the plain-looking worlds (snowy forest, fireflies, breathing orb) are gone; a time tunnel is new
+    /* removed worlds: orb, snow, fireflies */
     const SOUNDS = [['none', '🔇'], ['waterfall', '💦'], ['lake', '🏞️'], ['tent', '⛺'], ['river', '🐦'], ['birds', '🐤'], ['jungle', '🦜'], ['frogs', '🐸'], ['owls', '🦉'], ['cave', '💧'], ['leaves', '🍂'], ['crickets', '🦗'], ['thunder', '🌩️'], ['whales', '🐋'], ['cat', '🐈'], ['fountain', '⛲'], ['tibet', '🛎️'], ['city', '🏙️'], ['cafe', '☕'], ['train', '🚆'], ['bowls', '🔔'], ['drone', '🕉️'], ['chimes', '🎐'], ['zen', '🎋'], ['rain', '🌧️'], ['ocean', '🌊'], ['forest', '🌲'], ['night', '🦗'], ['fire', '🔥'], ['wind', '🍃'], ['storm', '⛈️'], ['underwater', '🫧'], ['space', '🪐'], ['synth', '🎹']]; // M-196: real recordings first
     const TIMERS = [0, 10, 20, 30, 45, 60];
     const BREATH = { inh: 7, hold: 7, exh: 8 }; // seconds; M-191: matches the slow spoken lines (M-176 was 5 / 4 / 7)
@@ -497,25 +499,20 @@
         if (Math.random() < 0.3) setTimeout(() => open && bowl(f * 1.5, 0.45), 900 + Math.random() * 900);
         synthT = setTimeout(bowls, 6500 + Math.random() * 5500);
     }
+    // M-296 (owner: the OM had crackles): the sum of the tones was louder than the speaker allows (clipping) and the 2 s noise loop
+    // clicked at every turn. Now the tones stay well under the limit, start with a soft fade, and the click-making noise is gone
     function drone() {
-        const t = ac.currentTime, bus = ac.createGain(); bus.gain.value = 0;
-        bus.gain.linearRampToValueAtTime(0.5, t + 4); bus.connect(master); bus.connect(wet); nodes.push(bus);
-        [[108, 'sine', 0.5], [162, 'sine', 0.22], [216, 'triangle', 0.14], [54, 'sine', 0.3], [324, 'sine', 0.06]].forEach(([f, type, a], i) => {
+        const t = ac.currentTime, bus = ac.createGain(); bus.gain.setValueAtTime(0.0001, t);
+        bus.gain.exponentialRampToValueAtTime(0.32, t + 5);
+        const lim = ac.createDynamicsCompressor(); lim.threshold.value = -12; lim.ratio.value = 12; lim.attack.value = 0.01; lim.release.value = 0.4;
+        bus.connect(lim); lim.connect(master); lim.connect(wet); nodes.push(bus, lim);
+        [[108, 0.42], [162, 0.16], [216, 0.09], [54, 0.22], [324, 0.035]].forEach(([f, a], i) => {
             const o = ac.createOscillator(), g = ac.createGain(), lfo = ac.createOscillator(), lg = ac.createGain();
-            o.type = type; o.frequency.value = f + (i % 2 ? 0.4 : -0.3); g.gain.value = a;
-            lfo.frequency.value = 0.05 + i * 0.023; lg.gain.value = a * 0.45; lfo.connect(lg); lg.connect(g.gain);
-            o.connect(g); g.connect(bus); o.start(); lfo.start(); nodes.push(o, lfo);
+            o.type = 'sine'; o.frequency.value = f + (i % 2 ? 0.4 : -0.3); g.gain.value = a * 0.75;
+            lfo.type = 'sine'; lfo.frequency.value = 0.05 + i * 0.023; lg.gain.value = a * 0.25; lfo.connect(lg); lg.connect(g.gain);
+            o.connect(g); g.connect(bus); o.start(t); lfo.start(t); nodes.push(o, lfo);
         });
-        // soft breathing air
-        const len = ac.sampleRate * 2, nb = ac.createBuffer(1, len, ac.sampleRate), d = nb.getChannelData(0);
-        for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
-        const n = ac.createBufferSource(); n.buffer = nb; n.loop = true;
-        const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 420;
-        const ng = ac.createGain(); ng.gain.value = 0.05;
-        const lfo = ac.createOscillator(), lg = ac.createGain(); lfo.frequency.value = 1 / BP; lg.gain.value = 0.045;
-        lfo.connect(lg); lg.connect(ng.gain);
-        n.connect(lp); lp.connect(ng); ng.connect(bus); n.start(); lfo.start(); nodes.push(n, lfo);
-        synthT = setTimeout(function chime() { if (!open) return; bowl(216, 0.35); synthT = setTimeout(chime, 22000 + Math.random() * 15000); }, 9000);
+        synthT = setTimeout(function chime() { if (!open) return; bowl(216, 0.3); synthT = setTimeout(chime, 22000 + Math.random() * 15000); }, 9000);
     }
     // M-068: wind chimes: soft random bell notes of a pentatonic scale
     function chimes() {
@@ -967,6 +964,21 @@
                 cl.forEach(s => { s.material.rotation = t * 0.02 + s.userData.ph; s.position.y += Math.sin(t * 0.1 + s.userData.ph) * 0.01; });
                 star.scale.setScalar(13 + 2 * Math.sin(t * 1.3)); camera.position.z = 30 + Math.sin(t * 0.05) * 8;
             } };
+        },
+        // M-297 (owner): a time tunnel: a slow flight through soft glowing rings of light (one full-screen picture, light on the phone)
+        tunnel() {
+            const m = new THREE.ShaderMaterial({ uniforms: { uT: { value: 0 }, uR: { value: new THREE.Vector2(1, 1) } }, depthWrite: false, depthTest: false,
+                vertexShader: 'void main(){ gl_Position=vec4(position.xy,0.,1.); }',
+                fragmentShader: 'uniform float uT; uniform vec2 uR; ' + NOISE +
+                    'void main(){ vec2 p=(gl_FragCoord.xy-0.5*uR)/uR.y; p+=0.06*vec2(sin(uT*0.13),cos(uT*0.11)); float r=length(p)+1e-3, a=atan(p.y,p.x);' +
+                    'float z=0.32/r+uT*0.22; vec2 ca=vec2(cos(a),sin(a));' +
+                    'float n=fbm(ca*1.6+vec2(z*1.1,-z*0.6)); float n2=noise(ca*5.+vec2(z*3.,z*2.));' +
+                    'float rings=pow(0.5+0.5*sin(z*14.),6.);' +
+                    'vec3 c1=vec3(0.36,0.16,0.85), c2=vec3(0.08,0.7,1.0), c3=vec3(1.0,0.42,0.78); vec3 c=mix(c1,c2,smoothstep(0.3,0.75,n)); c=mix(c,c3,smoothstep(0.62,0.95,n2)*0.6);' +
+                    'float lum=(0.25+0.9*n)*(0.55+0.45*n2)+rings*0.55*n; c*=lum*smoothstep(0.02,0.45,r)*1.35;' +
+                    'c+=vec3(0.85,0.8,1.)*0.0035/(r*r+0.006); c*=1.-smoothstep(0.75,1.3,r)*0.35; gl_FragColor=vec4(c,1.); }' });
+            const q = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), m); q.frustumCulled = false; scene.add(q);
+            return { update(t) { m.uniforms.uT.value = t; const c = renderer.domElement; m.uniforms.uR.value.set(c.width, c.height); } };
         }
     });
 
