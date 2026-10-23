@@ -346,3 +346,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-304 | 2026-10-23 | relax.js, tools/media_pick.json | Owner: three more real nature sounds: waves on the shore, forest creek, birds in the garden, 6 languages | ⏳ |
 | M-305 | 2026-10-23 | firstaid.js | Owner: first aid tidier: glowing title, 101 as one big call, poison / emergency card / pharmacy as three tiles side by side, a 'what happened?' divider, topic cards with round symbol badges, odd last card centred | ⏳ |
 | M-306 | 2026-10-23 | relax.js, tools/make_media.py, tools/media_pick.json | Owner: five more real videos, each one unbroken shot with a softer 4 s loop fade, 720x1280: northern lights, evening waves on rocks, sea cliffs at sunset, turquoise bay, real jellyfish (6 languages) | ⏳ |
+| R-213 | 2026-10-23 | release/stable.txt | Run 213 (M-293..M-306) released to everyone | ✅ |
