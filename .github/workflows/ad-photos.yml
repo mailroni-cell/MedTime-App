@@ -1,0 +1,21 @@
+name: ad-photos
+on:
+  workflow_dispatch:
+    inputs:
+      queries:
+        description: 'JSON {slug: query}'
+        required: true
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install pillow
+      - run: python tools/ad_photos.py '${{ inputs.queries }}'
+      - name: Push to branch adimg
+        run: |
+          cd out && git init -q -b adimg && git add -A
+          git -c user.name=bot -c user.email=bot@users.noreply.github.com commit -qm "ad photos"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" adimg
