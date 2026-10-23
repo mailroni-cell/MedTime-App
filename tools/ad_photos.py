@@ -3,11 +3,30 @@
 import json, os, sys, io, urllib.request, urllib.parse
 from PIL import Image, ImageDraw
 Q = json.loads(sys.argv[1])
+IDS = Q.pop('_unsplash', []) if isinstance(Q, dict) else []
 OUT = 'out'
 LOG = []
 UA = {'User-Agent': 'MedTime-ad-photos/1.0 (github.com/mailroni-cell/MedTime-App)'}
 def get(url, t=40):
     return urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=t).read()
+import re
+def unsplash_ids():
+    d = os.path.join(OUT, 'u'); os.makedirs(d, exist_ok=True); meta = []
+    for pid in IDS:
+        im = None
+        for url in (f'https://unsplash.com/photos/{pid}/download?force=true&w=2400', f'https://unsplash.com/photos/{pid}/download'):
+            try: im = Image.open(io.BytesIO(get(url, 60))).convert('RGB'); break
+            except Exception as e: LOG.append(f'U {pid} {url[-20:]} {e}')
+        if im is None:
+            try:
+                h = get(f'https://unsplash.com/photos/{pid}').decode('utf8', 'ignore')
+                m = re.search(r'https://images\.unsplash\.com/photo-[\w-]+', h)
+                if m: im = Image.open(io.BytesIO(get(m.group(0) + '?w=2400&q=88&fm=jpg'))).convert('RGB')
+            except Exception as e: LOG.append(f'U page {pid} {e}')
+        if im is None: continue
+        im.thumbnail((2400, 2400)); im.save(os.path.join(d, f'{pid}.jpg'), quality=88); meta.append(pid); LOG.append(f'U ok {pid} {im.size}')
+    json.dump(meta, open(os.path.join(d, 'meta.json'), 'w'))
+if IDS: unsplash_ids()
 for slug, q in Q.items():
     d = os.path.join(OUT, slug); os.makedirs(d, exist_ok=True)
     res = []
