@@ -34,6 +34,14 @@ AUDIO = {
     'beach': ['ocean waves beach recording', 'sea waves sound', 'surf on beach'],
     'wind': ['wind in trees', 'wind forest ambience', 'wind blowing recording'],
     'campfire': ['campfire crackling', 'fire crackling sound', 'fireplace sound'],
+    # M-293 (owner: still more real sounds; the old "om" crackles)
+    'seashore': ['sea waves on shore recording', 'waves pebble beach', 'ocean surf sound'],
+    'creek': ['creek sound', 'babbling brook recording', 'forest stream sound'],
+    'fireplace': ['fireplace crackling recording', 'log fire crackle', 'burning firewood sound'],
+    'nightforest': ['night forest ambience', 'summer night ambience', 'night insects ambience'],
+    'morning': ['morning forest birds ambience', 'spring forest ambience', 'woodland birdsong ambience'],
+    'gentlerain': ['gentle rain recording', 'light rain sound', 'soft rain ambience'],
+    'om': ['om chanting', 'aum chant', 'om mantra chant'],
 }
 VIDEO = {
     'v_ocean': ['ocean waves video', 'waves beach video', 'sea waves'],
@@ -50,6 +58,16 @@ VIDEO = {
     'v_underwater': ['coral reef video', 'underwater video', 'fish reef'],
     'v_field': ['meadow wind video', 'wheat field wind', 'grass wind'],
     'v_mountain': ['mountains video', 'alps video', 'mountain landscape video'],
+    # M-293 (owner: only beautiful real views, as long as possible)
+    'v_aurora': ['aurora borealis timelapse', 'northern lights video', 'aurora australis timelapse'],
+    'v_nebula': ['hubble nebula zoom', 'nebula flythrough visualization', 'orion nebula zoom'],
+    'v_earth': ['earth from ISS timelapse', 'ISS night earth timelapse', 'earth from space video'],
+    'v_jelly': ['jellyfish aquarium video', 'jellyfish swimming video', 'moon jellyfish'],
+    'v_beach': ['tropical beach waves video', 'beach drone video', 'turquoise sea waves'],
+    'v_snowfall': ['snowfall forest video', 'snow falling slow motion', 'snowfall at night'],
+    'v_koi': ['koi pond video', 'koi fish swimming', 'goldfish pond'],
+    'v_fog': ['fog forest video', 'misty forest video', 'fog valley timelapse'],
+    'v_sunset': ['sunset sea timelapse', 'sunset ocean video', 'sunset timelapse beach'],
 }
 KEEP = 6
 LOG = []
