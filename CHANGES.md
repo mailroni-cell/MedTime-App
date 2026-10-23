@@ -327,3 +327,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-286 | 2026-10-23 | setpills.js | Owner: settings capsules are clear tinted glass, the symbol inside, a glass coat with a sweeping shine, each slowly turning round itself | ⏳ |
 | M-287 | 2026-10-23 | subst.js | Owner asked for barcode scanning in medicine check: it already existed (M-163, 3,160 of 4,756 registry medicines have a box barcode); now a big clear "📷 scan the barcode on the box" card with barcode stripes, 6 languages | ⏳ |
 | M-288 | 2026-10-23 | relax.js, tools/media_pick.json | Owner: more real nature sounds: rain on leaves, field cricket, rain with distant thunder (Wikimedia Commons, free licences), 6 languages | ⏳ |
+| R-210 | 2026-10-23 | release/stable.txt | Run 210 (M-286..M-288) released to everyone | ✅ |
