@@ -21,6 +21,7 @@
   .sub { text-align: center; color: var(--mut); margin: 0 0 22px; font-size: 1.05rem; }
   .dl { display: block; text-align: center; text-decoration: none; color: #fff; font-weight: 800; font-size: 1.35rem; padding: 18px 16px; border-radius: 18px;
         background: linear-gradient(135deg, #22c55e, #15803d); box-shadow: 0 6px 0 #14532d, 0 12px 28px rgba(34,197,94,.35); }
+  .dl.go { background: linear-gradient(90deg, #22c55e var(--p, 0%), #166534 var(--p, 0%)); font-size: 1.2rem; }
   .dl:active { transform: translateY(3px); box-shadow: 0 3px 0 #14532d; }
   .dl2 { display: block; text-align: center; color: var(--mut); margin: 14px 0 24px; font-size: .98rem; }
   ol { background: var(--card); border-radius: 18px; padding: 16px 18px; padding-inline-start: 40px; margin: 0 0 16px; line-height: 1.55; font-size: 1.08rem; }
@@ -76,6 +77,10 @@
     sub: ['תזכורות תרופות פשוטות וברורות', 'تذكيرات أدوية بسيطة وواضحة', 'Mementouri simple pentru medicamente', 'Rappels de médicaments simples et clairs', 'Simple, clear medicine reminders', 'Простые и понятные напоминания о лекарствах'],
     dl: ['⬇️ הורדת האפליקציה', '⬇️ تنزيل التطبيق', '⬇️ Descarcă aplicația', '⬇️ Télécharger l’application', '⬇️ Download the app', '⬇️ Скачать приложение'],
     dl2: ['ההורדה איטית? קישור חלופי (Google Drive)', 'التنزيل بطيء؟ رابط بديل (Google Drive)', 'Descărcare lentă? Link alternativ (Google Drive)', 'Téléchargement lent ? Lien alternatif (Google Drive)', 'Slow download? Alternative link (Google Drive)', 'Медленно качается? Запасная ссылка (Google Drive)'],
+    prep: ['⏳ מתחילים…', '⏳ نبدأ…', '⏳ Pornim…', '⏳ On commence…', '⏳ Starting…', '⏳ Начинаем…'],
+    prog: ['⬇️ מוריד… ', '⬇️ جارٍ التنزيل… ', '⬇️ Se descarcă… ', '⬇️ Téléchargement… ', '⬇️ Downloading… ', '⬇️ Загрузка… '],
+    done: ['✅ ירד! פותחים מההודעה למטה', '✅ تم! افتحه من الإشعار بالأسفل', '✅ Gata! Deschide din notificarea de jos', '✅ C’est fait ! Ouvrez depuis la notification', '✅ Done! Open it from the notification below', '✅ Готово! Откройте из уведомления внизу'],
+    alt: ['🔁 עוברים למקור חלופי…', '🔁 ننتقل إلى مصدر بديل…', '🔁 Trecem la o sursă alternativă…', '🔁 Passage à une source alternative…', '🔁 Switching to a backup source…', '🔁 Переключаемся на запасной источник…'],
     hint: ['כדאי לפתוח את הדף ב-Chrome 🙂', 'يُفضّل فتح الصفحة في Chrome 🙂', 'Cel mai bine deschide pagina în Chrome 🙂', 'Ouvrez de préférence la page dans Chrome 🙂', 'Best opened in Chrome 🙂', 'Лучше открыть страницу в Chrome 🙂'],
     trT: ['הטלפון ישאל אם מותר, וזה בסדר גמור', 'سيسأل الهاتف إن كان مسموحًا، وهذا طبيعي تمامًا', 'Telefonul va întreba dacă are voie, e perfect normal', 'Le téléphone demandera la permission, c’est tout à fait normal', 'Your phone will ask first, and that is perfectly fine', 'Телефон спросит разрешения, и это нормально'],
     trS: ['האפליקציה מגיעה ישירות מאיתנו ולא דרך חנות, אז הטלפון פשוט מוודא איתך. MedTime לא אוסף שום מידע, הכול נשמר רק אצלך.', 'التطبيق يصلك منّا مباشرة وليس من متجر، فالهاتف يتأكد منك فقط. MedTime لا يجمع أي معلومات، وكل شيء يبقى عندك.', 'Aplicația vine direct de la noi, nu dintr-un magazin, așa că telefonul doar verifică cu tine. MedTime nu colectează date, totul rămâne la tine.', 'L’application vient directement de nous et non d’un store, le téléphone vérifie donc avec vous. MedTime ne collecte aucune donnée, tout reste chez vous.', 'The app comes straight from us, not from a store, so the phone just checks with you. MedTime collects no data; everything stays on your phone.', 'Приложение приходит напрямую от нас, а не из магазина, поэтому телефон просто уточняет у вас. MedTime не собирает данные, всё остаётся у вас.'],
@@ -89,11 +94,12 @@
     ],
     sam: ['📱 בסמסונג, אם כתוב שההתקנה נחסמה: הגדרות ← אבטחה ופרטיות ← ‏"חוסם אוטומטי" ‏(Auto Blocker)‏ ← כיבוי. אחרי ההתקנה אפשר להדליק שוב.', '📱 في سامسونج، إذا ظهر أن التثبيت محظور: الإعدادات ← الأمان والخصوصية ← Auto Blocker ← إيقاف. بعد التثبيت يمكن تشغيله مجددًا.', '📱 Pe Samsung, dacă instalarea e blocată: Setări → Securitate și confidențialitate → Auto Blocker → oprit. După instalare îl poți porni din nou.', '📱 Sur Samsung, si l’installation est bloquée : Paramètres → Sécurité et confidentialité → Auto Blocker → désactiver. Vous pouvez le réactiver après.', '📱 On Samsung, if the install is blocked: Settings → Security and privacy → Auto Blocker → off. You can turn it back on afterwards.', '📱 На Samsung, если установка заблокирована: Настройки → Безопасность и конфиденциальность → Auto Blocker → выкл. После установки можно включить снова.']
   };
+  let LI = 0;
   function set(l) {
     const i = Math.max(0, L.indexOf(l));
-    document.documentElement.lang = L[i]; document.documentElement.dir = i < 2 ? 'rtl' : 'ltr';
+    LI = i; document.documentElement.lang = L[i]; document.documentElement.dir = i < 2 ? 'rtl' : 'ltr';
     document.getElementById('sub').textContent = T.sub[i];
-    document.getElementById('dl').textContent = T.dl[i];
+    if (!busy) document.getElementById('dl').textContent = T.dl[i];
     document.getElementById('dl2').textContent = T.dl2[i];
     ['hint', 'trT', 'trS', 'sam'].forEach(k => document.getElementById(k).textContent = T[k][i]);
     const PH = ['<div class="bar"><i></i></div><span style="font-size:1.5rem">📥</span>', '<div class="tg"></div>', '<div class="ok">✓</div>'];
@@ -103,6 +109,54 @@
       d.querySelector('b').textContent = st[0]; d.querySelector('span').textContent = st[1]; box.appendChild(d); });
     document.querySelectorAll('#langs button').forEach((b, k) => b.classList.toggle('on', k === i));
   }
+  // M-309: the green button downloads from a fast mirror in parts, 4 at a time, with a progress bar.
+  // A part that gets no data for 12 s is retried; if the mirror fails, the button switches to GitHub by itself.
+  const OWN = 'mailroni-cell/MedTime-App', RAW = 'https://raw.githubusercontent.com/' + OWN + '/';
+  const btn = document.getElementById('dl'), REL = btn.href;
+  let busy = false, file = null;
+  function part(url, on) {
+    return new Promise((res, rej) => {
+      const ac = new AbortController(); let t, n = 0; const chunks = [];
+      const kick = () => { clearTimeout(t); t = setTimeout(() => ac.abort(), 12000); };
+      kick();
+      fetch(url, { signal: ac.signal, cache: 'no-store' }).then(r => {
+        if (!r.ok) throw new Error(r.status);
+        const rd = r.body.getReader();
+        const pump = () => rd.read().then(({ done, value }) => {
+          if (done) { clearTimeout(t); return res(new Blob(chunks)); }
+          chunks.push(value); n += value.length; on(n); kick(); return pump();
+        });
+        return pump();
+      }).catch(e => { clearTimeout(t); rej(e); });
+    });
+  }
+  async function fast() {
+    let ref = 'dl';
+    try { const j = await (await fetch('https://api.github.com/repos/' + OWN + '/branches/dl')).json(); if (j.commit) ref = j.commit.sha; } catch (e) { }
+    const m = await (await fetch(RAW + ref + '/manifest.json', { cache: 'no-store' })).json();
+    const got = m.parts.map(() => 0), out = [];
+    const t0 = Date.now();
+    const show = () => { const p = Math.min(99, Math.floor(got.reduce((a, b) => a + b, 0) * 100 / m.size));
+      btn.style.setProperty('--p', p + '%'); btn.textContent = T.prog[LI] + p + '%'; };
+    let next = 0;
+    const worker = async () => { while (next < m.parts.length) { const i = next++;
+      for (let a = 0; ; a++) { try { out[i] = await part(RAW + ref + '/' + m.parts[i], n => { got[i] = n; show(); }); break; }
+        catch (e) { got[i] = 0; if (a >= 2) throw e; } } } };
+    await Promise.all([0, 1, 2, 3].map(worker));
+    const b = new Blob(out, { type: 'application/vnd.android.package-archive' });
+    if (b.size !== m.size) throw new Error('size');
+    return b;
+  }
+  function save() { const a = document.createElement('a'); a.href = URL.createObjectURL(file); a.download = 'MedTime.apk'; document.body.appendChild(a); a.click(); a.remove(); }
+  btn.addEventListener('click', e => {
+    if (!window.fetch || !window.ReadableStream) return;  // old browser: plain GitHub download
+    e.preventDefault();
+    if (file) return save();
+    if (busy) return;
+    busy = true; btn.classList.add('go'); btn.textContent = T.prep[LI];
+    fast().then(b => { file = b; save(); btn.style.setProperty('--p', '100%'); btn.textContent = T.done[LI]; busy = false; })
+      .catch(() => { btn.classList.remove('go'); btn.textContent = T.alt[LI]; setTimeout(() => { busy = false; location.href = REL; }, 900); });
+  });
   const box = document.getElementById('langs');
   L.forEach((l, k) => { const b = document.createElement('button'); b.textContent = NAMES[k]; b.onclick = () => set(l); box.appendChild(b); });
   const q = new URLSearchParams(location.search).get('lang');
