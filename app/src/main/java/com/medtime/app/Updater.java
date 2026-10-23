@@ -43,7 +43,7 @@ class Updater {
         a.runOnUiThread(() -> wv.evaluateJavascript("window.mtUpd && mtUpd(" + json + ")", null));
     }
 
-    private static HttpURLConnection open(String url) throws Exception {
+    static HttpURLConnection open(String url) throws Exception {
         HttpURLConnection c = null;
         // follow redirects by hand (github -> objects.githubusercontent.com)
         for (int i = 0; i < 6; i++) {

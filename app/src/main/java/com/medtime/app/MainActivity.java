@@ -88,9 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         // M-146: with a quick web update the page is built from the updated files (changed scripts / styles inlined)
         // on the same base address, so stored data stays; otherwise the built-in page as always
-        String upd = webOverride != null ? overridePage() : null;
-        if (upd != null) webView.loadDataWithBaseURL("file:///android_asset/index.html", upd, "text/html", "UTF-8", null);
-        else webView.loadUrl("file:///android_asset/index.html");
+        loadPage();
 
         // M-034: in full screen Android does not shrink the page for the keyboard, so the keyboard
         // covered the rest of the form. Measure the keyboard and tell the page, which makes room and scrolls.
@@ -110,6 +108,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private int lastKb = -1;
+
+    private void loadPage() {
+        String upd = webOverride != null ? overridePage() : null;
+        if (upd != null) webView.loadDataWithBaseURL("file:///android_asset/index.html", upd, "text/html", "UTF-8", null);
+        else webView.loadUrl("file:///android_asset/index.html");
+    }
+
+    // M-334: a quick web update came over the internet. Right after opening, show it at once;
+    // later in use, wait until the next time the app comes back, so nothing typed is lost.
+    private long shownAt = 0;
+    private boolean webPending = false;
+    private long pausedAt = 0;
+
+    private void webUpdateReady() {
+        if (System.currentTimeMillis() - shownAt < 20_000) applyWebUpdate();
+        else webPending = true;
+    }
+
+    private void applyWebUpdate() {
+        webPending = false;
+        webOverride = validWebOverride();
+        if (webOverride == null || webView == null) return;
+        loadPage();
+        android.widget.Toast.makeText(this, "✨ MedTime", android.widget.Toast.LENGTH_SHORT).show();
+    }
 
     // ---------- M-140: quick web updates (owner's test phone only) ----------
     private java.io.File webOverride;
@@ -199,6 +222,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         if (webView != null) webView.onPause();
+        pausedAt = System.currentTimeMillis();
     }
 
     // M-076: tell the page when we come back from an Android permission screen
@@ -206,6 +230,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (webView != null) webView.onResume(); // M-323: the page runs again
+        if (webPending && System.currentTimeMillis() - pausedAt > 30_000) applyWebUpdate(); // M-334: not after a quick camera / picker trip
+        if (pausedAt == 0 || System.currentTimeMillis() - pausedAt > 30_000) shownAt = System.currentTimeMillis();
+        WebUpdate.check(this, this::webUpdateReady); // M-334
         NativeBridge.stopWatch(); // M-095
         Piper.ensure(this); // M-087: offline voices download once by themselves (Wi-Fi only)
         if (webView != null) webView.evaluateJavascript("window.mtResumed && mtResumed()", null);

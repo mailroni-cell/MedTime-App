@@ -380,3 +380,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-330 | 2026-10-23 | docs/chrome.html | Owner: external links open only in Chrome; bounce page chrome.html#<path or url> (Claude app rejects intent://) | ⏳ |
 | M-332 | 2026-10-23 | homelayout.js | Owner: no appointment count on the "תורים לרופא" symbol; greeting and add-reminder cross higher, together | ⏳ |
 | M-333 | 2026-10-23 | docs/ad/index.html, docs/ad/og.jpg | Owner: personal WhatsApp invite with a big preview under the link (wide 1200x630 image under 300KB, personal title) | ⏳ |
+| M-334 | 2026-10-23 | WebUpdate.java, MainActivity.java, Updater.java | Owner: quick web updates come over the internet (no PC/cable): on open/return the app reads web-info.txt of release test; if made for its exact version, downloads web.zip into files/web and reloads (at once right after opening, otherwise on the next return) | ⏳ |
