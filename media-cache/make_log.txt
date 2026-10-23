@@ -1,0 +1,11 @@
+video app/src/main/assets/video/v_ocean.mp4 2913313
+video app/src/main/assets/video/v_forest.mp4 4174279
+video app/src/main/assets/video/v_waterfall.mp4 2940346
+video app/src/main/assets/video/v_rain.mp4 3392005
+video app/src/main/assets/video/v_city.mp4 1494818
+video app/src/main/assets/video/v_stars.mp4 1304999
+video app/src/main/assets/video/v_lake.mp4 7258866
+video app/src/main/assets/video/v_mountain.mp4 2593710
+video app/src/main/assets/video/v_underwater.mp4 10974980
+video app/src/main/assets/video/v_flamingo.mp4 3244634
+video app/src/main/assets/video/v_clouds.mp4 1641757
