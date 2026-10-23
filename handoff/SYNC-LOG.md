@@ -7,6 +7,11 @@
 - מה: M-320..M-324 (פירוט ב-CHANGES.md): ברכה וצלב למעלה; פריסה שווה (3 בשורה, שורה קצרה ממורכזת); תור רופא: תווית קצרה על הסמל; חיסכון בסוללה (saver.js + WebView onPause/onResume + isPowerSave/batteryLevel/isCharging ב-NativeBridge); טיפ הגדרות בסוף ההגדרה הראשונית.
 - קומיטים: cc5f4ca (דף, עדכון מהיר), 36dcecb (Java, בנייה 223). להחזרה: git revert 36dcecb cc5f4ca.
 
+## 2026-10-23 ~14:50 · חשבון ראשי · שיחה "📌 MedTime – שיחה חדשה" (session_01VsxPbo6X9KYMbXyBhgnXSS)
+- מה: מודעה סבב 9: החותמת העגולה הישנה נמחקה (רקע כהה אחיד עם מעבר רך) ונבנתה חדשה באותה צורה: טבעת חיצונית ופנימית, "הורדה לזמן מוגבל" בקשת למעלה משמאל, "חיים" גדול, "רק בהשקה!", 3 כוכבים; צבע דיו אחד #e81e3a, חד (צויר פי 4 והוקטן), נטוי 8°. שורת הכתובת הוגדלה (49px) והקו סביב האותיות דק וחד יותר (אדום 3px, כהה 1px).
+- קבצים: media/ads/MedTime-ad-premium.png, media/ads/src/premium_fix8.py (מחליף את fix7). סדר: fix6 ואז fix8 (out, ddc63a0.png, fonts, final).
+- להחזרה: התמונה מ-e65fa37.
+
 ## 2026-10-23 ~14:45 · חשבון ראשי · שיחה "📌 MedTime – שיחה חדשה" (session_01VsxPbo6X9KYMbXyBhgnXSS)
 - מה: מודעת הפרימיום, סבב 8: חותמת ההורדה בוטלה (בלי ברקוד). למטה מימין: "להורדת האפליקציה:" + medtime.pages.dev בפונט מעוגל עבה (Fredoka 700) כחול עם קו אדום כמו הכותרת. החותמת העגולה בלי ההילה, עם קו ירוק דקיק סביב כל האותיות והצורות. החלק השחור למטה נכנס בהדרגה (מעבר רך מ-y=1096 עד 1184). הוסרה גם שארית הילה ירוקה בצד ימין למטה.
 - קבצים: media/ads/MedTime-ad-premium.png, media/ads/src/premium_fix7.py (מחליף את fix5), premium_fix6.py. סדר: fix6 (cdddeed.png, out, ddc63a0.png) ואז fix7 (out, ddc63a0.png, fonts, final). גופנים: Fredoka/Rubik מ-app/src/main/assets/fonts הומרו ל-ttf.
