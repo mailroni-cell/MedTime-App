@@ -182,6 +182,9 @@ sh = np.zeros((H, W), np.float32); sh[ny0:ny0+nhp, nx0:nx0+nwp] = pa2
 if PS != 1.0: img = img*(1 - 0.55*np.clip(cv2.GaussianBlur(sh, (0, 0), 10)*1.5, 0, 1))[..., None]      # soft shadow round the bigger phone
 gh = np.clip(cv2.GaussianBlur(sh, (0, 0), 7)*1.4, 0, 1) - sh; gh = np.clip(gh, 0, 1)
 if PS != 1.0: img = img + np.array([40, 230, 110], np.float32)*gh[..., None]*0.35                       # its thin green glow
+if os.environ.get('MT_DUMP'):   # tall round 6: hand the layers to premium_tall3.py
+    np.savez_compressed(os.environ['MT_DUMP'], ph=ph_img, pa=ph_a, box=np.array([px0, px1, py0, py1]),
+                        bg=img, phone=phone, ltm=ltm, lta=lta, ltimg=ltimg, rta=rta)
 reg = img[ny0:ny0+nhp, nx0:nx0+nwp]; img[ny0:ny0+nhp, nx0:nx0+nwp] = reg*(1-pa2[..., None]) + ph2*pa2[..., None]
 img = img*(1 - lta[..., None]) + ltimg*lta[..., None]
 img = img*(1 - rta[..., None]) + ltimg*rta[..., None]

@@ -3,6 +3,12 @@
 כל שינוי נרשם כאן עם חתימה: מתי, איזה חשבון/שיחה, מה בדיוק, אילו קבצים, ואיך להחזיר אחורה.
 החדש ביותר למעלה. להחזרה: `git revert <commit>` או לקחת את הקובץ מה-commit הקודם.
 
+## 2026-10-23 ~18:55 · account 1 · thread "📌 MedTime – שיחה חדשה" · tall ad round 6
+- Roni: side text "העתיד בכף ידך" was cut, bottom rows too small, empty strip at the top, phone should be whole, the black bottom should continue the background.
+- New script media/ads/src/premium_tall3.py (round 6): no empty top strip; phone 1.55x and whole (it is turned upright, cut above the hidden bottom buttons, closed with its own top edge mirrored, turned back); "העתיד בכף ידך" moved to the right column under the checklist, about 1.9x, not cut; the background goes on to the bottom (mirror of the photo, blurred, gradually darker); bottom rows bigger (62/58px, 3 lines). premium_fix10.py got MT_DUMP (writes the layers). The 4:5 ad is unchanged (checked pixel for pixel).
+- Run: MT_TALL=1 MT_DUMP=layers.npz MT_F0=1339 MT_Y0=1340 python3 premium_fix10.py r1b.png orig.png FONTDIR base6.png ; python3 premium_tall3.py base6.png layers.npz r1b.png FONTDIR out.png
+- Undo: git checkout 8eacdcf -- media/ads/MedTime-ad-premium-tall.png (round 5; premium_tall2.py stays for it)
+
 ## 2026-10-23 ~16:20 · account 1 · thread "📌 MedTime – שיחה חדשה" · tall ad round 5
 - Roni: "all the content above the two bottom rows should be bigger". Phone 1.42x (was 1.22x), background fades out above the old bottom rows, download lines bigger (96/112), bottom rows compact (one line each, at the very bottom), more spacing.
 - Files: media/ads/MedTime-ad-premium-tall.png, media/ads/src/premium_fix10.py (MT_BF0/MT_BY0, Y1 follows height), media/ads/src/premium_tall2.py (MT_TOP/MT_CUT/MT_GAP, compact rows). 4:5 ad unchanged (checked pixel for pixel).
