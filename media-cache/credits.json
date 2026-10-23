@@ -257,5 +257,45 @@
   "artist": "https://freesound.org/people/kvgarlic/",
   "kind": "sound",
   "key": "thunder"
+ },
+ {
+  "kind": "video",
+  "key": "v_aurora",
+  "file": "File:\"Aurora Winds\" Echo Lake Northern Lights 1.webm",
+  "license": "CC BY 3.0",
+  "artist": "No name",
+  "url": "https://commons.wikimedia.org/wiki/File%3A%22Aurora_Winds%22_Echo_Lake_Northern_Lights_1.webm"
+ },
+ {
+  "kind": "video",
+  "key": "v_jelly",
+  "file": "File:Drifters of the deep.webm",
+  "license": "CC BY 3.0",
+  "artist": "Eugenia Loli",
+  "url": "https://commons.wikimedia.org/wiki/File%3ADrifters_of_the_deep.webm"
+ },
+ {
+  "kind": "video",
+  "key": "v_beach",
+  "file": "File:Sardegna's Costa Smeralda Drone Views.webm",
+  "license": "CC BY 3.0",
+  "artist": "Electric Life",
+  "url": "https://commons.wikimedia.org/wiki/File%3ASardegna%27s_Costa_Smeralda_Drone_Views.webm"
+ },
+ {
+  "kind": "video",
+  "key": "v_cabo",
+  "file": "File:Aerial views of Los Cabo, San Lucas, Mexico at sunset including El Arco, Lands End and ocean views.webm",
+  "license": "CC BY 3.0",
+  "artist": "the Dronalist",
+  "url": "https://commons.wikimedia.org/wiki/File%3AAerial_views_of_Los_Cabo%2C_San_Lucas%2C_Mexico_at_sunset_including_El_Arco%2C_Lands_End_and_ocean_views.webm"
+ },
+ {
+  "kind": "video",
+  "key": "v_rocks",
+  "file": "File:Waves crashing on rocks off Beach 4, Kalaloch Beach, Washington 01.webm",
+  "license": "CC BY-SA 4.0",
+  "artist": "Joe Mabel on Vimeo as Joe Mabel",
+  "url": "https://commons.wikimedia.org/wiki/File%3AWaves_crashing_on_rocks_off_Beach_4%2C_Kalaloch_Beach%2C_Washington_01.webm"
  }
 ]

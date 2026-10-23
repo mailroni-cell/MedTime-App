@@ -1,1 +1,5 @@
-STRIP FAILED v_sunset FileNotFoundError(2, 'No such file or directory')
+video app/src/main/assets/video/v_aurora.mp4 1733713
+video app/src/main/assets/video/v_jelly.mp4 2490520
+video app/src/main/assets/video/v_beach.mp4 1271092
+video app/src/main/assets/video/v_cabo.mp4 1491071
+video app/src/main/assets/video/v_rocks.mp4 6018686
