@@ -84,6 +84,9 @@
         a_train: ['נסיעה ברכבת', 'رحلة بالقطار', 'Călătorie cu trenul', 'Voyage en train', 'Train ride', 'Поездка на поезде'],
         a_jungle: ['ג׳ונגל', 'غابة استوائية', 'Junglă', 'Jungle', 'Jungle', 'Джунгли'],
         a_birds: ['ציוץ בבוקר', 'تغريد الصباح', 'Ciripit de dimineață', 'Chants du matin', 'Morning birds', 'Утреннее пение птиц'],
+        a_surf: ['גלים בחוף', 'أمواج على الشاطئ', 'Valuri pe mal', 'Vagues sur la rive', 'Waves on the shore', 'Волны у берега'], // M-304
+        a_creek: ['פלג ביער', 'جدول في الغابة', 'Pârâu în pădure', 'Ruisseau en forêt', 'Forest creek', 'Ручей в лесу'],
+        a_garden: ['ציפורים בגינה', 'طيور في الحديقة', 'Păsări în grădină', 'Oiseaux au jardin', 'Birds in the garden', 'Птицы в саду'],
         a_leaves: ['גשם על עלים', 'مطر على الأوراق', 'Ploaie pe frunze', 'Pluie sur les feuilles', 'Rain on leaves', 'Дождь по листьям'], // M-288
         a_crickets: ['צרצר בשדה', 'صرصور في الحقل', 'Greier în câmp', 'Grillon des champs', 'Field cricket', 'Сверчок в поле'],
         a_thunder: ['גשם ורעם רחוק', 'مطر ورعد بعيد', 'Ploaie și tunet îndepărtat', 'Pluie et tonnerre lointain', 'Rain and distant thunder', 'Дождь и далёкий гром'],
@@ -120,7 +123,7 @@
 
     const SCENES = [['v_ocean', '🌊'], ['v_forest', '🌲'], ['v_waterfall', '💦'], ['v_rain', '🌧️'], ['v_city', '🌃'], ['v_stars', '🌌'], ['v_lake', '🏞️'], ['v_mountain', '🏔️'], ['v_underwater', '🐠'], ['v_flamingo', '🦩'], ['v_clouds', '🌆'], ['aurora', '🌌'], ['ocean', '🌊'], ['galaxy', '🌀'], ['lanterns', '🏮'], ['jelly', '🪼'], ['sunset', '🌅'], ['nebula', '☁️'], ['tunnel', '🌀']]; // M-297 (owner): the plain-looking worlds (snowy forest, fireflies, breathing orb) are gone; a time tunnel is new
     /* removed worlds: orb, snow, fireflies */
-    const SOUNDS = [['none', '🔇'], ['waterfall', '💦'], ['lake', '🏞️'], ['tent', '⛺'], ['river', '🐦'], ['birds', '🐤'], ['jungle', '🦜'], ['frogs', '🐸'], ['owls', '🦉'], ['cave', '💧'], ['leaves', '🍂'], ['crickets', '🦗'], ['thunder', '🌩️'], ['whales', '🐋'], ['cat', '🐈'], ['fountain', '⛲'], ['tibet', '🛎️'], ['city', '🏙️'], ['cafe', '☕'], ['train', '🚆'], ['bowls', '🔔'], ['drone', '🕉️'], ['chimes', '🎐'], ['zen', '🎋'], ['rain', '🌧️'], ['ocean', '🌊'], ['forest', '🌲'], ['night', '🦗'], ['fire', '🔥'], ['wind', '🍃'], ['storm', '⛈️'], ['underwater', '🫧'], ['space', '🪐'], ['synth', '🎹']]; // M-196: real recordings first
+    const SOUNDS = [['none', '🔇'], ['waterfall', '💦'], ['lake', '🏞️'], ['tent', '⛺'], ['river', '🐦'], ['birds', '🐤'], ['jungle', '🦜'], ['frogs', '🐸'], ['owls', '🦉'], ['cave', '💧'], ['leaves', '🍂'], ['crickets', '🦗'], ['thunder', '🌩️'], ['surf', '🏖️'], ['creek', '🌿'], ['garden', '🌻'], ['whales', '🐋'], ['cat', '🐈'], ['fountain', '⛲'], ['tibet', '🛎️'], ['city', '🏙️'], ['cafe', '☕'], ['train', '🚆'], ['bowls', '🔔'], ['drone', '🕉️'], ['chimes', '🎐'], ['zen', '🎋'], ['rain', '🌧️'], ['ocean', '🌊'], ['forest', '🌲'], ['night', '🦗'], ['fire', '🔥'], ['wind', '🍃'], ['storm', '⛈️'], ['underwater', '🫧'], ['space', '🪐'], ['synth', '🎹']]; // M-196: real recordings first
     const TIMERS = [0, 10, 20, 30, 45, 60];
     const BREATH = { inh: 7, hold: 7, exh: 8 }; // seconds; M-191: matches the slow spoken lines (M-176 was 5 / 4 / 7)
     const BP = BREATH.inh + BREATH.hold + BREATH.exh;

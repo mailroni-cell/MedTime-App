@@ -343,3 +343,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-300 | 2026-10-23 | appts.js | Owner: the Waze check is a big bright Waze-blue button (action on top, address under it) | ⏳ |
 | M-301 | 2026-10-23 | appts.js | Owner: step 7 (reminder and summary) fits the screen: the summary card is centred and inside the edges | ⏳ |
 | M-302 | 2026-10-23 | appts.js | Owner: the exit on the appointment screens is a round 3D red ✕ in the top corner | ⏳ |
+| M-304 | 2026-10-23 | relax.js, tools/media_pick.json | Owner: three more real nature sounds: waves on the shore, forest creek, birds in the garden, 6 languages | ⏳ |
