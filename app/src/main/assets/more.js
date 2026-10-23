@@ -7,7 +7,7 @@
     const has = f => !!(N && typeof N[f] === 'function');
     const grid = document.querySelector('#settings-page .set-grid');
     if (!grid) return;
-    const LINK = 'https://mailroni-cell.github.io/MedTime-App/download.html'; // M-229: the download page (direct APK links failed for some people)
+    const LINK = 'https://medtime.pages.dev'; // M-318 official address (was GitHub Pages). M-229: the download page (direct APK links failed for some people)
 
     const T = {
         logT: ['📒 יומן תרופות', '📒 سجل الأدوية', '📒 Jurnal', '📒 Journal', '📒 Medicine log', '📒 Журнал лекарств'],
