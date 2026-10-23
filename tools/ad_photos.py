@@ -4,6 +4,7 @@ import json, os, sys, io, urllib.request, urllib.parse
 from PIL import Image, ImageDraw
 Q = json.loads(sys.argv[1])
 IDS = Q.pop('_unsplash', []) if isinstance(Q, dict) else []
+PX = Q.pop('_pexels', [])
 OUT = 'out'
 LOG = []
 UA = {'User-Agent': 'MedTime-ad-photos/1.0 (github.com/mailroni-cell/MedTime-App)'}
@@ -27,6 +28,19 @@ def unsplash_ids():
         im.thumbnail((2400, 2400)); im.save(os.path.join(d, f'{pid}.jpg'), quality=88); meta.append(pid); LOG.append(f'U ok {pid} {im.size}')
     json.dump(meta, open(os.path.join(d, 'meta.json'), 'w'))
 if IDS: unsplash_ids()
+if PX:
+    d = os.path.join(OUT, 'p'); os.makedirs(d, exist_ok=True); thumbs = []
+    for pid in PX:
+        try:
+            im = Image.open(io.BytesIO(get(f'https://images.pexels.com/photos/{pid}/pexels-photo-{pid}.jpeg?auto=compress&cs=tinysrgb&w=2400', 60))).convert('RGB')
+            im.save(os.path.join(d, f'{pid}.jpg'), quality=88); LOG.append(f'P ok {pid} {im.size}')
+            t = im.copy(); t.thumbnail((400, 300)); thumbs.append((pid, t))
+        except Exception as e: LOG.append(f'P {pid} {e}')
+    if thumbs:
+        sh = Image.new('RGB', (1600, 300 * ((len(thumbs) + 3) // 4)), 'white'); dr = ImageDraw.Draw(sh)
+        for i, (pid, t) in enumerate(thumbs):
+            x, y = (i % 4) * 400, (i // 4) * 300; sh.paste(t, (x, y)); dr.rectangle([x, y, x + 110, y + 22], fill='black'); dr.text((x + 4, y + 5), pid, fill='yellow')
+        sh.save(os.path.join(d, 'sheet.jpg'), quality=85)
 for slug, q in Q.items():
     d = os.path.join(OUT, slug); os.makedirs(d, exist_ok=True)
     res = []
