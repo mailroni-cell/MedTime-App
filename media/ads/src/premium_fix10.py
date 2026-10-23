@@ -109,6 +109,11 @@ sixm = six & nd.binary_dilation(np.abs(a - [255, 213, 74]).sum(2) < 60, disk(8))
 clr = nd.binary_dilation(lang | dots | sixm | keep1, disk(2))
 img = inpaint(img, clr & ~frame)
 
+# tall base: the old address pill + QR of the round-1 image sit here; clear them (the fade goes lower there)
+if TALL:
+    rq = np.zeros((H, W), bool); rq[1176:1312, 236:836] = True
+    img = inpaint(img, rq)
+
 # ---- round 11: the two lines under the motto, bigger (same centres) ----
 cu = img.astype(int)
 for (ya, yb) in ((418, 462), (476, 524)):
@@ -160,10 +165,12 @@ rt = np.zeros((H, W), bool); rt[540:1030, 600:1075] = True
 rtf = rt & ((np.abs(r1 - [234, 255, 92]).sum(2) < 90) | (r1.min(2) > 200) | (np.abs(r1 - [255, 213, 74]).sum(2) < 90) | ((r1[..., 1] > 180) & (r1[..., 1] - r1[..., 0] > 60)))
 rtm = nd.binary_dilation(rtf, disk(3)) & rt
 rta = cv2.GaussianBlur(rtm.astype(np.float32), (3, 3), 0)
-PS = 1.0   # round 12: original size
+PS = float(os.environ.get('MT_PS', '1.0'))   # round 12: original size (the tall version passes a bigger value)
 ph_img = img[py0:py1, px0:px1].copy(); ph_a = pal[py0:py1, px0:px1]
 nwp, nhp = int((px1-px0)*PS), int((py1-py0)*PS)
-ph2 = cv2.resize(ph_img, (nwp, nhp), interpolation=cv2.INTER_CUBIC); pa2 = cv2.resize(ph_a, (nwp, nhp))
+ph2 = cv2.resize(ph_img, (nwp, nhp), interpolation=cv2.INTER_LANCZOS4)
+if PS > 1: ph2 = np.clip(ph2 + (ph2 - cv2.GaussianBlur(ph2, (0, 0), 1.0))*0.6, 0, 255)   # keep it sharp
+pa2 = cv2.resize(ph_a, (nwp, nhp))
 nx0, ny0 = px1 - nwp, py0
 sh = np.zeros((H, W), np.float32); sh[ny0:ny0+nhp, nx0:nx0+nwp] = pa2
 if PS != 1.0: img = img*(1 - 0.55*np.clip(cv2.GaussianBlur(sh, (0, 0), 10)*1.5, 0, 1))[..., None]      # soft shadow round the bigger phone
@@ -174,11 +181,11 @@ img = img*(1 - lta[..., None]) + ltimg*lta[..., None]
 img = img*(1 - rta[..., None]) + ltimg*rta[..., None]
 
 # clear 1 + fade (round 11): one calm dark colour at the bottom, reached smoothly from above
-X0, X1, Y0, Y1 = 4, 1076, 1200, 1346
+X0, X1, Y0, Y1 = 4, 1076, int(os.environ.get('MT_Y0', '1200')), 1346
 dark = np.median(img[1300:1340, 200:880].reshape(-1, 3), axis=0)
 fill = np.ones((Y1-Y0, X1-X0, 3), np.float32)*dark[None, None]
 img[Y0:Y1, X0:X1] = fill
-F0 = 1030
+F0 = int(os.environ.get('MT_F0', '1030'))
 tt_ = np.clip((np.arange(F0, Y0) - F0) / float(Y0 - F0), 0, 1); wv = (tt_*tt_*(3 - 2*tt_))[:, None, None]
 img[F0:Y0, X0:X1] = img[F0:Y0, X0:X1]*(1 - wv) + dark[None, None]*wv
 

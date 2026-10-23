@@ -2,7 +2,8 @@
 # Base = the 4:5 ad built by premium_fix10.py with MT_TALL=1 (no download text, no bottom rows);
 # the space above is the top's plain dark; the big dark area below gets the download lines and the
 # bottom rows written again, much bigger, in the same colours and fonts. Nothing is stretched.
-# Run: MT_TALL=1 python3 premium_fix10.py ... base.png ; python3 premium_tall2.py base.png FONTDIR OUT.png
+# Round 4 (Roni 15:29): bigger phone (MT_PS=1.22, sharpened), its bottom fades lower (MT_F0/MT_Y0).
+# Run: MT_TALL=1 MT_PS=1.22 MT_F0=1150 MT_Y0=1300 python3 premium_fix10.py ... base.png ; python3 premium_tall2.py base.png FONTDIR OUT.png
 import sys, numpy as np, cv2
 from PIL import Image, ImageDraw, ImageFont
 src, fd, out = sys.argv[1:4]
@@ -10,8 +11,8 @@ ad = np.array(Image.open(src).convert('RGB')).astype(np.float32)
 W, H = 1080, 2340
 B = 5
 ad[:B] = ad[B:B+1]; ad[:, :B] = ad[:, B:B+1]; ad[:, -B:] = ad[:, -B-1:-B]
-CUT = 1196                                   # the base is used down to the start of its dark bottom
-TOP = 220
+CUT = 1300                                   # the base is used down to the start of its dark bottom
+TOP = 150
 canvas = np.zeros((H, W, 3), np.float32)
 top = np.repeat(cv2.GaussianBlur(ad[B:B+6].mean(0, keepdims=True), (0, 0), 40), TOP, 0)
 canvas[:TOP] = top + np.random.default_rng(1).normal(0, 1.2, top.shape).astype(np.float32)
@@ -43,7 +44,7 @@ lx = lambda s: F('rubik-latin-ext-800-normal', s)
 img = canvas
 # download (red fill, fluorescent-yellow edge, thin dark line)
 RED, YEL, NAVY = (255, 36, 64), (244, 255, 26), (10, 22, 52)
-y0 = TOP + CUT + 60
+y0 = TOP + CUT + 45
 img = paint(img, [(':', la(76), False), ('להורדת האפליקציה', he(76), True)], y0, RED, [(YEL, 5), (NAVY, 2)])
 img = paint(img, [('medtime.pages.dev', la(96), False)], y0 + 100, RED, [(YEL, 5), (NAVY, 2)])
 # bottom rows (green fill, dark edge, thin white ring), two lines each
@@ -53,7 +54,7 @@ dotg = (205, 170, 110)
 def row(img, segs, y):
     img = paint(img, segs, y, GRN, [(WHT, 5), (BLK, 3)])
     return img
-y1 = y0 + 320
+y1 = y0 + 315
 img = row(img, [('בלי פרסומות', he(70), True), dot, ('עוזר קולי', he(70), True)], y1)
 img = row(img, [('כרטיס חירום', he(70), True)], y1 + 100)
 img = row(img, [('Român', la(60), False), ('ă', lx(58), False), dot, ('العربية', ar(58), True), dot, ('עברית', he(62), True)], y1 + 245)
