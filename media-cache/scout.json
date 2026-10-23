@@ -3535,5 +3535,939 @@
     "noise_floor": "-16.570648"
    }
   }
+ ],
+ "seashore": [
+  {
+   "title": "File:Lake Okeechobee Surf in April 2016.ogg",
+   "len": 332.3,
+   "lic": "CC BY-SA 4.0",
+   "mime": "application/ogg",
+   "size": 5392439,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/b/b0/Lake_Okeechobee_Surf_in_April_2016.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Andrew Migneault",
+   "desc": "A recording of sounds of light surf on the shore of Lake Okeechobee in April, 2016, Canal Point, Florida, USA",
+   "stats": {
+    "max_db": "-7.0",
+    "mean_db": "-27.0",
+    "sr": "44100",
+    "noise_floor": "-31.185365"
+   }
+  }
+ ],
+ "creek": [
+  {
+   "title": "File:Sonus naturalis - Soundscape XC568248.mp3",
+   "len": 2151.7,
+   "lic": "CC BY-SA 4.0",
+   "mime": "audio/mpeg",
+   "size": 86109547,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/9/99/Sonus_naturalis_-_Soundscape_XC568248.mp3?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "James Ray",
+   "desc": ":Truly fascinating phenomena of a snapshot in time of beautiful biodiversity. I find this to be a fascinating opera of nature—and with sounds that are not alway",
+   "stats": {
+    "max_db": "-14.8",
+    "mean_db": "-50.2",
+    "sr": "48000",
+    "noise_floor": "-52.692462"
+   }
+  },
+  {
+   "title": "File:Sonus naturalis - Soundscape XC441594.mp3",
+   "len": 1384.0,
+   "lic": "CC BY-SA 4.0",
+   "mime": "audio/mpeg",
+   "size": 33220398,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/8/87/Sonus_naturalis_-_Soundscape_XC441594.mp3?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "James Ray",
+   "desc": ":For details including timestamps with each species, see here, which may have more updates (and does as of 22:42 7 Nov).\nAlso reproduced below for convenience:\n",
+   "stats": {
+    "max_db": "-28.2",
+    "mean_db": "-65.2",
+    "sr": "44100",
+    "noise_floor": "-inf"
+   }
+  },
+  {
+   "title": "File:Forest lawn creek.ogg",
+   "len": 449.1,
+   "lic": "Public domain",
+   "mime": "application/ogg",
+   "size": 19189608,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Forest_lawn_creek.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Dsw4",
+   "desc": "This is an unedited field recording of a small creek in Webster, NY. It was recorded using a shotgun microphone.",
+   "stats": {
+    "max_db": "-10.0",
+    "mean_db": "-31.4",
+    "sr": "44100",
+    "noise_floor": "-27.734288"
+   }
+  },
+  {
+   "title": "File:Sonus naturalis - Soundscape XC442425.mp3",
+   "len": 806.8,
+   "lic": "CC BY-SA 4.0",
+   "mime": "audio/mpeg",
+   "size": 19368163,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/1/19/Sonus_naturalis_-_Soundscape_XC442425.mp3?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "James Ray",
+   "desc": ":\npowerful owl\naust. magpie\ngrey butcherbird 0:15\nred wattlebird 2:15+, 3:14, 5:18\nyellow faced honeyeater 3:08\nnew holland honeyeater 3:15, 3:50+\ndistant pipin",
+   "stats": {
+    "max_db": "-4.4",
+    "mean_db": "-42.6",
+    "sr": "44100",
+    "noise_floor": "-inf"
+   }
+  },
+  {
+   "title": "File:Sonus naturalis - Soundscape XC442766.mp3",
+   "len": 336.3,
+   "lic": "CC BY-SA 4.0",
+   "mime": "audio/mpeg",
+   "size": 13445645,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/6/64/Sonus_naturalis_-_Soundscape_XC442766.mp3?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "James Ray",
+   "desc": ":\ngrey butcherbird 1:18 1:54\nsuperb lyrebird 1:55+\ncrimson rosella 2:40\nspotted pardalote 3:10\nbegging calls 4:46\npied currawong 5:10\n\nNormalized.\nFollowing is ",
+   "stats": {
+    "max_db": "-0.0",
+    "mean_db": "-25.8",
+    "sr": "44100",
+    "noise_floor": "-56.866776"
+   }
+  },
+  {
+   "title": "File:Sonus naturalis - Soundscape XC443114.mp3",
+   "len": 1428.5,
+   "lic": "CC BY-SA 4.0",
+   "mime": "audio/mpeg",
+   "size": 18427411,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/d/d7/Sonus_naturalis_-_Soundscape_XC443114.mp3?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "James Ray",
+   "desc": ":\neastern whipbird at start, followed faintly by superb lyrebird and wonga pigeon. Possibly a common blackbird (as well as at e.g. 18:20), although may be imita",
+   "stats": {
+    "max_db": "-18.8",
+    "mean_db": "-50.6",
+    "sr": "44100",
+    "noise_floor": "-55.344973"
+   }
+  }
+ ],
+ "fireplace": [],
+ "nightforest": [],
+ "morning": [
+  {
+   "title": "File:Bourne Garden 2020-08-28 0943.mp3",
+   "len": 1220.4,
+   "lic": "CC BY-SA 4.0",
+   "mime": "audio/mpeg",
+   "size": 29313888,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/0/02/Bourne_Garden_2020-08-28_0943.mp3?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Robert EA Harvey",
+   "desc": "Recorded to accompany Geograph images File:Sound recording - geograph.org.uk - 6582678.jpg, File:Five bar gate - geograph.org.uk - 6582670.jpg, File:The edge of",
+   "stats": {
+    "max_db": "-2.6",
+    "mean_db": "-37.2",
+    "sr": "48000",
+    "noise_floor": "-43.074177"
+   }
+  },
+  {
+   "title": "File:Bourne Garden 2020-08-28 0843.mp3",
+   "len": 3726.5,
+   "lic": "CC BY-SA 4.0",
+   "mime": "audio/mpeg",
+   "size": 88164960,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Bourne_Garden_2020-08-28_0843.mp3?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Robert EA Harvey",
+   "desc": "Recorded to accompany Geograph images File:Sound recording - geograph.org.uk - 6582678.jpg, File:Five bar gate - geograph.org.uk - 6582670.jpg, File:The edge of",
+   "stats": {
+    "max_db": "-0.1",
+    "mean_db": "-34.3",
+    "sr": "48000",
+    "noise_floor": "-40.651262"
+   }
+  }
+ ],
+ "gentlerain": [
+  {
+   "title": "File:BioAcoustica 586 5 Platycleis tessellata 754r5.flac",
+   "len": 122.4,
+   "lic": "CC BY 3.0",
+   "mime": "audio/x-flac",
+   "size": 9955226,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/3/36/BioAcoustica_586_5_Platycleis_tessellata_754r5.flac?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "",
+   "desc": "Sound recording of Platycleis tessellata",
+   "stats": {
+    "max_db": "-11.7",
+    "mean_db": "-39.9",
+    "sr": "44100",
+    "noise_floor": "-inf"
+   }
+  },
+  {
+   "title": "File:Light Rain Distant Thunder July 5th 2016.wav",
+   "len": 110.1,
+   "lic": "CC0",
+   "mime": "audio/wav",
+   "size": 42295240,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/b/b6/Light_Rain_Distant_Thunder_July_5th_2016.wav?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "https://freesound.org/people/kvgarlic/",
+   "desc": "A peaceful, and much-needed July rain in the Midwest, USA. Marantz PMD661 and two Sennheiser ME66s were set up in deep woods recording this around 5:00 in the a",
+   "stats": {
+    "max_db": "-0.0",
+    "mean_db": "-33.3",
+    "sr": "48000",
+    "noise_floor": "-47.202013"
+   }
+  },
+  {
+   "title": "File:2025-02-04 Judy Rhatigan from Dunnamaggin.opus",
+   "len": 3731.6,
+   "lic": "CC0",
+   "mime": "application/ogg",
+   "size": 55162410,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/1/11/2025-02-04_Judy_Rhatigan_from_Dunnamaggin.opus?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "A.-K. D.",
+   "desc": "Judy Rhatigan nee Kehoe who grew up in the Lodge of Chapelizod House in parish of Dunnamaggin talks about her childhood in the 1950s, St Leonard's Well, St Leon",
+   "stats": {
+    "max_db": "-6.1",
+    "mean_db": "-26.0",
+    "sr": "48000",
+    "noise_floor": "-inf"
+   }
+  },
+  {
+   "title": "File:Setophaga ruticilla - American Redstart XC139937.ogg",
+   "len": 238.1,
+   "lic": "CC BY-SA 3.0",
+   "mime": "application/ogg",
+   "size": 10304663,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Setophaga_ruticilla_-_American_Redstart_XC139937.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Jonathon Jongsma",
+   "desc": ":Unseen bird (later determined to be a subadult male) singing from within thick maple growth at edge of cleared cabin yard in birch-dominated woodland. Same ind",
+   "stats": {
+    "max_db": "-1.7",
+    "mean_db": "-27.4",
+    "sr": "48000",
+    "noise_floor": "-42.246323"
+   }
+  },
+  {
+   "title": "File:Vireo olivaceus - Red-eyed Vireo XC139569.ogg",
+   "len": 140.8,
+   "lic": "CC BY-SA 3.0",
+   "mime": "application/ogg",
+   "size": 3642174,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/4/49/Vireo_olivaceus_-_Red-eyed_Vireo_XC139569.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Jonathon Jongsma",
+   "desc": ":Singing from canopy along gravel road.\nOvercast with light rain.  Recorded with homemade parabolic reflector and Olympus LS-10S.\nbird-seen:no\nplayback-used:no\n",
+   "stats": {
+    "max_db": "-1.0",
+    "mean_db": "-24.9",
+    "sr": "48000",
+    "noise_floor": "-inf"
+   }
+  },
+  {
+   "title": "File:Colaptes auratus - Northern Flicker XC254591.mp3",
+   "len": 109.2,
+   "lic": "CC BY-SA 4.0",
+   "mime": "audio/mpeg",
+   "size": 2451593,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Colaptes_auratus_-_Northern_Flicker_XC254591.mp3?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Jonathon Jongsma",
+   "desc": ":A bird drumming and calling from a trunk of dead ponderosa pine on a grassy hill next to a gravel road. Overcast, with light rain which can be heard hitting th",
+   "stats": {
+    "max_db": "-0.3",
+    "mean_db": "-35.0",
+    "sr": "48000",
+    "noise_floor": "-47.511152"
+   }
+  }
+ ],
+ "om": [
+  {
+   "title": "File:Millions singing national anthem (Amar Sonar Bangla).ogg",
+   "len": 213.6,
+   "lic": "CC BY 3.0",
+   "mime": "application/ogg",
+   "size": 1893716,
+   "w": 0,
+   "h": 0,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/7/75/Millions_singing_national_anthem_%28Amar_Sonar_Bangla%29.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Prothom Alo Lifestyle",
+   "desc": "Three world records over three million national parade ground voice was singing the national anthem. Today is Wednesday morning 11 hours 0 minutes played in the",
+   "stats": {
+    "max_db": "-6.1",
+    "mean_db": "-20.3",
+    "sr": "48000",
+    "noise_floor": "-21.736320"
+   }
+  }
+ ],
+ "v_aurora": [
+  {
+   "title": "File:Aurora borealis timelapse.webm",
+   "len": 128.2,
+   "lic": "CC BY 3.0",
+   "mime": "video/webm",
+   "size": 51508823,
+   "w": 1920,
+   "h": 1080,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aurora_borealis_timelapse.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Harriniva Hotels&amp;Safaris",
+   "desc": "A time lapse video showing Aurora borealis. Filmed in Swedish and Finnish Lapland, 2013 Autumn.  Music and several seconds of promotion removed.",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/d/df/Aurora_borealis_timelapse.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original"
+  },
+  {
+   "title": "File:Wikipedia - 25 years of humanity at its best.webm",
+   "len": 235.6,
+   "lic": "CC BY-SA 4.0",
+   "mime": "video/webm",
+   "size": 222086292,
+   "w": 1920,
+   "h": 1080,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Wikipedia_-_25_years_of_humanity_at_its_best.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Victor Grigas, Wikimedia Foundation",
+   "desc": "Wikipedia - 25 years of humanity at its best",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Wikipedia_-_25_years_of_humanity_at_its_best.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original"
+  },
+  {
+   "title": "File:Hubblecast 33.webm",
+   "len": 319.8,
+   "lic": "CC BY 4.0",
+   "mime": "video/webm",
+   "size": 147358495,
+   "w": 1920,
+   "h": 1080,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/f/f1/Hubblecast_33.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "see above",
+   "desc": "In January and March 2009, researchers using Hubble took advantage of a rare opportunity to record Saturn when its rings are edge-on, resulting in a unique movi",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/f/f1/Hubblecast_33.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original"
+  },
+  {
+   "title": "File:2023 Satellite Imagery- A Year in Review (NESDIS 2024-01-03 2024 01 05 2023 A Year In Review).webm",
+   "len": 140.0,
+   "lic": "Public domain",
+   "mime": "video/webm",
+   "size": 244278383,
+   "w": 3840,
+   "h": 2160,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/e/ec/2023_Satellite_Imagery-_A_Year_in_Review_%28NESDIS_2024-01-03_2024_01_05_2023_A_Year_In_Review%29.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "NOAA",
+   "desc": "NOAA satellites see our planet from a unique and captivating perspective. Every year, they capture the beauty and wrath of Mother Nature unfolding beneath them—",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/e/ec/2023_Satellite_Imagery-_A_Year_in_Review_%28NESDIS_2024-01-03_2024_01_05_2023_A_Year_In_Review%29.webm/2023_Satellite_Imagery-_A_Year_in_Review_%28NESDIS_2024-01-03_2024_01_05_2023_A_Year_In_Review%29.webm.1080p.vp9.webm"
+  },
+  {
+   "title": "File:2023 Satellite Imagery- A Year in Review (NESDIS 2024-01-03 2024 01 05 2023 A YearIn Review NO TEXT).webm",
+   "len": 139.9,
+   "lic": "Public domain",
+   "mime": "video/webm",
+   "size": 251876590,
+   "w": 3840,
+   "h": 2160,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/a/a5/2023_Satellite_Imagery-_A_Year_in_Review_%28NESDIS_2024-01-03_2024_01_05_2023_A_YearIn_Review_NO_TEXT%29.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "NOAA",
+   "desc": "NOAA satellites see our planet from a unique and captivating perspective. Every year, they capture the beauty and wrath of Mother Nature unfolding beneath them—",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/a/a5/2023_Satellite_Imagery-_A_Year_in_Review_%28NESDIS_2024-01-03_2024_01_05_2023_A_YearIn_Review_NO_TEXT%29.webm/2023_Satellite_Imagery-_A_Year_in_Review_%28NESDIS_2024-01-03_2024_01_05_2023_A_YearIn_Review_NO_TEXT%29.webm.1080p.vp9.webm"
+  },
+  {
+   "title": "File:\"Aurora Winds\" Echo Lake Northern Lights 1.webm",
+   "len": 156.2,
+   "lic": "CC BY 3.0",
+   "mime": "video/webm",
+   "size": 374164686,
+   "w": 3840,
+   "h": 2160,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/e/ea/%22Aurora_Winds%22_Echo_Lake_Northern_Lights_1.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "No name",
+   "desc": "Aurora Winds Northern Lights 2024",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/e/ea/%22Aurora_Winds%22_Echo_Lake_Northern_Lights_1.webm/%22Aurora_Winds%22_Echo_Lake_Northern_Lights_1.webm.1080p.vp9.webm"
+  }
+ ],
+ "v_nebula": [
+  {
+   "title": "File:Hubblecast 73.webm",
+   "len": 330.8,
+   "lic": "CC BY 4.0",
+   "mime": "video/webm",
+   "size": 166809033,
+   "w": 1920,
+   "h": 1080,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/c/ca/Hubblecast_73.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "ESA/Hubble",
+   "desc": "In April of this year, the NASA/ESA Hubble Space Telescope will be celebrating 24 years of observing. To celebrate this milestone, the observatory is releasing ",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/c/ca/Hubblecast_73.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original"
+  },
+  {
+   "title": "File:Zoom into the Horsehead Nebula ESA496748.webm",
+   "len": 102.1,
+   "lic": "CC BY 4.0",
+   "mime": "video/webm",
+   "size": 265333336,
+   "w": 3840,
+   "h": 2160,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/0/03/Zoom_into_the_Horsehead_Nebula_ESA496748.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "European Space Agency",
+   "desc": "This video takes the viewer on a journey through space to reveal a new image from the NASA/ESA/CSA James Webb Space Telescope, the Horsehead Nebula.This zoom vi",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/0/03/Zoom_into_the_Horsehead_Nebula_ESA496748.webm/Zoom_into_the_Horsehead_Nebula_ESA496748.webm.1080p.vp9.webm"
+  },
+  {
+   "title": "File:A zoom to the star HD 189733.webm",
+   "len": 56.2,
+   "lic": "CC BY 4.0",
+   "mime": "video/webm",
+   "size": 18656686,
+   "w": 1920,
+   "h": 1080,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/9/95/A_zoom_to_the_star_HD_189733.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "ESA/Hubble (M. Kornmesser &amp; L. L. Christensen), A. Fujii, Robert Gendler, Digitized Sky Survey 2, Panther Observatory, Steve Cannistra, Michael Pierce, Robe",
+   "desc": "A zoom from Hubble orbiting 600 km above the Earth's surface towards the star HD 189733; flying through the asterism of the \"Summer Triangle\" and past the famou",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/9/95/A_zoom_to_the_star_HD_189733.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original"
+  },
+  {
+   "title": "File:Zooming in on the Orion Nebula.webm",
+   "len": 55.2,
+   "lic": "CC BY 4.0",
+   "mime": "video/webm",
+   "size": 343282052,
+   "w": 3840,
+   "h": 2160,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/6/67/Zooming_in_on_the_Orion_Nebula.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "ESO, N. Risinger (skysurvey.org), Digitized Sky Survey 2. Music: Johan B. Monell (www.johanmonell.com)",
+   "desc": "This video sequence starts with a wide view of the Milky Way and slowly zooms in on the Orion Nebula, one of the brightest nearby regions of active star formati",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/6/67/Zooming_in_on_the_Orion_Nebula.webm/Zooming_in_on_the_Orion_Nebula.webm.1080p.vp9.webm"
+  },
+  {
+   "title": "File:Roman Galactic Plane Survey (SVS14917).webm",
+   "len": 43.0,
+   "lic": "Public domain",
+   "mime": "video/webm",
+   "size": 80335965,
+   "w": 3840,
+   "h": 2160,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/4/44/Roman_Galactic_Plane_Survey_%28SVS14917%29.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "NASA's Scientific Visualization Studio - eMITS/Scott Wiessinger, eMITS/Ashley Balzer",
+   "desc": "Roman Galactic Plane Survey",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/4/44/Roman_Galactic_Plane_Survey_%28SVS14917%29.webm/Roman_Galactic_Plane_Survey_%28SVS14917%29.webm.1080p.vp9.webm"
+  },
+  {
+   "title": "File:Zoom into the Cats Paw Nebula (SVS31369).webm",
+   "len": 35.0,
+   "lic": "Public domain",
+   "mime": "video/webm",
+   "size": 115691969,
+   "w": 3840,
+   "h": 2160,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/3/34/Zoom_into_the_Cats_Paw_Nebula_%28SVS31369%29.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "NASA's Scientific Visualization Studio - Global Science and Technology, Inc./Mark Malanoski",
+   "desc": "This zoom-in video shows the location of the Cat’s Paw Nebula on the sky. It begins with a ground-based photo by the late astrophotographer Akira Fujii, then sh",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/3/34/Zoom_into_the_Cats_Paw_Nebula_%28SVS31369%29.webm/Zoom_into_the_Cats_Paw_Nebula_%28SVS31369%29.webm.1080p.vp9.webm"
+  }
+ ],
+ "v_earth": [
+  {
+   "title": "File:Knowledge belongs to all of us - 2030.wikimedia.org.webm",
+   "len": 492.5,
+   "lic": "CC BY-SA 4.0",
+   "mime": "video/webm",
+   "size": 574344046,
+   "w": 3840,
+   "h": 2160,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/1/1b/Knowledge_belongs_to_all_of_us_-_2030.wikimedia.org.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "WikimediaFoundation",
+   "desc": "In 2016, we began a discussion around what Wikimedia will look like in 2030. The aim was to identify a common, strategic direction that would unite and inspire ",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/1/1b/Knowledge_belongs_to_all_of_us_-_2030.wikimedia.org.webm/Knowledge_belongs_to_all_of_us_-_2030.wikimedia.org.webm.1080p.vp9.webm"
+  },
+  {
+   "title": "File:Alexander Gerst’s Earth timelapses (2017 reissue).webm",
+   "len": 357.8,
+   "lic": "CC BY-SA 3.0",
+   "mime": "video/webm",
+   "size": 1174720359,
+   "w": 3840,
+   "h": 2160,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/e/ed/Alexander_Gerst%E2%80%99s_Earth_timelapses_%282017_reissue%29.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Video: ESA – European Space Agency 2017, CC BY-SA 3.0 IGO\n\nAudio: “Anaxagoras” by Peter Kirn/Establishment Records, CC BY-SA 3.0",
+   "desc": "Alexander Gerst’s Earth timelapses clip.  (2017 reissue)\nThis is a reissue of Alexander Gerst’s highly popular Earth timelapses clip, originally published in De",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/e/ed/Alexander_Gerst%E2%80%99s_Earth_timelapses_%282017_reissue%29.webm/Alexander_Gerst%E2%80%99s_Earth_timelapses_%282017_reissue%29.webm.1080p.vp9.webm"
+  },
+  {
+   "title": "File:Alexander Gerst’s Earth timelapses (2017 reissue) ESA380570.webm",
+   "len": 357.7,
+   "lic": "CC BY-SA 3.0 igo",
+   "mime": "video/webm",
+   "size": 658530383,
+   "w": 3840,
+   "h": 2160,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/0/0a/Alexander_Gerst%E2%80%99s_Earth_timelapses_%282017_reissue%29_ESA380570.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "European Space Agency",
+   "desc": "This is a reissue of Alexander Gerst’s highly popular Earth timelapses clip, originally published in December 2014. In line with ESA’s Open Access Policy, a new",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/0/0a/Alexander_Gerst%E2%80%99s_Earth_timelapses_%282017_reissue%29_ESA380570.webm/Alexander_Gerst%E2%80%99s_Earth_timelapses_%282017_reissue%29_ESA380570.webm.1080p.vp9.webm"
+  },
+  {
+   "title": "File:Ultra High Definition Video from the International Space Station (Reel 1).webm",
+   "len": 235.8,
+   "lic": "Public domain",
+   "mime": "video/webm",
+   "size": 306094629,
+   "w": 3840,
+   "h": 1920,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/2/26/Ultra_High_Definition_Video_from_the_International_Space_Station_%28Reel_1%29.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "NASA Johnson",
+   "desc": "The view of life in space is getting a major boost with the introduction of 4K Ultra High-Definition (UHD) video, providing an unprecedented look at what it's l",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/2/26/Ultra_High_Definition_Video_from_the_International_Space_Station_%28Reel_1%29.webm/Ultra_High_Definition_Video_from_the_International_Space_Station_%28Reel_1%29.webm.1080p.vp9.webm"
+  },
+  {
+   "title": "File:Aurora Borealis from Space (4K).webm",
+   "len": 310.2,
+   "lic": "Public domain",
+   "mime": "video/webm",
+   "size": 457566656,
+   "w": 3840,
+   "h": 2160,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/9/99/Aurora_Borealis_from_Space_%284K%29.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "NASA",
+   "desc": "NASA Television’s newest offering, NASA TV UHD, brings ultra-high definition video to a new level with the kind of imagery only the world’s leader in space expl",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/9/99/Aurora_Borealis_from_Space_%284K%29.webm/Aurora_Borealis_from_Space_%284K%29.webm.1080p.vp9.webm"
+  },
+  {
+   "title": "File:Earth Day 2017 - 4K Earth Views From Space.webm",
+   "len": 613.0,
+   "lic": "Public domain",
+   "mime": "video/webm",
+   "size": 1033873151,
+   "w": 3840,
+   "h": 2160,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Earth_Day_2017_-_4K_Earth_Views_From_Space.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "NASA Johnson",
+   "desc": "Our planet is beautiful. In honor of Earth Day 2017, enjoy Ultra High Definition views of our home planet captured from 250 miles up on the International Space ",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/a/a7/Earth_Day_2017_-_4K_Earth_Views_From_Space.webm/Earth_Day_2017_-_4K_Earth_Views_From_Space.webm.1080p.vp9.webm"
+  }
+ ],
+ "v_jelly": [
+  {
+   "title": "File:Quallen im Roten Meer DSCF1963.webm",
+   "len": 71.6,
+   "lic": "CC BY-SA 4.0",
+   "mime": "video/webm",
+   "size": 276814046,
+   "w": 1920,
+   "h": 1080,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/3/31/Quallen_im_Roten_Meer_DSCF1963.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Kora27",
+   "desc": "Quallen im Roten Meer. Makadi Bay, Ägypten.",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/3/31/Quallen_im_Roten_Meer_DSCF1963.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original"
+  },
+  {
+   "title": "File:Purple-lipped jelly - MBA.webm",
+   "len": 68.0,
+   "lic": "CC BY-SA 4.0",
+   "mime": "video/webm",
+   "size": 1109037099,
+   "w": 1920,
+   "h": 1080,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/0/06/Purple-lipped_jelly_-_MBA.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Eric Polk",
+   "desc": "Purple-lipped jelly (Earleria purpurea) swimming at the Monterey Bay Aquarium, Monterey, California, USA.",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/0/06/Purple-lipped_jelly_-_MBA.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original",
+   "err": "FileNotFoundError(2, 'No such file or directory')"
+  },
+  {
+   "title": "File:Gigantische Muräne (Muraena). Giant Moray. Гигантская мурена DSCF1968.webm",
+   "len": 67.1,
+   "lic": "CC BY-SA 4.0",
+   "mime": "video/webm",
+   "size": 285601618,
+   "w": 1920,
+   "h": 1080,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Gigantische_Mur%C3%A4ne_%28Muraena%29._Giant_Moray._%D0%93%D0%B8%D0%B3%D0%B0%D0%BD%D1%82%D1%81%D0%BA%D0%B0%D1%8F_%D0%BC%D1%83%D1%80%D0%B5%D0%BD%D0%B0_DSCF1968.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Kora27",
+   "desc": "Muräne (Muraena). Aufgenommen im Roten Meer. Makadi Bay. Ägypten. Korallenriff ,Hotel Grand Makadi.",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Gigantische_Mur%C3%A4ne_%28Muraena%29._Giant_Moray._%D0%93%D0%B8%D0%B3%D0%B0%D0%BD%D1%82%D1%81%D0%BA%D0%B0%D1%8F_%D0%BC%D1%83%D1%80%D0%B5%D0%BD%D0%B0_DSCF1968.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original"
+  },
+  {
+   "title": "File:Drifters of the deep.webm",
+   "len": 275.7,
+   "lic": "CC BY 3.0",
+   "mime": "video/webm",
+   "size": 87160585,
+   "w": 1280,
+   "h": 720,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/0/07/Drifters_of_the_deep.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Eugenia Loli",
+   "desc": "[Updated: March 08 2009]\nThe most amazing creatures nature has ever created, drifting in our oceans. From the Monterey Bay Aquarium. Download the video file on ",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/0/07/Drifters_of_the_deep.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original"
+  },
+  {
+   "title": "File:Drifters of the deep 52.webm",
+   "len": 275.7,
+   "lic": "CC BY 3.0",
+   "mime": "video/webm",
+   "size": 97278306,
+   "w": 1280,
+   "h": 720,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Drifters_of_the_deep_52.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Eugenia Loli",
+   "desc": "[Updated: March 08 2009]\nThe most amazing creatures nature has ever created, drifting in our oceans. From the Monterey Bay Aquarium. Download the video file on ",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Drifters_of_the_deep_52.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original"
+  },
+  {
+   "title": "File:Lobed comb jelly swimming - MBA.webm",
+   "len": 38.5,
+   "lic": "CC BY-SA 4.0",
+   "mime": "video/webm",
+   "size": 670835184,
+   "w": 1920,
+   "h": 1080,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/c/ce/Lobed_comb_jelly_swimming_-_MBA.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Eric Polk",
+   "desc": "Lobed comb jelly (Bolinopsis sp.) swimming at the Monterey Bay Aquarium, Monterey, California, USA.",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/c/ce/Lobed_comb_jelly_swimming_-_MBA.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original",
+   "err": "FileNotFoundError(2, 'No such file or directory')"
+  }
+ ],
+ "v_beach": [
+  {
+   "title": "File:Ernesto Brings Dangerous Seas to North America’s Atlantic Coast (NESDIS 2024-08-22 2024 08 22 Hurricane-Ernesto-NO TEXT).webm",
+   "len": 138.6,
+   "lic": "Public domain",
+   "mime": "video/webm",
+   "size": 380280779,
+   "w": 3840,
+   "h": 2160,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/d/d1/Ernesto_Brings_Dangerous_Seas_to_North_America%E2%80%99s_Atlantic_Coast_%28NESDIS_2024-08-22_2024_08_22_Hurricane-Ernesto-NO_TEXT%29.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "NOAA",
+   "desc": "Even with the storm hundreds of miles offshore, Hurricane Ernesto was still being felt Saturday along much of the U.S. Eastern Seaboard, with dangerous rip curr",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/d/d1/Ernesto_Brings_Dangerous_Seas_to_North_America%E2%80%99s_Atlantic_Coast_%28NESDIS_2024-08-22_2024_08_22_Hurricane-Ernesto-NO_TEXT%29.webm/Ernesto_Brings_Dangerous_Seas_to_North_America%E2%80%99s_Atlantic_Coast_%28NESDIS_2024-08-22_2024_08_22_Hurricane-Ernesto-NO_TEXT%29.webm.1080p.vp9.webm"
+  },
+  {
+   "title": "File:Ernesto Brings Dangerous Seas to North America’s Atlantic Coast (NESDIS 2024-08-22 2024 08 22 Hurricane Ernesto).webm",
+   "len": 139.1,
+   "lic": "Public domain",
+   "mime": "video/webm",
+   "size": 381278154,
+   "w": 3840,
+   "h": 2160,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Ernesto_Brings_Dangerous_Seas_to_North_America%E2%80%99s_Atlantic_Coast_%28NESDIS_2024-08-22_2024_08_22_Hurricane_Ernesto%29.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "NOAA",
+   "desc": "Even with the storm hundreds of miles offshore, Hurricane Ernesto was still being felt Saturday along much of the U.S. Eastern Seaboard, with dangerous rip curr",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/e/eb/Ernesto_Brings_Dangerous_Seas_to_North_America%E2%80%99s_Atlantic_Coast_%28NESDIS_2024-08-22_2024_08_22_Hurricane_Ernesto%29.webm/Ernesto_Brings_Dangerous_Seas_to_North_America%E2%80%99s_Atlantic_Coast_%28NESDIS_2024-08-22_2024_08_22_Hurricane_Ernesto%29.webm.1080p.vp9.webm"
+  },
+  {
+   "title": "File:Sardegna's Costa Smeralda Drone Views.webm",
+   "len": 391.8,
+   "lic": "CC BY 3.0",
+   "mime": "video/webm",
+   "size": 1318131101,
+   "w": 3840,
+   "h": 2160,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/0/05/Sardegna%27s_Costa_Smeralda_Drone_Views.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Electric Life",
+   "desc": "Drone views of Sardegna (Sardinia). All footage shot with DJI Pnantom 4 PRO. Costa Smeralda's beaches",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/0/05/Sardegna%27s_Costa_Smeralda_Drone_Views.webm/Sardegna%27s_Costa_Smeralda_Drone_Views.webm.1080p.vp9.webm"
+  },
+  {
+   "title": "File:Italy by Drone 2017 - Sardinia -2, Garibaldi's home, Cala di Volpe, 007 Location & more.webm",
+   "len": 241.9,
+   "lic": "CC BY 3.0",
+   "mime": "video/webm",
+   "size": 599074701,
+   "w": 1920,
+   "h": 1080,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Italy_by_Drone_2017_-_Sardinia_-2%2C_Garibaldi%27s_home%2C_Cala_di_Volpe%2C_007_Location_%26_more.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Electric Life",
+   "desc": "Sardinia features some of the most amazing beaches and locations, which is why it's a hot spot for so many. Cala di Volpe was also featured by the acute 007 fra",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Italy_by_Drone_2017_-_Sardinia_-2%2C_Garibaldi%27s_home%2C_Cala_di_Volpe%2C_007_Location_%26_more.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original",
+   "err": "FileNotFoundError(2, 'No such file or directory')"
+  },
+  {
+   "title": "File:Italy by Drone 2017 - Sardinia, Largest Yacht in the World, Military Forts and Beaches!.webm",
+   "len": 334.5,
+   "lic": "CC BY 3.0",
+   "mime": "video/webm",
+   "size": 885016363,
+   "w": 1920,
+   "h": 1080,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/7/72/Italy_by_Drone_2017_-_Sardinia%2C_Largest_Yacht_in_the_World%2C_Military_Forts_and_Beaches%21.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Electric Life",
+   "desc": "Sardinia 2017 by drone. Entirely shot with DJI Phantom 4 PRO and DJI   Inspire 2. The video features a few locations such as: La Maddalena, Poltu Quatu, Porto C",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/7/72/Italy_by_Drone_2017_-_Sardinia%2C_Largest_Yacht_in_the_World%2C_Military_Forts_and_Beaches%21.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original",
+   "err": "FileNotFoundError(2, 'No such file or directory')"
+  },
+  {
+   "title": "File:EVERY ANGLE OF DOWNTOWN CHICAGO CAPTURED BY DRONE!.webm",
+   "len": 201.3,
+   "lic": "CC BY 3.0",
+   "mime": "video/webm",
+   "size": 434083078,
+   "w": 3840,
+   "h": 2160,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/b/b3/EVERY_ANGLE_OF_DOWNTOWN_CHICAGO_CAPTURED_BY_DRONE%21.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Life with Neil",
+   "desc": "Took my new DJI Mavic Air out around town and put this montage of aerial shots in Chicago together\nIf you enjoyed the video give it a thumbs up!\nPlaces covered:",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/b/b3/EVERY_ANGLE_OF_DOWNTOWN_CHICAGO_CAPTURED_BY_DRONE%21.webm/EVERY_ANGLE_OF_DOWNTOWN_CHICAGO_CAPTURED_BY_DRONE%21.webm.1080p.vp9.webm"
+  }
+ ],
+ "v_snowfall": [
+  {
+   "title": "File:Landschaftsschutzgebiet Volkspark Rehberge lub 2026-01-03 snowing.webm",
+   "len": 10.3,
+   "lic": "CC BY 4.0",
+   "mime": "video/webm",
+   "size": 77110708,
+   "w": 3840,
+   "h": 2160,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/5/55/Landschaftsschutzgebiet_Volkspark_Rehberge_lub_2026-01-03_snowing.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Lukas Beck",
+   "desc": "Snowfall in the \"Volkspark Rehberge\" landscape protection area in Berlin-Wedding, Mitte district, Germany.",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/5/55/Landschaftsschutzgebiet_Volkspark_Rehberge_lub_2026-01-03_snowing.webm/Landschaftsschutzgebiet_Volkspark_Rehberge_lub_2026-01-03_snowing.webm.1080p.vp9.webm"
+  },
+  {
+   "title": "File:Ground Snow Melts Across Central Plains (CIRA 2023-11-02 - nolabels).webm",
+   "len": 9.0,
+   "lic": "Public domain",
+   "mime": "video/webm",
+   "size": 5774087,
+   "w": 1920,
+   "h": 1080,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/0/08/Ground_Snow_Melts_Across_Central_Plains_%28CIRA_2023-11-02_-_nolabels%29.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "JPSS imagery: CSU/CIRA &amp; NOAA/NESDIS",
+   "desc": "Ground Snow Melts Across Central Plains",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/0/08/Ground_Snow_Melts_Across_Central_Plains_%28CIRA_2023-11-02_-_nolabels%29.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original"
+  },
+  {
+   "title": "File:Ground Snow Melts Across Central Plains (CIRA 2023-11-02 - labels).webm",
+   "len": 9.0,
+   "lic": "Public domain",
+   "mime": "video/webm",
+   "size": 3963095,
+   "w": 1920,
+   "h": 1080,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/5/55/Ground_Snow_Melts_Across_Central_Plains_%28CIRA_2023-11-02_-_labels%29.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "JPSS imagery: CSU/CIRA &amp; NOAA/NESDIS",
+   "desc": "Ground Snow Melts Across Central Plains",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/5/55/Ground_Snow_Melts_Across_Central_Plains_%28CIRA_2023-11-02_-_labels%29.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original"
+  }
+ ],
+ "v_koi": [
+  {
+   "title": "File:2026-08-06 2160p120 Goldfischteich am Theresienstein C0045.webm",
+   "len": 33.8,
+   "lic": "CC BY-SA 4.0",
+   "mime": "video/webm",
+   "size": 1593844569,
+   "w": 3840,
+   "h": 2160,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/4/4e/2026-08-06_2160p120_Goldfischteich_am_Theresienstein_C0045.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "PantheraLeo1359531",
+   "desc": "Goldfish pond at Theresienstein in August 2026.",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/4/4e/2026-08-06_2160p120_Goldfischteich_am_Theresienstein_C0045.webm/2026-08-06_2160p120_Goldfischteich_am_Theresienstein_C0045.webm.1080p.vp9.webm"
+  },
+  {
+   "title": "File:Trachemys scripta elegans in koi pond at Hakone Gardens.webm",
+   "len": 22.2,
+   "lic": "CC BY-SA 4.0",
+   "mime": "video/webm",
+   "size": 51327477,
+   "w": 1920,
+   "h": 1080,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Trachemys_scripta_elegans_in_koi_pond_at_Hakone_Gardens.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Grendelkhan",
+   "desc": "A red-eared slider, Trachemys scripta elegans, swimming in a koi pond at Hakone Gardens in Saratoga, California.",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Trachemys_scripta_elegans_in_koi_pond_at_Hakone_Gardens.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original"
+  },
+  {
+   "title": "File:Teich am Lernhof 20230810 C0240.webm",
+   "len": 16.5,
+   "lic": "CC BY 4.0",
+   "mime": "video/webm",
+   "size": 758547552,
+   "w": 7680,
+   "h": 4320,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/6/64/Teich_am_Lernhof_20230810_C0240.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "PantheraLeo1359531",
+   "desc": "View of the pond at the Lernhof. You can see elements on the pond and koi carp swimming around.",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/6/64/Teich_am_Lernhof_20230810_C0240.webm/Teich_am_Lernhof_20230810_C0240.webm.1080p.vp9.webm"
+  },
+  {
+   "title": "File:Teich am Lernhof 20230810 C0238.webm",
+   "len": 14.8,
+   "lic": "CC BY 4.0",
+   "mime": "video/webm",
+   "size": 621589405,
+   "w": 7680,
+   "h": 4320,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/7/7a/Teich_am_Lernhof_20230810_C0238.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "PantheraLeo1359531",
+   "desc": "View of the pond at the Lernhof. You can see elements on the pond and koi carp swimming around.",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/7/7a/Teich_am_Lernhof_20230810_C0238.webm/Teich_am_Lernhof_20230810_C0238.webm.1080p.vp9.webm"
+  },
+  {
+   "title": "File:Teich am Lernhof 20230810 C0239.webm",
+   "len": 8.1,
+   "lic": "CC BY 4.0",
+   "mime": "video/webm",
+   "size": 418086943,
+   "w": 7680,
+   "h": 4320,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/8/83/Teich_am_Lernhof_20230810_C0239.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "PantheraLeo1359531",
+   "desc": "View of the pond at the Lernhof. You can see elements on the pond and koi carp swimming around.",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/8/83/Teich_am_Lernhof_20230810_C0239.webm/Teich_am_Lernhof_20230810_C0239.webm.1080p.vp9.webm"
+  },
+  {
+   "title": "File:Koiinapond-swimming-fall-2011.ogv",
+   "len": 20.5,
+   "lic": "CC BY-SA 3.0",
+   "mime": "application/ogg",
+   "size": 28170072,
+   "w": 1280,
+   "h": 720,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/6/6d/Koiinapond-swimming-fall-2011.ogv?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Nesnad",
+   "desc": "Koi swim around in a pond at a park in Japan (during the Fall)",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/6/6d/Koiinapond-swimming-fall-2011.ogv/Koiinapond-swimming-fall-2011.ogv.480p.vp9.webm"
+  }
+ ],
+ "v_fog": [
+  {
+   "title": "File:Foggy day of hyrcanian forest of iran.webm",
+   "len": 111.8,
+   "lic": "CC BY 3.0",
+   "mime": "video/webm",
+   "size": 120130073,
+   "w": 1920,
+   "h": 1080,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/f/f3/Foggy_day_of_hyrcanian_forest_of_iran.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Reza Rafizadeh",
+   "desc": "explore and watch cold and foggy forest",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/f/f3/Foggy_day_of_hyrcanian_forest_of_iran.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original"
+  },
+  {
+   "title": "File:Okanagan Wila wafting on branches in freezing fog.webm",
+   "len": 20.0,
+   "lic": "CC0",
+   "mime": "video/webm",
+   "size": 99033261,
+   "w": 1920,
+   "h": 1080,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/4/41/Okanagan_Wila_wafting_on_branches_in_freezing_fog.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Extemporalist",
+   "desc": "Okanagan Wila wafting on conifer branches in freezing fog near Southeast Kelowna, British Columbia, Canada. Birdsong and crow calls in the background.",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/4/41/Okanagan_Wila_wafting_on_branches_in_freezing_fog.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original"
+  }
+ ],
+ "v_sunset": [
+  {
+   "title": "File:Wikipedia - 25 years of humanity at its best.webm",
+   "len": 235.6,
+   "lic": "CC BY-SA 4.0",
+   "mime": "video/webm",
+   "size": 222086292,
+   "w": 1920,
+   "h": 1080,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Wikipedia_-_25_years_of_humanity_at_its_best.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Victor Grigas, Wikimedia Foundation",
+   "desc": "Wikipedia - 25 years of humanity at its best",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Wikipedia_-_25_years_of_humanity_at_its_best.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original"
+  },
+  {
+   "title": "File:Pollution of Ocean Water in South Asia.webm",
+   "len": 177.4,
+   "lic": "CC BY 3.0",
+   "mime": "video/webm",
+   "size": 98921163,
+   "w": 1920,
+   "h": 1080,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/8/86/Pollution_of_Ocean_Water_in_South_Asia.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "epSos.de",
+   "desc": "Free video for http://epSos.de about ocean water pollution in Malaysia. The pollution of ocean water in this environmental video comes form sewerage and dirty r",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/8/86/Pollution_of_Ocean_Water_in_South_Asia.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original"
+  },
+  {
+   "title": "File:Building a Hurricane Season in the Atlantic Ocean.webm",
+   "len": 186.2,
+   "lic": "Public domain",
+   "mime": "video/webm",
+   "size": 121788655,
+   "w": 1920,
+   "h": 1080,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/c/ca/Building_a_Hurricane_Season_in_the_Atlantic_Ocean.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "NASA Goddard",
+   "desc": "For decades, NASA researchers have helped refine our understanding of hurricanes and tropical storms. To better understand the Atlantic hurricane season, they u",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/c/ca/Building_a_Hurricane_Season_in_the_Atlantic_Ocean.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original"
+  },
+  {
+   "title": "File:♥♥ Relaxing 3 Hour Video of a Waterfall on an Ocean Beach at Sunset.webm",
+   "len": 10910.8,
+   "lic": "CC BY 3.0",
+   "mime": "video/webm",
+   "size": 3756076145,
+   "w": 1920,
+   "h": 1080,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/4/4c/%E2%99%A5%E2%99%A5_Relaxing_3_Hour_Video_of_a_Waterfall_on_an_Ocean_Beach_at_Sunset.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "MoneySavingVideos",
+   "desc": "Project this onto your TV using Google Chromecast which is the newest way to enjoy online video and music on your TV. Plug it into any HDTV and control it with ",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/4/4c/%E2%99%A5%E2%99%A5_Relaxing_3_Hour_Video_of_a_Waterfall_on_an_Ocean_Beach_at_Sunset.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original",
+   "err": "FileNotFoundError(2, 'No such file or directory')"
+  },
+  {
+   "title": "File:Aerial views of Los Cabo, San Lucas, Mexico at sunset including El Arco, Lands End and ocean views.webm",
+   "len": 575.1,
+   "lic": "CC BY 3.0",
+   "mime": "video/webm",
+   "size": 1176492467,
+   "w": 3840,
+   "h": 2158,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/7/74/Aerial_views_of_Los_Cabo%2C_San_Lucas%2C_Mexico_at_sunset_including_El_Arco%2C_Lands_End_and_ocean_views.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "the Dronalist",
+   "desc": "Aerial views of Los Cabo, San Lucas, Mexico at sunset including El Arco, Land's End and ocean views.",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/transcoded/7/74/Aerial_views_of_Los_Cabo%2C_San_Lucas%2C_Mexico_at_sunset_including_El_Arco%2C_Lands_End_and_ocean_views.webm/Aerial_views_of_Los_Cabo%2C_San_Lucas%2C_Mexico_at_sunset_including_El_Arco%2C_Lands_End_and_ocean_views.webm.1080p.vp9.webm"
+  },
+  {
+   "title": "File:Waves crashing on rocks off Beach 4, Kalaloch Beach, Washington 01.webm",
+   "len": 46.6,
+   "lic": "CC BY-SA 4.0",
+   "mime": "video/webm",
+   "size": 50828005,
+   "w": 1920,
+   "h": 1080,
+   "url": "https://upload.wikimedia.org/wikipedia/commons/2/24/Waves_crashing_on_rocks_off_Beach_4%2C_Kalaloch_Beach%2C_Washington_01.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "artist": "Joe Mabel on Vimeo as Joe Mabel",
+   "desc": "Destruction Island on the horizon, as waves roll in to other rock formations closer to shore, around sunset at Beach 4, Kalaloch, Washington, U.S.",
+   "src": "https://upload.wikimedia.org/wikipedia/commons/2/24/Waves_crashing_on_rocks_off_Beach_4%2C_Kalaloch_Beach%2C_Washington_01.webm?utm_source=commons.wikimedia.org&utm_campaign=api&utm_content=original"
+  }
  ]
 }
