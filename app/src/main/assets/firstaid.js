@@ -13,6 +13,9 @@
         btnSub: ['חיוג מהיר ומה עושים במצב חירום', 'اتصال سريع وماذا تفعل في الطوارئ', 'Apel rapid și ce faci în urgență', 'Appel rapide et que faire en urgence', 'Quick call and what to do in an emergency', 'Быстрый звонок и что делать в экстренной ситуации'],
         title: ['🆘 עזרה ראשונה', '🆘 إسعاف أولي', '🆘 Prim ajutor', '🆘 Premiers secours', '🆘 First aid', '🆘 Первая помощь'],
         mda: ['📞 מד"א 101', '📞 نجمة داود الحمراء 101', '📞 Ambulanța (MDA) 101', '📞 Ambulance (MDA) 101', '📞 Ambulance (MDA) 101', '📞 Скорая (МАДА) 101'],
+        // M-266 (owner): pharmacies open right now near you (Google Maps, live opening hours; duty pharmacies when Maps shows them open)
+        pharm: ['💊 בית מרקחת פתוח עכשיו', '💊 صيدلية مفتوحة الآن', '💊 Farmacie deschisă acum', '💊 Pharmacie ouverte maintenant', '💊 Pharmacy open now', '💊 Аптека, открытая сейчас'],
+        pharmQ: ['בית מרקחת פתוח עכשיו', 'صيدلية مفتوحة الآن', 'farmacie deschisă acum', 'pharmacie ouverte maintenant', 'pharmacy open now', 'аптека открыта сейчас'],
         poison: ['☎️ מרכז הרעלות', '☎️ مركز السموم', '☎️ Centrul de otrăviri', '☎️ Centre antipoison', '☎️ Poison center', '☎️ Токсикологический центр'],
         pick: ['מה קרה?', 'ماذا حدث؟', 'Ce s-a întâmplat?', 'Que s\'est-il passé ?', 'What happened?', 'Что случилось?'],
         disc: ['בחירום, תמיד חייגו קודם 101. המידע כאן לא מחליף את הנחיות המוקדן או הרופא.', 'في حالة الطوارئ اتصل أولًا دائمًا بـ 101. هذه المعلومات لا تغني عن تعليمات المُرسِل أو الطبيب.', 'În urgență, sună întâi la 101. Aceste informații nu înlocuiesc instrucțiunile dispecerului sau ale medicului.', 'En urgence, appelez toujours d\'abord le 101. Ces informations ne remplacent pas les consignes du régulateur ou du médecin.', 'In an emergency, always call 101 first. This information does not replace the dispatcher\'s or doctor\'s instructions.', 'В экстренной ситуации всегда сначала звоните 101. Эта информация не заменяет указаний диспетчера или врача.'],
@@ -156,6 +159,7 @@
     .fa-icall{border:none;border-radius:12px;background:#16a34a;color:#fff;font-size:1.3rem;padding:4px 14px}
     .fa-iedit{width:100%;margin-top:10px;min-height:46px;border-radius:12px;border:none;background:#e2e8f0;color:#0f172a;font-size:1.05rem;font-weight:800;font-family:inherit}
     .fa-ice textarea{width:100%;box-sizing:border-box;font:inherit;font-size:1.15rem;border:2px solid #cbd5e1;border-radius:12px;padding:8px 10px}
+    .fa-calls .c4{background:linear-gradient(135deg,#34d399,#047857);box-shadow:0 4px 0 #064e3b;font-size:1.15rem}
     .fa-calls .c3{background:linear-gradient(135deg,#f8fafc,#cbd5e1);color:#0f172a;box-shadow:0 4px 0 #64748b;font-size:1.15rem}
     .fa-ilock{display:flex;align-items:center;gap:10px;padding:10px 0 2px;border-top:1px solid #e2e8f0;margin-top:6px}
     .fa-ilock span{flex:1}.fa-ilock b{display:block;font-size:1.05rem;color:#0f172a}.fa-ilock small{display:block;color:#64748b;font-size:.85rem;line-height:1.3}
@@ -249,12 +253,14 @@
         const close = () => { bg.remove(); window.removeEventListener('resize', fit); if (unBack) unBack(); };
         const draw = () => {
             const i = li(); sh.dir = i < 2 ? 'rtl' : 'ltr'; // M-204: Latin / Cyrillic left to right
-            sh.innerHTML = `<div class="fa-t"></div><div class="fa-calls"><button type="button" class="c1"></button><button type="button" class="c2"></button><button type="button" class="c3"></button></div>
+            sh.innerHTML = `<div class="fa-t"></div><div class="fa-calls"><button type="button" class="c1"></button><button type="button" class="c2"></button><button type="button" class="c3"></button><button type="button" class="c4"></button></div>
                 <div class="fa-body"><div class="fa-h"></div><div class="fa-in"></div><div class="fa-disc"></div></div><div class="fa-btns"></div>`;
             const q = c => sh.querySelector(c);
             q('.c1').textContent = tx('mda'); q('.c1').onclick = () => call(MDA);
             q('.c2').textContent = tx('poison') + ' '; const pn = document.createElement('span'); pn.dir = 'ltr'; pn.style.whiteSpace = 'nowrap'; pn.textContent = POISON_SHOW; q('.c2').appendChild(pn); q('.c2').onclick = () => call(POISON);
             q('.fa-disc').textContent = tx('disc');
+            q('.c4').textContent = tx('pharm'); q('.c4').onclick = () => { vib(); const qq = tx('pharmQ');
+                if (N && typeof N.openMaps === 'function') N.openMaps(qq); else window.open('https://www.google.com/maps/search/' + encodeURIComponent(qq), '_blank'); };
             q('.c3').textContent = tx('ice'); q('.c3').onclick = () => { vib(); topic = 'ice'; draw(); };
             const btns = q('.fa-btns'), inn = q('.fa-in');
             if (!topic) {
@@ -268,7 +274,7 @@
                 });
                 inn.appendChild(g);
             } else if (topic === 'ice') {
-                q('.fa-t').textContent = '📋 ' + tx('iceT'); q('.fa-h').remove(); q('.c3').remove(); q('.fa-disc').remove();
+                q('.fa-t').textContent = '📋 ' + tx('iceT'); q('.fa-h').remove(); q('.c3').remove(); q('.c4').remove(); q('.fa-disc').remove();
                 inn.appendChild(iceView(draw));
                 const bb = document.createElement('button'); bb.type = 'button'; bb.textContent = tx('back'); bb.onclick = () => { topic = null; draw(); };
                 btns.appendChild(bb);

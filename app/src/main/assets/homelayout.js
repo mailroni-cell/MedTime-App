@@ -99,6 +99,44 @@
       50%{transform:translate(calc(-50% - 2px),calc(-50% - 9px)) rotate(-18deg)}75%{transform:translate(calc(-50% - 4px),calc(-50% - 3px)) rotate(-10deg)}}
     html.lowvision body .home-card .hm-float #main-add .hm-pill{transform:translate(-50%,-50%) rotate(-14deg)}
     ${B} > #main-add > .mt-glint{top:calc(var(--hm-o) * -.01)!important;width:calc(var(--hm-o) * 1.02)!important;height:calc(var(--hm-o) * 1.02)!important;margin-left:calc(var(--hm-o) * -.51)!important;border-radius:50%!important;transform:none}
+    /* M-263 (owner): every main button has its own medicine shape: reminders a lozenge, medicine check a pill bottle, measurements a caplet,
+       calm a soft gel; doctor and first aid keep the capsule. Size, corners and tilt come from --sw/--sh/--sr/--rt */
+    html body .home-card .hm-float :is(#list-btn,#sb-home,#vt-btn,#relax-btn) .hm-pill{width:calc(var(--hm-o) * var(--sw));height:calc(var(--hm-o) * var(--sh));border-radius:var(--sr);animation-name:hmShape}
+    @keyframes hmShape{0%,100%{transform:translate(-50%,-50%) rotate(var(--rt))}25%{transform:translate(calc(-50% + 3px),calc(-50% - 6px)) rotate(calc(var(--rt) + 5deg))}
+      50%{transform:translate(calc(-50% - 2px),calc(-50% - 9px)) rotate(calc(var(--rt) - 3deg))}75%{transform:translate(calc(-50% - 4px),calc(-50% - 3px)) rotate(calc(var(--rt) + 3deg))}}
+    html.lowvision body .home-card .hm-float :is(#list-btn,#sb-home,#vt-btn,#relax-btn) .hm-pill{transform:translate(-50%,-50%) rotate(var(--rt))}
+    /* lozenge: a rounded square standing on its corner, bevelled edges */
+    #list-btn{--sw:.84;--sh:.84;--sr:26%;--rt:45deg}
+    html body .home-card .hm-float #list-btn .hm-pill{background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.85) 0,rgba(255,255,255,.2) 22%,rgba(255,255,255,0) 40%),radial-gradient(circle at 50% 50%,var(--c1) 0,var(--c2) 55%,var(--c3) 100%);
+      box-shadow:inset 0 0 0 calc(var(--hm-o) * .06) rgba(255,255,255,.22),inset -6px -8px 12px rgba(0,0,0,.35),inset 5px 6px 10px rgba(255,255,255,.5),0 0 0 3px rgba(255,255,255,.92),0 0 0 6px rgba(0,0,0,.8),0 0 0 7px rgba(0,0,0,.35),8px 14px 16px -2px rgba(0,0,0,.8),0 0 24px var(--c2)}
+    html body .home-card .hm-float #list-btn .hm-pill::after{left:14%;top:14%;width:44%;height:16%;transform:rotate(-45deg) translate(-12%,30%)}
+    html body .home-card .hm-float #list-btn .hm-pill::before{display:none}
+    /* pill bottle: coloured bottle with a white label and a ridged white cap */
+    #sb-home{--sw:.74;--sh:.92;--sr:18% / 14%;--rt:-9deg}
+    html body .home-card .hm-float #sb-home .hm-pill{overflow:visible;margin-top:calc(var(--hm-o) * .06);
+      background:linear-gradient(90deg,rgba(0,0,0,.35) 0,rgba(0,0,0,0) 16%,rgba(255,255,255,.45) 26%,rgba(255,255,255,0) 40%,rgba(0,0,0,0) 78%,rgba(0,0,0,.4) 100%),
+        linear-gradient(180deg,var(--c2) 0,var(--c2) 26%,#f8fafc 26%,#e2e8f0 70%,var(--c2) 70%,var(--c3) 100%);
+      box-shadow:inset 0 -8px 12px rgba(0,0,0,.3),0 0 0 3px rgba(255,255,255,.92),0 0 0 6px rgba(0,0,0,.8),0 0 0 7px rgba(0,0,0,.35),0 16px 16px -4px rgba(0,0,0,.85),0 0 24px var(--c2)}
+    html body .home-card .hm-float #sb-home .hm-pill::before{left:8%;right:auto;bottom:auto;top:calc(var(--hm-o) * -.2);width:84%;height:calc(var(--hm-o) * .2);border-radius:7px 7px 3px 3px;
+      background:linear-gradient(90deg,rgba(0,0,0,.3),rgba(0,0,0,0) 20%,rgba(255,255,255,.6) 32%,rgba(0,0,0,0) 50%,rgba(0,0,0,.35)),repeating-linear-gradient(90deg,#f8fafc 0 4px,#cbd5e1 4px 6px);
+      box-shadow:0 0 0 3px rgba(255,255,255,.92),0 0 0 6px rgba(0,0,0,.8)}
+    html body .home-card .hm-float #sb-home .hm-pill::after{left:18%;top:4%;width:12%;height:88%}
+    /* caplet: a long tablet with flat sides and a dividing line */
+    #vt-btn{--sw:1.3;--sh:.58;--sr:calc(var(--hm-o) * .22);--rt:-24deg}
+    html body .home-card .hm-float #vt-btn .hm-pill{background:linear-gradient(180deg,rgba(255,255,255,.75) 0,rgba(255,255,255,.2) 18%,rgba(255,255,255,0) 40%,rgba(0,0,0,0) 62%,rgba(0,0,0,.35) 100%),
+        linear-gradient(90deg,transparent calc(50% - 1.5px),rgba(0,0,0,.35) calc(50% - 1.5px),rgba(0,0,0,.35) calc(50% + .5px),rgba(255,255,255,.5) calc(50% + .5px),rgba(255,255,255,.5) calc(50% + 2px),transparent calc(50% + 2px)),
+        linear-gradient(180deg,var(--c1),var(--c2) 45%,var(--c3))}
+    html body .home-card .hm-float #vt-btn .hm-pill::before{display:none}
+    /* soft gel: a clear, glowing oval with liquid inside */
+    #relax-btn{--sw:1.18;--sh:.8;--sr:50%;--rt:-18deg}
+    html body .home-card .hm-float #relax-btn .hm-pill{background:radial-gradient(ellipse 60% 40% at 34% 26%,rgba(255,255,255,.95) 0,rgba(255,255,255,.25) 40%,rgba(255,255,255,0) 70%),
+        radial-gradient(ellipse at 50% 70%,color-mix(in srgb,var(--c1) 70%,transparent) 0,color-mix(in srgb,var(--c2) 75%,transparent) 50%,color-mix(in srgb,var(--c3) 90%,transparent) 100%);
+      box-shadow:inset 0 -10px 18px color-mix(in srgb,var(--c3) 80%,transparent),inset 0 0 18px rgba(255,255,255,.45),0 0 0 3px rgba(255,255,255,.92),0 0 0 6px rgba(0,0,0,.8),0 0 0 7px rgba(0,0,0,.35),0 16px 16px -4px rgba(0,0,0,.85),0 0 30px var(--c2)}
+    html body .home-card .hm-float #relax-btn .hm-pill::after{left:16%;top:10%;width:40%;height:22%}
+    html body .home-card .hm-float #relax-btn .hm-pill::before{left:30%;bottom:10%;width:46%;height:14%;background:radial-gradient(rgba(255,255,255,.55),rgba(255,255,255,0) 70%)}
+    /* the light that runs round each one follows its shape */
+    ${B} > :is(#list-btn,#sb-home,#vt-btn,#relax-btn) > .mt-glint{top:calc(var(--hm-o) * (.5 - var(--sh) / 2))!important;width:calc(var(--hm-o) * var(--sw))!important;height:calc(var(--hm-o) * var(--sh))!important;
+      margin-left:calc(var(--hm-o) * var(--sw) / -2)!important;border-radius:var(--sr)!important;transform:rotate(var(--rt))}
     html .home-card .hm-float #list-btn .lb-count{color:#fff!important;font-size:calc(var(--hm-o,118px) * .46)!important;font-weight:900!important;animation:none!important;text-shadow:0 1px 0 #e2e8f0,0 2px 0 #cbd5e1,0 3px 0 #94a3b8,0 4px 0 #64748b,0 5px 0 #475569,0 7px 8px rgba(0,0,0,.6)!important;min-height:0!important}
     #main-add{--c1:#bbf7d0;--c2:#10b981;--c3:#065f46}
     #hm-now{--c1:#fef9c3;--c2:#f59e0b;--c3:#78350f;--hm-o:var(--hm-big,120px)}
@@ -342,7 +380,7 @@
         const box = document.querySelector('.home-card .hm-float'), ex = $('exit-btn');
         if (!box || !ex || !box.offsetParent || ex.getBoundingClientRect().height < 10) return false; // M-226: another screen is open: keep the size
         const lim = ex.getBoundingClientRect().top - 8, colW = box.clientWidth / 3 - 8;
-        let o = Math.min(140, Math.floor(colW / 1.1)); // M-239/M-242: as big as the room allows; the capsule is wider than the box
+        let o = Math.min(150, Math.floor(colW / 1.02)); // M-264 (owner): bigger still // M-239/M-242: as big as the room allows; the capsule is wider than the box
         const set = () => { box.style.setProperty('--hm-o', o + 'px'); box.style.setProperty('--hm-big', Math.round(o * 1.15) + 'px'); };
         set();
         while (o > 64 && (low() > lim || document.body.scrollHeight > innerHeight + 2)) { o -= 4; set(); }

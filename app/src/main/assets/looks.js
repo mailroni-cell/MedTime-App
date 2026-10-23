@@ -267,11 +267,27 @@
     /* M-254 (owner): the busy 3D background is calmed behind the menu, so the capsules stand out clearly */
     html body .home-card .hm-float{isolation:isolate}
     html body .home-card .hm-float::before{content:'';position:absolute;inset:-14px -10px;z-index:-1;pointer-events:none;border-radius:40px;
-      background:radial-gradient(ellipse 72% 64% at 50% 50%,rgba(3,6,20,.72) 0%,rgba(3,6,20,.5) 55%,rgba(3,6,20,0) 100%);filter:blur(6px)}
+      background:radial-gradient(ellipse 72% 64% at 50% 50%,rgba(3,6,20,.82) 0%,rgba(3,6,20,.6) 55%,rgba(3,6,20,0) 100%);filter:blur(6px)}
+    /* M-264 (owner: less visual noise): the moving 3D background is calmer and darker (a cheap colour filter, no blur), so the medicine buttons stand on top of it */
+    html body #bg3d{filter:brightness(.6) saturate(.65) contrast(.9)}
     html.lowvision body .home-card #guide-btn,html.lowvision body .home-card #guide-btn > .gl-real,html.lowvision body .home-card #guide-btn::before{animation:none!important}
     /* M-253 (owner): the greeting stays on the main screen; on short screens it just gets a little smaller */
     html.fit6 body .hello-line.hello-line{display:table!important;padding:4px 14px 5px!important;font-size:.98rem!important;margin:0 auto 4px!important}
     html.fit6 body .hello-line.hello-line b{font-size:1.3em!important}`;
+    /* M-265 (owner): the hand is clearer and in a new colour (bright pink with a white outline), and it waits restlessly:
+       slow circles on its spot, a wobble, and now and then two impatient taps */
+    css.textContent += `
+    html body .home-card #guide-btn{animation:glCircle 8s linear infinite!important;background:radial-gradient(circle at 50% 55%,rgba(244,114,182,.4),rgba(244,114,182,0) 68%)!important}
+    html body .home-card #guide-btn > .gl-real{animation:glWait 8s ease-in-out infinite!important;
+      filter:hue-rotate(285deg) saturate(1.9) brightness(1.08) drop-shadow(0 0 0 #fff) drop-shadow(1.5px 0 0 #fff) drop-shadow(-1.5px 0 0 #fff) drop-shadow(0 1.5px 0 #fff) drop-shadow(0 -1.5px 0 #fff) drop-shadow(0 8px 7px rgba(0,0,0,.65)) drop-shadow(0 0 12px #f472b6)!important}
+    html body .home-card #guide-btn::after{border-color:#fbcfe8!important;box-shadow:0 0 12px #f472b6,inset 0 0 8px #f472b6!important;animation:glRip2 8s ease-out infinite!important}
+    html body .home-card #guide-btn::before{animation:glWait 8s ease-in-out infinite!important;text-shadow:0 0 3px #000,0 1px 0 #9d174d,0 2px 0 #831843,0 3px 4px rgba(0,0,0,.9)!important}
+    @keyframes glCircle{0%{transform:translate(0,-9px) rotate(-4deg)}12.5%{transform:translate(6px,-6px) rotate(3deg)}25%{transform:translate(9px,0) rotate(7deg)}37.5%{transform:translate(6px,6px) rotate(2deg)}
+      50%{transform:translate(0,9px) rotate(-5deg)}62.5%{transform:translate(-6px,6px) rotate(-9deg)}75%{transform:translate(-9px,0) rotate(-3deg)}87.5%{transform:translate(-6px,-6px) rotate(4deg)}100%{transform:translate(0,-9px) rotate(-4deg)}}
+    @keyframes glWait{0%,14%,30%,52%,100%{transform:translateY(0) rotate(0) scale(1)}20%{transform:translateY(-2px) rotate(-8deg)}26%{transform:translateY(-2px) rotate(8deg)}
+      60%{transform:translateY(-6px) scale(.9)}64%{transform:translateY(0) scale(1)}68%{transform:translateY(-6px) scale(.9)}72%{transform:translateY(0) scale(1)}}
+    @keyframes glRip2{0%,58%{opacity:0;transform:scale(.3)}61%{opacity:1;transform:scale(.5)}66%{opacity:0;transform:scale(1.6)}69%{opacity:1;transform:scale(.5)}76%{opacity:0;transform:scale(1.9)}100%{opacity:0}}
+    html.lowvision body .home-card #guide-btn,html.lowvision body .home-card #guide-btn > .gl-real,html.lowvision body .home-card #guide-btn::before,html.lowvision body .home-card #guide-btn::after{animation:none!important}`;
     function handWord() {
         const gb = document.getElementById('guide-btn'); if (!gb) return setTimeout(handWord, 500);
         const set = () => { const i = Math.max(0, L6.indexOf(typeof LANG === 'string' ? LANG : document.documentElement.lang)); if (gb.dataset.hand !== HAND[i]) gb.dataset.hand = HAND[i];
@@ -322,8 +338,84 @@
             const e = document.createElement('i'); e.className = 'gb-e'; e.setAttribute('aria-hidden', 'true'); e.textContent = m[1];
             const t = document.createElement('span'); t.className = 'gb-t'; t.textContent = m[2]; b.append(e, t);
         });
-        fitGuide(sh); [350, 900].forEach(d => setTimeout(() => sh.isConnected && fitGuide(sh), d));
+        askBox(sh); fitGuide(sh); [350, 900].forEach(d => setTimeout(() => sh.isConnected && fitGuide(sh), d));
     }
+    // M-265 (owner): a box for a free question; it finds the matching topic by its words (offline, 6 languages) and the hand shows it live
+    const ASK = {
+        ph: ['שאלו אותי כל דבר, למשל: איך מוסיפים תרופה?', 'اسألني أي شيء، مثلاً: كيف أضيف دواء؟', 'Întrebați orice, ex.: cum adaug un medicament?', 'Posez une question, ex. : comment ajouter un médicament ?', 'Ask me anything, e.g. how do I add a medicine?', 'Спросите что угодно, напр.: как добавить лекарство?'],
+        go: ['שאל', 'اسأل', 'Întreabă', 'Demander', 'Ask', 'Спросить'],
+        hit: ['מצאתי! ', 'وجدت! ', 'Am găsit! ', 'Trouvé ! ', 'Found it! ', 'Нашёл! '],
+        show: ['👆 הראה לי', '👆 أرني', '👆 Arată-mi', '👆 Montre-moi', '👆 Show me', '👆 Покажи'],
+        none: ['לא מצאתי בדיוק. נסו מילים אחרות, או בחרו נושא למטה 👇', 'لم أجد بالضبط. جرّب كلمات أخرى أو اختر موضوعًا 👇', 'Nu am găsit. Încercați alte cuvinte sau alegeți mai jos 👇', 'Pas trouvé. Essayez d\'autres mots ou choisissez ci-dessous 👇', 'Not found. Try other words, or pick a topic below 👇', 'Не нашёл. Попробуйте другие слова или выберите ниже 👇']
+    };
+    const KEYS = ['home', 'add', 'firstaid', 'tools', 'edit', 'wk', 'appt', 'log', 'fam', 'stock', 'widget', 'read', 'relax', 'settings'];
+    const KW = {
+        home: 'מסך ראשי|המסך הראשי|תפריט|الرئيسية|قائمة|ecran principal|meniu|accueil|écran principal|main screen|home screen|menu|главн|меню',
+        add: 'הוסף|להוסיף|הוספ|מוסיפ|תרופה חדשה|תזכורת חדשה|כדור חדש|לקבוע תזכורת|קבע תזכורת|إضاف|أضيف|اضيف|دواء جديد|adaug|ajout|nouveau médicament|add|new medicine|new reminder|добав',
+        firstaid: 'עזרה ראשונה|חירום|החייאה|פציע|כוויה|sos|إسعاف|طوارئ|prim ajutor|urgen|secours|urgence|first aid|emergency|первая помощь|скорая|срочн',
+        tools: 'בדיקת תרופה|לבדוק תרופה|מדד|לחץ דם|סוכר|דופק|צילום|מצלמה|תרופה חליפית|גנרי|فحص|ضغط|سكر|نبض|verific|tensiun|glicem|puls|vérif|tension|glycém|pouls|check|blood pressure|sugar|pulse|camera|vital|провер|давлен|сахар|пульс',
+        edit: 'לשנות|שינוי|לערוך|עריכה|למחוק|מחיקה|מוחק|משנים|לתקן|تعديل|حذف|غيّر|modific|șterg|sterg|modifier|supprim|change|edit|delete|remove|измен|удал|редакт',
+        wk: 'סופ"ש|סופ״ש|סופש|סוף שבוע|שבת|חגים|نهاية الأسبوع|عطلة|weekend|sărbăt|week-end|holiday|выходн|праздн',
+        appt: 'תור|רופא|פגישה|מרפאה|موعد|طبيب|programare|medic|rendez|médecin|appointment|doctor|приём|прием|врач',
+        log: 'יומן|דוח|דו"ח|היסטוריה|מה לקחתי|pdf|سجل|تقرير|jurnal|raport|journal|rapport|log|report|history|журнал|отчёт|отчет',
+        fam: 'משפחה|הילדים|התראה למשפחה|לא לקחתי|عائل|famil|семь',
+        stock: 'מלאי|נגמר|נגמרים|כמה כדורים|קופסה|חבילה|مخزون|stoc|stock|refill|run out|запас',
+        widget: 'ווידג|וידג|ويدجت|أداة|widget|виджет',
+        read: 'קריאה|אותיות|גדול|להגדיל|גופן|טקסט|ראייה|قراءة|خط كبير|citire|font|lecture|texte|read|bigger|text size|vision|чтени|крупн|шрифт',
+        relax: 'שלווה|מרגיע|להירגע|נשימה|מוזיקה|לישון|שינה|רגוע|سكين|هدوء|تنفس|liniș|linis|respira|séréni|calme|relax|calm|breath|sleep|serenity|поко|расслаб|дыхан|сон',
+        settings: 'הגדרות|שפה|צליל|צלצול|ערכת נושא|רקע|צבע|עוצמה|إعدادات|لغة|صوت|setări|setari|limb|sunet|réglage|langue|settings|language|sound|ringtone|theme|volume|настрой|язык|звук'
+    };
+    const norm = t => String(t || '').toLowerCase().replace(/[֑-ׇً-ْ]/g, '').replace(/[?!.,;:()"'״׳]/g, ' ').replace(/\s+/g, ' ').trim();
+    function findTopic(q, grid) {
+        q = ' ' + norm(q) + ' '; if (q.trim().length < 2) return -1;
+        let best = -1, bs = 0;
+        KEYS.forEach((k, i) => {
+            let sc = 0;
+            KW[k].split('|').forEach(w => { w = norm(w); if (w && q.includes(w)) sc += 1 + w.length / 6; });
+            const b = grid.children[i], t = b && norm(b.textContent);
+            if (t) t.split(' ').forEach(w => { if (w.length >= 4 && q.includes(w)) sc += .6; });
+            if (sc > bs) { bs = sc; best = i; }
+        });
+        return best;
+    }
+    function askBox(sh) {
+        const card = sh.querySelector('.g-card'), grid = sh.querySelector('.g-grid'), sub = sh.querySelector('.g-s');
+        if (!card || !grid || sh.querySelector('.g-ask')) return;
+        const i = Math.max(0, L6.indexOf(typeof LANG === 'string' ? LANG : document.documentElement.lang));
+        const f = document.createElement('form'); f.className = 'g-ask'; f.setAttribute('autocomplete', 'off');
+        f.innerHTML = '<input type="text" enterkeyhint="search"><button type="submit"></button>';
+        const inp = f.querySelector('input'); inp.placeholder = ASK.ph[i]; f.querySelector('button').textContent = '🔎 ' + ASK.go[i];
+        const ans = document.createElement('div'); ans.className = 'g-ans';
+        sub.after(f, ans);
+        f.onsubmit = e => {
+            e.preventDefault(); inp.blur();
+            const n = findTopic(inp.value, grid); ans.textContent = '';
+            [...grid.children].forEach(x => x.classList.remove('g-hit'));
+            if (n < 0) { ans.textContent = ASK.none[i]; ans.className = 'g-ans on miss'; }
+            else {
+                const b = grid.children[n], t = document.createElement('span'), go = document.createElement('button');
+                t.textContent = ASK.hit[i] + b.textContent; go.type = 'button'; go.textContent = ASK.show[i]; go.onclick = () => b.click();
+                ans.append(t, go); ans.className = 'g-ans on';
+                b.classList.add('g-hit');
+            }
+            fitGuide(sh);
+        };
+    }
+    css.textContent += `
+    ${G} .g-ask{flex:none;display:flex;gap:8px;margin:0 0 8px}
+    ${G} .g-ask input{flex:1 1 auto;min-width:0;padding:10px 14px;border-radius:999px;border:2px solid rgba(255,255,255,.85);background:#fff!important;color:#1e1b4b!important;-webkit-text-fill-color:#1e1b4b!important;
+      font-family:inherit;font-weight:700;font-size:min(1rem,4.2vw,2.3vh);box-shadow:inset 0 2px 5px rgba(0,0,0,.25),0 0 0 3px rgba(0,0,0,.6)}
+    ${G} .g-ask button{flex:none;padding:8px 14px;border-radius:999px;border:2px solid rgba(255,255,255,.9);font-family:inherit;font-weight:900;font-size:min(1rem,4.2vw,2.3vh);color:#fff;
+      background:linear-gradient(180deg,#fbcfe8 0%,#f472b6 25%,#db2777 65%,#831843 100%);text-shadow:0 1px 0 #9d174d,0 2px 3px rgba(0,0,0,.6);box-shadow:inset 0 3px 4px rgba(255,255,255,.6),0 4px 0 #500724,0 0 0 3px rgba(0,0,0,.6)}
+    ${G} .g-ans{display:none}
+    ${G} .g-ans.on{flex:none;display:flex;align-items:center;gap:10px;margin:0 0 8px;padding:8px 12px;border-radius:18px;background:rgba(244,114,182,.18);border:1.5px solid rgba(251,207,232,.7);
+      font-weight:800;font-size:min(1rem,4.2vw,2.2vh);line-height:1.2}
+    ${G} .g-ans.on span{flex:1 1 auto;min-width:0}
+    ${G} .g-ans.miss{color:#fde68a}
+    ${G} .g-ans button{flex:none;padding:8px 14px;border-radius:999px;border:2px solid #fff;font-family:inherit;font-weight:900;font-size:inherit;color:#fff;
+      background:linear-gradient(180deg,#a5f3fc 0%,#22d3ee 22%,#0891b2 60%,#155e75 100%);box-shadow:0 4px 0 #0c4a5e;animation:mtBkFloat 2s ease-in-out infinite}
+    ${G} .g-grid > button.g-b.g-hit{outline:4px solid #f472b6;outline-offset:2px}
+    html.lowvision #mt-guide .g-ask input{background:#fff!important;color:#000!important}`;
     // the words get a little smaller until every topic fits inside its own capsule and the sheet fits the screen
     function fitGuide(sh) {
         const grid = sh.querySelector('.g-grid'), card = sh.querySelector('.g-card'); if (!grid) return;
