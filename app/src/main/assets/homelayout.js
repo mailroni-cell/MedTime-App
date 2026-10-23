@@ -6,7 +6,7 @@
     'use strict';
     const $ = id => document.getElementById(id);
     const N = window.MedTimeNative;
-    const ORDER = ['main-add', 'hm-now', 'list-btn', 'appt-btn', 'sb-home', 'vt-btn', 'relax-btn', 'fa-home'];
+    const ORDER = ['main-add', 'hm-now', 'appt-btn', 'vt-btn', 'sb-home', 'list-btn', 'relax-btn', 'fa-home']; // M-338 (owner): doctor appointments and measurements on top, my reminders below
     const ICO = '#hm-now .hn-ico, #main-add .ba-cross, #list-btn .lb-count, #appt-btn .ab-ico, #sb-home .sbh-ico, #vt-btn .rb-ico, #relax-btn .rb-ico, #fa-home .fah-ico';
     const css = document.createElement('style');
     const B = 'html .home-card .hm-float';
