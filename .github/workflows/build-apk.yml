@@ -16,6 +16,7 @@ on:
       - 'app/src/main/assets/**.css'
       - '**.md'
       - '.github/workflows/web-update.yml'
+      - 'docs/**'
   workflow_dispatch:
 
 # M-005: needed to publish the APK as the rolling "latest" release
