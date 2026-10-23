@@ -226,8 +226,53 @@
     html.lowvision #sos-btn{animation:none}
     body:has(.settings-page.open) #sos-btn{display:none}
     /* M-274 (owner): the "Add reminder" words sit close under the cross, so the symbols below have more room */
-    ${B} > #main-add .ba-txt:not(#mt-x){margin-top:calc(var(--hm-big,140px) * -.16)!important}`;
+    ${B} > #main-add .ba-txt:not(#mt-x){margin-top:calc(var(--hm-big,140px) * -.16)!important}
+    /* M-278 (owner): SOS beats like a heart and glows fluorescent: neon-yellow ring, red neon glow and a ring that spreads out with every beat */
+    html body #sos-btn{animation:sosBeat 1.3s ease-in-out infinite!important;border-color:#f4ff1a!important;
+      box-shadow:inset 0 3px 4px rgba(255,255,255,.6),inset 0 -6px 10px rgba(69,10,10,.6),0 6px 0 #450a0a,0 0 0 3px rgba(244,255,26,.55),0 0 18px #ff1744,0 0 34px rgba(244,255,26,.75)!important}
+    html body #sos-btn::before{content:'';position:absolute;inset:-5px;border-radius:50%;border:3px solid #f4ff1a;box-shadow:0 0 14px #ff1744,inset 0 0 10px #ff1744;pointer-events:none;animation:sosRing 1.3s ease-out infinite}
+    @keyframes sosBeat{0%,100%{transform:translateX(-50%) scale(1)}14%{transform:translateX(-50%) scale(1.13)}28%{transform:translateX(-50%) scale(.98)}42%{transform:translateX(-50%) scale(1.08)}60%{transform:translateX(-50%) scale(1)}}
+    @keyframes sosRing{0%{opacity:.95;transform:scale(1)}70%,100%{opacity:0;transform:scale(1.55)}}
+    html.lowvision body #sos-btn{animation:sosBeat 1.3s ease-in-out infinite!important}
+    /* M-279 (owner: "the glasses button is not clear at all"): a big "A+" on it and its name under it, like the buttons beside it */
+    html body #lv-btn .lv-g{display:none!important}
+    html body #lv-btn{overflow:visible!important}
+    html body #lv-btn::before{content:'A+';font-family:'MTBall','MTUI',sans-serif;font-weight:900;font-size:1.75rem;line-height:1;color:#422006;letter-spacing:-1px;text-shadow:0 1px 0 rgba(255,255,255,.6)}
+    html.lowvision body #lv-btn::before{color:#000}
+    html body #lv-btn::after{content:attr(data-lbl);position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:9px;white-space:nowrap;font-size:.95rem;font-weight:900;color:#fef08a;text-shadow:0 1px 2px #000,0 0 8px rgba(0,0,0,.8)}
+    /* M-281 (owner): the hand is a full-size symbol like the others, with the same glow round it, and it is alive by itself:
+       it squashes, stretches, bends and taps (a soft jelly hand), while it floats gently on its spot */
+    html body .home-card .hm-float > #guide-btn:not(#mt-x){width:var(--hm-o,118px)!important;height:var(--hm-o,118px)!important;animation:glFloat 7s ease-in-out infinite!important;align-self:start}
+    html body .home-card .hm-float > #guide-btn:not(#mt-x) > .gl-real{font-size:calc(var(--hm-o,118px) * .78)!important;transform-origin:50% 92%;animation:glJelly 3.6s ease-in-out infinite!important;
+      filter:hue-rotate(285deg) saturate(1.9) brightness(1.08) drop-shadow(1.5px 0 0 #fff) drop-shadow(-1.5px 0 0 #fff) drop-shadow(0 1.5px 0 #fff) drop-shadow(0 -1.5px 0 #fff) drop-shadow(0 0 2px #000) drop-shadow(0 0 9px #67e8f9)!important}
+    html body .home-card .hm-float > #guide-btn:not(#mt-x)::before{top:100%;left:-20%;right:-20%;padding-top:2px;font-family:inherit;font-weight:900;font-size:calc(var(--hm-t,1.4rem) * .78)!important;color:rgba(255,255,255,.9)!important;
+      text-shadow:0 1px 2px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.8)!important;animation:none!important}
+    html body .home-card .hm-float > #guide-btn:not(#mt-x)::after{left:44%;top:16%}
+    @keyframes glFloat{0%,100%{transform:translate(0,0)}25%{transform:translate(-4px,-6px)}50%{transform:translate(3px,-9px)}75%{transform:translate(5px,-3px)}}
+    @keyframes glJelly{0%,100%{transform:rotate(-7deg) scale(1,1)}9%{transform:rotate(-2deg) scale(1.1,.88)}17%{transform:rotate(5deg) scale(.93,1.1) translateY(-5%)}
+      27%{transform:rotate(-3deg) skewX(7deg) scale(1.03,.97)}40%{transform:rotate(9deg) skewX(-8deg) scale(.98,1.03)}52%{transform:rotate(-4deg) scale(1,1)}
+      58%{transform:rotate(-4deg) scale(1.12,.86) translateY(5%)}63%{transform:rotate(-4deg) scale(.92,1.1) translateY(-7%)}68%{transform:rotate(-4deg) scale(1.1,.88) translateY(4%)}
+      74%{transform:rotate(-2deg) scale(.95,1.06) translateY(-3%)}84%{transform:rotate(6deg) skewY(5deg)}92%{transform:rotate(-9deg) skewX(4deg)}}
+    html.lowvision body .home-card .hm-float > #guide-btn:not(#mt-x),html.lowvision body .home-card .hm-float > #guide-btn:not(#mt-x) > .gl-real{animation:none!important}
+    /* M-282 (owner): the camera has the same glow round it as the other symbols */
+    html body .home-card .hm-float #sb-home .hm-3d > *:not(#mt-x){text-shadow:0 0 2px #000,0 1px 2px #000,0 0 9px var(--mtg,#67e8f9)!important}
+    /* M-283 (owner): the greeting has no frame: soft handwriting like the name, floating slowly across the screen as if in space */
+    html body #hello-line.hello-line:not(#mt-x){background:none!important;border:0!important;box-shadow:none!important;padding:2px 12px!important;margin:0 auto 6px!important;
+      font-family:'MTName','MTUI',sans-serif!important;font-weight:400!important;font-size:1.45rem!important;letter-spacing:.4px;animation:hlSpace 22s ease-in-out infinite;will-change:transform}
+    html body #hello-line.hello-line:not(#mt-x) :is(span,i,b):not(#mt-x){font-family:'MTName','MTUI',sans-serif!important;font-weight:400!important;-webkit-text-stroke:0!important}
+    html body #hello-line.hello-line:not(#mt-x) > :not(b):not(#mt-x),html body #hello-line.hello-line:not(#mt-x){color:#f5f3ff!important;text-shadow:0 1px 2px rgba(0,0,0,.9),0 0 10px rgba(167,139,250,.75),0 0 22px rgba(34,211,238,.35)!important}
+    html.fit6 body #hello-line.hello-line:not(#mt-x){font-size:1.15rem!important;margin-bottom:2px!important}
+    @keyframes hlSpace{0%,100%{transform:translate(0,0) rotate(-1deg)}20%{transform:translate(-18px,-5px) rotate(.5deg)}45%{transform:translate(-6px,4px) rotate(1.5deg)}
+      70%{transform:translate(20px,-3px) rotate(-.5deg)}85%{transform:translate(10px,5px) rotate(-1.5deg)}}
+    html.lowvision body #hello-line.hello-line:not(#mt-x){animation:none}
+    /* M-280 (owner: "the symbols are pressed against the bottom"): the empty space under the title shrinks, so the menu moves up and keeps clear room above the bottom row */
+    html body .hero-space.hero-space:not(#mt-x){height:clamp(8px,2.5vh,26px)!important;min-height:0!important}
+    html body #lv-btn{direction:ltr}`;
     document.head.appendChild(css);
+    // M-279: the name under the A+ button, in the app language
+    const lvLbl = () => { const b = $('lv-btn'); if (!b) return; const i = Math.max(0, ['he', 'ar', 'ro', 'fr', 'en', 'ru'].indexOf(typeof LANG === 'string' ? LANG : 'he'));
+        const t = ['אותיות גדולות', 'خط كبير', 'Litere mari', 'Gros texte', 'Big letters', 'Крупный шрифт'][i]; if (b.dataset.lbl !== t) b.dataset.lbl = t; };
+    lvLbl(); setInterval(lvLbl, 2000);
 
     function sosBtn() {
         const gear = $('gear-btn'); if (!gear || $('sos-btn')) return;
@@ -428,7 +473,7 @@
     function sizeBalls() {
         const box = document.querySelector('.home-card .hm-float'), ex = $('exit-btn');
         if (!box || !ex || !box.offsetParent || ex.getBoundingClientRect().height < 10) return false; // M-226: another screen is open: keep the size
-        const lim = ex.getBoundingClientRect().top - 8, colW = box.clientWidth / 3 - 8;
+        const lim = ex.getBoundingClientRect().top - 34, colW = box.clientWidth / 3 - 8;
         let o = Math.min(150, Math.floor(colW / 1.02)); // M-264 (owner): bigger still // M-239/M-242: as big as the room allows; the capsule is wider than the box
         const set = () => { box.style.setProperty('--hm-o', o + 'px'); box.style.setProperty('--hm-big', Math.round(o * 1.15) + 'px'); };
         set();
@@ -455,7 +500,7 @@
             const R = document.documentElement, had5 = R.classList.contains('fit5'), had6 = R.classList.contains('fit6');
             R.classList.remove('fit5', 'fit6');
             if (!sizeBalls() && o0) box.style.setProperty('--hm-o', o0);
-            const over = () => low() > ex.getBoundingClientRect().top - 8 || document.body.scrollHeight > innerHeight + 2;
+            const over = () => low() > ex.getBoundingClientRect().top - 34 || document.body.scrollHeight > innerHeight + 2;
             // M-235 (owner: low vision lost the tour button): greeting goes first, then the title gets smaller, the tour button only last
             R.classList.remove('hm-slim');
             if ((had5 || had6) && over()) { R.classList.add('fit6'); sizeBalls();

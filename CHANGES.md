@@ -309,3 +309,17 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | R-205 | 2026-10-23 | release/stable.txt | Run 205 (M-269..M-270) released to everyone | ✅ |
 | M-271 | 2026-10-23 | looks.js | Owner: the name MedTime spreads edge to edge on the main screen with the ECG line full width (tiny screens keep the smaller name so all fits) | ⏳ |
 | R-206 | 2026-10-23 | release/stable.txt | Run 206 (M-271) released to everyone | ✅ |
+| M-272 | 2026-10-23 | homelayout.js | Owner: "My reminders" shows a full-size 3D 📋 like its neighbours; the next time is a small "⏰ HH:MM" tag on it | ⏳ |
+| M-273 | 2026-10-23 | homelayout.js | Owner: SOS (🚑, yellow ring) moves to the bottom row with settings / low vision / close, same size; the tour hand takes its place in the menu | ⏳ |
+| M-274 | 2026-10-23 | homelayout.js | Owner: "Add reminder" words sit close under the cross | ⏳ |
+| R-207 | 2026-10-23 | release/stable.txt | Run 207 (M-272..M-274) released to everyone | ✅ |
+| M-275 | 2026-10-23 | relax.js | Owner: background and sound choice in calm mode is a clear wheel (rows turn in 3D, selected row centred with ✓) | ⏳ |
+| M-276 | 2026-10-23 | more.js, NativeBridge.java | Owner: widget tile has a mini preview, a glossy "add to home screen" button and a red "remove widget" button | ⏳ |
+| R-208 | 2026-10-23 | release/stable.txt | Run 208 (M-275..M-276) released to everyone | ✅ |
+| M-277 | 2026-10-23 | tools/media_pick.json, tools/make_media.py | Owner: calm videos longer (25-50s loops, windows without scene cuts), 540x960 to keep the app size | ⏳ |
+| M-278 | 2026-10-23 | homelayout.js | Owner: SOS beats like a heart, fluorescent glow and a spreading neon ring | ⏳ |
+| M-279 | 2026-10-23 | homelayout.js | Owner: low-vision button shows a big "A+" with its name under it (6 languages) | ⏳ |
+| M-280 | 2026-10-23 | homelayout.js | Owner: menu moves up (smaller empty space under the title) and keeps clear room above the bottom row | ⏳ |
+| M-281 | 2026-10-23 | homelayout.js | Owner: the tour hand is full size like the other symbols, alive (squash, stretch, bend, taps) with the same glow | ⏳ |
+| M-282 | 2026-10-23 | homelayout.js | Owner: the camera symbol has the same glow as the others | ⏳ |
+| M-283 | 2026-10-23 | homelayout.js | Owner: greeting has no frame, soft handwriting like the name, floats slowly as in space | ⏳ |
