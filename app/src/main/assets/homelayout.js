@@ -296,6 +296,13 @@
       font-size:calc(var(--hm-o,118px) * .15);line-height:1.15;box-shadow:0 0 10px #22c55e,0 2px 6px rgba(0,0,0,.7);text-shadow:0 1px 2px #000;pointer-events:none}
     /* M-332 (owner, M-334 internet update test): no appointment count on the symbol; greeting and the add-reminder cross higher still, together */
     html body .home-card .hm-float #appt-btn .ab-count:not(#mt-x){display:none!important}
+    /* M-340 (owner): no picture next to the greeting; the greeting in a warm, personal colour (soft peach-amber)
+       with a dark edge so it reads on any background, without shouting */
+    html body #hello-line.hello-line .hl-ico:not(#mt-x){display:none!important}
+    html body #hello-line.hello-line:not(#mt-x) > :not(b):not(#mt-x),html body #hello-line.hello-line:not(#mt-x){color:#ffd8a8!important;
+      text-shadow:0 1px 1px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.85),0 0 12px rgba(251,146,60,.45)!important}
+    html body #hello-line.hello-line > b:not(#mt-x){background:none!important;-webkit-text-fill-color:#ffb870!important;color:#ffb870!important;filter:none!important;
+      text-shadow:0 1px 1px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.85),0 0 14px rgba(251,146,60,.6)!important}
     /* M-339 (owner): no appointment badge at all on the symbol (also the when-pill) */
     html body .home-card .hm-float #appt-btn :is(.ab-when,.ab-count,.lb-count):not(#mt-x){display:none!important}
     html body #hello-line.hello-line:not(#mt-x){margin-top:-46px!important}

@@ -386,3 +386,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-337 | 2026-10-23 | MainActivity.java, NativeBridge.java, relax.js | Owner: no battery drain. Screen no longer kept on all the time (phone timeout applies; only calm mode keeps it on); 5 s after going to the background all page timers stop (calm mode excepted); reminders are native alarms, unaffected | ⏳ |
 | M-338 | 2026-10-23 | homelayout.js | Owner: home symbols swapped: top row תורים לרופא, מדדים, בדיקת תרופה; second row התזכורות שלי, שלווה, הדרכה | ⏳ |
 | M-339 | 2026-10-23 | homelayout.js | Owner: no appointment badge at all on the 'תורים לרופא' symbol (when-pill hidden too) | ⏳ |
+| M-340 | 2026-10-23 | homelayout.js | Owner: no picture next to the greeting; greeting in warm soft peach, name warm amber, dark edge so it reads on any background | ⏳ |
