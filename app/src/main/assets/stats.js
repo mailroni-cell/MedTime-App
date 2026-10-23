@@ -5,6 +5,7 @@
 (function () {
     'use strict';
     const NT = 'https://ntfy.sh/', TOPIC = 'medtime-v3tqzebpancz9djidfg7bh', STOPIC = 'medtime-s-pj9eh8jegcpcfn6wbkpp';
+    const CF = 'https://medtime.pages.dev/api/hit';
     const FORM = NT + TOPIC; // the survey is on when this is set
     const N = window.MedTimeNative;
     const L5 = ['he', 'ar', 'ro', 'fr', 'en', 'ru'];
@@ -38,6 +39,8 @@
     function send(kind, extra) {
         const v = Object.assign({ kind: kind, id: iid, ver: ver(), lang: L5[li()] }, extra || {});
         post(NT + TOPIC, JSON.stringify(v));
+        // M-327: the same anonymous message to our own Cloudflare counter (survey free text is never sent there)
+        const c = Object.assign({}, v); delete c.text; post(CF, JSON.stringify(c), { 'Content-Type': 'text/plain' });
         if (kind === 'survey') // a readable copy for the owner's phone
             post(NT + STOPIC, '⭐'.repeat(+v.stars || 0) + ' (' + v.lang + ', v' + v.ver + ')\n' + (v.improve || '') + (v.text ? '\n💬 ' + v.text : ''), { Title: 'MedTime survey' });
     }
