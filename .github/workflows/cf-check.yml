@@ -1,0 +1,15 @@
+name: Cloudflare counter check
+# M-327: the cloud session cannot reach pages.dev; this checks the live counter and writes the answers to branch cfcheck.
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          mkdir out && cd out
+          { echo "== GET /api/stats"; curl -s -i https://medtime.pages.dev/api/stats; echo; echo "== POST /api/hit"; curl -s -i -X POST -H 'Content-Type: text/plain' -d '{"kind":"adview"}' https://medtime.pages.dev/api/hit; echo; echo "== GET /api/stats again"; curl -s https://medtime.pages.dev/api/stats; echo; echo "== GET /stats.html head"; curl -s https://medtime.pages.dev/stats.html | head -c 600; } > log.txt 2>&1
+          git init -q && git checkout -q -b cfcheck && git add log.txt
+          git -c user.name=bot -c user.email=bot@users.noreply.github.com commit -qm "check $(date -u +%H:%M)"
+          git push -fq "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" cfcheck
