@@ -171,6 +171,12 @@ nwp, nhp = int((px1-px0)*PS), int((py1-py0)*PS)
 ph2 = cv2.resize(ph_img, (nwp, nhp), interpolation=cv2.INTER_LANCZOS4)
 if PS > 1: ph2 = np.clip(ph2 + (ph2 - cv2.GaussianBlur(ph2, (0, 0), 1.0))*0.6, 0, 255)   # keep it sharp
 pa2 = cv2.resize(ph_a, (nwp, nhp))
+if TALL and os.environ.get('MT_BY0'):   # tall round 5: the background (not the phone) fades out above the old bottom rows
+    BF0, BY0 = int(os.environ.get('MT_BF0', '1060')), int(os.environ.get('MT_BY0'))
+    dk = np.median(img[1316:1342, 20:200].reshape(-1, 3), axis=0)
+    img[BY0:] = dk
+    t_ = np.clip((np.arange(BF0, BY0) - BF0) / float(BY0 - BF0), 0, 1); w_ = (t_*t_*(3 - 2*t_))[:, None, None]
+    img[BF0:BY0] = img[BF0:BY0]*(1 - w_) + dk[None, None]*w_
 nx0, ny0 = px1 - nwp, py0
 sh = np.zeros((H, W), np.float32); sh[ny0:ny0+nhp, nx0:nx0+nwp] = pa2
 if PS != 1.0: img = img*(1 - 0.55*np.clip(cv2.GaussianBlur(sh, (0, 0), 10)*1.5, 0, 1))[..., None]      # soft shadow round the bigger phone
@@ -181,8 +187,9 @@ img = img*(1 - lta[..., None]) + ltimg*lta[..., None]
 img = img*(1 - rta[..., None]) + ltimg*rta[..., None]
 
 # clear 1 + fade (round 11): one calm dark colour at the bottom, reached smoothly from above
-X0, X1, Y0, Y1 = 4, 1076, int(os.environ.get('MT_Y0', '1200')), 1346
+X0, X1, Y0, Y1 = 4, 1076, int(os.environ.get('MT_Y0', '1200')), H - 4
 dark = np.median(img[1300:1340, 200:880].reshape(-1, 3), axis=0)
+if TALL and os.environ.get('MT_BY0'): dark = dk   # same dark as the background fade (no band)
 fill = np.ones((Y1-Y0, X1-X0, 3), np.float32)*dark[None, None]
 img[Y0:Y1, X0:X1] = fill
 F0 = int(os.environ.get('MT_F0', '1030'))

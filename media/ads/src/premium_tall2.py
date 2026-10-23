@@ -11,8 +11,8 @@ ad = np.array(Image.open(src).convert('RGB')).astype(np.float32)
 W, H = 1080, 2340
 B = 5
 ad[:B] = ad[B:B+1]; ad[:, :B] = ad[:, B:B+1]; ad[:, -B:] = ad[:, -B-1:-B]
-CUT = 1300                                   # the base is used down to the start of its dark bottom
-TOP = 150
+CUT = int(__import__('os').environ.get('MT_CUT','1300'))                                   # the base is used down to the start of its dark bottom
+TOP = int(__import__('os').environ.get('MT_TOP','150'))
 canvas = np.zeros((H, W, 3), np.float32)
 top = np.repeat(cv2.GaussianBlur(ad[B:B+6].mean(0, keepdims=True), (0, 0), 40), TOP, 0)
 canvas[:TOP] = top + np.random.default_rng(1).normal(0, 1.2, top.shape).astype(np.float32)
@@ -44,22 +44,17 @@ lx = lambda s: F('rubik-latin-ext-800-normal', s)
 img = canvas
 # download (red fill, fluorescent-yellow edge, thin dark line)
 RED, YEL, NAVY = (255, 36, 64), (244, 255, 26), (10, 22, 52)
-y0 = TOP + CUT + 45
-img = paint(img, [(':', la(76), False), ('להורדת האפליקציה', he(76), True)], y0, RED, [(YEL, 5), (NAVY, 2)])
-img = paint(img, [('medtime.pages.dev', la(96), False)], y0 + 100, RED, [(YEL, 5), (NAVY, 2)])
-# bottom rows (green fill, dark edge, thin white ring), two lines each
+y0 = TOP + CUT + int(__import__('os').environ.get('MT_GAP','20'))
+# round 5 (Roni 16:05): upper content gets the space, bottom rows compact (one line each, at the bottom)
+img = paint(img, [(':', la(96), False), ('להורדת האפליקציה', he(96), True)], y0, RED, [(YEL, 5), (NAVY, 2)])
+img = paint(img, [('medtime.pages.dev', la(112), False)], y0 + 125, RED, [(YEL, 6), (NAVY, 2)])
 GRN, BLK, WHT = (92, 242, 143), (12, 12, 14), (255, 255, 255)
-dot = ('  •  ', la(64), False)
-dotg = (205, 170, 110)
-def row(img, segs, y):
-    img = paint(img, segs, y, GRN, [(WHT, 5), (BLK, 3)])
-    return img
-y1 = y0 + 315
-img = row(img, [('בלי פרסומות', he(70), True), dot, ('עוזר קולי', he(70), True)], y1)
-img = row(img, [('כרטיס חירום', he(70), True)], y1 + 100)
-img = row(img, [('Român', la(60), False), ('ă', lx(58), False), dot, ('العربية', ar(58), True), dot, ('עברית', he(62), True)], y1 + 245)
-img = row(img, [('English', la(60), False), dot, ('Русский', ru(58), False), dot, ('Français', la(60), False)], y1 + 335)
+dot = ('  •  ', la(40), False); dt = (' • ', la(34), False)
+def row(img, segs, y): return paint(img, segs, y, GRN, [(WHT, 3), (BLK, 2)])
+y1 = H - 185
+img = row(img, [('בלי פרסומות', he(52), True), dot, ('עוזר קולי', he(52), True), dot, ('כרטיס חירום', he(52), True)], y1)
+img = row(img, [('English', la(36), False), dt, ('Русский', ru(34), False), dt, ('Français', la(36), False), dt, ('Român', la(36), False), ('ă', lx(34), False), dt, ('العربية', ar(34), True), dt, ('עברית', he(38), True)], y1 + 80)
 im = Image.fromarray(np.clip(img, 0, 255).astype(np.uint8))
 ImageDraw.Draw(im).rectangle((0, 0, W-1, H-1), outline=(15, 184, 255), width=4)
 im.save(out, optimize=True)
-print('ok', y1 + 335 + 80)
+print('ok', y1 + 78 + 50)

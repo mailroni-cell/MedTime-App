@@ -3,6 +3,12 @@
 כל שינוי נרשם כאן עם חתימה: מתי, איזה חשבון/שיחה, מה בדיוק, אילו קבצים, ואיך להחזיר אחורה.
 החדש ביותר למעלה. להחזרה: `git revert <commit>` או לקחת את הקובץ מה-commit הקודם.
 
+## 2026-10-23 ~16:20 · account 1 · thread "📌 MedTime – שיחה חדשה" · tall ad round 5
+- Roni: "all the content above the two bottom rows should be bigger". Phone 1.42x (was 1.22x), background fades out above the old bottom rows, download lines bigger (96/112), bottom rows compact (one line each, at the very bottom), more spacing.
+- Files: media/ads/MedTime-ad-premium-tall.png, media/ads/src/premium_fix10.py (MT_BF0/MT_BY0, Y1 follows height), media/ads/src/premium_tall2.py (MT_TOP/MT_CUT/MT_GAP, compact rows). 4:5 ad unchanged (checked pixel for pixel).
+- Run: pad r1b.png/orig.png with 450 rows at the bottom; MT_TALL=1 MT_PS=1.42 MT_BF0=1000 MT_BY0=1190 MT_F0=1330 MT_Y0=1420 python3 premium_fix10.py r1b_pad orig_pad fonts base3.png; MT_TOP=170 MT_CUT=1420 MT_GAP=150 python3 premium_tall2.py base3.png fonts out.png
+- Undo: git checkout 8826e73 -- media/ads/MedTime-ad-premium-tall.png media/ads/src/premium_tall2.py media/ads/src/premium_fix10.py
+
 ## 2026-10-23 ~14:35 (אפליקציה) · חשבון ראשי · שיחה "📌 MedTime – שיחה חדשה" (session_01VsxPbo6X9KYMbXyBhgnXSS)
 - מה: M-320..M-324 (פירוט ב-CHANGES.md): ברכה וצלב למעלה; פריסה שווה (3 בשורה, שורה קצרה ממורכזת); תור רופא: תווית קצרה על הסמל; חיסכון בסוללה (saver.js + WebView onPause/onResume + isPowerSave/batteryLevel/isCharging ב-NativeBridge); טיפ הגדרות בסוף ההגדרה הראשונית.
 - קומיטים: cc5f4ca (דף, עדכון מהיר), 36dcecb (Java, בנייה 223). להחזרה: git revert 36dcecb cc5f4ca.
