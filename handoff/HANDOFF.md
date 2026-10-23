@@ -186,3 +186,4 @@
 - 18:55Z: run 231 built (all of today incl. M-343 hang fix) on release test, NOT released. Roni's phone is on 229 off-cable; web updates now target 231 (base 331), so the phone gets nothing until 231 is installed (cable or Roni's "שחרר לכולם"). Design gap: users on stable never get web updates unless stable == test.
 - M-349: tools/ui-audit/audit.js in the repo (needs playwright; PW env = its path). Run it before every release.
 - 19:05Z: run 231 RELEASED to everyone (Roni: 'שחרר לכולם'). stable = run 231.
+- 19:30Z: M-350/M-351 as web update for run 231 (= stable, so ALL users on 231 get it).
