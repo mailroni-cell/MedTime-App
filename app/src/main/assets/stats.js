@@ -12,7 +12,7 @@
     const li = () => Math.max(0, L5.indexOf(typeof LANG === 'string' ? LANG : 'he'));
     const T = {
         share: ['שיתוף', 'مشاركة', 'Distribuie', 'Partager', 'Share', 'Поделиться'],
-        q0: ['שבוע עם MedTime 🎉', 'أسبوع مع MedTime 🎉', 'O săptămână cu MedTime 🎉', 'Une semaine avec MedTime 🎉', 'A week with MedTime 🎉', 'Неделя с MedTime 🎉'],
+        q0: ['כמה ימים עם MedTime 🎉', 'بضعة أيام مع MedTime 🎉', 'Câteva zile cu MedTime 🎉', 'Quelques jours avec MedTime 🎉', 'A few days with MedTime 🎉', 'Несколько дней с MedTime 🎉'],
         q1: ['כמה את/ה מרוצה?', 'ما مدى رضاك؟', 'Cât de mulțumit(ă) sunteți?', 'Êtes-vous satisfait(e) ?', 'How happy are you?', 'Насколько вы довольны?'],
         q2: ['מה כדאי לשפר?', 'ما الذي يجب تحسينه؟', 'Ce să îmbunătățim?', 'Que faut-il améliorer ?', 'What should we improve?', 'Что улучшить?'],
         opts: [['⏰ תזכורות', '🎨 מראה', '🔊 צליל וקול', '👆 קלות שימוש', '💊 בדיקת תרופה', '✅ הכול טוב'],
@@ -125,14 +125,14 @@
         no.onclick = () => { put('medtime_survey', 'later:' + (Date.now() + 3 * 864e5) + ':' + (+(get('medtime_survey', '').split(':')[2] || 0) + 1)); close(); };
         document.body.appendChild(box); requestAnimationFrame(() => box.classList.add('in'));
     }
-    // after a week of use (7 days since the first day and at least 5 days with the app open), once; "later" asks again in 3 days, at most twice
+    // M-331 (owner): after 3 days of use (3 days since the first day and at least 2 days with the app open), once; "later" asks again in 3 days, at most twice
     function maybeSurvey(days) {
         if (!FORM) return;
         const s = get('medtime_survey', '');
         if (s === 'done') return;
         if (s.startsWith('later:')) { const p = s.split(':'); if (+p[1] > Date.now() || +p[2] >= 2) return; }
         const first = new Date(get('medtime_first', today()));
-        if ((Date.now() - first) / 864e5 < 7 || days.length < 5) return;
+        if ((Date.now() - first) / 864e5 < 3 || days.length < 2) return;
         if (document.getElementById('splash') || document.querySelector('.settings-page.open') || document.documentElement.classList.contains('relax-open')) return;
         survey();
     }
