@@ -296,6 +296,8 @@
       font-size:calc(var(--hm-o,118px) * .15);line-height:1.15;box-shadow:0 0 10px #22c55e,0 2px 6px rgba(0,0,0,.7);text-shadow:0 1px 2px #000;pointer-events:none}
     /* M-332 (owner, M-334 internet update test): no appointment count on the symbol; greeting and the add-reminder cross higher still, together */
     html body .home-card .hm-float #appt-btn .ab-count:not(#mt-x){display:none!important}
+    /* M-339 (owner): no appointment badge at all on the symbol (also the when-pill) */
+    html body .home-card .hm-float #appt-btn :is(.ab-when,.ab-count,.lb-count):not(#mt-x){display:none!important}
     html body #hello-line.hello-line:not(#mt-x){margin-top:-46px!important}
     html body .home-card .hm-float:not(#mt-x) > #main-add{margin-top:-18px!important}`;
     document.head.appendChild(css);
