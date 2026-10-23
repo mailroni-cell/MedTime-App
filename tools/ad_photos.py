@@ -4,17 +4,27 @@ import json, os, sys, io, urllib.request, urllib.parse
 from PIL import Image, ImageDraw
 Q = json.loads(sys.argv[1])
 OUT = 'out'
+LOG = []
 UA = {'User-Agent': 'MedTime-ad-photos/1.0 (github.com/mailroni-cell/MedTime-App)'}
 def get(url, t=40):
     return urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=t).read()
 for slug, q in Q.items():
     d = os.path.join(OUT, slug); os.makedirs(d, exist_ok=True)
-    api = 'https://api.openverse.org/v1/images/?' + urllib.parse.urlencode({'q': q, 'license': 'cc0,pdm', 'page_size': 30, 'aspect_ratio': '', 'size': 'large'})
-    try: res = json.loads(get(api))['results']
-    except Exception as e: print('API', slug, e); continue
+    res = []
+    # Unsplash (Unsplash License: free commercial use, no attribution needed); skip Unsplash+ (paid) photos
+    try:
+        u = json.loads(get('https://unsplash.com/napi/search/photos?' + urllib.parse.urlencode({'query': q, 'per_page': 30})))['results']
+        for r in u:
+            if r.get('premium') or r.get('plus'): continue
+            res.append({'url': r['urls']['raw'] + '&w=2000&q=85&fm=jpg', 'title': r.get('alt_description'), 'creator': (r.get('user') or {}).get('name'), 'license': 'unsplash', 'source': 'unsplash', 'foreign_landing_url': (r.get('links') or {}).get('html')})
+    except Exception as e: LOG.append(f'UNSPLASH {slug} {e}')
+    try:
+        api = 'https://api.openverse.org/v1/images/?' + urllib.parse.urlencode({'q': q, 'license': 'cc0,pdm', 'page_size': 20, 'size': 'large'})
+        res += json.loads(get(api))['results']
+    except Exception as e: LOG.append(f'OPENVERSE {slug} {e}')
     meta, thumbs = [], []
     for r in res:
-        if len(meta) >= 12: break
+        if len(meta) >= 16: break
         try:
             im = Image.open(io.BytesIO(get(r['url']))).convert('RGB')
             if im.width < 1200: continue
@@ -22,11 +32,12 @@ for slug, q in Q.items():
             im.save(os.path.join(d, f'{n:02d}.jpg'), quality=88)
             meta.append({'n': n, 'title': r.get('title'), 'creator': r.get('creator'), 'license': r.get('license'), 'source': r.get('source'), 'page': r.get('foreign_landing_url')})
             t = im.copy(); t.thumbnail((400, 300)); thumbs.append(t)
-        except Exception as e: print('IMG', slug, e)
+        except Exception as e: LOG.append(f'IMG {slug} {e}')
     json.dump(meta, open(os.path.join(d, 'meta.json'), 'w'), ensure_ascii=False, indent=1)
     if thumbs:
         sh = Image.new('RGB', (1600, 300 * ((len(thumbs) + 3) // 4)), 'white'); dr = ImageDraw.Draw(sh)
         for i, t in enumerate(thumbs):
             x, y = (i % 4) * 400, (i // 4) * 300; sh.paste(t, (x, y)); dr.rectangle([x, y, x + 46, y + 34], fill='black'); dr.text((x + 8, y + 8), str(i), fill='yellow')
         sh.save(os.path.join(d, 'sheet.jpg'), quality=85)
-    print(slug, len(meta))
+    LOG.append(f'{slug} {len(meta)}')
+os.makedirs(OUT, exist_ok=True); open(os.path.join(OUT, 'log.txt'), 'w').write('\n'.join(LOG)); print('\n'.join(LOG))
