@@ -123,7 +123,8 @@
   // M-309: the green button downloads from a fast mirror in parts, 4 at a time, with a progress bar.
   // A part that gets no data for 12 s is retried; if the mirror fails, the button switches to GitHub by itself.
   // M-315: anonymous counts for the stats page (no id, no personal data): a page visit and each download with its source
-  const ping = (kind, src) => { try { fetch('https://ntfy.sh/medtime-v3tqzebpancz9djidfg7bh', { method: 'POST', keepalive: true, body: JSON.stringify({ kind: kind, src: src || '', lang: L[LI] }) }).catch(() => { }); } catch (e) { } };
+  const ping = (kind, src) => { const b = JSON.stringify({ kind: kind, src: src || '', lang: L[LI] });
+    ['https://ntfy.sh/medtime-v3tqzebpancz9djidfg7bh', 'https://medtime.pages.dev/api/hit'].forEach(u => { try { fetch(u, { method: 'POST', keepalive: true, headers: { 'Content-Type': 'text/plain' }, body: b }).catch(() => { }); } catch (e) { } }); };  // M-327: also our Cloudflare counter
   const OWN = 'mailroni-cell/MedTime-App', RAW = 'https://raw.githubusercontent.com/' + OWN + '/';
   const btn = document.getElementById('dl'), REL = btn.href;
   let busy = false, file = null;

@@ -33,5 +33,6 @@
   <img src="ad.jpg" alt="MedTime – תעשו חיים, אנחנו על השעון. להורדה: medtime.pages.dev" width="1080" height="1350">
   <span class="btn">⬇️ להורדה בחינם</span>
 </a>
+<script>/* M-327: anonymous count of ad page views (once per visit) */ try { if (!sessionStorage.getItem('mt_ad')) { sessionStorage.setItem('mt_ad', '1'); fetch('/api/hit', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'text/plain' }, body: '{"kind":"adview"}' }).catch(() => { }); } } catch (e) { }</script>
 </body>
 </html>
