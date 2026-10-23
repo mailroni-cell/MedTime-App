@@ -392,3 +392,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-343 | 2026-10-23 | MainActivity.java | Owner: app 'stuck on opening': an internet web update reloaded the page within 20 s of opening (looked like a hang). Now never reloads in use; the update applies on the next return after 30 s+ in background or next start | ⏳ |
 | M-344 | 2026-10-23 | subst.js | Owner: medicine check search screen had no reachable exit (Cancel under the keyboard): ✕ at the top | ⏳ |
 | M-345 | 2026-10-23 | appts.js | Owner: low-vision appointment cards were taller than the screen: date on one line on top, details full width, smaller action buttons | ⏳ |
+| M-346 | 2026-10-23 | relax.js | Owner: calm mode has a clear red 'יציאה ממצב שלווה' under the other buttons and in every inner screen (6 languages); the tip no longer covers it | ⏳ |

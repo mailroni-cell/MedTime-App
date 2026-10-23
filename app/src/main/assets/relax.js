@@ -116,6 +116,7 @@
         s_v_clouds: ['אחרי השקיעה', 'بعد الغروب', 'După apus', 'Après le coucher du soleil', 'After sunset', 'После заката'],
         pairQ: ['🎵 להוסיף צליל: {n}?', '🎵 إضافة صوت: {n}؟', '🎵 Adaugi sunetul: {n}?', '🎵 Ajouter le son : {n} ?', '🎵 Add the sound: {n}?', '🎵 Добавить звук: {n}?'], // M-202
         credits: ['© קרדיטים להקלטות ולסרטונים', '© حقوق التسجيلات والفيديوهات', '© Credite înregistrări și video', '© Crédits sons et vidéos', '© Credits for recordings and videos', '© Авторы записей и видео'],
+        exit: ['יציאה ממצב שלווה', 'الخروج من وضع الهدوء', 'Ieșire din modul calm', 'Quitter le mode calme', 'Exit calm mode', 'Выйти из режима покоя'],
         go: ['✓ התחלה', '✓ ابدأ', '✓ Începe', '✓ Commencer', '✓ Start', '✓ Начать'],
         back: ['→ חזרה', '→ رجوع', '← Înapoi', '← Retour', '← Back', '← Назад'],
         menu: ['תפריט', 'القائمة', 'Meniu', 'Menu', 'Menu', 'Меню'],
@@ -179,6 +180,11 @@
     #relax .rx-bar button[data-s="lock"] { --c1: #94a3b8; --c2: #475569; --c3: #1e293b; }
     #relax .rx-bar button[data-s="go"] { --c1: #f472b6; --c2: #be185d; --c3: #831843; justify-content: center !important; height: 66px !important; font-size: 1.4rem !important; margin-top: 4px; }
     #relax .rx-bar button[data-s="go"] .rx-bi { width: 36px; height: 36px; }
+    #relax .rx-bar button[data-s="exit"] { --c1: #f87171; --c2: #dc2626; --c3: #7f1d1d; justify-content: center !important; margin-top: 4px; }
+    #relax .rx-exit { display: block; width: 100%; margin-top: 10px; min-height: 56px; border: 0; border-radius: 18px; font: inherit; font-size: 1.2rem; font-weight: 900; color: #fff;
+      background: linear-gradient(180deg, #f87171, #dc2626 60%, #991b1b); box-shadow: inset 0 2px 1px rgba(255,255,255,.45), 0 5px 0 #7f1d1d; }
+    #relax[data-sec]:not([data-sec=""]) .rx-tip { display: none !important; } /* M-346: the tip covered Exit in the inner screens */
+    #relax .rx-exit:active { transform: translateY(4px); box-shadow: inset 0 2px 1px rgba(255,255,255,.45), 0 1px 0 #7f1d1d; }
     #relax .rx-bar button[data-s="last"] .rx-bi { color: #14532d !important; }
     #relax .rx-bar.rx-anim button { will-change: transform, opacity; animation: rxPop .62s cubic-bezier(.2, 1.1, .35, 1) both; animation-delay: calc(var(--d, 0ms) + var(--i, 0) * 70ms); }
     @keyframes rxPop { from { opacity: 0; transform: translateY(46px) rotateX(70deg) scale(.82); } to { opacity: 1; transform: none; } }
@@ -271,10 +277,11 @@
             '<button type="button" class="rx-cred" data-k="credits"></button>' +
             '</div>' +
             '<button type="button" class="rx-back"></button>' +
+            '<button type="button" class="rx-exit"></button>' + // M-346: Exit in every inner screen too
             '<button type="button" class="rx-go"></button>' +
             '</div>' +
             '<button type="button" class="rx-mini"><span class="rx-mini-ico"></span><span class="rx-mini-t"></span></button>' +
-            '<div class="rx-bar">' + ['scene', 'sound', 'timer', 'lock', 'go'] /* M-194 (owner): no breathing guide (voice or text) */.map(t => '<button type="button" data-s="' + t + '"><span class="rx-bi"></span><small></small></button>').join('') + '</div>' +
+            '<div class="rx-bar">' + ['scene', 'sound', 'timer', 'lock', 'go', 'exit'] /* M-346 (owner): a clear Exit under the other buttons */ /* M-194 (owner): no breathing guide (voice or text) */.map(t => '<button type="button" data-s="' + t + '"><span class="rx-bi"></span><small></small></button>').join('') + '</div>' +
             '<button type="button" class="rx-unlock" aria-label="unlock"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="29"/></svg><span>🔒</span></button>' +
             '<div class="rx-lockmsg"></div>';
         document.body.appendChild(root);
@@ -289,6 +296,7 @@
         panel.addEventListener('pointerdown', e => { e.stopPropagation(); poke(); });
         root.querySelector('.rx-go').addEventListener('click', e => { e.stopPropagation(); hidePanel(); });
         root.querySelector('.rx-back').addEventListener('click', e => { e.stopPropagation(); vib(10); setSec(''); poke(); });
+        root.querySelector('.rx-exit').addEventListener('click', e => { e.stopPropagation(); vib(10); closeRelax(); }); // M-346
         // M-073: light menu: a slim bar with 3 small buttons; each one opens only its own choices
         root.querySelectorAll('.rx-bar button').forEach(b => {
             b.addEventListener('pointerdown', e => e.stopPropagation());
@@ -297,6 +305,7 @@
                 if (b.dataset.s === 'last') { useLast(); return; }
                 if (b.dataset.s === 'lock') { lockOn(); return; }
                 if (b.dataset.s === 'go') { hidePanel(); return; }
+                if (b.dataset.s === 'exit') { closeRelax(); return; }
                 if (b.dataset.s === 'breath') { st.breath = !st.breath; save(); drawBreath(); drawPanel(); poke(); bPh = ''; bT0 = -1; if (!st.breath) hush(); return; }
                 if (b.dataset.s === 'bvoice') { setSec(sec === 'voice' ? '' : 'voice'); loadVoices(); poke(); return; } // M-176: its own voice list
                 setSec(sec === b.dataset.s ? '' : b.dataset.s); poke();
@@ -396,12 +405,14 @@
             if (t === 'breath') { b.querySelector('.rx-bi').textContent = '🫁'; b.querySelector('small').textContent = tx('breath').replace(/^\S+\s/, '') + (st.breath ? ' ✓' : ''); b.classList.toggle('on', !!st.breath); return; }
             if (t === 'bvoice') { b.hidden = !st.breath; b.querySelector('.rx-bi').textContent = '🗣️'; b.querySelector('small').textContent = tx('bVoice').replace(/^\S+\s/, '') + ': ' + voiceName(); b.classList.toggle('on', !!st.bvoice); return; }
             if (t === 'go') { b.querySelector('.rx-bi').textContent = '✓'; b.querySelector('small').textContent = tx('go').replace(/^\S+\s/, ''); return; }
+            if (t === 'exit') { b.querySelector('.rx-bi').textContent = '✕'; b.querySelector('small').textContent = tx('exit'); return; }
             b.querySelector('.rx-bi').textContent = !chosen[t] ? (t === 'scene' ? '🖼️' : t === 'sound' ? '🎵' : '⏳')
                 : t === 'scene' ? (SCENES.find(x => x[0] === st.scene) || [])[1] : t === 'sound' ? (SOUNDS.find(x => x[0] === st.sound) || [])[1] : (+st.timer ? '⏳' : '♾️');
             b.querySelector('small').textContent = t === 'timer' && chosen.timer ? (+st.timer ? st.timer + ' ' + tx('min') : tx('off')) : tx(t);
             b.classList.toggle('on', sec === t);
         });
         root.querySelector('.rx-go').textContent = tx('go');
+        root.querySelector('.rx-exit').textContent = '✕ ' + tx('exit');
         root.querySelector('.rx-mini-ico').textContent = (SCENES.find(x => x[0] === st.scene) || ['', '🌙'])[1];
         root.querySelector('.rx-mini-t').textContent = tx('menu');
         paintVol();
