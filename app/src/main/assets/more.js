@@ -60,6 +60,8 @@
         wgOff: ['התרופה הבאה במסך הבית', 'الدواء التالي على الشاشة', 'Următorul medicament pe ecran', 'Prochain médicament à l\'écran', 'Next medicine on the home screen', 'Следующее лекарство на главном экране'],
         wgX: ['ריבוע קטן במסך הבית של הטלפון שמראה מתי התרופה הבאה ואיזו, ומה עומד להיגמר. נגיעה בו פותחת את MedTime.', 'مربع صغير في الشاشة الرئيسية يعرض موعد الدواء التالي واسمه وما سينفد قريبًا. لمسه يفتح MedTime.', 'Un pătrat mic pe ecranul principal arată când și ce medicament urmează și ce se termină. Atingerea lui deschide MedTime.', 'Un petit carré sur l\'écran d\'accueil montre quand et quel est le prochain médicament, et ce qui va manquer. Le toucher ouvre MedTime.', 'A small square on the phone\'s home screen shows when the next medicine is and which one, and what is running low. Tapping it opens MedTime.', 'Небольшой квадрат на главном экране телефона показывает, когда и какое следующее лекарство и что заканчивается. Нажатие открывает MedTime.'],
         wgGo: ['📱 הוספה למסך הבית', '📱 إضافة إلى الشاشة الرئيسية', '📱 Adaugă pe ecranul principal', '📱 Ajouter à l\'écran d\'accueil', '📱 Add to the home screen', '📱 Добавить на главный экран'],
+        wgDel: ['🗑️ הסרה ממסך הבית', '🗑️ إزالة من الشاشة الرئيسية', '🗑️ Elimină de pe ecran', '🗑️ Retirer de l\'écran d\'accueil', '🗑️ Remove from the home screen', '🗑️ Убрать с главного экрана'],
+        wgDone: ['הווידג\'ט הוסר ממסך הבית ✅', 'تمت إزالة الأداة ✅', 'Widgetul a fost eliminat ✅', 'Widget retiré ✅', 'The widget was removed ✅', 'Виджет убран ✅'],
         wgHow: ['אם לא נפתח חלון: לחיצה ארוכה על מקום ריק במסך הבית ← ווידג\'טים ← MedTime, וגוררים למסך.', 'إن لم تظهر نافذة: ضغطة طويلة على مكان فارغ ← الأدوات ← MedTime واسحبها.', 'Dacă nu apare nimic: apăsare lungă pe un loc gol ← Widgeturi ← MedTime și trageți-l.', 'Sinon : appui long sur un espace vide ← Widgets ← MedTime, puis faites-le glisser.', 'If no window opens: long-press an empty spot on the home screen → Widgets → MedTime, and drag it there.', 'Если окно не открылось: нажмите и удерживайте пустое место на главном экране → Виджеты → MedTime и перетащите его туда.'],
         autoNo: ['⏳ הגיבוי האוטומטי עוד לא נשמר', '⏳ لم يُحفظ النسخ التلقائي بعد', '⏳ Copia automată nu e salvată încă', '⏳ Sauvegarde auto pas encore faite', '⏳ Auto backup not saved yet', '⏳ Автокопия ещё не сохранена'],
         autoErr: ['⚠️ הגיבוי האוטומטי נכשל: {e}', '⚠️ فشل النسخ التلقائي: {e}', '⚠️ Copia automată a eșuat: {e}', '⚠️ Échec de la sauvegarde auto : {e}', '⚠️ Auto backup failed: {e}', '⚠️ Ошибка автокопии: {e}'],
@@ -96,6 +98,14 @@
       background:linear-gradient(135deg,#0ea5e9,#6366f1);box-shadow:inset 0 2px 1px rgba(255,255,255,.35),0 6px 16px rgba(0,0,0,.45)}
     .mo-btn.alt{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.25)}
     .mo-x{font-size:.98rem;line-height:1.5;opacity:.9;margin:4px 0 6px}
+    /* M-276 (owner: the add button was a plain blue square): a small picture of the widget, a glossy button, and a button to remove it */
+    #tile-widget .wg-prev{display:flex;flex-direction:column;gap:3px;width:150px;margin:6px auto 10px;padding:10px 14px;border-radius:20px;color:#fff;font-weight:800;text-align:start;
+      background:linear-gradient(160deg,#4338ca,#1e1b4b);border:2px solid rgba(196,181,253,.8);box-shadow:0 8px 18px rgba(0,0,0,.5),0 0 18px rgba(139,92,246,.5);transform:rotate(-3deg)}
+    #tile-widget .wg-prev b{font-size:1rem}#tile-widget .wg-prev span{font-size:.95rem;opacity:.9}
+    html body #tile-widget #wg-go{border-radius:999px!important;min-height:56px;border:2px solid rgba(255,255,255,.9)!important;background:linear-gradient(180deg,#c4b5fd 0%,#8b5cf6 25%,#6d28d9 65%,#3b0764 100%)!important;
+      text-shadow:0 1px 0 #4c1d95,0 2px 3px rgba(0,0,0,.6);box-shadow:inset 0 3px 4px rgba(255,255,255,.6),inset 0 -5px 8px rgba(46,16,101,.55),0 5px 0 #2e1065,0 10px 16px rgba(0,0,0,.45)!important}
+    html body #tile-widget #wg-del{border-radius:999px!important;min-height:52px;border:2px solid rgba(254,202,202,.8)!important;background:linear-gradient(180deg,#f87171,#991b1b)!important;color:#fff!important;
+      box-shadow:inset 0 3px 4px rgba(255,255,255,.45),0 5px 0 #450a0a,0 10px 16px rgba(0,0,0,.45)!important}
     .mo-msg{white-space:pre-wrap;font-size:.92rem;line-height:1.45;background:rgba(255,255,255,.08);border-radius:14px;padding:10px 12px;margin:6px 0}
     .lg-sum{display:flex;gap:8px;margin:6px 0 10px}
     .lg-sum div{flex:1;text-align:center;border-radius:14px;padding:8px 4px;background:rgba(255,255,255,.07);font-size:.85rem}
@@ -348,7 +358,7 @@
     stk.querySelector('.set-tile-head').addEventListener('click', drawStock);
 
     // ---------------- 📱 widget (M-134) ----------------
-    const wg = tile('tile-widget', '📱', 'linear-gradient(135deg,#a78bfa,#4338ca)', '<div class="mo-x" id="wg-x"></div><button type="button" class="mo-btn" id="wg-go"></button><div class="mo-x" id="wg-how" style="margin-top:10px;opacity:.75"></div>');
+    const wg = tile('tile-widget', '📱', 'linear-gradient(135deg,#a78bfa,#4338ca)', '<div class="wg-prev" aria-hidden="true"><b>💊 MedTime</b><span>⏰ 08:00</span><span>✅ ✅ ⬜</span></div><div class="mo-x" id="wg-x"></div><button type="button" class="mo-btn" id="wg-go"></button><button type="button" class="mo-btn alt" id="wg-del"></button><div class="mo-x" id="wg-how" style="margin-top:10px;opacity:.75"></div>');
     function drawWidget() {
         if (!has('pinWidget')) { wg.style.display = 'none'; return; }
         let on = false; try { on = N.hasWidget(); } catch (e) { }
@@ -356,7 +366,10 @@
         document.getElementById('wg-x').textContent = tx('wgX');
         document.getElementById('wg-go').textContent = tx('wgGo');
         document.getElementById('wg-how').textContent = tx('wgHow');
+        const del = document.getElementById('wg-del'); del.textContent = tx('wgDel'); del.style.display = on && has('removeWidget') ? '' : 'none';
+        document.getElementById('wg-go').style.display = on ? 'none' : ''; document.getElementById('wg-how').style.display = on ? 'none' : '';
     }
+    document.getElementById('wg-del').onclick = () => { vib(); let ok = false; try { ok = N.removeWidget(); } catch (e) { } if (ok && window.mtAlert) mtAlert(tx('wgDone')); setTimeout(drawWidget, 1200); setTimeout(drawWidget, 3500); };
     document.getElementById('wg-go').onclick = () => { vib(); let ok = false; try { ok = N.pinWidget(); } catch (e) { } if (!ok && window.mtAlert) mtAlert(tx('wgHow')); };
 
     // ---------------- 💾 backup ----------------

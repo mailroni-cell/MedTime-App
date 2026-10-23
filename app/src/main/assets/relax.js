@@ -1143,3 +1143,65 @@
     document.addEventListener('DOMContentLoaded', window.relaxRender);
     window.relaxRender();
 })();
+
+// M-275 (owner: the background and sound choice should be a clear, handy wheel): in calm mode the scene and sound lists are a wheel:
+// one big row per item, the row in the middle is lit inside a band, rows above and below tilt away and fade like a real picker wheel.
+// Tap a row to choose it; it glides to the middle. The chosen one is in the middle when the list opens.
+(function () {
+    'use strict';
+    const ROW = 64;
+    const c = document.createElement('style');
+    c.textContent = `
+    #relax[data-sec="scene"] .rx-panel { top: calc(66px + env(safe-area-inset-top)) !important; bottom: calc(14px + env(safe-area-inset-bottom)) !important;
+        transform: translateX(-50%) !important; display: flex !important; flex-direction: column; width: min(460px, 94vw) !important; }
+    #relax[data-sec="scene"] .rx-scroll { flex: 1; min-height: 0; max-height: none !important; overflow: hidden !important; display: flex; flex-direction: column; }
+    #relax[data-sec="scene"] .rx-sec[data-t="scene"] { flex: 1; min-height: 0; display: flex !important; flex-direction: column; }
+    #relax .rx-sec[data-t] .rx-grid.rx-wheel { position: relative; flex: 1; min-height: 0; display: block !important; overflow-y: auto !important; overscroll-behavior: contain;
+        scroll-snap-type: y mandatory; scrollbar-width: none; perspective: 700px; padding: var(--wp, 120px) 4px !important;
+        -webkit-mask-image: linear-gradient(transparent, #000 22%, #000 78%, transparent); mask-image: linear-gradient(transparent, #000 22%, #000 78%, transparent); }
+    #relax .rx-grid.rx-wheel::-webkit-scrollbar { display: none; }
+    #relax .rx-grid.rx-wheel .rx-tile { display: flex !important; flex-direction: row !important; align-items: center; justify-content: flex-start; gap: 14px; width: 100%;
+        height: ${ROW - 8}px !important; min-height: 0 !important; margin: 4px 0; padding: 0 18px !important; scroll-snap-align: center; border-radius: 999px !important;
+        font-size: 1.15rem !important; text-align: start; animation: none !important; will-change: transform, opacity; transform-origin: 50% 50%; box-shadow: inset 0 2px 1px rgba(255,255,255,.3), 0 3px 0 #1e1b4b !important; }
+    #relax .rx-grid.rx-wheel .rx-tile .rx-ico { font-size: 1.9rem !important; }
+    #relax .rx-grid.rx-wheel .rx-tile.sel { box-shadow: inset 0 2px 1px rgba(255,255,255,.5), 0 0 0 2px #f5d0fe, 0 0 18px rgba(232,121,249,.8) !important; }
+    #relax .rx-grid.rx-wheel .rx-tile.sel::after { content: '✓'; margin-inline-start: auto; font-size: 1.4rem; }
+    #relax .rx-sec[data-t] .rx-band { position: absolute; left: 0; right: 0; height: ${ROW}px; margin-top: -${ROW / 2}px; pointer-events: none; z-index: 2; border-radius: 999px;
+        border-top: 2px solid rgba(245,208,254,.85); border-bottom: 2px solid rgba(245,208,254,.85); box-shadow: 0 0 18px rgba(232,121,249,.45), inset 0 0 14px rgba(232,121,249,.25); }
+    #relax .rx-sec[data-t] { position: relative; }
+    html.lowvision #relax .rx-grid.rx-wheel .rx-tile { font-size: 1.35rem !important; }`;
+    document.head.appendChild(c);
+
+    function wheel(g) {
+        if (g._wh) return; g._wh = 1; g.classList.add('rx-wheel');
+        const sec = g.closest('.rx-sec');
+        const band = document.createElement('i'); band.className = 'rx-band'; sec.appendChild(band);
+        let q = 0;
+        const draw = () => {
+            q = 0; const h = g.clientHeight; if (!h) return;
+            g.style.setProperty('--wp', Math.max(0, h / 2 - ROW / 2) + 'px');
+            band.style.top = (g.offsetTop + h / 2) + 'px';
+            const mid = g.scrollTop + h / 2;
+            g.querySelectorAll('.rx-tile').forEach(t => {
+                const d = (t.offsetTop + t.offsetHeight / 2 - mid) / ROW, a = Math.min(Math.abs(d), 4);
+                t.style.transform = 'rotateX(' + (-d * 16).toFixed(1) + 'deg) scale(' + (1 - a * 0.07).toFixed(3) + ')';
+                t.style.opacity = (1 - a * 0.2).toFixed(2);
+            });
+        };
+        const go = () => { if (!q) q = requestAnimationFrame(draw); };
+        g.addEventListener('scroll', go, { passive: true });
+        addEventListener('resize', go);
+        const center = smooth => { const s = g.querySelector('.rx-tile.sel'); if (!s || !g.clientHeight) return;
+            g.scrollTo({ top: s.offsetTop + s.offsetHeight / 2 - g.clientHeight / 2, behavior: smooth ? 'smooth' : 'auto' }); go(); };
+        // the list is redrawn on every choice: keep the wheel on the chosen row
+        new MutationObserver(() => requestAnimationFrame(() => { draw(); center(true); })).observe(g, { childList: true });
+        new MutationObserver(() => setTimeout(() => { draw(); center(false); }, 60)).observe(document.getElementById('relax'), { attributes: true, attributeFilter: ['data-sec'] });
+        setTimeout(() => { draw(); center(false); }, 60);
+    }
+    function look() {
+        document.querySelectorAll('#relax .rx-sec[data-t="scene"] .rx-grid, #relax .rx-sec[data-t="sound"] .rx-grid').forEach(wheel);
+    }
+    new MutationObserver(look).observe(document.documentElement, { childList: true, subtree: false });
+    new MutationObserver(look).observe(document.body, { childList: true });
+    setInterval(look, 1500);
+})();

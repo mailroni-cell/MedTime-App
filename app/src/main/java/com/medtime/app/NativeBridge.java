@@ -440,6 +440,21 @@ public class NativeBridge {
         } catch (Exception e) { return false; }
     }
 
+    /** M-276 (owner): remove the widget from the home screen. Android has no direct call for this, so the widget provider is switched off
+     *  for a moment (the home screen drops its widgets) and back on, so it can be added again later. */
+    @JavascriptInterface
+    public boolean removeWidget() {
+        try {
+            final android.content.pm.PackageManager pm = activity.getPackageManager();
+            final android.content.ComponentName cn = new android.content.ComponentName(activity, Widget.class);
+            pm.setComponentEnabledSetting(cn, android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED, android.content.pm.PackageManager.DONT_KILL_APP);
+            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                try { pm.setComponentEnabledSetting(cn, android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DEFAULT, android.content.pm.PackageManager.DONT_KILL_APP); } catch (Exception e) { }
+            }, 2500);
+            return true;
+        } catch (Exception e) { return false; }
+    }
+
     // ---------- M-133: automatic backup ----------
     /**
      * Saves the backup file by itself to Downloads/MedTime/MedTime-auto-backup.json (stays after uninstall),
