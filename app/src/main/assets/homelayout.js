@@ -272,6 +272,10 @@
     html body .home-card .hm-float #list-btn .hm-3d > .lb-time:not(#mt-x){position:static;grid-area:1/1;align-self:center;justify-self:center;left:auto;bottom:auto;
       transform:translate3d(0,calc(var(--hm-o,118px) * .1),5px)!important;font-family:'MTBall','MTUI',sans-serif;font-size:calc(var(--hm-o,118px) * .17)!important;font-weight:900;
       color:#0f172a!important;-webkit-text-stroke:0!important;text-shadow:0 0 1px #fff!important;opacity:1!important;filter:none!important;background:none;border:0;box-shadow:none;padding:0;letter-spacing:-.5px;direction:ltr}
+    /* M-292: the big green tick on the paper; the old small badge goes */
+    html body .home-card .hm-float #list-btn.hm-done .hm-3d > .lb-time:not(#mt-x){font-family:sans-serif;font-size:calc(var(--hm-o,118px) * .42)!important;color:#16a34a!important;
+      text-shadow:0 1px 0 #14532d,0 0 6px rgba(255,255,255,.9)!important;transform:translate3d(0,calc(var(--hm-o,118px) * .08),5px)!important}
+    html body #list-btn.hm-done .lb-count:not(#mt-x)::before{display:none!important}
     /* M-290 (owner): the hand moves away from its neighbour (to the outer side of its place) */
     ${B} > #guide-btn:not(#mt-x){justify-self:center;position:relative!important;inset-inline-start:calc(var(--hm-o,118px) * .3)}
     /* M-291 (owner): all the symbols higher still; the bottom row stays where it is */
@@ -344,7 +348,7 @@
         const c = btn.querySelector('.lb-count'), nx = btn.querySelector('.lb-next');
         const m = nx && /\b\d{1,2}:\d{2}\b/.exec(nx.textContent || '');
         // M-272 (owner: the "My reminders" symbol was tiny): a full-size 3D 📋 like its neighbours; the next time sits on it as a small tag
-        const want = m ? m[0] : '';
+        const want = done ? '✓' : m ? m[0] : ''; // M-292 (owner): all of today taken = a big green ✓ on the paper instead of the time
         if (c && (c.dataset.t !== want || !c.querySelector(':scope > i, :scope > .hm-3d'))) {
             c.dataset.t = want; c.innerHTML = '<i>📋</i>' + (want ? '<b class="lb-time"></b>' : '');
             if (want) c.querySelector('.lb-time').textContent = want;
