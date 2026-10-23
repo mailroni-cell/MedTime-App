@@ -391,7 +391,7 @@
             e.preventDefault(); inp.blur();
             const n = findTopic(inp.value, grid); ans.textContent = '';
             [...grid.children].forEach(x => x.classList.remove('g-hit'));
-            if (n < 0) { ans.textContent = ASK.none[i]; ans.className = 'g-ans on miss'; }
+            if (n < 0) { ans.textContent = ASK.none[i]; ans.className = 'g-ans on miss'; if (window.mtAskMiss) window.mtAskMiss(inp.value); }
             else {
                 const b = grid.children[n], t = document.createElement('span'), go = document.createElement('button');
                 t.textContent = ASK.hit[i] + b.textContent; go.type = 'button'; go.textContent = ASK.show[i]; go.onclick = () => b.click();

@@ -41,6 +41,15 @@
         if (kind === 'survey') // a readable copy for the owner's phone
             post(NT + STOPIC, '⭐'.repeat(+v.stars || 0) + ' (' + v.lang + ', v' + v.ver + ')\n' + (v.improve || '') + (v.text ? '\n💬 ' + v.text : ''), { Title: 'MedTime survey' });
     }
+    // M-267 (owner): a question the guide's question box could not answer goes only to the owner's private topic (never to the public stats),
+    // with no id, numbers masked, at most 5 a day and no repeats, so we learn which guide topics to add
+    window.mtAskMiss = q => {
+        q = String(q || '').replace(/\d{3,}/g, '#').replace(/\S+@\S+/g, '@').trim().slice(0, 160); if (q.length < 3) return;
+        const d = today(); let seen = []; try { seen = JSON.parse(get('medtime_askmiss', '[]')); } catch (e) { }
+        seen = seen.filter(x => x[0] === d); if (seen.length >= 5 || seen.some(x => x[1] === q)) return;
+        seen.push([d, q]); put('medtime_askmiss', JSON.stringify(seen));
+        post(NT + STOPIC, '❓ ' + q + '\n(' + L5[li()] + ', v' + ver() + ')', { Title: 'MedTime: question with no answer' });
+    };
     // once a day: "this install is alive" (the sheet counts active installs per version)
     function daily() {
         const d = today();
