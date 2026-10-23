@@ -174,6 +174,12 @@
     .sb-sh.sb-typing :is(.sb-h,.sb-scan){display:none!important}
     .sb-sh.sb-kb .sb-btns{display:none!important}
     .sb-sh.sb-typing .sb-list{margin-top:8px}
+    /* M-310 (owner): the info / result pages always show their buttons, plus a round red ✕ at the top corner */
+    .sb-sh{position:relative}
+    .sb-x{position:absolute;top:calc(10px + env(safe-area-inset-top));inset-inline-end:12px;z-index:3;width:46px;height:46px;border-radius:50%;border:2px solid rgba(255,255,255,.85);
+      background:radial-gradient(circle at 35% 30%,#f87171,#dc2626 60%,#991b1b);color:#fff;font-size:1.35rem;font-weight:900;line-height:1;display:grid;place-items:center;padding:0;box-shadow:0 4px 0 #7f1d1d,0 8px 16px rgba(0,0,0,.45)}
+    .sb-x:active{transform:translateY(2px);box-shadow:0 2px 0 #7f1d1d}
+    .sb-info :is(.sb-t,.sb-sub){padding-inline-end:56px}
     .sb-list{overflow:auto;margin-top:10px;flex:1;min-height:120px}
     .sb-it{display:block;width:100%;text-align:start;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;color:#fff;padding:10px 12px;margin-bottom:8px;font-size:1.05rem;font-weight:800}
     .sb-it small{display:block;font-weight:500;color:#a5b4fc;font-size:.85rem;margin-top:2px;direction:ltr;text-align:start}
@@ -236,6 +242,12 @@
         const close = () => { if (vv) { vv.removeEventListener('resize', fit); vv.removeEventListener('scroll', fit); } window.removeEventListener('resize', fit); bg.remove(); if (unBack) unBack(); };
         o.close = close;
         return o;
+    }
+    // M-310: a typed search left the "keyboard open" mode on, which hid the buttons of the next page. Clear it and add a ✕.
+    function xBtn(s, res) {
+        s.sh.classList.remove('sb-kb', 'sb-typing');
+        const x = document.createElement('button'); x.type = 'button'; x.className = 'sb-x'; x.textContent = '✕';
+        x.setAttribute('aria-label', tx('close')); x.onclick = () => res(null); s.sh.appendChild(x);
     }
     // one step: type a name (or scan the box), pick a registry entry. Resolves an entry, 'back' or null (close).
     function pickStep(s, title, start, canBack) {
@@ -307,6 +319,7 @@
             s.sh.querySelector('.n2').textContent = nameOf(got); s.sh.querySelector('.i2').textContent = ingText(got) + ' · ' + formOf(got);
             s.sh.querySelector('.pharm').textContent = tx('pharm');
             s.sh.querySelector('.sb-src').textContent = tx('src');
+            xBtn(s, res);
             const pv = s.sh.querySelector('.pv'); pv.textContent = tx('prev'); pv.onclick = () => res('back');
             const cl = s.sh.querySelector('.cl'); cl.textContent = tx('close'); cl.onclick = () => res(null);
             const ok = s.sh.querySelector('.ok');
@@ -353,6 +366,7 @@
             const lf = q('.lf');
             if (ind[1] && N && typeof N.openMohPage === 'function') { lf.textContent = tx('dLeaf'); lf.onclick = () => { vib(); N.openMohPage(ind[1]); }; } else lf.remove();
             q('.cmp').textContent = tx('dCmp'); q('.cmp').onclick = () => { vib(); res('cmp'); };
+            xBtn(s, res);
             q('.pv').textContent = tx('prev'); q('.pv').onclick = () => res('back');
             q('.cl').textContent = tx('close'); q('.cl').onclick = () => res(null);
         });

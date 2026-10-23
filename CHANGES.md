@@ -351,3 +351,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | R-214 | 2026-10-23 | release/stable.txt | Run 214 (M-307) released to everyone | ✅ |
 | M-308 | 2026-10-23 | docs/download.html | Owner: friendly, reassuring install guide on the download page: 'your phone will ask, that is fine' card, 3 short steps with tiny animated phones, Samsung Auto Blocker tip (6 languages) | ⏳ |
 | M-309 | 2026-10-23 | docs/download.html, .github/workflows/release-stable.yml | Owner: faster, unstuck download: the green button downloads from a second fast source (branch dl, 24MB parts, 4 at a time) with a progress bar; a part stuck 12 s is retried, and if the source fails the page switches to the GitHub download by itself. Each release refreshes the source | ⏳ |
+| M-310 | 2026-10-23 | subst.js | Owner: medicine info page had no close/back buttons after typing a search (the 'keyboard open' mode stayed on and hid them). Fixed, plus a round red ✕ at the top corner of the info and result pages | ⏳ |
