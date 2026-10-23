@@ -390,3 +390,5 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-341 | 2026-10-23 | homelayout.js, scene3d.js | Owner: the glowing arc (3D floor ring) above the bottom buttons removed; instead one quiet text line, no frame/animation: last measurement from מדדים (coloured by range, today/yesterday/N days), or a short hint when none (6 languages) | ⏳ |
 | M-342 | 2026-10-23 | homelayout.js | Owner: the text line above the bottom buttons removed; the space stays empty (arc stays hidden) | ⏳ |
 | M-343 | 2026-10-23 | MainActivity.java | Owner: app 'stuck on opening': an internet web update reloaded the page within 20 s of opening (looked like a hang). Now never reloads in use; the update applies on the next return after 30 s+ in background or next start | ⏳ |
+| M-344 | 2026-10-23 | subst.js | Owner: medicine check search screen had no reachable exit (Cancel under the keyboard): ✕ at the top | ⏳ |
+| M-345 | 2026-10-23 | appts.js | Owner: low-vision appointment cards were taller than the screen: date on one line on top, details full width, smaller action buttons | ⏳ |

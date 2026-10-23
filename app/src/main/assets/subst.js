@@ -255,6 +255,7 @@
             s.sh.innerHTML = `<div class="sb-t"></div><div class="sb-h"></div><div class="sb-inrow"><input class="sb-in" type="text" autocomplete="off"></div><div class="sb-list"></div><div class="sb-btns"></div>`;
             s.sh.querySelector('.sb-t').textContent = title;
             s.sh.querySelector('.sb-h').textContent = tx(canScan() ? 'hintScan' : 'hint');
+            xBtn(s, res); // M-344 (owner): a ✕ at the top; Cancel at the bottom was under the keyboard
             const inp = s.sh.querySelector('.sb-in'), list = s.sh.querySelector('.sb-list'), btns = s.sh.querySelector('.sb-btns');
             // M-295: keyboard open = the bottom buttons step aside; once letters are typed the hint and the scan card step aside too (they come back when the box is empty)
             const kb = on => { s.sh.classList.toggle('sb-kb', on || !!inp.value.trim()); s.sh.classList.toggle('sb-typing', !!inp.value.trim()); };

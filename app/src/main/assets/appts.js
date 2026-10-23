@@ -620,6 +620,14 @@
     html body #appt-form-page .af-summary{width:100%;box-sizing:border-box;margin:6px 0 0!important;padding:0!important}
     html body #appt-form-page .af-summary .ap-card{width:100%!important;max-width:100%!important;box-sizing:border-box!important;margin:0!important;padding:10px 14px!important;transform:none!important}
     html body #appt-form-page .wz-step[data-step="6"]{gap:6px!important}
+    /* M-345 (owner): low-vision cards were taller than the screen: the date goes on one line on top, the details get the full width */
+    html.lowvision body #appt-page .ap-card:not(#mt-x){display:flex!important;flex-direction:column!important;gap:6px!important}
+    html.lowvision body #appt-page .ap-card > .ap-date:not(#mt-x){width:auto!important;min-width:0!important;height:auto!important;flex-direction:row!important;display:flex!important;align-items:baseline!important;justify-content:center!important;gap:10px!important;padding:4px 12px!important;min-height:0!important;flex:0 0 auto!important;max-height:46px!important;overflow:hidden!important;order:-1}
+    html.lowvision body #appt-page .ap-card > .ap-date > *:not(#mt-x){margin:0!important;font-size:1.1rem!important}
+    html.lowvision body #appt-page .ap-card .ap-act:not(#mt-x){font-size:1rem!important;min-height:40px!important;padding:4px 10px!important}
+    html.lowvision body #appt-page .ap-card > .ap-date .dn:not(#mt-x){font-size:1.6rem!important;line-height:1!important}
+    html.lowvision body #appt-page .ap-card .ap-line:not(#mt-x){font-size:1.15rem!important;line-height:1.3!important}
+    html.lowvision body #appt-page .ap-card .ap-what:not(#mt-x){font-size:1.25rem!important;line-height:1.3!important}
     html body #appt-form-page .wz-step[data-step="6"] .af-chip{min-height:44px!important;padding:6px 12px!important}
     /* the exit: a round 3D red button with a big ✕ in the top corner, away from the step dots and the title */
     html body #appt-form-page .af-head{position:relative!important;width:100%;min-height:52px;display:flex;align-items:center;justify-content:center}
