@@ -297,5 +297,32 @@
   "license": "CC BY-SA 4.0",
   "artist": "Joe Mabel on Vimeo as Joe Mabel",
   "url": "https://commons.wikimedia.org/wiki/File%3AWaves_crashing_on_rocks_off_Beach_4%2C_Kalaloch_Beach%2C_Washington_01.webm"
+ },
+ {
+  "sound": "surf",
+  "file": "File:Lake Okeechobee Surf in April 2016.ogg",
+  "url": "https://commons.wikimedia.org/wiki/File%3ALake_Okeechobee_Surf_in_April_2016.ogg",
+  "license": "CC BY-SA 4.0",
+  "artist": "Andrew Migneault",
+  "kind": "sound",
+  "key": "surf"
+ },
+ {
+  "sound": "creek",
+  "file": "File:Forest lawn creek.ogg",
+  "url": "https://commons.wikimedia.org/wiki/File%3AForest_lawn_creek.ogg",
+  "license": "Public domain",
+  "artist": "Dsw4",
+  "kind": "sound",
+  "key": "creek"
+ },
+ {
+  "sound": "garden",
+  "file": "File:Bourne Garden 2020-08-28 0943.mp3",
+  "url": "https://commons.wikimedia.org/wiki/File%3ABourne_Garden_2020-08-28_0943.mp3",
+  "license": "CC BY-SA 4.0",
+  "artist": "Robert EA Harvey",
+  "kind": "sound",
+  "key": "garden"
  }
 ]
