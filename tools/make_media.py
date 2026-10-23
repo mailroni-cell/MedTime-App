@@ -40,10 +40,11 @@ def strip(key, v):
 def video(key, v):
     raw, lic, art = grab(key, v['title'])
     s, VD = float(v['start']), float(v.get('vd', VDEF))
+    XF = float(v.get('xf', globals()['XF']))  # M-306: a longer, softer loop fade where the shot allows it
     out = 'app/src/main/assets/video/%s.mp4' % key
     os.makedirs('app/src/main/assets/video', exist_ok=True)
     # A = [s+XF, s+XF+VD], B = [s, s+XF]; the end of A fades into B, whose last frame leads into the first frame of A -> seamless loop
-    crop = "crop='min(iw,ih*9/16)':ih,scale=540:960:flags=lanczos,fps=30,setsar=1,format=yuv420p"
+    crop = "crop='min(iw,ih*9/16)':ih,scale=720:1280:flags=lanczos,fps=30,setsar=1,format=yuv420p"
     fc = ('[0:v]trim=start=%.2f:duration=%.2f,setpts=PTS-STARTPTS,%s[a];[0:v]trim=start=%.2f:duration=%.2f,setpts=PTS-STARTPTS,%s[b];'
           '[a][b]xfade=transition=fade:duration=%.2f:offset=%.2f[v]') % (s + XF, VD, crop, s, XF, crop, XF, VD - XF)
     subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', raw, '-filter_complex', fc, '-map', '[v]', '-an', '-c:v', 'libx264', '-preset', 'slow',

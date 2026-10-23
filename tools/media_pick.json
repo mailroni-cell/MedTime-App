@@ -191,38 +191,33 @@
   },
   "v_aurora": {
    "title": "File:\"Aurora Winds\" Echo Lake Northern Lights 1.webm",
-   "start": 20,
-   "vd": 40
-  },
-  "v_earth": {
-   "title": "File:Aurora Borealis from Space (4K).webm",
-   "start": 30,
-   "vd": 40
+   "start": 35,
+   "vd": 38,
+   "xf": 4
   },
   "v_jelly": {
    "title": "File:Drifters of the deep.webm",
-   "start": 60,
-   "vd": 40
-  },
-  "v_fog": {
-   "title": "File:Foggy day of hyrcanian forest of iran.webm",
-   "start": 10,
-   "vd": 40
-  },
-  "v_sunset": {
-   "title": "File:Waves crashing on rocks off Beach 4, Kalaloch Beach, Washington 01.webm",
-   "start": 0,
-   "vd": 40
+   "start": 72,
+   "vd": 14,
+   "xf": 4
   },
   "v_beach": {
    "title": "File:Sardegna's Costa Smeralda Drone Views.webm",
-   "start": 60,
-   "vd": 40
+   "start": 96,
+   "vd": 11,
+   "xf": 4
   },
   "v_cabo": {
    "title": "File:Aerial views of Los Cabo, San Lucas, Mexico at sunset including El Arco, Lands End and ocean views.webm",
+   "start": 39,
+   "vd": 16,
+   "xf": 4
+  },
+  "v_rocks": {
+   "title": "File:Waves crashing on rocks off Beach 4, Kalaloch Beach, Washington 01.webm",
    "start": 0,
-   "vd": 40
+   "vd": 40,
+   "xf": 4
   }
  }
 }

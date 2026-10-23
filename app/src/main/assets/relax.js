@@ -67,6 +67,11 @@
         s_jelly: ['מדוזות במעמקים', 'قناديل البحر', 'Meduze', 'Méduses', 'Jellyfish deep', 'Глубина с медузами'],
         s_fireflies: ['גחליליות', 'يراعات', 'Licurici', 'Lucioles', 'Fireflies', 'Светлячки'],
         s_sunset: ['שקיעה בים', 'غروب على البحر', 'Apus pe mare', 'Coucher de soleil', 'Sea sunset', 'Закат над морем'],
+        s_v_aurora: ['זוהר צפוני', 'الشفق القطبي', 'Aurora boreală', 'Aurore boréale', 'Northern lights', 'Северное сияние'], // M-306
+        s_v_rocks: ['גלים על סלעים בערב', 'أمواج على الصخور مساءً', 'Valuri pe stânci seara', 'Vagues sur les rochers le soir', 'Evening waves on rocks', 'Вечерние волны у скал'],
+        s_v_cabo: ['צוקים בים בשקיעה', 'صخور في البحر عند الغروب', 'Stânci în mare la apus', 'Rochers en mer au coucher du soleil', 'Sea cliffs at sunset', 'Скалы в море на закате'],
+        s_v_beach: ['מפרץ טורקיז', 'خليج فيروزي', 'Golf turcoaz', 'Baie turquoise', 'Turquoise bay', 'Бирюзовая бухта'],
+        s_v_jelly: ['מדוזות אמיתיות', 'قناديل بحر حقيقية', 'Meduze reale', 'Vraies méduses', 'Real jellyfish', 'Настоящие медузы'],
         s_tunnel: ['מנהרת זמן', 'نفق الزمن', 'Tunelul timpului', 'Tunnel du temps', 'Time tunnel', 'Тоннель времени'],
         s_nebula: ['ערפילית', 'سديم', 'Nebuloasă', 'Nébuleuse', 'Nebula', 'Туманность'],
         a_chimes: ['פעמוני רוח', 'أجراس الرياح', 'Clopoței de vânt', 'Carillon', 'Wind chimes', 'Музыка ветра'],
@@ -121,7 +126,7 @@
     const li = () => Math.max(0, L5.indexOf(typeof LANG === 'string' ? LANG : 'he'));
     const tx = k => (TX[k] || [k])[li()];
 
-    const SCENES = [['v_ocean', '🌊'], ['v_forest', '🌲'], ['v_waterfall', '💦'], ['v_rain', '🌧️'], ['v_city', '🌃'], ['v_stars', '🌌'], ['v_lake', '🏞️'], ['v_mountain', '🏔️'], ['v_underwater', '🐠'], ['v_flamingo', '🦩'], ['v_clouds', '🌆'], ['aurora', '🌌'], ['ocean', '🌊'], ['galaxy', '🌀'], ['lanterns', '🏮'], ['jelly', '🪼'], ['sunset', '🌅'], ['nebula', '☁️'], ['tunnel', '🌀']]; // M-297 (owner): the plain-looking worlds (snowy forest, fireflies, breathing orb) are gone; a time tunnel is new
+    const SCENES = [['v_ocean', '🌊'], ['v_forest', '🌲'], ['v_waterfall', '💦'], ['v_rain', '🌧️'], ['v_city', '🌃'], ['v_stars', '🌌'], ['v_lake', '🏞️'], ['v_mountain', '🏔️'], ['v_underwater', '🐠'], ['v_flamingo', '🦩'], ['v_clouds', '🌆'], ['v_aurora', '🌌'], ['v_rocks', '🌅'], ['v_cabo', '🏝️'], ['v_beach', '🏖️'], ['v_jelly', '🪼'], ['aurora', '🌌'], ['ocean', '🌊'], ['galaxy', '🌀'], ['lanterns', '🏮'], ['jelly', '🪼'], ['sunset', '🌅'], ['nebula', '☁️'], ['tunnel', '🌀']]; // M-297 (owner): the plain-looking worlds (snowy forest, fireflies, breathing orb) are gone; a time tunnel is new
     /* removed worlds: orb, snow, fireflies */
     const SOUNDS = [['none', '🔇'], ['waterfall', '💦'], ['lake', '🏞️'], ['tent', '⛺'], ['river', '🐦'], ['birds', '🐤'], ['jungle', '🦜'], ['frogs', '🐸'], ['owls', '🦉'], ['cave', '💧'], ['leaves', '🍂'], ['crickets', '🦗'], ['thunder', '🌩️'], ['surf', '🏖️'], ['creek', '🌿'], ['garden', '🌻'], ['whales', '🐋'], ['cat', '🐈'], ['fountain', '⛲'], ['tibet', '🛎️'], ['city', '🏙️'], ['cafe', '☕'], ['train', '🚆'], ['bowls', '🔔'], ['drone', '🕉️'], ['chimes', '🎐'], ['zen', '🎋'], ['rain', '🌧️'], ['ocean', '🌊'], ['forest', '🌲'], ['night', '🦗'], ['fire', '🔥'], ['wind', '🍃'], ['storm', '⛈️'], ['underwater', '🫧'], ['space', '🪐'], ['synth', '🎹']]; // M-196: real recordings first
     const TIMERS = [0, 10, 20, 30, 45, 60];
