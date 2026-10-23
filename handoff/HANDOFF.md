@@ -172,3 +172,14 @@
 - 17:35Z: M-337 (run 229, built on test, NOT released): screen no longer kept on (only calm mode), page timers stop 5 s after background (calm excepted). M-338 (quick web update): home order now row1 תורים לרופא, מדדים, בדיקת תרופה; row2 התזכורות שלי, שלווה, הדרכה. Releasing 229 to everyone waits for Roni's test + explicit OK.
 - 17:40Z: M-339 (no badge at all on appointments symbol), M-340 (greeting: no icon, warm peach, name amber) as quick web updates for base run 229. Roni's phone still on an older APK: needs cable or explicit 'release 229'.
 - 17:50Z: M-341 (quick web update): 3D floor ring hidden; text line above bottom buttons = last vitals reading (or hint). Roni's phone has 229 (installed 20:34 local by watcher).
+
+## 28. 2026-10-23 18:40Z - round M-343..M-348 (session ending)
+- Phone (Roni) has APK run 229 (versionCode 329). Since 18:29Z the cable is OFF: changes arrive as internet web updates (M-334; applied when the app comes back after 30 s+ in background or on a fresh start).
+- M-343 (Java, NOT in an APK yet; next build): web update never reloads the page while in use (an early reload looked like "stuck on opening"). Note: on cable, the PC watcher RESTARTS the app after every web update ("app opens more than once" = watcher, not the old bug).
+- M-344 subst.js ✕ on the medicine-check search (Cancel was under the keyboard). M-345 appts.js compact low-vision cards. M-346 relax.js red "יציאה ממצב שלווה" in the bar and every inner screen. M-347 setpills.js capsules no longer jump in size; words below the capsule (normal mode; low-vision unchanged). M-348 index.html low-vision off restores the previous text size.
+- Audit tool: scratchpad au/audit.js (Playwright, 3 sizes x normal/low-vision, overflow/cut detection). Not in the repo. Worth adding to tools/ and running before every release.
+- WAITING for Roni: test all of the above on the phone; then build (for M-343) and release to everyone ONLY on Roni's explicit "שחרר לכולם" (stable.txt push is blocked without it). Current stable = run 227.
+- Not done yet: Roni's idea of curved words under the settings capsules (the spacing fix was done instead); full audit of every screen in every mode (only home/appts/forms/settings/scan/relax checked).
+
+### Opening message for the other account
+"תמשיך את MedTime מ-handoff/HANDOFF.md סעיף 28. הטלפון על גרסה 229 בלי כבל. תבדוק איתי את M-343 עד M-348, ואחרי 'שחרר לכולם' תבנה ותשחרר."
