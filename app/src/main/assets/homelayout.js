@@ -77,6 +77,11 @@
     /* M-256 (owner: thin stripes showed on the side when a symbol turned edge-on): 13 layers 0.7px apart make one solid body */
     ${(() => { let o = ''; for (let k = 1; k <= 13; k++) { const z = (4.2 - (k - 1) * 0.7).toFixed(1), b = k === 1 || k === 13 ? '' : 'filter:brightness(' + (0.45 + Math.abs(7 - k) * 0.025).toFixed(3) + ')!important;';
         o += `html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > .hm-l${k}{transform:translateZ(${z}px)!important;${b}}\n`; } return o; })()}
+    /* M-268 (owner): no medicine shapes on the main screen any more: only the solid 3D symbols, bigger, floating on the calm background */
+    html body .home-card .hm-float .hm-pill,${B} > button > .mt-glint{display:none!important}
+    html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > *{font-size:calc(var(--hm-o,118px) * .82)!important}
+    html body .home-card .hm-float #main-add .hm-3d > svg{width:calc(var(--hm-o) * .8)!important;height:calc(var(--hm-o) * .8)!important}
+    html body .home-card .hm-float #list-btn .lb-count{font-size:calc(var(--hm-o,118px) * .66)!important}
     /* M-239 (owner): the symbols float freely in every direction, as in space: drifting up/down/sideways, tilting on all axes and turning round */
     @keyframes hmSpin{0%{transform:translate3d(calc(var(--hm-o,118px) * 0),calc(var(--hm-o,118px) * .02),16px) rotateX(10deg) rotateY(0deg) rotateZ(-6deg)}20%{transform:translate3d(calc(var(--hm-o,118px) * -.07),calc(var(--hm-o,118px) * -.06),26px) rotateX(-14deg) rotateY(80deg) rotateZ(5deg)}45%{transform:translate3d(calc(var(--hm-o,118px) * .05),calc(var(--hm-o,118px) * -.09),18px) rotateX(16deg) rotateY(170deg) rotateZ(-4deg)}65%{transform:translate3d(calc(var(--hm-o,118px) * .08),calc(var(--hm-o,118px) * .03),28px) rotateX(-8deg) rotateY(250deg) rotateZ(8deg)}85%{transform:translate3d(calc(var(--hm-o,118px) * -.04),calc(var(--hm-o,118px) * .06),20px) rotateX(12deg) rotateY(320deg) rotateZ(-3deg)}100%{transform:translate3d(calc(var(--hm-o,118px) * 0),calc(var(--hm-o,118px) * .02),16px) rotateX(10deg) rotateY(360deg) rotateZ(-6deg)}}
     html .home-card .hm-float > :nth-child(2){--hm-sp:12.5s;--hm-dl:-3s}html .home-card .hm-float > :nth-child(3){--hm-sp:10s;--hm-dl:-6s}
