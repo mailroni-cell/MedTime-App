@@ -28,6 +28,8 @@
   ol li { margin-bottom: 8px; }
   .note { background: rgba(250,204,21,.1); border: 1px solid rgba(250,204,21,.4); border-radius: 14px; padding: 12px 14px; color: #fde68a; font-size: .98rem; line-height: 1.5; }
   /* M-308: friendly install guide with tiny animated phones */
+  .inapp { display: none; text-align: center; text-decoration: none; color: #fff; font-weight: 800; font-size: 1.1rem; padding: 14px; border-radius: 16px; margin: 0 0 16px;
+           background: linear-gradient(135deg, #f59e0b, #b45309); box-shadow: 0 5px 0 #78350f; }
   .hint { text-align: center; color: var(--mut); font-size: .92rem; margin: -12px 0 20px; }
   .trust { display: flex; gap: 12px; align-items: center; background: linear-gradient(135deg, rgba(34,197,94,.16), rgba(56,189,248,.12)); border: 1px solid rgba(74,222,128,.35); border-radius: 18px; padding: 14px; margin: 0 0 16px; line-height: 1.5; }
   .trust .sh { font-size: 2.3rem; animation: bob 3s ease-in-out infinite; }
@@ -62,6 +64,7 @@
   <div class="logo">💊</div>
   <h1>MedTime</h1>
   <p class="sub" id="sub"></p>
+  <a class="inapp" id="inapp" href="intent://mailroni-cell.github.io/MedTime-App/download.html#Intent;scheme=https;package=com.android.chrome;end"></a>
   <a class="dl" id="dl" href="https://github.com/mailroni-cell/MedTime-App/releases/download/latest/MedTime-latest.apk" download="MedTime.apk"></a>
   <a class="dl2" id="dl2" href="https://drive.google.com/uc?export=download&amp;id=1apKoeQwAAktW8kWhakTzHdviexF_qoqx"></a>
   <p class="hint" id="hint"></p>
@@ -81,6 +84,7 @@
     prog: ['⬇️ מוריד… ', '⬇️ جارٍ التنزيل… ', '⬇️ Se descarcă… ', '⬇️ Téléchargement… ', '⬇️ Downloading… ', '⬇️ Загрузка… '],
     done: ['✅ ירד! פותחים מההודעה למטה', '✅ تم! افتحه من الإشعار بالأسفل', '✅ Gata! Deschide din notificarea de jos', '✅ C’est fait ! Ouvrez depuis la notification', '✅ Done! Open it from the notification below', '✅ Готово! Откройте из уведомления внизу'],
     alt: ['🔁 עוברים למקור חלופי…', '🔁 ننتقل إلى مصدر بديل…', '🔁 Trecem la o sursă alternativă…', '🔁 Passage à une source alternative…', '🔁 Switching to a backup source…', '🔁 Переключаемся на запасной источник…'],
+    inapp: ['🌐 פתחו את הדף ב-Chrome כדי להוריד', '🌐 افتح الصفحة في Chrome للتنزيل', '🌐 Deschide pagina în Chrome pentru descărcare', '🌐 Ouvrez la page dans Chrome pour télécharger', '🌐 Open this page in Chrome to download', '🌐 Откройте страницу в Chrome для загрузки'],
     hint: ['כדאי לפתוח את הדף ב-Chrome 🙂', 'يُفضّل فتح الصفحة في Chrome 🙂', 'Cel mai bine deschide pagina în Chrome 🙂', 'Ouvrez de préférence la page dans Chrome 🙂', 'Best opened in Chrome 🙂', 'Лучше открыть страницу в Chrome 🙂'],
     trT: ['הטלפון ישאל אם מותר, וזה בסדר גמור', 'سيسأل الهاتف إن كان مسموحًا، وهذا طبيعي تمامًا', 'Telefonul va întreba dacă are voie, e perfect normal', 'Le téléphone demandera la permission, c’est tout à fait normal', 'Your phone will ask first, and that is perfectly fine', 'Телефон спросит разрешения, и это нормально'],
     trS: ['האפליקציה מגיעה ישירות מאיתנו ולא דרך חנות, אז הטלפון פשוט מוודא איתך. MedTime לא אוסף שום מידע, הכול נשמר רק אצלך.', 'التطبيق يصلك منّا مباشرة وليس من متجر، فالهاتف يتأكد منك فقط. MedTime لا يجمع أي معلومات، وكل شيء يبقى عندك.', 'Aplicația vine direct de la noi, nu dintr-un magazin, așa că telefonul doar verifică cu tine. MedTime nu colectează date, totul rămâne la tine.', 'L’application vient directement de nous et non d’un store, le téléphone vérifie donc avec vous. MedTime ne collecte aucune donnée, tout reste chez vous.', 'The app comes straight from us, not from a store, so the phone just checks with you. MedTime collects no data; everything stays on your phone.', 'Приложение приходит напрямую от нас, а не из магазина, поэтому телефон просто уточняет у вас. MedTime не собирает данные, всё остаётся у вас.'],
@@ -101,7 +105,7 @@
     document.getElementById('sub').textContent = T.sub[i];
     if (!busy) document.getElementById('dl').textContent = T.dl[i];
     document.getElementById('dl2').textContent = T.dl2[i];
-    ['hint', 'trT', 'trS', 'sam'].forEach(k => document.getElementById(k).textContent = T[k][i]);
+    ['inapp', 'hint', 'trT', 'trS', 'sam'].forEach(k => document.getElementById(k).textContent = T[k][i]);
     const PH = ['<div class="bar"><i></i></div><span style="font-size:1.5rem">📥</span>', '<div class="tg"></div>', '<div class="ok">✓</div>'];
     const box = document.getElementById('steps'); box.innerHTML = '';
     T.steps[i].forEach((st, k) => { const d = document.createElement('div'); d.className = 'step';
@@ -157,6 +161,8 @@
     fast().then(b => { file = b; save(); btn.style.setProperty('--p', '100%'); btn.textContent = T.done[LI]; busy = false; })
       .catch(() => { btn.classList.remove('go'); btn.textContent = T.alt[LI]; setTimeout(() => { busy = false; location.href = REL; }, 900); });
   });
+  // M-314: links opened inside Facebook / Instagram / other in-app browsers often cannot download files: offer Chrome first
+  if (/FBAN|FBAV|FB_IAB|Instagram|Line\/|TikTok|musical_ly|; wv\)/.test(navigator.userAgent) && /Android/.test(navigator.userAgent)) document.getElementById('inapp').style.display = 'block';
   const box = document.getElementById('langs');
   L.forEach((l, k) => { const b = document.createElement('button'); b.textContent = NAMES[k]; b.onclick = () => set(l); box.appendChild(b); });
   const q = new URLSearchParams(location.search).get('lang');
