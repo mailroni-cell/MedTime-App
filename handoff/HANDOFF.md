@@ -166,3 +166,5 @@
 ## 27. 2026-10-23 17:15Z - M-332, M-333
 - M-332 (quick web update, live): home screen hides the appointment count on "תורים לרופא"; greeting and add-reminder cross raised together. Waiting for Roni's check on the phone. The small "when" pill on the symbol stayed.
 - M-333: /ad/ preview for WhatsApp = docs/ad/og.jpg (1200x630, 100KB; WhatsApp drops previews over ~300KB). Personal group invite text: /mnt/project-files/medtime-share/invite_group_he.txt, link https://medtime.pages.dev/ad/?v=2 (?v=2 skips WhatsApp's old cached preview).
+- 17:20Z: run 227 (M-320..M-333) RELEASED to everyone (stable.txt = run 227).
+- M-334 (run 228, built, on release "test", NOT released): the app itself downloads quick web updates (web.zip of release test, only for its exact versionCode) on open/return; no PC/cable needed. Releasing 228 to everyone waits for Roni's explicit OK (auto-mode blocked the stable.txt push).
