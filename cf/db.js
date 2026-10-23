@@ -1,5 +1,5 @@
 // M-327: private, reliable usage counts on Cloudflare (Pages Functions + D1, free tier), replacing ntfy.sh step by step.
-// Needs a D1 database bound to the Pages project as "DB" (Settings > Bindings); owner bound "medtime-stats" on 2026-10-23. Without it the endpoints answer {ok:false} and change nothing.
+// Needs a D1 database bound to the Pages project as "DB" (Settings > Bindings); the owner bound it under the name "medtime-stats" (2026-10-23), which also works. Without it the endpoints answer {ok:false} and change nothing.
 // Stored: per-day counters and, per install, a hash of the random install id with first/last day, version and language. Nothing personal.
 export const CORS = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' };
 export const json = (o, s) => new Response(JSON.stringify(o), { status: s || 200, headers: Object.assign({ 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }, CORS) });

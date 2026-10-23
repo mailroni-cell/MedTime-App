@@ -3,10 +3,10 @@ const KINDS = new Set(['visit', 'dl', 'ping', 'share', 'survey', 'adview']);
 const SRC = new Set(['fast', 'gh', 'drive']);
 export const onRequestOptions = () => new Response(null, { headers: CORS });
 export async function onRequestPost({ request, env }) {
-  if (!env.DB) return json({ ok: false, why: 'no-db' });
+  const DB = env.DB || env['medtime-stats']; if (!DB) return json({ ok: false, why: 'no-db' });
   let m; try { m = JSON.parse(await request.text()); } catch (e) { return json({ ok: false }, 400); }
   const k = String(m.kind || ''); if (!KINDS.has(k)) return json({ ok: false }, 400);
-  const d = day(), db = env.DB; await ready(db);
+  const d = day(), db = DB; await ready(db);
   const inc = key => db.prepare('INSERT INTO counts (day, k, n) VALUES (?1, ?2, 1) ON CONFLICT(day, k) DO UPDATE SET n = n + 1').bind(d, key);
   const ops = [];
   if (k === 'visit' || k === 'adview' || k === 'share') ops.push(inc(k));

@@ -1,8 +1,8 @@
 import { json, ready } from '../../cf/db.js';
 // Aggregates only. "Removed (estimate)": installs not seen for 14+ days (Android never tells an app it was removed).
 export async function onRequestGet({ env }) {
-  if (!env.DB) return json({ ok: false, why: 'no-db' });
-  const db = env.DB; await ready(db);
+  const DB = env.DB || env['medtime-stats']; if (!DB) return json({ ok: false, why: 'no-db' });
+  const db = DB; await ready(db);
   const ago = n => new Date(Date.now() - n * 864e5).toISOString().slice(0, 10);
   const one = async (q, ...b) => (await db.prepare(q).bind(...b).first()) || {};
   const all = async (q, ...b) => (await db.prepare(q).bind(...b).all()).results || [];
