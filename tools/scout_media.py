@@ -27,6 +27,13 @@ AUDIO = {
     'fountain': ['fountain water sound', 'fountain ambience', 'garden fountain'],
     'tibet': ['singing bowl', 'tibetan singing bowl', 'meditation bowl'],
     'river': ['river sound', 'river flowing recording', 'mountain river'],
+    # M-284 (owner: more real nature sounds)
+    'crickets': ['crickets night', 'cricket chirping', 'summer night insects'],
+    'brook': ['brook babbling', 'small stream water sound', 'creek water recording'],
+    'thunder': ['thunderstorm rain recording', 'distant thunder rain', 'thunder storm ambience'],
+    'beach': ['ocean waves beach recording', 'sea waves sound', 'surf on beach'],
+    'wind': ['wind in trees', 'wind forest ambience', 'wind blowing recording'],
+    'campfire': ['campfire crackling', 'fire crackling sound', 'fireplace sound'],
 }
 VIDEO = {
     'v_ocean': ['ocean waves video', 'waves beach video', 'sea waves'],
