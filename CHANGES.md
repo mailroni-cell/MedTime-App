@@ -304,3 +304,6 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | R-203 | 2026-10-23 | release/stable.txt | Run 203 (M-267) released to everyone | ✅ |
 | M-268 | 2026-10-23 | homelayout.js | Owner: main screen without the medicine shapes (and their running light); only the solid 3D symbols, bigger (.82 of the ball) | ⏳ |
 | R-204 | 2026-10-23 | release/stable.txt | Run 204 (M-268) released to everyone | ✅ |
+| M-269 | 2026-10-23 | homelayout.js | Owner: the main symbols sway and tilt up to 38° each way and never turn edge-on (no flat edge, always round); names stay but quieter (smaller, soft shadow, still; full size in low vision) | ⏳ |
+| M-270 | 2026-10-23 | looks.js | Owner: smaller tour hand with no blurred glow around it | ⏳ |
+| R-205 | 2026-10-23 | release/stable.txt | Run 205 (M-269..M-270) released to everyone | ✅ |
