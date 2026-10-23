@@ -230,5 +230,32 @@
   "license": "CC BY 3.0",
   "artist": "Adam Fish",
   "url": "https://commons.wikimedia.org/wiki/File%3ATime-lapse_of_Sunset%2C_Moonset_and_Sunrise_at_Cape_Keraudren%2C_Western_Australia_from_September_2022.webm"
+ },
+ {
+  "sound": "crickets",
+  "file": "File:BioAcoustica 991 1 Gryllus campestris 142r1.flac",
+  "url": "https://commons.wikimedia.org/wiki/File%3ABioAcoustica_991_1_Gryllus_campestris_142r1.flac",
+  "license": "CC BY 3.0",
+  "artist": "",
+  "kind": "sound",
+  "key": "crickets"
+ },
+ {
+  "sound": "leaves",
+  "file": "File:Rain on leaves (Gravity Sound).wav",
+  "url": "https://commons.wikimedia.org/wiki/File%3ARain_on_leaves_%28Gravity_Sound%29.wav",
+  "license": "CC BY 4.0",
+  "artist": "Gravity Sound",
+  "kind": "sound",
+  "key": "leaves"
+ },
+ {
+  "sound": "thunder",
+  "file": "File:Light Rain Distant Thunder July 5th 2016.wav",
+  "url": "https://commons.wikimedia.org/wiki/File%3ALight_Rain_Distant_Thunder_July_5th_2016.wav",
+  "license": "CC0",
+  "artist": "https://freesound.org/people/kvgarlic/",
+  "kind": "sound",
+  "key": "thunder"
  }
 ]
