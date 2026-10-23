@@ -36,7 +36,10 @@
       text-shadow:0 1px 0 #b91c1c,0 2px 0 #991b1b,0 3px 0 #7f1d1d,0 4px 5px rgba(0,0,0,.6)!important;
       box-shadow:inset 0 3px 4px rgba(255,255,255,.6),inset 0 -5px 8px rgba(69,10,10,.55),0 6px 0 #5f0d0d,0 14px 18px rgba(0,0,0,.5),0 0 18px rgba(248,113,113,.5)!important}
     html.lowvision body :is(.close-3d,.p-close).mt-backbtn{font-size:1.2rem!important;animation:none!important}
-    @media (prefers-reduced-motion: reduce){html body :is(.close-3d,.p-close).mt-backbtn{animation:none!important}}`;
+    @media (prefers-reduced-motion: reduce){html body :is(.close-3d,.p-close).mt-backbtn{animation:none!important}}
+    /* M-350 (owner): in low-vision the words of the big back button were cut at its edge: it may be as wide as the screen */
+    html.lowvision body :is(.close-3d,.p-close).mt-backbtn:not(#mt-x),html.lowvision body .panel-head .p-close.mt-backbtn:not(#mt-x){max-width:calc(100vw - 24px)!important;text-overflow:clip!important;overflow:visible!important}
+`;
     document.head.appendChild(css);
 
     const arrow = () => (li() < 2 ? '→ ' : '← ');

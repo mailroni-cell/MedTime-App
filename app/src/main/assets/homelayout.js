@@ -303,6 +303,9 @@
       text-shadow:0 1px 1px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.85),0 0 12px rgba(251,146,60,.45)!important}
     html body #hello-line.hello-line > b:not(#mt-x){background:none!important;-webkit-text-fill-color:#ffb870!important;color:#ffb870!important;filter:none!important;
       text-shadow:0 1px 1px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.85),0 0 14px rgba(251,146,60,.6)!important}
+    /* M-350 (owner): low-vision reminders: a long medicine line ran under Edit / Delete; it wraps in its own column now */
+    html.lowvision body #list-page .med-item .med-info:not(#mt-x){min-width:0!important;flex:1 1 0!important}
+    html.lowvision body #list-page .med-item .med-info :is(h3,ul,li,span):not(#mt-x){white-space:normal!important;overflow-wrap:anywhere!important}
     /* M-339 (owner): no appointment badge at all on the symbol (also the when-pill) */
     html body .home-card .hm-float #appt-btn :is(.ab-when,.ab-count,.lb-count):not(#mt-x){display:none!important}
     html body #hello-line.hello-line:not(#mt-x){margin-top:-46px!important}

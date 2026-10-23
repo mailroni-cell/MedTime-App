@@ -396,3 +396,5 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-347 | 2026-10-23 | setpills.js | Owner: settings capsules jumped in size every minute or two (every text change re-ran the fit from full size): fit now runs only when screen/language/low-vision/tiles change. Words start below the turning capsule (box as tall as the capsule at any angle), normal mode | ⏳ |
 | M-348 | 2026-10-23 | index.html | Owner: after low-vision off the main symbols did not come back: text size returns to what it was before low-vision (was forced to the smallest); home layout re-runs | ⏳ |
 | M-349 | 2026-10-23 | tools/ui-audit/audit.js | Owner: automatic UI audit (3 sizes x normal/low-vision, overflow and cut text) kept in the repo; run before every release | ⏳ |
+| M-350 | 2026-10-23 | backbtn.js, homelayout.js, setpills.js | Owner (screenshots, low-vision): back-button words were cut (max 62vw): now up to screen width; long medicine line no longer runs under Edit/Delete; settings words below the capsules in low-vision too | ⏳ |
+| M-351 | 2026-10-23 | appts.js | Owner: appointment form exit moved to the bottom (red, next to Next, above the keyboard); top one hidden | ⏳ |

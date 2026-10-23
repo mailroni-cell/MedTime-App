@@ -15,7 +15,8 @@
       overflow:visible!important;font-size:calc(var(--sp-o) * .44)!important;line-height:1!important;transform:none!important}
     ${S} .set-ico.sp-on::before,${S} .set-ico.sp-on::after{display:none!important}
     /* M-347 (owner): the words sat under the turning capsule and got cut: the capsule's box is as tall as the capsule at any angle, so the words start below it */
-    html:not(.lowvision) ${S}{--sp-k:1.42}
+    ${S}{--sp-k:1.42}
+    html.lowvision body #settings-page .set-grid .set-tile-head .set-ico.sp-on:not(#mt-x){width:var(--sp-o)!important;height:calc(var(--sp-o) * 1.42)!important;min-width:0!important;font-size:calc(var(--sp-o) * .44)!important}
     ${S} .set-tile-head .set-ico.sp-on:not(#mt-x){margin:0 auto calc(var(--sp-o) * .02)!important}
     ${S} .sp-pill{position:absolute;left:50%;top:50%;width:calc(var(--sp-o) * 1.3);height:calc(var(--sp-o) * .64);border-radius:999px;pointer-events:none;z-index:0;
       transform:translate(-50%,-50%) rotate(-24deg);will-change:transform;animation:spPill var(--sp-d,10s) ease-in-out infinite;animation-delay:var(--sp-dl,0s);

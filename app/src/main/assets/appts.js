@@ -410,6 +410,13 @@
         if (!form.time) form.time = '09:00';
         step = 0;
         drawForm();
+        // M-351 (owner): the exit sits at the bottom next to Next, above the keyboard (at the top it scrolled away when typing)
+        const pg = $('appt-form-page'), nav = pg && pg.querySelector('.wz-nav'), top = pg && pg.querySelector('.af-head .mt-exit');
+        if (nav && top && !nav.querySelector('.wz-x')) {
+            const x = document.createElement('button'); x.type = 'button'; x.className = 'wz-x'; x.textContent = top.textContent || '✕';
+            x.onclick = () => top.click(); nav.insertBefore(x, nav.firstChild);
+        }
+        if (nav && top) { const x = nav.querySelector('.wz-x'); if (x) x.textContent = top.textContent || '✕'; }
         $('af-delete').style.display = editIdx >= 0 ? '' : 'none';
         $('appt-form-page').classList.add('open');
         loadGeo();
@@ -620,6 +627,10 @@
     html body #appt-form-page .af-summary{width:100%;box-sizing:border-box;margin:6px 0 0!important;padding:0!important}
     html body #appt-form-page .af-summary .ap-card{width:100%!important;max-width:100%!important;box-sizing:border-box!important;margin:0!important;padding:10px 14px!important;transform:none!important}
     html body #appt-form-page .wz-step[data-step="6"]{gap:6px!important}
+    html body #appt-form-page .af-head > .mt-exit:not(#mt-x){display:none!important}
+    html body #appt-form-page .wz-nav > .wz-x{flex:0 0 auto;min-height:52px;padding:0 16px;border:0;border-radius:999px;font:inherit;font-weight:900;font-size:1.05rem;color:#fff;
+      background:linear-gradient(180deg,#f87171,#dc2626 60%,#991b1b);box-shadow:inset 0 2px 1px rgba(255,255,255,.45),0 4px 0 #7f1d1d}
+    html body #appt-form-page .wz-nav > .wz-x:active{transform:translateY(3px);box-shadow:inset 0 2px 1px rgba(255,255,255,.45),0 1px 0 #7f1d1d}
     /* M-345 (owner): low-vision cards were taller than the screen: the date goes on one line on top, the details get the full width */
     html.lowvision body #appt-page .ap-card:not(#mt-x){display:flex!important;flex-direction:column!important;gap:6px!important}
     html.lowvision body #appt-page .ap-card > .ap-date:not(#mt-x){width:auto!important;min-width:0!important;height:auto!important;flex-direction:row!important;display:flex!important;align-items:baseline!important;justify-content:center!important;gap:10px!important;padding:4px 12px!important;min-height:0!important;flex:0 0 auto!important;max-height:46px!important;overflow:hidden!important;order:-1}
