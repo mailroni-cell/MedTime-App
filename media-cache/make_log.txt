@@ -1,3 +1,1 @@
-made app/src/main/assets/ambient/crickets.ogg 854808
-made app/src/main/assets/ambient/leaves.ogg 761322
-made app/src/main/assets/ambient/thunder.ogg 1090922
+STRIP FAILED v_sunset FileNotFoundError(2, 'No such file or directory')
