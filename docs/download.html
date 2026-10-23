@@ -7,7 +7,7 @@
 <meta property="og:title" content="MedTime 💊">
 <meta property="og:description" content="תזכורות תרופות · להורדה ישירה לאנדרואיד">
 <meta property="og:image" content="https://mailroni-cell.github.io/MedTime-App/store/icon-512.png">
-<!-- M-203: one download page for everyone (direct APK, no Drive preview), with simple steps in 6 languages -->
+<!-- M-308: friendly 3-step install guide + Samsung Auto Blocker tip. M-203: one download page for everyone (direct APK, no Drive preview), with simple steps in 6 languages -->
 <style>
   :root { --bg: #0b1024; --card: #131a3a; --tx: #f1f5f9; --mut: #a5b4fc; --ok: #22c55e; }
   * { box-sizing: border-box; }
@@ -26,6 +26,32 @@
   ol { background: var(--card); border-radius: 18px; padding: 16px 18px; padding-inline-start: 40px; margin: 0 0 16px; line-height: 1.55; font-size: 1.08rem; }
   ol li { margin-bottom: 8px; }
   .note { background: rgba(250,204,21,.1); border: 1px solid rgba(250,204,21,.4); border-radius: 14px; padding: 12px 14px; color: #fde68a; font-size: .98rem; line-height: 1.5; }
+  /* M-308: friendly install guide with tiny animated phones */
+  .hint { text-align: center; color: var(--mut); font-size: .92rem; margin: -12px 0 20px; }
+  .trust { display: flex; gap: 12px; align-items: center; background: linear-gradient(135deg, rgba(34,197,94,.16), rgba(56,189,248,.12)); border: 1px solid rgba(74,222,128,.35); border-radius: 18px; padding: 14px; margin: 0 0 16px; line-height: 1.5; }
+  .trust .sh { font-size: 2.3rem; animation: bob 3s ease-in-out infinite; }
+  .trust b { display: block; font-size: 1.08rem; margin-bottom: 2px; }
+  .trust span { color: #cbd5e1; font-size: .98rem; }
+  .step { display: flex; gap: 14px; align-items: center; background: var(--card); border-radius: 18px; padding: 12px 14px; margin-bottom: 12px; }
+  .step .n { flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%; background: #334155; display: grid; place-items: center; font-weight: 800; }
+  .step .tx { flex: 1; line-height: 1.45; }
+  .step .tx b { display: block; font-size: 1.12rem; }
+  .step .tx span { color: #cbd5e1; font-size: .98rem; }
+  .ph { flex: 0 0 auto; width: 58px; height: 96px; border-radius: 12px; border: 3px solid #475569; background: #0f172a; position: relative; overflow: hidden; display: grid; place-items: center; }
+  .ph::before { content: ''; position: absolute; top: 4px; width: 16px; height: 3px; border-radius: 2px; background: #475569; }
+  .bar { position: absolute; bottom: 18px; left: 9px; right: 9px; height: 6px; border-radius: 3px; background: #1e293b; overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--ok); animation: fill 2.6s ease-in-out infinite; }
+  .tg { width: 34px; height: 19px; border-radius: 10px; background: #475569; position: relative; animation: tgbg 2.6s infinite; }
+  .tg::after { content: ''; position: absolute; top: 2px; inset-inline-start: 2px; width: 15px; height: 15px; border-radius: 50%; background: #fff; animation: tgk 2.6s infinite; }
+  .ok { width: 34px; height: 34px; border-radius: 50%; background: var(--ok); display: grid; place-items: center; font-weight: 900; color: #fff; animation: pop 2.6s infinite; }
+  .sam { background: rgba(56,189,248,.1); border: 1px solid rgba(56,189,248,.35); border-radius: 14px; padding: 10px 14px; color: #bae6fd; font-size: .95rem; line-height: 1.5; margin-bottom: 14px; }
+  @keyframes fill { 0% { width: 0 } 70%, 100% { width: 100% } }
+  @keyframes tgbg { 0%, 35% { background: #475569 } 50%, 100% { background: var(--ok) } }
+  @keyframes tgk { 0%, 35% { transform: none } 50%, 100% { transform: translateX(15px) } }
+  [dir=rtl] .tg::after { animation-name: tgkr; }
+  @keyframes tgkr { 0%, 35% { transform: none } 50%, 100% { transform: translateX(-15px) } }
+  @keyframes pop { 0%, 30% { transform: scale(.3); opacity: 0 } 45% { transform: scale(1.15); opacity: 1 } 55%, 100% { transform: scale(1) } }
+  @keyframes bob { 50% { transform: translateY(-4px) rotate(-4deg) } }
   .ver { text-align: center; color: #64748b; font-size: .85rem; margin-top: 18px; }
 </style>
 </head>
@@ -37,8 +63,10 @@
   <p class="sub" id="sub"></p>
   <a class="dl" id="dl" href="https://github.com/mailroni-cell/MedTime-App/releases/download/latest/MedTime-latest.apk" download="MedTime.apk"></a>
   <a class="dl2" id="dl2" href="https://drive.google.com/uc?export=download&amp;id=1apKoeQwAAktW8kWhakTzHdviexF_qoqx"></a>
-  <ol id="steps"></ol>
-  <div class="note" id="note"></div>
+  <p class="hint" id="hint"></p>
+  <div class="trust"><div class="sh">🛡️</div><div><b id="trT"></b><span id="trS"></span></div></div>
+  <div id="steps"></div>
+  <div class="sam" id="sam"></div>
   <div class="ver" id="ver"></div>
 </main>
 <script>
@@ -48,15 +76,18 @@
     sub: ['תזכורות תרופות פשוטות וברורות', 'تذكيرات أدوية بسيطة وواضحة', 'Mementouri simple pentru medicamente', 'Rappels de médicaments simples et clairs', 'Simple, clear medicine reminders', 'Простые и понятные напоминания о лекарствах'],
     dl: ['⬇️ הורדת האפליקציה', '⬇️ تنزيل التطبيق', '⬇️ Descarcă aplicația', '⬇️ Télécharger l’application', '⬇️ Download the app', '⬇️ Скачать приложение'],
     dl2: ['ההורדה איטית? קישור חלופי (Google Drive)', 'التنزيل بطيء؟ رابط بديل (Google Drive)', 'Descărcare lentă? Link alternativ (Google Drive)', 'Téléchargement lent ? Lien alternatif (Google Drive)', 'Slow download? Alternative link (Google Drive)', 'Медленно качается? Запасная ссылка (Google Drive)'],
+    hint: ['כדאי לפתוח את הדף ב-Chrome 🙂', 'يُفضّل فتح الصفحة في Chrome 🙂', 'Cel mai bine deschide pagina în Chrome 🙂', 'Ouvrez de préférence la page dans Chrome 🙂', 'Best opened in Chrome 🙂', 'Лучше открыть страницу в Chrome 🙂'],
+    trT: ['הטלפון ישאל אם מותר, וזה בסדר גמור', 'سيسأل الهاتف إن كان مسموحًا، وهذا طبيعي تمامًا', 'Telefonul va întreba dacă are voie, e perfect normal', 'Le téléphone demandera la permission, c’est tout à fait normal', 'Your phone will ask first, and that is perfectly fine', 'Телефон спросит разрешения, и это нормально'],
+    trS: ['האפליקציה מגיעה ישירות מאיתנו ולא דרך חנות, אז הטלפון פשוט מוודא איתך. MedTime לא אוסף שום מידע, הכול נשמר רק אצלך.', 'التطبيق يصلك منّا مباشرة وليس من متجر، فالهاتف يتأكد منك فقط. MedTime لا يجمع أي معلومات، وكل شيء يبقى عندك.', 'Aplicația vine direct de la noi, nu dintr-un magazin, așa că telefonul doar verifică cu tine. MedTime nu colectează date, totul rămâne la tine.', 'L’application vient directement de nous et non d’un store, le téléphone vérifie donc avec vous. MedTime ne collecte aucune donnée, tout reste chez vous.', 'The app comes straight from us, not from a store, so the phone just checks with you. MedTime collects no data; everything stays on your phone.', 'Приложение приходит напрямую от нас, а не из магазина, поэтому телефон просто уточняет у вас. MedTime не собирает данные, всё остаётся у вас.'],
     steps: [
-      ['פותחים את הדף הזה בדפדפן Chrome (לא מתוך WhatsApp או Drive).', 'לוחצים על הכפתור הירוק ומחכים שההורדה תסתיים (כ־160MB).', 'לוחצים "פתיחה" בהודעה שמופיעה למטה, או פותחים את הקובץ MedTime.apk מתיקיית ההורדות.', 'אם הטלפון מבקש: "הגדרות" ← מאפשרים התקנה מהמקור הזה ← חוזרים.', 'לוחצים "התקנה". אם מופיע Play Protect: "פרטים נוספים" ← "להתקין בכל זאת".'],
-      ['افتح هذه الصفحة في متصفح Chrome (وليس من واتساب أو Drive).', 'اضغط الزر الأخضر وانتظر حتى ينتهي التنزيل (حوالي 160MB).', 'اضغط "فتح" في الإشعار بالأسفل، أو افتح الملف MedTime.apk من مجلد التنزيلات.', 'إذا طلب الهاتف: "الإعدادات" ← اسمح بالتثبيت من هذا المصدر ← ارجع.', 'اضغط "تثبيت". إذا ظهر Play Protect: "مزيد من التفاصيل" ← "التثبيت على أي حال".'],
-      ['Deschide această pagină în Chrome (nu din WhatsApp sau Drive).', 'Apasă butonul verde și așteaptă să se termine descărcarea (circa 160MB).', 'Apasă „Deschide” în notificarea de jos sau deschide fișierul MedTime.apk din Descărcări.', 'Dacă telefonul cere: „Setări” → permite instalarea din această sursă → înapoi.', 'Apasă „Instalează”. Dacă apare Play Protect: „Mai multe detalii” → „Instalează oricum”.'],
-      ['Ouvrez cette page dans Chrome (pas depuis WhatsApp ou Drive).', 'Appuyez sur le bouton vert et attendez la fin du téléchargement (environ 160 Mo).', 'Appuyez sur « Ouvrir » dans la notification en bas, ou ouvrez MedTime.apk dans Téléchargements.', 'Si le téléphone le demande : « Paramètres » → autorisez l’installation depuis cette source → retour.', 'Appuyez sur « Installer ». Si Play Protect apparaît : « Plus de détails » → « Installer quand même ».'],
-      ['Open this page in Chrome (not inside WhatsApp or Drive).', 'Tap the green button and wait for the download to finish (about 160MB).', 'Tap "Open" in the notification at the bottom, or open MedTime.apk from your Downloads folder.', 'If the phone asks: "Settings" → allow installing from this source → go back.', 'Tap "Install". If Play Protect appears: "More details" → "Install anyway".'],
-      ['Откройте эту страницу в Chrome (не из WhatsApp и не из Drive).', 'Нажмите зелёную кнопку и дождитесь окончания загрузки (около 160 МБ).', 'Нажмите «Открыть» в уведомлении внизу или откройте файл MedTime.apk в папке «Загрузки».', 'Если телефон попросит: «Настройки» → разрешите установку из этого источника → назад.', 'Нажмите «Установить». Если появится Play Protect: «Подробнее» → «Всё равно установить».']
+      [['מורידים', 'לוחצים על הכפתור הירוק ומחכים רגע עד הסוף.'], ['מאשרים פעם אחת', 'אם הטלפון שואל: "הגדרות" ← מדליקים "לאפשר מהמקור הזה" ← חוזרים.'], ['מתקינים וזהו!', 'לוחצים "התקנה". אם מופיע Play Protect: "פרטים נוספים" ← "להתקין בכל זאת".']],
+      [['التنزيل', 'اضغط الزر الأخضر وانتظر قليلًا حتى ينتهي.'], ['موافقة مرة واحدة', 'إذا سأل الهاتف: "الإعدادات" ← فعّل "السماح من هذا المصدر" ← ارجع.'], ['التثبيت وانتهينا!', 'اضغط "تثبيت". إذا ظهر Play Protect: "مزيد من التفاصيل" ← "التثبيت على أي حال".']],
+      [['Descarci', 'Apasă butonul verde și așteaptă puțin până se termină.'], ['Aprobi o singură dată', 'Dacă telefonul întreabă: „Setări” → activează „Permite din această sursă” → înapoi.'], ['Instalezi și gata!', 'Apasă „Instalează”. Dacă apare Play Protect: „Mai multe detalii” → „Instalează oricum”.']],
+      [['Téléchargez', 'Appuyez sur le bouton vert et patientez un instant.'], ['Autorisez une seule fois', 'Si le téléphone demande : « Paramètres » → activez « Autoriser depuis cette source » → retour.'], ['Installez, c’est tout !', 'Appuyez sur « Installer ». Si Play Protect apparaît : « Plus de détails » → « Installer quand même ».']],
+      [['Download', 'Tap the green button and wait a moment.'], ['Allow it once', 'If the phone asks: "Settings" → turn on "Allow from this source" → go back.'], ['Install, done!', 'Tap "Install". If Play Protect appears: "More details" → "Install anyway".']],
+      [['Скачайте', 'Нажмите зелёную кнопку и немного подождите.'], ['Разрешите один раз', 'Если телефон спросит: «Настройки» → включите «Разрешить из этого источника» → назад.'], ['Установите, и всё!', 'Нажмите «Установить». Если появится Play Protect: «Подробнее» → «Всё равно установить».']]
     ],
-    note: ['האזהרות מופיעות כי האפליקציה לא מחנות Play. זה רגיל. האפליקציה לא אוספת מידע, והכול נשמר רק בטלפון. לאנדרואיד בלבד.', 'تظهر التحذيرات لأن التطبيق ليس من متجر Play. هذا طبيعي. التطبيق لا يجمع أي معلومات، وكل شيء يُحفظ في الهاتف فقط. لأندرويد فقط.', 'Avertismentele apar pentru că aplicația nu e din Magazin Play. E normal. Aplicația nu colectează date, totul rămâne în telefon. Doar pentru Android.', 'Les avertissements apparaissent car l’application ne vient pas du Play Store. C’est normal. Elle ne collecte aucune donnée, tout reste sur le téléphone. Android uniquement.', 'The warnings appear because the app is not from the Play Store. That is normal. The app collects no data; everything stays on the phone. Android only.', 'Предупреждения появляются, потому что приложение не из Play Маркета. Это нормально. Приложение не собирает данные, всё хранится только в телефоне. Только для Android.']
+    sam: ['📱 בסמסונג, אם כתוב שההתקנה נחסמה: הגדרות ← אבטחה ופרטיות ← ‏"חוסם אוטומטי" ‏(Auto Blocker)‏ ← כיבוי. אחרי ההתקנה אפשר להדליק שוב.', '📱 في سامسونج، إذا ظهر أن التثبيت محظور: الإعدادات ← الأمان والخصوصية ← Auto Blocker ← إيقاف. بعد التثبيت يمكن تشغيله مجددًا.', '📱 Pe Samsung, dacă instalarea e blocată: Setări → Securitate și confidențialitate → Auto Blocker → oprit. După instalare îl poți porni din nou.', '📱 Sur Samsung, si l’installation est bloquée : Paramètres → Sécurité et confidentialité → Auto Blocker → désactiver. Vous pouvez le réactiver après.', '📱 On Samsung, if the install is blocked: Settings → Security and privacy → Auto Blocker → off. You can turn it back on afterwards.', '📱 На Samsung, если установка заблокирована: Настройки → Безопасность и конфиденциальность → Auto Blocker → выкл. После установки можно включить снова.']
   };
   function set(l) {
     const i = Math.max(0, L.indexOf(l));
@@ -64,9 +95,12 @@
     document.getElementById('sub').textContent = T.sub[i];
     document.getElementById('dl').textContent = T.dl[i];
     document.getElementById('dl2').textContent = T.dl2[i];
-    document.getElementById('note').textContent = T.note[i];
-    const ol = document.getElementById('steps'); ol.innerHTML = '';
-    T.steps[i].forEach(s => { const li = document.createElement('li'); li.textContent = s; ol.appendChild(li); });
+    ['hint', 'trT', 'trS', 'sam'].forEach(k => document.getElementById(k).textContent = T[k][i]);
+    const PH = ['<div class="bar"><i></i></div><span style="font-size:1.5rem">📥</span>', '<div class="tg"></div>', '<div class="ok">✓</div>'];
+    const box = document.getElementById('steps'); box.innerHTML = '';
+    T.steps[i].forEach((st, k) => { const d = document.createElement('div'); d.className = 'step';
+      d.innerHTML = '<div class="n">' + (k + 1) + '</div><div class="tx"><b></b><span></span></div><div class="ph">' + PH[k] + '</div>';
+      d.querySelector('b').textContent = st[0]; d.querySelector('span').textContent = st[1]; box.appendChild(d); });
     document.querySelectorAll('#langs button').forEach((b, k) => b.classList.toggle('on', k === i));
   }
   const box = document.getElementById('langs');

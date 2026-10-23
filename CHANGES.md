@@ -349,3 +349,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | R-213 | 2026-10-23 | release/stable.txt | Run 213 (M-293..M-306) released to everyone | ✅ |
 | M-307 | 2026-10-23 | firstaid.js, MainActivity.java, AndroidManifest.xml | Owner: nearby pharmacies inside the app (OpenStreetMap) by distance, open/closed where hours are known, call / navigate / Google hours buttons; location permission asked once | ⏳ |
 | R-214 | 2026-10-23 | release/stable.txt | Run 214 (M-307) released to everyone | ✅ |
+| M-308 | 2026-10-23 | docs/download.html | Owner: friendly, reassuring install guide on the download page: 'your phone will ask, that is fine' card, 3 short steps with tiny animated phones, Samsung Auto Blocker tip (6 languages) | ⏳ |
