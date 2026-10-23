@@ -357,3 +357,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | R-218 | 2026-10-23 | release/stable.txt | Run 218 (M-311) released to everyone | ✅ |
 | M-312 | 2026-10-23 | tour.js | Owner: a touch anywhere on the screen stops the guide (the stop chip still works too) | ⏳ |
 | R-219 | 2026-10-23 | release/stable.txt | Run 219 (M-312) released to everyone | ✅ |
+| M-313 | 2026-10-23 | tools/setup_autoinstall.ps1, tools/medtime_autoinstall.ps1 | Owner: a black window flashed on the PC every 5 minutes (the watcher's scheduled check opened a PowerShell console for a moment). Now started through a hidden VBScript (wscript), no window at all; PC folder C:\Projects\MedTime | ⏳ |

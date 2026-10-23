@@ -1,6 +1,6 @@
 ﻿# MedTime auto-install watcher. Runs hidden in the background (scheduled task "MedTime AutoInstall").
 # When a new MedTime-latest.apk appears in this folder, it installs it on the USB phone and starts the app.
-$dir   = Join-Path $env:USERPROFILE 'Downloads\MedTime'
+$dir   = 'C:\Projects\MedTime'
 $apk   = Join-Path $dir 'MedTime-latest.apk'
 $log   = Join-Path $dir 'install_log.txt'
 $stamp = Join-Path $dir 'last_installed.txt'
@@ -43,6 +43,10 @@ $driveDir   = 'Z:\My Drive\MedTime'
 $driveSeen  = Join-Path $dir 'last_drive.txt'
 $nextDrive  = Get-Date
 $nextWeb = Get-Date
+# Docs sync (owner 2026-10-22): the project docs on GitHub main are copied to this folder every 5 minutes, so the PC always has the latest HANDOFF
+$rawBase  = 'https://raw.githubusercontent.com/mailroni-cell/MedTime-App/main/'
+$docFiles = @{ 'handoff/HANDOFF.md' = 'HANDOFF.md'; 'STATE.md' = 'docs\STATE.md'; 'CHANGES.md' = 'docs\CHANGES.md'; 'CLAUDE.md' = 'docs\CLAUDE.md'; 'handoff/project-memory.md' = 'docs\project-memory.md' }
+$nextDocs = Get-Date
 $hashFor = ''; $hashVal = ''; $lastWebErr = ''
 $myTime = (Get-Item $PSCommandPath).LastWriteTime
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -83,6 +87,21 @@ while ($true) {
           }
         }
       } catch { Log ('DRIVE ERROR: ' + $_) }
+    }
+    if ((Get-Date) -ge $nextDocs) {
+      $nextDocs = (Get-Date).AddMinutes(5)
+      foreach ($k in $docFiles.Keys) {
+        try {
+          $dest = Join-Path $dir $docFiles[$k]
+          $new = (Invoke-WebRequest -Uri ($rawBase + $k) -UseBasicParsing -TimeoutSec 30).RawContentStream.ToArray()
+          $old = $null; if (Test-Path $dest) { $old = [IO.File]::ReadAllBytes($dest) }
+          if ($new.Length -gt 0 -and -not ($old -and [Convert]::ToBase64String($old) -eq [Convert]::ToBase64String($new))) {
+            $dd = Split-Path $dest; if (-not (Test-Path $dd)) { New-Item -ItemType Directory -Path $dd | Out-Null }
+            [IO.File]::WriteAllBytes($dest, $new)
+            Log ('DOCS UPDATED ' + $docFiles[$k])
+          }
+        } catch { }
+      }
     }
     # M-144: quick web updates are checked every 15 seconds (APK builds stay every 60 s)
     if ((Get-Date) -ge $nextWeb) {
@@ -152,7 +171,11 @@ while ($true) {
   # M-144: when Claude copies a newer watcher to the PC, this copy starts the new one and quits (no action needed from the owner)
   try { if ((Get-Item $PSCommandPath).LastWriteTime -ne $myTime) {
     Log 'watcher updated - restarting'; $mtx.ReleaseMutex()
-    Start-Process powershell.exe -WindowStyle Hidden -ArgumentList ('-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "' + $PSCommandPath + '"')
+    # M-313: restart with no console flash (through the hidden VBScript when it exists)
+    $vbs = Join-Path $PSScriptRoot 'medtime_autoinstall_hidden.vbs'
+    if (Test-Path $vbs) { Start-Process wscript.exe -ArgumentList ('"' + $vbs + '"') }
+    else { Start-Process powershell.exe -WindowStyle Hidden -ArgumentList ('-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "' + $PSCommandPath + '"') }
     exit } } catch { }
   Start-Sleep -Seconds 5
 }
+
