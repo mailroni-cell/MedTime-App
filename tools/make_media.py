@@ -2,7 +2,7 @@
 """M-196: real sounds and nature videos for calm mode, from the picks in tools/media_pick.json (Wikimedia Commons, free licenses).
 Runs on GitHub Actions.  mode 'strip': for each video, frames every 3 s over 60 s from its start -> media-cache/strip/<key>.jpg
 (to choose a window with no cuts).  mode 'make': sounds -> assets/ambient/<key>.ogg (90 s seamless loop, same as fetch_sounds.py),
-videos -> assets/video/<key>.mp4 (portrait 720x1280, seamless loop) + media-cache/out/<key>.jpg, credits -> assets/media_credits.js"""
+videos -> assets/video/<key>.mp4 (portrait 540x960, seamless loop) + media-cache/out/<key>.jpg, credits -> assets/media_credits.js"""
 import json, os, subprocess, sys, urllib.parse
 sys.path.insert(0, os.path.dirname(__file__))
 import fetch_sounds as fs
@@ -43,11 +43,11 @@ def video(key, v):
     out = 'app/src/main/assets/video/%s.mp4' % key
     os.makedirs('app/src/main/assets/video', exist_ok=True)
     # A = [s+XF, s+XF+VD], B = [s, s+XF]; the end of A fades into B, whose last frame leads into the first frame of A -> seamless loop
-    crop = "crop='min(iw,ih*9/16)':ih,scale=720:1280:flags=lanczos,fps=30,setsar=1,format=yuv420p"
+    crop = "crop='min(iw,ih*9/16)':ih,scale=540:960:flags=lanczos,fps=30,setsar=1,format=yuv420p"
     fc = ('[0:v]trim=start=%.2f:duration=%.2f,setpts=PTS-STARTPTS,%s[a];[0:v]trim=start=%.2f:duration=%.2f,setpts=PTS-STARTPTS,%s[b];'
           '[a][b]xfade=transition=fade:duration=%.2f:offset=%.2f[v]') % (s + XF, VD, crop, s, XF, crop, XF, VD - XF)
     subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', raw, '-filter_complex', fc, '-map', '[v]', '-an', '-c:v', 'libx264', '-preset', 'slow',
-                    '-crf', str(v.get('crf', 27)), '-profile:v', 'high', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', out], check=True)
+                    '-crf', str(v.get('crf', 28)), '-profile:v', 'high', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', out], check=True)
     fr = []
     for k in range(6):
         jp = 'media-cache/raw/o_%s_%d.jpg' % (key, k)

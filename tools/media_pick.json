@@ -101,27 +101,27 @@
   "v_ocean": {
    "title": "File:Santa Rosa Island Waves.webm",
    "start": 312,
-   "vd": 20
+   "vd": 50
   },
   "v_forest": {
    "title": "File:Forest For the Trees 4K.webm",
-   "start": 102,
-   "vd": 20
+   "start": 132,
+   "vd": 25
   },
   "v_waterfall": {
    "title": "File:Rhaeadr Ewynnol, Betws-y-coed - waterfall in Wales.webm",
    "start": 72,
-   "vd": 20
+   "vd": 22
   },
   "v_rain": {
    "title": "File:Radevormwald - Raindrops on a window 08 (1) ies.webm",
    "start": 20,
-   "vd": 20
+   "vd": 50
   },
   "v_city": {
    "title": "File:Silom Sunset Timelapse by Don Ramey Logan.webm",
    "start": 180,
-   "vd": 20
+   "vd": 50
   },
   "v_stars": {
    "title": "File:JAPAN Milk Way 4K - Beautiful Star and Sky at Night Time Lapse.webm",
@@ -131,27 +131,27 @@
   "v_lake": {
    "title": "File:4K Drone Video, Lake Of The Ozarks , Missouri USA.webm",
    "start": 67,
-   "vd": 20
+   "vd": 50
   },
   "v_mountain": {
    "title": "File:Piz Neir, aerial video 4k.webm",
    "start": 50,
-   "vd": 20
+   "vd": 45
   },
   "v_underwater": {
    "title": "File:Underwater pyramid stones-Strunjan.webm",
    "start": 117,
-   "vd": 20
+   "vd": 50
   },
   "v_flamingo": {
    "title": "File:Lesser flamingos courtship display dance.webm",
-   "start": 29,
-   "vd": 14
+   "start": 59,
+   "vd": 16
   },
   "v_clouds": {
    "title": "File:Time-lapse of Sunset, Moonset and Sunrise at Cape Keraudren, Western Australia from September 2022.webm",
    "start": 21,
-   "vd": 18
+   "vd": 40
   }
  }
 }
