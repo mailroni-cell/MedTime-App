@@ -12,7 +12,8 @@ state = load('state.json', {'since': 'all'})
 ids = load('ids.json', {})
 surveys = load('surveys.json', [])
 shares = load('shares.json', {})
-daily = load('daily.json', {})  # day -> list of id hashes seen that day (daily active users)
+daily = load('daily.json', {})
+dls = load('downloads.json', {})  # M-315: day -> {"visit": n, "fast": n, "gh": n, "drive": n} from the download page  # day -> list of id hashes seen that day (daily active users)
 url = 'https://ntfy.sh/%s/json?poll=1&since=%s' % (TOPIC, state['since'])
 raw = urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': 'medtime-stats'}), timeout=60).read().decode()
 n = 0
@@ -24,6 +25,10 @@ for line in raw.splitlines():
     try: m = json.loads(ev.get('message', ''))
     except Exception: continue
     day = datetime.datetime.utcfromtimestamp(ev.get('time', 0)).strftime('%Y-%m-%d')
+    if m.get('kind') in ('visit', 'dl'):  # download page: counted, no install id
+        k2 = 'visit' if m['kind'] == 'visit' else (str(m.get('src', '')) if m.get('src') in ('fast', 'gh', 'drive') else 'gh')
+        c = dls.setdefault(day, {}); c[k2] = c.get(k2, 0) + 1; n += 1
+        continue
     h = hashlib.sha256(str(m.get('id', '')).encode()).hexdigest()[:16]
     r = ids.setdefault(h, {'first': day})
     r.update({'last': day, 'v': str(m.get('ver', ''))[:8], 'l': str(m.get('lang', ''))[:3]})
@@ -52,8 +57,13 @@ summary = {
     'surveys': len(surveys), 'stars_avg': round(sum(s['stars'] for s in surveys) / len(surveys), 2) if surveys else None,
     'stars_count': dict(sorted(collections.Counter(s['stars'] for s in surveys).items())),
     'improve': dict(imp.most_common()),
+    'visits_total': sum(c.get('visit', 0) for c in dls.values()),
+    'downloads_total': sum(v for c in dls.values() for k, v in c.items() if k != 'visit'),
+    'downloads_by_source': dict(collections.Counter({k: sum(c.get(k, 0) for c in dls.values()) for k in ('fast', 'gh', 'drive')})),
+    'downloads_by_day': {d: sum(v for k, v in c.items() if k != 'visit') for d, c in sorted(dls.items())[-30:]},
+    'visits_by_day': {d: c.get('visit', 0) for d, c in sorted(dls.items())[-30:]},
 }
 daily = dict(sorted(daily.items())[-40:])
-for name, obj in [('daily.json', daily), ('state.json', state), ('ids.json', ids), ('surveys.json', surveys), ('shares.json', shares), ('summary.json', summary)]:
+for name, obj in [('daily.json', daily), ('state.json', state), ('ids.json', ids), ('surveys.json', surveys), ('shares.json', shares), ('downloads.json', dls), ('summary.json', summary)]:
     json.dump(obj, open(os.path.join(D, name), 'w'), ensure_ascii=False, indent=1)
 print('messages', n, 'installs', len(ids), 'active7', len(act7))
