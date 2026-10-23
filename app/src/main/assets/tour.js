@@ -12,7 +12,7 @@
         dEdit: ['✏️ שינוי תזכורת', '✏️ تعديل تذكير', '✏️ Modificare memento', '✏️ Modifier un rappel', '✏️ Change a reminder', '✏️ Изменить напоминание'],
         dWk: ['🌴 מצב סופ״ש', '🌴 نهاية الأسبوع', '🌴 Mod weekend', '🌴 Mode week-end', '🌴 Weekend mode', '🌴 Режим выходных'],
         dSet: ['⚙️ סיור בהגדרות', '⚙️ جولة في الإعدادات', '⚙️ Tur prin setări', '⚙️ Visite des réglages', '⚙️ Settings tour', '⚙️ Обзор настроек'],
-        stop: ['✕ עצירה', '✕ إيقاف', '✕ Stop', '✕ Arrêter', '✕ Stop', '✕ Стоп'],
+        stop: ['עצירה', 'إيقاف', 'Stop', 'Arrêter', 'Stop', 'Стоп'],
         a1: ['במסך הראשי לוחצים "הוסף תזכורת"', 'في الشاشة الرئيسية اضغط "إضافة تذكير"', 'Pe ecranul principal apăsați „Adaugă memento”', 'Sur l\'écran principal, appuyez sur « Ajouter un rappel »', 'On the main screen tap "Add reminder"', 'На главном экране нажмите «Добавить напоминание»'],
         a2: ['בוחרים את סוג התרופה', 'اختر نوع الدواء', 'Alegeți tipul medicamentului', 'Choisissez le type', 'Choose the kind of medicine', 'Выберите вид лекарства'],
         a3: ['כותבים את שם התרופה', 'اكتب اسم الدواء', 'Scrieți numele', 'Écrivez le nom', 'Type the medicine name', 'Введите название лекарства'],
@@ -178,8 +178,13 @@
       border:4px solid #f59e0b;box-shadow:0 0 0 3px rgba(0,0,0,.55),0 12px 30px rgba(0,0,0,.6);opacity:0;transition:opacity .35s,transform 1.3s cubic-bezier(.4,.1,.2,1);pointer-events:none}
     #mt-bubble.on{opacity:1}
     #mt-bubble.on.mv{opacity:0;transition:opacity .18s}
-    #mt-stop{position:fixed;left:12px;top:max(12px,env(safe-area-inset-top));z-index:2147483602;padding:12px 26px;border-radius:999px;border:0;
-      background:#dc2626;color:#fff;font-weight:900;font-size:1.1rem;box-shadow:inset 0 2px 0 rgba(255,255,255,.35),0 6px 0 #7f1d1d,0 10px 20px rgba(0,0,0,.5)}
+    /* M-311 (owner): small glass chip in the app's style; it moves to a free spot of each screen (stopSpot) */
+    #mt-stop{position:fixed;left:0;top:0;z-index:2147483602;height:40px;padding:0 16px 0 13px;border-radius:999px;
+      display:flex;align-items:center;gap:8px;background:rgba(15,23,42,.8);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1.5px solid rgba(248,113,113,.8);
+      color:#fecaca;font-weight:800;font-size:.92rem;box-shadow:0 0 14px rgba(248,113,113,.35),0 6px 16px rgba(0,0,0,.45);transition:opacity .25s}
+    #mt-stop::before{content:'';width:11px;height:11px;border-radius:3px;background:#ef4444;box-shadow:0 0 8px #ef4444}
+    #mt-stop.mv{opacity:0}
+    #mt-stop:active{filter:brightness(1.3)}
     .mt-pressed{transform:scale(.95)!important;filter:brightness(1.15);transition:transform .35s cubic-bezier(.45,0,.25,1),filter .35s!important}
     .mt-flash{outline:3px solid #fde047!important;outline-offset:3px;border-radius:14px;transition:outline-color .3s}
     .guide-line{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;box-sizing:border-box;margin-top:10px;padding:7px 12px;white-space:nowrap;overflow:hidden;border-radius:999px;cursor:pointer;
@@ -293,6 +298,7 @@
     // M-129: safety check while a caption shows: if the screen moved under it and it now covers the shown element
     // or the fingertip, it jumps to a free spot
     setInterval(() => {
+        if (stopBtn && bubble && !bubble.classList.contains('mv')) { const r = bubble.getBoundingClientRect(); stopSpot(bubble.classList.contains('on') ? [r.left, r.top, r.width, r.height] : [-999, -999, 0, 0]); }
         if (!bubble || !bubble.classList.contains('on') || bubble.classList.contains('mv')) return;
         const b = bubble.getBoundingClientRect(), hit = q => q.right > b.left && q.left < b.right && q.bottom > b.top && q.top < b.bottom;
         const tip = { left: hx - 6, right: hx + 6, top: hy - 6, bottom: hy + 6 };
@@ -315,6 +321,39 @@
         const bx = Math.max(8, Math.min(x - w / 2, innerWidth - w - 8));
         if (now) { bubble.style.transition = 'none'; requestAnimationFrame(() => { bubble.style.transition = ''; }); }
         bubble.style.transform = 'translate(' + Math.round(bx) + 'px,' + Math.round(by) + 'px)';
+        stopSpot([bx, by, w, h]);
+    }
+    // M-311: the stop chip tries a few spots (bottom middle, the corners, the side edges) and takes the one that covers
+    // no button or text of the screen and stays away from the caption and the hand
+    let stopAt = '';
+    function stopSpot(cap) {
+        if (!stopBtn) return;
+        const W = innerWidth, H = innerHeight, w = stopBtn.offsetWidth || 110, h = 40, m = 10;
+        const sa = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sat')) || 0;
+        const spots = [[(W - w) / 2, H - h - 14], [m, m + sa], [W - w - m, m + sa], [m, H - h - 14], [W - w - m, H - h - 14], [m, (H - h) / 2], [W - w - m, (H - h) / 2], [(W - w) / 2, m + sa]];
+        const mine = el => el === stopBtn || el === hand || el === bubble || el === veil || (hand && hand.contains(el)) || (bubble && bubble.contains(el));
+        // what is on the screen right now: buttons, inputs, titles and short texts (big containers are skipped)
+        const boxes = [];
+        document.querySelectorAll('button,a,input,select,textarea,h1,h2,h3,h4,[role=button],[onclick],label,p,span,b,small,img,svg').forEach(el => {
+            if (mine(el) || el.closest('#mt-hand,#mt-bubble,#mt-stop')) return;
+            const r = el.getBoundingClientRect();
+            if (r.width < 4 || r.height < 4 || r.width > W * .95 && r.height > H * .5 || r.bottom < 0 || r.top > H) return;
+            const cs = getComputedStyle(el); if (cs.visibility === 'hidden' || +cs.opacity === 0) return;
+            boxes.push(r);
+        });
+        const busy = (x, y) => boxes.reduce((n, r) => n + (r.left < x + w && r.right > x && r.top < y + h && r.bottom > y ? 1 : 0), 0);
+        const near = (x, y, r) => Math.max(0, 80 - Math.hypot(Math.max(r[0] - x, 0, x - r[0] - r[2]), Math.max(r[1] - y, 0, y - r[1] - r[3])));
+        let best = null, bs = 1e9;
+        spots.forEach(([x, y], i) => {
+            let sc = i * .1 + Math.min(busy(x, y), 4) * 3;
+            sc += near(x + w / 2, y + h / 2, cap) / 8 + near(x + w / 2, y + h / 2, [hx - 50, hy - 10, 100, 140]) / 8;
+            if (sc < bs) { bs = sc; best = [x, y]; }
+        });
+        const key = Math.round(best[0]) + ',' + Math.round(best[1]);
+        if (key === stopAt) return;
+        const go = () => { stopBtn.style.transform = 'translate(' + Math.round(best[0]) + 'px,' + Math.round(best[1]) + 'px)'; stopBtn.classList.remove('mv'); };
+        if (!stopAt) go(); else { stopBtn.classList.add('mv'); setTimeout(go, 250); }
+        stopAt = key;
     }
     let curEl = null; // M-117/M-129: what the hand points at, so the caption never covers it
     function centerOf(el) { const r = el.getBoundingClientRect(); curEl = el; return [r.left + r.width / 2, r.top + Math.min(r.height / 2, 40)]; }
@@ -404,8 +443,8 @@
         ensure();
         veil = document.createElement('div'); veil.id = 'mt-veil';
         stopBtn = document.createElement('button'); stopBtn.type = 'button'; stopBtn.id = 'mt-stop'; stopBtn.textContent = tx('stop');
-        stopBtn.onclick = () => { aborted = true; vib(15); };
-        document.documentElement.append(veil, stopBtn);
+        stopBtn.onclick = () => { aborted = true; vib(15); }; stopAt = '';
+        document.documentElement.append(veil, stopBtn); stopAt = ''; stopSpot([-999, -999, 0, 0]);
         place(innerWidth / 2, innerHeight * 0.5, true); // M-298: the hand appears in the middle, no trip up from the bottom
         hand.classList.add('on');
         try { await fn(); await sleep(900); quiet(); await sleep(250); } catch (e) { if (e && e.message !== 'stop') console.error(e); }
