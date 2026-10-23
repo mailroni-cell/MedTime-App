@@ -189,7 +189,7 @@ for ad in (52, 76, 100):
 cen = Image.new('L', (SZ, SZ), 0); dc = ImageDraw.Draw(cen)
 fB = ImageFont.truetype(fd + '/rubik-hebrew-800-normal.ttf', 58*K); fC = ImageFont.truetype(fd + '/rubik-hebrew-800-normal.ttf', 20*K)
 fL = ImageFont.truetype(fd + '/rubik-latin-800-normal.ttf', 20*K)
-for t_, f_, y_ in (('חיים', fB, -42), ('רק בהשקה', fC, 24)):
+for t_, f_, y_ in (('חינם', fB, -42), ('רק בהשקה', fC, 24)):
     w_ = dc.textlength(t_, font=f_, direction='rtl')
     extra = dc.textlength('!', font=fL) if f_ is fC else 0
     x_ = c0 - (w_ + extra)/2 + extra
