@@ -3,6 +3,9 @@
 כל שינוי נרשם כאן עם חתימה: מתי, איזה חשבון/שיחה, מה בדיוק, אילו קבצים, ואיך להחזיר אחורה.
 החדש ביותר למעלה. להחזרה: `git revert <commit>` או לקחת את הקובץ מה-commit הקודם.
 
+## 2026-10-23 ~19:00 · account 1 · thread "📌 MedTime – שיחה חדשה" · back to the original 4:5 ad
+- Roni: "go back to the original version, before the changes and the stretching". The ad to send is media/ads/MedTime-ad-premium.png (4:5, 1080x1350, unchanged by the tall rounds, checked pixel for pixel). The tall version (MedTime-ad-premium-tall.png, round 6) is set aside, kept only in the repo history; do not send it.
+
 ## 2026-10-23 ~18:55 · account 1 · thread "📌 MedTime – שיחה חדשה" · tall ad round 6
 - Roni: side text "העתיד בכף ידך" was cut, bottom rows too small, empty strip at the top, phone should be whole, the black bottom should continue the background.
 - New script media/ads/src/premium_tall3.py (round 6): no empty top strip; phone 1.55x and whole (it is turned upright, cut above the hidden bottom buttons, closed with its own top edge mirrored, turned back); "העתיד בכף ידך" moved to the right column under the checklist, about 1.9x, not cut; the background goes on to the bottom (mirror of the photo, blurred, gradually darker); bottom rows bigger (62/58px, 3 lines). premium_fix10.py got MT_DUMP (writes the layers). The 4:5 ad is unchanged (checked pixel for pixel).
