@@ -315,4 +315,28 @@
         const pr = window.moreRender; window.moreRender = function () { if (pr) pr(); txt(); };
         if (typeof window.fitMain === 'function') setTimeout(window.fitMain, 100);
     })();
+    // M-305 (owner): first aid looks tidier and calmer: a glowing title, 101 as the one big call, the other three side by side as tiles,
+    // a clear "what happened?" divider, topic cards with the symbol in a round badge, and an odd last card in the middle
+    const css2 = document.createElement('style');
+    css2.textContent = `
+    html body .fa-sh .fa-t{text-align:center;font-size:1.6rem!important;font-weight:900;margin:2px 0 10px!important;text-shadow:0 0 14px rgba(239,68,68,.65),0 2px 3px #000}
+    html body .fa-sh .fa-calls{display:grid!important;grid-template-columns:repeat(3,1fr);gap:8px!important;margin-bottom:12px!important}
+    html body .fa-sh .fa-calls .c1{grid-column:1 / -1;min-height:68px!important;font-size:1.6rem!important;border-radius:22px!important;
+      box-shadow:inset 0 3px 4px rgba(255,255,255,.45),0 6px 0 #7f1d1d,0 0 22px rgba(239,68,68,.45)!important}
+    html body .fa-sh .fa-calls :is(.c2,.c3,.c4){min-height:84px!important;font-size:.98rem!important;line-height:1.25;border-radius:18px!important;padding:8px 6px!important;
+      display:flex;align-items:center;justify-content:center;text-align:center;white-space:normal}
+    html body .fa-sh .fa-calls :is(.c2,.c3,.c4):only-child{grid-column:1 / -1}
+    html body .fa-sh .fa-h{display:flex;align-items:center;gap:10px;font-size:1.15rem!important;font-weight:900;color:#fecaca!important;margin:2px 0 8px!important}
+    html body .fa-sh .fa-h::before,html body .fa-sh .fa-h::after{content:'';flex:1;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(254,202,202,.6),transparent)}
+    html body .fa-sh .fa-grid{gap:8px!important}
+    html body .fa-sh .fa-grid button{min-height:58px!important;border-radius:18px!important;gap:10px!important;padding:6px 10px!important;
+      background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.03))!important;border:1px solid rgba(255,255,255,.16)!important;box-shadow:0 4px 10px rgba(0,0,0,.35)!important;font-size:1.02rem!important;font-weight:800!important}
+    html body .fa-sh .fa-grid button i{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:1.45rem;
+      background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.35),rgba(255,255,255,.06) 70%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+    html body .fa-sh .fa-grid button:last-child:nth-child(odd){grid-column:1 / -1;justify-self:center;width:calc(50% - 4px)}
+    html body .fa-sh .fa-grid button:active{transform:translateY(2px)}
+    html body .fa-sh .fa-disc{font-size:.85rem!important;color:#cbd5e1!important;text-align:center;opacity:.85;margin-top:8px!important}
+    html body .fa-sh .fa-disc::before{content:'⚠️ '}
+    html body .fa-sh .fa-btns button{border-radius:999px!important;min-height:54px!important;font-size:1.15rem!important;background:linear-gradient(180deg,#475569,#1e293b)!important;box-shadow:inset 0 2px 3px rgba(255,255,255,.25),0 4px 0 #0f172a!important}`;
+    document.head.appendChild(css2);
 })();

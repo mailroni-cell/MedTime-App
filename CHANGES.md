@@ -344,3 +344,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-301 | 2026-10-23 | appts.js | Owner: step 7 (reminder and summary) fits the screen: the summary card is centred and inside the edges | ⏳ |
 | M-302 | 2026-10-23 | appts.js | Owner: the exit on the appointment screens is a round 3D red ✕ in the top corner | ⏳ |
 | M-304 | 2026-10-23 | relax.js, tools/media_pick.json | Owner: three more real nature sounds: waves on the shore, forest creek, birds in the garden, 6 languages | ⏳ |
+| M-305 | 2026-10-23 | firstaid.js | Owner: first aid tidier: glowing title, 101 as one big call, poison / emergency card / pharmacy as three tiles side by side, a 'what happened?' divider, topic cards with round symbol badges, odd last card centred | ⏳ |
