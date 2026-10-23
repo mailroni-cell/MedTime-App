@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>MedTime - נתוני שימוש</title>
+<link rel="manifest" href="/stats.webmanifest"><link rel="apple-touch-icon" href="/stats-192.png"><meta name="theme-color" content="#0f172a">
 <style>
 body{font-family:system-ui,Arial,sans-serif;margin:0;padding:16px;background:#0f172a;color:#e2e8f0;line-height:1.5}
 h1{font-size:1.5rem;margin:0 0 4px}.up{color:#94a3b8;font-size:.9rem;margin-bottom:14px}
@@ -17,6 +18,8 @@ h2{font-size:1.1rem;margin:18px 0 6px}.ch{max-width:640px;background:#1e293b;bor
 <body>
 <h1>📊 MedTime: נתוני שימוש</h1>
 <div class="up" id="up">טוען…</div>
+<button id="a2hs" style="display:none;margin:0 0 12px;padding:12px 18px;border:0;border-radius:14px;background:#22c55e;color:#04210f;font:800 1.05rem system-ui">📲 הוספה למסך הבית</button>
+<div class="up" id="a2hs-tip" style="display:none">להוספה למסך הבית: תפריט ⋮ של Chrome ← "הוספה למסך הבית" ← "התקנה"</div>
 <h2>☁️ מונה Cloudflare (פרטי, בזמן אמת)</h2>
 <div class="g" id="cf"><div class="k"><b id="cf-ad">-</b><span>צפיות בדף המודעה</span></div><div class="k"><b id="cf-vis">-</b><span>כניסות לדף ההורדה</span></div>
 <div class="k"><b id="cf-dl">-</b><span>הורדות</span></div><div class="k"><b id="cf-in">-</b><span>התקנות (פתיחה ראשונה)</span></div>
@@ -60,6 +63,12 @@ function bars(id, obj, col) {
     return '<rect x="' + (i * bw + 2) + '" y="' + (H - h + 8) + '" width="' + Math.max(2, bw - 4) + '" height="' + h + '" rx="3" fill="' + col + '"><title>' + d + ': ' + v + '</title></rect>';
   }).join('') + '</svg><div class="lbl"><span>' + e[0][0] + '</span><span>מקסימום ' + mx + '</span><span>' + e[e.length - 1][0] + '</span></div>';
 }
+// M-329 (owner): one tap to put this page on the home screen as an app
+let a2 = null; const ab = document.getElementById('a2hs');
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/stats-sw.js').catch(() => { });
+addEventListener('beforeinstallprompt', e => { e.preventDefault(); a2 = e; ab.style.display = 'inline-block'; document.getElementById('a2hs-tip').style.display = 'none'; });
+ab.onclick = () => { if (a2) { a2.prompt(); a2.userChoice.finally(() => { a2 = null; ab.style.display = 'none'; }); } };
+if (!matchMedia('(display-mode: standalone)').matches && /Android/.test(navigator.userAgent)) setTimeout(() => { if (!a2) document.getElementById('a2hs-tip').style.display = 'block'; }, 2500);
 fetch('https://medtime.pages.dev/api/stats?t=' + Date.now()).then(r => r.json()).then(c => {
   if (!c.ok) { document.getElementById('cf-up').textContent = 'המונה עוד לא מחובר'; return; }
   [['cf-ad', c.ad_views], ['cf-vis', c.visits], ['cf-dl', c.downloads], ['cf-in', c.installs], ['cf-a7', c.active_7d], ['cf-rm', c.removed_est]].forEach(([i, v]) => document.getElementById(i).textContent = v);
