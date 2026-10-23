@@ -3,6 +3,10 @@
 כל שינוי נרשם כאן עם חתימה: מתי, איזה חשבון/שיחה, מה בדיוק, אילו קבצים, ואיך להחזיר אחורה.
 החדש ביותר למעלה. להחזרה: `git revert <commit>` או לקחת את הקובץ מה-commit הקודם.
 
+## 2026-10-23 ~16:20Z · חשבון שני · thread MedTime מלא (session_01A9pNaGupDEjWngj1PsdFue)
+- מה: M-325, תיקון שגיאת ההורדה מדף המודעה: docs/_redirects = '/ /download 200' בלבד (נמחקה '/download /download.html 301' שיצרה לולאת הפניות). Cloudflare Pages: success על 66e7773.
+- להחזרה: git revert 66e7773.
+
 ## 2026-10-23 ~19:05 · account 1 · thread "📌 MedTime – שיחה חדשה" · ad web page
 - Roni: make the ad a web page on Cloudflare, full screen, with a live link. New: docs/ad/index.html + docs/ad/ad.jpg (the 4:5 ad, JPG q92) + docs/ad/bg.jpg (blurred fill). Address: https://medtime.pages.dev/ad/ . Tap anywhere opens https://medtime.pages.dev/ ; pulsing red "⬇️ להורדה בחינם" button at the bottom on phones; WhatsApp preview (og:image) is the ad itself.
 - Pushed WITHOUT [skip ci] so Cloudflare Pages deploys (docs/** does not start an APK build).
