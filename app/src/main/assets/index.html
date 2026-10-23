@@ -3176,6 +3176,13 @@
                     if (wd.length) out.push({ id: m.id, time: m.time, items: m.items, days: wd });
                     if (we.length) out.push({ id: m.id + 100000000, time: wk, items: m.items, days: we });
                 });
+                // M-317 (owner): automatic water reminders (switch in Settings): every 2 hours, 09:00-21:00, every day.
+                // Not in "my reminders"; the native side gives them no repeats, no log and no family SMS (type "water").
+                if (localStorage.getItem('medtime_water') === '1') {
+                    const W = { he: 'כוס מים', ar: 'كوب ماء', ro: 'un pahar cu apă', fr: 'un verre d\'eau', en: 'a glass of water', ru: 'стакан воды' };
+                    const wn = W[typeof LANG === 'string' ? LANG : 'he'] || W.he;
+                    for (let h = 9; h <= 21; h += 2) out.push({ id: 99500000 + h, time: String(h).padStart(2, '0') + ':00', items: [{ name: wn, dose: '', type: 'water' }], days: [] });
+                }
                 Native.syncReminders(JSON.stringify(out));
             } catch (e) { console.error(e); }
         }

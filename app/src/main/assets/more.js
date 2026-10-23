@@ -35,6 +35,10 @@
         famPick: ['📇 בחירה מאנשי הקשר', '📇 اختيار من جهات الاتصال', '📇 Alege din contacte', '📇 Choisir dans les contacts', '📇 Pick from contacts', '📇 Выбрать из контактов'],
         famName: ['שם (למשל: דנה)', 'الاسم', 'Nume', 'Nom', 'Name', 'Имя'],
         famPhone: ['מספר טלפון', 'رقم الهاتف', 'Telefon', 'Téléphone', 'Phone number', 'Номер телефона'],
+        watT: ['💧 תזכורת לשתות מים', '💧 تذكير بشرب الماء', '💧 Memento pentru apă', '💧 Rappel pour boire', '💧 Drink water reminder', '💧 Напоминание пить воду'],
+        watOn: ['פעיל · כל שעתיים, 9:00 עד 21:00', 'مفعّل · كل ساعتين، 9:00 حتى 21:00', 'Activ · la 2 ore, 9:00-21:00', 'Actif · toutes les 2 h, 9h-21h', 'On · every 2 hours, 9:00-21:00', 'Вкл. · каждые 2 часа, 9:00-21:00'],
+        watX: ['מדליקים פעם אחת, והאפליקציה מזכירה לבד לשתות כוס מים כל שעתיים, בין 9:00 בבוקר ל-21:00 בערב. בלילה היא לא מפריעה, וזה לא נשלח למשפחה.', 'شغّله مرة واحدة، وسيذكّرك التطبيق بشرب كوب ماء كل ساعتين، من 9:00 صباحًا حتى 21:00 مساءً. لا إزعاج في الليل، ولا يُرسل شيء للعائلة.', 'Porniți o dată și aplicația vă amintește singură să beți un pahar cu apă la fiecare 2 ore, între 9:00 și 21:00. Noaptea nu deranjează, iar familia nu primește nimic.', 'Activez une fois : l\'application vous rappelle de boire un verre d\'eau toutes les 2 heures, de 9h à 21h. Rien la nuit, et rien n\'est envoyé à la famille.', 'Turn it on once and the app reminds you to drink a glass of water every 2 hours, from 9:00 to 21:00. Nothing at night, and nothing is sent to family.', 'Включите один раз, и приложение само напомнит выпить стакан воды каждые 2 часа, с 9:00 до 21:00. Ночью не беспокоит, семье ничего не отправляется.'],
+        watSw: ['תזכורת אוטומטית לשתות', 'تذكير تلقائي بالشرب', 'Memento automat', 'Rappel automatique', 'Automatic reminder', 'Автоматическое напоминание'],
         famSw: ['לשלוח התראה כשתרופה לא נלקחה', 'إرسال تنبيه عند عدم تناول الدواء', 'Trimite alertă', 'Envoyer l\'alerte', 'Send the alert when a medicine is missed', 'Отправлять оповещение, когда лекарство пропущено'],
         famTest: ['✉️ שליחת הודעת ניסיון', '✉️ إرسال رسالة تجربة', '✉️ Trimite un test', '✉️ Envoyer un test', '✉️ Send a test message', '✉️ Отправить тестовое сообщение'],
         famTestMsg: ['MedTime: זו הודעת ניסיון. אם תרופה לא תאושר שעה אחרי התזכורת, תקבל/י כאן הודעה.', 'MedTime: هذه رسالة تجربة. إن لم يُؤكَّد دواء بعد ساعة ستصلك رسالة هنا.', 'MedTime: mesaj de test. Dacă un medicament nu e confirmat într-o oră, primiți un mesaj aici.', 'MedTime : message de test. Si un médicament n\'est pas confirmé dans l\'heure, vous recevrez un message ici.', 'MedTime: this is a test. If a medicine is not confirmed within an hour of its reminder, you will get a message here.', 'MedTime: это тест. Если лекарство не будет подтверждено в течение часа после напоминания, вы получите здесь сообщение.'],
@@ -272,6 +276,32 @@
         if (turnOn && !famGet().perm) { if (window.mtAlert) mtAlert(tx('famNoPerm')); N.requestSms(); }
         drawFam();
     };
+    // ---------------- 💧 M-317: automatic water reminder, one switch ----------------
+    const wat = tile('tile-water', '💧', 'linear-gradient(135deg,#38bdf8,#0369a1)',
+        '<div class="mo-x" id="wt-x"></div><div class="vb-nag fm-row"><span id="wt-swl"></span><button type="button" class="vb-sw" id="wt-sw"></button></div>');
+    const watCss = document.createElement('style'); // own copy of the switch look (vibe.js adds it only when vibration is available)
+    watCss.textContent = `#tile-water .vb-nag{display:flex;align-items:center;gap:10px;margin-top:14px;padding:14px;border-radius:16px;background:rgba(255,255,255,.08);font-size:1.12rem;font-weight:800}
+    #tile-water .vb-nag span{flex:1}
+    #tile-water .vb-sw{flex:none;width:62px;height:34px;border-radius:999px;background:#475569;position:relative;border:0;transition:background .2s}
+    #tile-water .vb-sw:after{content:'';position:absolute;top:4px;inset-inline-start:4px;width:26px;height:26px;border-radius:50%;background:#fff;transition:transform .2s}
+    #tile-water .vb-sw.on{background:#10b981}
+    #tile-water .vb-sw.on:after{transform:translateX(28px)}
+    [dir=rtl] #tile-water .vb-sw.on:after{transform:translateX(-28px)}`;
+    document.head.appendChild(watCss);
+    const watOn = () => { try { return localStorage.getItem('medtime_water') === '1'; } catch (e) { return false; } };
+    function drawWat() {
+        heads(wat, 'watT', watOn() ? tx('watOn') : tx('famOff'));
+        document.getElementById('wt-x').textContent = tx('watX');
+        document.getElementById('wt-swl').textContent = tx('watSw');
+        document.getElementById('wt-sw').classList.toggle('on', watOn());
+    }
+    document.getElementById('wt-sw').onclick = () => {
+        vib();
+        try { localStorage.setItem('medtime_water', watOn() ? '0' : '1'); } catch (e) { }
+        if (typeof saveMeds === 'function' && typeof loadMeds === 'function') saveMeds(loadMeds()); // books or removes the alarms
+        drawWat();
+    };
+    drawWat();
     document.getElementById('fm-test').onclick = () => {
         vib();
         famInput();

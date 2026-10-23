@@ -83,7 +83,7 @@ public class ReminderService extends Service {
         int nag = appt ? 0 : intent.getIntExtra(Reminders.EXTRA_NAG, 0);
         String vk = Vibe.chosen(this);
         Vibe.play(this, nag >= 2 && !"off".equals(vk) ? "strong" : vk); // M-079
-        if (!appt) {
+        if (!appt && !Reminders.isWater(intent)) { // M-317: water reminders ring once
             if (nag < Reminders.NAG_MAX) Reminders.nag(this, intent, nag + 1);
             else { MedLog.record(this, intent, "missed"); Family.alertMissed(this, intent); } // M-100
         }

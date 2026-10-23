@@ -254,6 +254,12 @@ public class Reminders {
         return one;
     }
 
+    /** M-317: an automatic water reminder (type "water"): no repeats, not in the log, no family SMS. */
+    static boolean isWater(Intent i) {
+        String s = i == null ? null : i.getStringExtra(EXTRA_ITEMS);
+        return s != null && s.contains("\"type\":\"water\"");
+    }
+
     static String typeLabel(Context ctx, String type) {
         if (type == null || type.isEmpty()) return "";
         String v = I18n.t(ctx, "type_" + type);

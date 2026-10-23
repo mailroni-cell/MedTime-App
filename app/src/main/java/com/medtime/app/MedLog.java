@@ -24,6 +24,7 @@ class MedLog {
         try {
             int id = src.getIntExtra(Reminders.EXTRA_ID, 0);
             if (id == 0) return; // test reminder
+            if (Reminders.isWater(src)) return; // M-317: water reminders are not medicines
             long now = System.currentTimeMillis();
             String day = new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date(now));
             String time = src.getStringExtra(Reminders.EXTRA_TIME);
