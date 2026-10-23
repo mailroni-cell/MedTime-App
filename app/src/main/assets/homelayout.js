@@ -566,58 +566,5 @@
     tick(); setTimeout(arrange, 2500);
     window.mtHomeLayout = arrange;
 
-    // M-341 (owner): instead of the glowing floor ring (hidden in scene3d.js), one quiet line of text above the bottom buttons:
-    // the last measurement from "מדדים", coloured by the usual range. No frame, no animation, redrawn only when the home shows.
-    const VT = {
-        bp: ['לחץ דם', 'ضغط الدم', 'Tensiune', 'Tension', 'Blood pressure', 'Давление'],
-        sugar: ['סוכר', 'السكر', 'Glicemie', 'Glycémie', 'Sugar', 'Сахар'],
-        pulse: ['דופק', 'النبض', 'Puls', 'Pouls', 'Pulse', 'Пульс'],
-        weight: ['משקל', 'الوزن', 'Greutate', 'Poids', 'Weight', 'Вес'],
-        last: ['מדידה אחרונה', 'آخر قياس', 'Ultima măsurare', 'Dernière mesure', 'Last reading', 'Последнее измерение'],
-        today: ['היום', 'اليوم', 'azi', 'aujourd\'hui', 'today', 'сегодня'],
-        yday: ['אתמול', 'أمس', 'ieri', 'hier', 'yesterday', 'вчера'],
-        days: ['לפני {n} ימים', 'قبل {n} أيام', 'acum {n} zile', 'il y a {n} jours', '{n} days ago', '{n} дн. назад'],
-        none: ['🌡️ המדידה האחרונה שלך תופיע כאן', '🌡️ سيظهر آخر قياس لك هنا', '🌡️ Ultima ta măsurare apare aici', '🌡️ Votre dernière mesure s\'affichera ici', '🌡️ Your last reading will show here', '🌡️ Здесь будет ваше последнее измерение']
-    };
-    const ICOV = { bp: '❤️', sugar: '🩸', pulse: '💓', weight: '⚖️' };
-    const UNIT = { bp: '', sugar: ' mg/dL', pulse: ' bpm', weight: ' kg' };
-    function vLevel(k, v) {
-        if (k === 'bp') { const a = v[0], d = v[1]; return (a >= 140 || d >= 90 || a < 90 || d < 60) ? '#fca5a5' : (a >= 130 || d >= 85) ? '#fcd34d' : '#86efac'; }
-        if (k === 'sugar') return (v < 60 || v > 180) ? '#fca5a5' : (v < 70 || v > 140) ? '#fcd34d' : '#86efac';
-        if (k === 'pulse') return (v < 50 || v > 120) ? '#fca5a5' : (v < 60 || v > 100) ? '#fcd34d' : '#86efac';
-        return '#bae6fd';
-    }
-    const vcss = document.createElement('style');
-    vcss.textContent = `#mt-vline{position:fixed;left:12px;right:12px;z-index:5;text-align:center;pointer-events:none;font-family:'MTUI','Rubik',sans-serif;font-weight:800;font-size:.98rem;
-      color:#e0f2fe;text-shadow:0 1px 1px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-      #mt-vline b{font-weight:900}`;
-    document.head.appendChild(vcss);
-    function vline() {
-        let el = document.getElementById('mt-vline');
-        const home = document.querySelector('.home-card'), ex = document.getElementById('exit-btn');
-        const vis = x => x && x.getClientRects().length > 0 && getComputedStyle(x).visibility !== 'hidden';
-        const shown = vis(home) && vis(ex) && !window.relaxOn;
-        if (!shown) { if (el) el.style.display = 'none'; return; }
-        if (!el) { el = document.createElement('div'); el.id = 'mt-vline'; document.documentElement.appendChild(el); } // outside body: body has a transform, which would move a fixed line
-        const i = li(), t = k => VT[k][i];
-        let a = []; try { a = JSON.parse(localStorage.getItem('medtime_vitals') || '[]') || []; } catch (e) { }
-        const e = a[a.length - 1];
-        el.dir = i < 2 ? 'rtl' : 'ltr';
-        if (!e || !VT[e.k]) { el.textContent = VT.none[i]; el.style.color = ''; }
-        else {
-            const d0 = new Date(); d0.setHours(0, 0, 0, 0);
-            const n = Math.max(0, Math.ceil((d0 - (e.at || 0)) / 864e5));
-            const when = (e.at || 0) >= d0.getTime() ? t('today') : n <= 1 ? t('yday') : t('days').replace('{n}', n);
-            const val = e.k === 'bp' ? e.v[0] + '/' + e.v[1] : String(e.v);
-            el.innerHTML = '';
-            el.append(ICOV[e.k] + ' ' + t('last') + ' · ' + t(e.k) + ' ');
-            const b = document.createElement('b'); b.textContent = val + UNIT[e.k]; b.style.color = vLevel(e.k, e.v); el.append(b, ' · ' + when);
-        }
-        el.style.display = '';
-        el.style.top = Math.max(0, ex.getBoundingClientRect().top - 30) + 'px';
-    }
-    setTimeout(vline, 1500);
-    document.addEventListener('visibilitychange', () => { if (!document.hidden) setTimeout(vline, 300); });
-    document.addEventListener('click', () => setTimeout(vline, 400), true);
-    window.addEventListener('resize', () => setTimeout(vline, 200));
+    // M-342 (owner): the space above the bottom buttons stays empty (the floor ring is hidden in scene3d.js, M-341)
 })();
