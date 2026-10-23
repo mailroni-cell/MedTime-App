@@ -1,0 +1,35 @@
+== GET /api/stats
+HTTP/2 200 
+date: Fri, 23 Oct 2026 16:55:19 GMT
+content-type: application/json; charset=utf-8
+content-length: 275
+access-control-allow-origin: *
+cache-control: no-store
+access-control-allow-headers: Content-Type
+access-control-allow-methods: GET,POST,OPTIONS
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=YagcryOoMQno5VMsfbat2E%2FscWHhLwNNgLsmJQW9%2BnPLv%2B9lrKK%2B5nhdakkHnOGV9qfhlTWQWvTmkmegk3SJPVsOY2cLTYEd1ul024rm88Hjr0YZX%2BQ13JZulJDuY5Lzj2EHzQ%3D%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+server: cloudflare
+cf-ray: a4f244ba0bc715e3-SJC
+alt-svc: h3=":443"; ma=86400
+
+{"ok":true,"updated":"2026-10-23 16:55 UTC","visits":0,"ad_views":0,"downloads":0,"downloads_by_source":{"fast":0,"gh":0,"drive":0},"installs":0,"active_7d":0,"active_30d":0,"removed_est":0,"shares":0,"by_version":{},"by_language":{},"stars_avg":null,"surveys":0,"by_day":{}}
+== POST /api/hit
+HTTP/2 200 
+date: Fri, 23 Oct 2026 16:55:20 GMT
+content-type: application/json; charset=utf-8
+content-length: 11
+access-control-allow-origin: *
+cache-control: no-store
+access-control-allow-headers: Content-Type
+access-control-allow-methods: GET,POST,OPTIONS
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=6g%2BBW0EaVnQ3Yay1QxTzxVcBq3jwZOFEwIVIH%2Fk635SGP99XDq3OIx6I3bMh24KYlNufr5Jgl2ZXFOaz2DUJkRNZbuiqVO%2FtaZf01wyqHaa%2F4cNmt2qimo9paGCugyACi1YBAQ%3D%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+server: cloudflare
+cf-ray: a4f244cc8c2d175f-SJC
+alt-svc: h3=":443"; ma=86400
+
+{"ok":true}
+== GET /api/stats again
+{"ok":true,"updated":"2026-10-23 16:55 UTC","visits":0,"ad_views":1,"downloads":0,"downloads_by_source":{"fast":0,"gh":0,"drive":0},"installs":0,"active_7d":0,"active_30d":0,"removed_est":0,"shares":0,"by_version":{},"by_language":{},"stars_avg":null,"surveys":0,"by_day":{"2026-10-23":{"adview":1}}}
+== GET /stats.html head
