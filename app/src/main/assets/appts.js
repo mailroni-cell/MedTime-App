@@ -63,6 +63,7 @@
         b180: ['3 שעות', '3 ساعات', '3 ore', '3 h', '3 hours', '3 часа'], b1440: ['יום לפני', 'قبل يوم', 'cu o zi înainte', 'la veille', 'a day before', 'за день'],
         callFund: ['📞 מוקד', '📞 مركز', '📞 Centrul', '📞 Centre', '📞 Call centre', '📞 Колл-центр'],
         todayBang: ['היום!', 'اليوم!', 'Azi!', "Aujourd'hui !", 'Today!', 'Сегодня!'],
+        inDaysS: ['%n ימים', '%n أيام', '%n zile', '%n j', '%n d', '%n дн.'],
         inDays: ['בעוד %n ימים', 'بعد %n أيام', 'peste %n zile', 'dans %n jours', 'in %n days', 'через %n дн.'],
         leaveAt: ['🚗 יציאה ב-%t', '🚗 الخروج الساعة %t', '🚗 Plecare la %t', '🚗 Départ à %t', '🚗 Leave at %t', '🚗 Выйти в %t'],
         remindAt: ['🔔 תזכורת %s לפני', '🔔 تذكير قبل %s', '🔔 Memento cu %s înainte', '🔔 Rappel %s avant', '🔔 Reminder %s before', '🔔 Напоминание за %s'],
@@ -515,9 +516,18 @@
                 const [, cd] = countdown(next);
                 sub = cd + ' ' + next.time;
             }
-            btn.innerHTML = `<span class="ab-ico"><i>🩺</i></span><span class="ab-txt"><span class="ab-title"></span><span class="ab-sub"></span></span>${up.length ? `<span class="lb-count ab-count">${up.length}</span>` : ''}`;
+            // M-322: short "when" on the symbol: today = the hour, tomorrow, or "N days"
+            let when = '';
+            if (next) {
+                const d0 = new Date(); d0.setHours(0, 0, 0, 0);
+                const w = new Date(whenOf(next)); w.setHours(0, 0, 0, 0);
+                const days = Math.round((w - d0) / 864e5);
+                when = days <= 0 ? (next.time || '') : days === 1 ? tt('tomorrow') : tt('inDaysS').replace('%n', days);
+            }
+            btn.innerHTML = `<span class="ab-ico"><i>🩺</i>${when ? '<span class="ab-when"></span>' : ''}</span><span class="ab-txt"><span class="ab-title"></span><span class="ab-sub"></span></span>${up.length ? `<span class="lb-count ab-count">${up.length}</span>` : ''}`;
             btn.querySelector('.ab-title').textContent = tt('apptBtn');
             btn.querySelector('.ab-sub').textContent = sub;
+            if (when) btn.querySelector('.ab-when').textContent = when;
         }
     }
     window.apptRender = function () { render(); sync(); if ($('appt-form-page').classList.contains('open')) { readFields(); drawForm(); } };

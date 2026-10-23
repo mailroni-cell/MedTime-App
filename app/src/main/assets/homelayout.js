@@ -279,7 +279,21 @@
     /* M-290 (owner): the hand moves away from its neighbour (to the outer side of its place) */
     ${B} > #guide-btn:not(#mt-x){justify-self:center;position:relative!important;inset-inline-start:calc(var(--hm-o,118px) * .3)}
     /* M-291 (owner): all the symbols higher still; the bottom row stays where it is */
-    html body .home-card .hm-float:not(#mt-x){margin-top:-6px}`;
+    html body .home-card .hm-float:not(#mt-x){margin-top:-6px}
+    /* M-320 (owner): greeting and the add-reminder cross a little higher */
+    html body #hello-line.hello-line:not(#mt-x){margin-top:-28px!important}
+    /* M-321 (owner): even layout for every symbol, no cut-offs: rows are centred (a row of 2 sits in the middle) */
+    html body .home-card .hm-float:not(#mt-x){display:flex!important;flex-wrap:wrap!important;justify-content:center!important;align-items:flex-start!important;row-gap:calc(var(--hm-gap,14px) + 10px)!important;column-gap:0!important}
+    html body .home-card .hm-float:not(#mt-x) > #list-btn[style*="display: none"]{display:none!important}
+    html body .home-card .hm-float:not(#mt-x) > :is(#hm-now,#main-add,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home){flex:0 0 33.333%!important;width:33.333%!important;max-width:33.333%!important}
+    html body .home-card .hm-float:not(#mt-x) > #main-add{flex-basis:100%!important;width:100%!important;max-width:100%!important}
+    html body .home-card .hm-float.hm-has-now:not(#mt-x) > :is(#main-add,#hm-now){flex-basis:50%!important;width:50%!important;max-width:50%!important}
+    html body .home-card .hm-float:not(#mt-x) > #guide-btn{flex:0 0 auto!important;margin-inline:calc((33.333% - var(--hm-o,118px)) / 2)!important;inset-inline-start:0!important}
+    /* M-322 (owner): appointment: a short "when" sits on the symbol itself; no long line under the name */
+    html body .home-card .hm-float #appt-btn .ab-sub:not(#mt-x){display:none!important}
+    html body .home-card .hm-float #appt-btn .ab-when{position:absolute;left:50%;bottom:-2px;transform:translateX(-50%);z-index:5;white-space:nowrap;unicode-bidi:plaintext;
+      padding:2px 9px;border-radius:999px;background:rgba(2,20,12,.82);border:2px solid #4ade80;color:#d9ffe7;font-family:'MTBall','MTUI',sans-serif;font-weight:700;
+      font-size:calc(var(--hm-o,118px) * .15);line-height:1.15;box-shadow:0 0 10px #22c55e,0 2px 6px rgba(0,0,0,.7);text-shadow:0 1px 2px #000;pointer-events:none}`;
     document.head.appendChild(css);
     // M-279: the name under the A+ button, in the app language
     const lvLbl = () => { const b = $('lv-btn'); if (!b) return; const i = Math.max(0, ['he', 'ar', 'ro', 'fr', 'en', 'ru'].indexOf(typeof LANG === 'string' ? LANG : 'he'));

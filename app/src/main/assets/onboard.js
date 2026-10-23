@@ -34,6 +34,8 @@
         sample: ['הגיע הזמן לקחת אקמול, כדור אחד.', 'حان وقت تناول الدواء، حبة واحدة.', 'Este timpul pentru medicament, o pastilă.', 'C\'est l\'heure du médicament, un comprimé.', 'It is time to take your medicine, one tablet.', 'Пора принять лекарство, одну таблетку.'],
         doneT: ['שלום {n}! הכל מוכן 🎉', 'أهلًا {n}! كل شيء جاهز 🎉', 'Bună, {n}! Totul e gata 🎉', 'Bonjour {n} ! Tout est prêt 🎉', 'Hi {n}! All set 🎉', 'Привет, {n}! Всё готово 🎉'],
         doneT0: ['הכל מוכן 🎉', 'كل شيء جاهز 🎉', 'Totul e gata 🎉', 'Tout est prêt 🎉', 'All set 🎉', 'Всё готово 🎉'],
+        // M-324 (owner): at the end of the first setup, a short tip to look at the settings screen
+        tipSet: ['💡 כדאי להציץ גם במסך ההגדרות ⚙️: שם אפשר להתאים צלילים, קול, עיצוב ועוד, בדיוק בשבילך.', '💡 يستحق أن تلقي نظرة على شاشة الإعدادات ⚙️: هناك يمكنك ضبط الأصوات والصوت والتصميم والمزيد لتناسبك تمامًا.', '💡 Merită să aruncați o privire în Setări ⚙️: acolo potriviți sunetele, vocea, aspectul și altele, exact pentru dvs.', '💡 Jetez aussi un œil aux Réglages ⚙️ : sons, voix, apparence et plus, ajustés pour vous.', '💡 Take a look at the Settings screen ⚙️ too: sounds, voice, look and more, tuned just for you.', '💡 Загляните и в Настройки ⚙️: там можно подстроить звуки, голос, оформление и многое другое под себя.'],
         doneX: ['עכשיו נאשר לטלפון לשלוח תזכורות, ואז מוסיפים את התרופה הראשונה ➕.', 'الآن نسمح للهاتف بإرسال التذكيرات، ثم نضيف أول دواء ➕.', 'Acum permitem telefonului să trimită mementouri, apoi adăugăm primul medicament ➕.', 'Autorisons maintenant les rappels, puis ajoutons le premier médicament ➕.', 'Now let the phone send reminders, then add your first medicine ➕.', 'Теперь разрешите телефону присылать напоминания, затем добавьте первое лекарство ➕.'],
         again: ['✨ אשף הפתיחה מההתחלה (שם, כתב, עיצוב, קול)', '✨ معالج البداية من جديد (الاسم، الخط، التصميم، الصوت)', '✨ Asistentul de început din nou', '✨ Relancer l\'assistant de bienvenue', '✨ Run the welcome setup again', '✨ Пройти начальную настройку снова'],
         doneB: ['יוצאים לדרך', 'هيا بنا', 'Începem', 'C\'est parti', 'Let\'s go', 'Поехали'],
@@ -243,7 +245,9 @@
         }
         const n = getName();
         card(0, '<div class="ob-ico">🎉</div><div class="ob-t">' + esc(n ? pick(T.doneT).replace('{n}', n) : pick(T.doneT0)) + '</div>' +
-            '<div class="ob-x">' + esc(pick(T.doneX)) + '</div><button type="button" class="ob-go">' + esc(pick(T.doneB)) + '</button>');
+            '<div class="ob-x">' + esc(pick(T.doneX)) + '</div>' +
+            '<div class="ob-x ob-tip" style="margin-top:10px;padding:10px 12px;border-radius:14px;background:rgba(250,204,21,.12);border:1px solid rgba(250,204,21,.45);color:#fef9c3">' + esc(pick(T.tipSet)) + '</div>' +
+            '<button type="button" class="ob-go">' + esc(pick(T.doneB)) + '</button>');
         await wait('.ob-go');
         close(); hello();
         if (typeof fitMain === 'function') setTimeout(fitMain, 400);
