@@ -340,3 +340,6 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-296 | 2026-10-23 | relax.js | Owner: the OM meditation sound had crackles: tones were above the clipping limit and a 2 s noise loop clicked; now soft fade-in, a limiter, no noise | ⏳ |
 | M-297 | 2026-10-23 | relax.js | Owner: plain-looking 3D worlds removed (snowy forest, fireflies, breathing orb); a new "time tunnel" world, 6 languages | ⏳ |
 | M-298 | 2026-10-23 | tour.js | Owner: live guide points precisely: the hand goes to the button first, then the words; a hidden button (first aid) is shown by the SOS that replaced it; the hand starts mid-screen (no trip up from the bottom); speed chooser slow / normal / fast in the guide sheet, 6 languages | ⏳ |
+| M-300 | 2026-10-23 | appts.js | Owner: the Waze check is a big bright Waze-blue button (action on top, address under it) | ⏳ |
+| M-301 | 2026-10-23 | appts.js | Owner: step 7 (reminder and summary) fits the screen: the summary card is centred and inside the edges | ⏳ |
+| M-302 | 2026-10-23 | appts.js | Owner: the exit on the appointment screens is a round 3D red ✕ in the top corner | ⏳ |

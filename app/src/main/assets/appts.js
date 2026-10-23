@@ -44,7 +44,7 @@
         back: ['➡ הקודם', '➡ السابق', '⬅ Înapoi', '⬅ Retour', '⬅ Back', '⬅ Назад'],
         hourL: ['שעה', 'ساعة', 'oră', 'heure', 'hour', 'час'], minL: ['דקות', 'دقائق', 'minute', 'minutes', 'minutes', 'минут'],
         pickDay: ['בחרו יום', 'اختر اليوم', 'Alegeți ziua', 'Choisissez le jour', 'Choose the day', 'Выберите день'],
-        navCheck: ['🚗 בדיקה ב-Waze', '🚗 فحص في Waze', '🚗 Verifică în Waze', '🚗 Vérifier dans Waze', '🚗 Check in Waze', '🚗 Проверить в Waze'],
+        navCheck: ['🚗 בדיקת הדרך בווייז', '🚗 فحص الطريق في Waze', '🚗 Verifică în Waze', '🚗 Vérifier dans Waze', '🚗 Check in Waze', '🚗 Проверить в Waze'],
         navNeed: ['🚗 כתבו מקום או כתובת לניווט', '🚗 اكتب مكانًا أو عنوانًا للملاحة', '🚗 Scrieți locul sau adresa', '🚗 Indiquez le lieu ou l’adresse', '🚗 Enter a place or address to navigate', '🚗 Введите место или адрес для навигации'],
         savedOk: ['✅ התור נשמר', '✅ تم حفظ الموعد', '✅ Programare salvată', '✅ Rendez-vous enregistré', '✅ Appointment saved', '✅ Запись сохранена'],
         save: ['💾 שמור תור', '💾 حفظ الموعد', '💾 Salvează', '💾 Enregistrer', '💾 Save appointment', '💾 Сохранить запись'],
@@ -319,7 +319,9 @@
         readFields();
         const q = navQuery(form), b = $('af-navtest');
         b.disabled = !q;
-        b.textContent = q ? tt('navCheck') + ': ' + q : tt('navNeed');
+        // M-300 (owner: the Waze button was hard to read): a big, bright Waze-blue button: the action on top, the address under it
+        b.innerHTML = q ? '<span class="nt-ico">🚗</span><span class="nt-t"><b></b><small></small></span>' : '';
+        if (q) { b.querySelector('b').textContent = tt('navCheck').replace(/^🚗\s*/, ''); b.querySelector('small').textContent = q; } else b.textContent = tt('navNeed');
         b.onclick = () => { if (!q) return; vib(15); if (N && N.openWaze) N.openWaze(q); else window.open('https://waze.com/ul?navigate=yes&q=' + encodeURIComponent(q)); };
     }
     function drawSummary() {
@@ -590,4 +592,32 @@
         sync();
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+    // M-300..M-302 (owner): a clear Waze button, a summary step that fits, and a real exit button on the appointment screens
+    const css = document.createElement('style');
+    css.textContent = `
+    html body #appt-form-page #af-navtest.af-navtest{display:flex!important;align-items:center;gap:12px;width:100%;min-height:76px;padding:10px 16px!important;border-radius:22px!important;border:0!important;text-align:start!important;
+      background:linear-gradient(180deg,#7fe3ff 0%,#33ccff 45%,#0aa5d8 100%)!important;color:#05303f!important;
+      box-shadow:inset 0 3px 4px rgba(255,255,255,.7),inset 0 -5px 8px rgba(3,80,110,.35),0 6px 0 #075e7d,0 10px 18px rgba(0,0,0,.45)!important}
+    html body #appt-form-page #af-navtest .nt-ico{font-size:2.3rem;line-height:1;flex:none;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
+    html body #appt-form-page #af-navtest .nt-t{display:flex;flex-direction:column;min-width:0;gap:2px}
+    html body #appt-form-page #af-navtest .nt-t b{font-size:1.3rem;font-weight:900;color:#05303f;text-shadow:0 1px 0 rgba(255,255,255,.6)}
+    html body #appt-form-page #af-navtest .nt-t small{font-size:1.05rem;font-weight:700;color:#073b4c;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    html body #appt-form-page #af-navtest:active{transform:translateY(4px);box-shadow:inset 0 3px 4px rgba(255,255,255,.7),0 2px 0 #075e7d!important}
+    html body #appt-form-page #af-navtest[disabled]{background:rgba(255,255,255,.12)!important;color:#cbd5e1!important;box-shadow:none!important;justify-content:center;min-height:56px;font-size:1.05rem}
+    html.lowvision body #appt-form-page #af-navtest.af-navtest{background:#000!important;color:#ffeb3b!important;border:3px solid #ffeb3b!important}
+    html.lowvision body #appt-form-page #af-navtest .nt-t :is(b,small){color:#ffeb3b!important;text-shadow:none}
+    /* the summary card sits fully inside the screen, centred, and smaller so step 7 never runs off the bottom */
+    html body #appt-form-page .af-summary{width:100%;box-sizing:border-box;margin:6px 0 0!important;padding:0!important}
+    html body #appt-form-page .af-summary .ap-card{width:100%!important;max-width:100%!important;box-sizing:border-box!important;margin:0!important;padding:10px 14px!important;transform:none!important}
+    html body #appt-form-page .wz-step[data-step="6"]{gap:6px!important}
+    html body #appt-form-page .wz-step[data-step="6"] .af-chip{min-height:44px!important;padding:6px 12px!important}
+    /* the exit: a round 3D red button with a big ✕ in the top corner, away from the step dots and the title */
+    html body #appt-form-page .af-head{position:relative!important;width:100%;min-height:52px;display:flex;align-items:center;justify-content:center}
+    html body #appt-form-page .af-head > .close-3d.mt-backbtn.mt-backbtn{position:absolute!important;top:0!important;inset-inline-end:0!important;left:auto;right:auto;margin:0!important;
+      width:52px!important;height:52px!important;min-height:0!important;padding:0!important;border-radius:50%!important;font-size:0!important;display:grid!important;place-items:center!important;
+      background:radial-gradient(circle at 35% 28%,#fecaca,#ef4444 42%,#7f1d1d 90%)!important;border:2px solid rgba(255,255,255,.75)!important;
+      box-shadow:inset 0 3px 4px rgba(255,255,255,.55),inset 0 -5px 8px rgba(69,10,10,.6),0 5px 0 #450a0a,0 9px 16px rgba(0,0,0,.55)!important;animation:none!important}
+    html body #appt-form-page .af-head > .close-3d.mt-backbtn.mt-backbtn::before{content:'✕';font-size:1.6rem;font-weight:900;color:#fff;line-height:1;text-shadow:0 2px 2px rgba(0,0,0,.45)}
+    html body #appt-form-page .af-head > .close-3d.mt-backbtn.mt-backbtn:active{transform:translateY(4px)!important}`;
+    document.head.appendChild(css);
 })();
