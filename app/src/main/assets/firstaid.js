@@ -243,6 +243,110 @@
     function pushLock(on) { try { N.setMedicalId(!!on, '🆘 ' + lab('iceT'), lockText()); } catch (e) { } }
     function refreshLock() { try { if (N && N.medicalIdOn && N.medicalIdOn()) pushLock(true); } catch (e) { } }
     setTimeout(refreshLock, 4000); // the medicine list may have changed since last time
+    // ---------- M-307 (owner): nearby pharmacies inside the app (OpenStreetMap), open / closed only where the hours are known ----------
+    const PT = {
+        phT: ['💊 בתי מרקחת קרובים', '💊 صيدليات قريبة', '💊 Farmacii în apropiere', '💊 Pharmacies proches', '💊 Nearby pharmacies', '💊 Аптеки рядом'],
+        phWait: ['מחפש את המיקום שלך…', 'جارٍ تحديد موقعك…', 'Caut locația ta…', 'Je cherche votre position…', 'Finding where you are…', 'Определяю ваше местоположение…'],
+        phLoad: ['מחפש בתי מרקחת בסביבה…', 'جارٍ البحث عن صيدليات قريبة…', 'Caut farmacii în apropiere…', 'Je cherche des pharmacies proches…', 'Looking for pharmacies nearby…', 'Ищу аптеки рядом…'],
+        phNoLoc: ['לא קיבלתי מיקום. אפשר לאשר הרשאת מיקום ולנסות שוב, או לחפש בגוגל.', 'لم أحصل على الموقع. اسمح بالموقع وحاول مجددًا أو ابحث في Google.', 'Nu am primit locația. Permite locația și încearcă din nou sau caută în Google.', 'Position non reçue. Autorisez la position et réessayez, ou cherchez dans Google.', 'No location. Allow location and try again, or search in Google.', 'Нет местоположения. Разрешите доступ и попробуйте снова или ищите в Google.'],
+        phNone: ['לא נמצאו בתי מרקחת במאגר הפתוח בסביבה. אפשר לחפש בגוגל.', 'لم يتم العثور على صيدليات قريبة في القاعدة المفتوحة. ابحث في Google.', 'Nu s-au găsit farmacii în apropiere în baza deschisă. Caută în Google.', 'Aucune pharmacie proche dans la base ouverte. Cherchez dans Google.', 'No pharmacies nearby in the open map. Search in Google.', 'Рядом аптек в открытой базе не найдено. Ищите в Google.'],
+        phErr: ['אין חיבור למאגר כרגע. אפשר לנסות שוב או לחפש בגוגל.', 'لا اتصال بالقاعدة الآن. حاول مجددًا أو ابحث في Google.', 'Fără conexiune la bază acum. Încearcă din nou sau caută în Google.', 'Pas de connexion pour le moment. Réessayez ou cherchez dans Google.', 'No connection right now. Try again or search in Google.', 'Нет связи. Попробуйте снова или ищите в Google.'],
+        phOpen: ['🟢 פתוח עכשיו', '🟢 مفتوح الآن', '🟢 Deschis acum', '🟢 Ouvert', '🟢 Open now', '🟢 Открыто'],
+        phClosed: ['🔴 סגור עכשיו', '🔴 مغلق الآن', '🔴 Închis acum', '🔴 Fermé', '🔴 Closed now', '🔴 Закрыто'],
+        phUnk: ['⚪ שעות לא ידועות, כדאי להתקשר', '⚪ الساعات غير معروفة، يفضل الاتصال', '⚪ Program necunoscut, sunați', '⚪ Horaires inconnus, appelez', '⚪ Hours unknown, better call', '⚪ Часы неизвестны, лучше позвонить'],
+        phCall: ['📞 חיוג', '📞 اتصال', '📞 Sună', '📞 Appeler', '📞 Call', '📞 Звонок'],
+        phNav: ['🚗 ניווט', '🚗 ملاحة', '🚗 Navigare', '🚗 Itinéraire', '🚗 Go', '🚗 Маршрут'],
+        phHours: ['🕒 שעות בגוגל', '🕒 الساعات في Google', '🕒 Program în Google', '🕒 Horaires Google', '🕒 Hours in Google', '🕒 Часы в Google'],
+        phGoogle: ['🔎 חיפוש בתי מרקחת בגוגל', '🔎 البحث عن صيدليات في Google', '🔎 Caută farmacii în Google', '🔎 Chercher dans Google', '🔎 Search pharmacies in Google', '🔎 Искать аптеки в Google'],
+        phRetry: ['🔄 לנסות שוב', '🔄 حاول مجددًا', '🔄 Încearcă din nou', '🔄 Réessayer', '🔄 Try again', '🔄 Ещё раз'],
+        phSrc: ['מקור: OpenStreetMap. השעות לא תמיד מעודכנות, ובחגים ובתורנות כדאי להתקשר לפני שיוצאים.', 'المصدر: OpenStreetMap. الساعات ليست دائمًا محدثة، اتصل قبل الخروج.', 'Sursa: OpenStreetMap. Programul nu e mereu actualizat; sunați înainte.', 'Source : OpenStreetMap. Horaires pas toujours à jour ; appelez avant.', 'Source: OpenStreetMap. Hours are not always up to date; call before you go.', 'Источник: OpenStreetMap. Часы не всегда актуальны; позвоните заранее.'],
+        km: ['ק"מ', 'كم', 'km', 'km', 'km', 'км'], m: ['מ\'', 'م', 'm', 'm', 'm', 'м'],
+        phName: ['בית מרקחת', 'صيدلية', 'Farmacie', 'Pharmacie', 'Pharmacy', 'Аптека']
+    };
+    const pt = k => (PT[k] || [k])[li()];
+    // OSM opening_hours, the common forms only ("Su-Th 08:00-20:00; Fr 08:00-13:00", "Mo-Su 09:00-21:00", "24/7", "Sa off").
+    // A later rule wins for its days. true = open, false = closed, null = not known
+    function openNow(oh, d) {
+        if (!oh) return null; oh = String(oh).trim(); if (oh === '24/7') return true;
+        const DN = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'], day = d.getDay(), min = d.getHours() * 60 + d.getMinutes();
+        const rules = oh.split(/;|,\s*(?=(?:Mo|Tu|We|Th|Fr|Sa|Su|PH)\b)/).map(x => x.trim()).filter(Boolean);
+        let res = null, any = false;
+        for (const r of rules) {
+            const m = /^((?:(?:Mo|Tu|We|Th|Fr|Sa|Su|PH)(?:-(?:Mo|Tu|We|Th|Fr|Sa|Su))?\s*,?\s*)+)\s*(.*)$/.exec(r);
+            let days = null, times = r;
+            if (m) { days = new Set(); times = m[2];
+                m[1].split(',').map(x => x.trim().toLowerCase()).filter(x => x && x !== 'ph').forEach(x => {
+                    const [a, b] = x.split('-'); let i = DN.indexOf(a); const j = b ? DN.indexOf(b) : i; if (i < 0 || j < 0) return;
+                    for (let k = 0; k < 7; k++) { days.add(i); if (i === j) break; i = (i + 1) % 7; } });
+            }
+            if (days && !days.has(day)) continue;
+            any = true;
+            if (/off|closed/i.test(times)) { res = false; continue; }
+            const ranges = [...times.matchAll(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/g)];
+            if (!ranges.length) { res = null; continue; }
+            res = ranges.some(x => { const a = +x[1] * 60 + +x[2], b = +x[3] * 60 + +x[4]; return b > a ? min >= a && min < b : min >= a || min < b; });
+        }
+        return any ? res : false;
+    }
+    async function overpass(lat, lon, r) {
+        const q = `[out:json][timeout:25];(node["amenity"="pharmacy"](around:${r},${lat},${lon});way["amenity"="pharmacy"](around:${r},${lat},${lon}););out center tags 60;`;
+        for (const u of ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter']) {
+            try { const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 20000);
+                const res = await fetch(u, { method: 'POST', body: 'data=' + encodeURIComponent(q), headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, signal: ctl.signal });
+                clearTimeout(t); if (res.ok) return (await res.json()).elements || []; } catch (e) { }
+        }
+        throw new Error('net');
+    }
+    function distKm(a, b, c, d) { const R = 6371, r = x => x * Math.PI / 180, dl = r(c - a), dn = r(d - b);
+        const h = Math.sin(dl / 2) ** 2 + Math.cos(r(a)) * Math.cos(r(c)) * Math.sin(dn / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(h)); }
+    function google(q) { vib(); if (N && typeof N.openMaps === 'function') N.openMaps(q); else window.open('https://www.google.com/maps/search/' + encodeURIComponent(q), '_blank'); }
+    function pharmList() {
+        const bg = document.createElement('div'); bg.className = 'fa-bg ph-bg';
+        const sh = document.createElement('div'); sh.className = 'fa-sh ph-sh'; sh.dir = li() < 2 ? 'rtl' : 'ltr'; bg.appendChild(sh); document.body.appendChild(bg);
+        const unBack = window.mtBackPush ? mtBackPush(() => { close(); return false; }) : null;
+        const close = () => { bg.remove(); if (unBack) unBack(); };
+        sh.innerHTML = '<div class="fa-t"></div><div class="ph-list"></div><div class="ph-src"></div><div class="fa-btns"><button type="button" class="ph-g"></button><button type="button" class="ph-x"></button></div>';
+        sh.querySelector('.fa-t').textContent = pt('phT'); sh.querySelector('.ph-src').textContent = pt('phSrc');
+        sh.querySelector('.ph-g').textContent = pt('phGoogle'); sh.querySelector('.ph-g').onclick = () => google(tx('pharmQ'));
+        sh.querySelector('.ph-x').textContent = tx('back'); sh.querySelector('.ph-x').onclick = close;
+        const list = sh.querySelector('.ph-list');
+        const msg = (t, retry) => { list.innerHTML = '<div class="ph-msg"></div>'; list.firstChild.textContent = t;
+            if (retry) { const b = document.createElement('button'); b.type = 'button'; b.className = 'ph-retry'; b.textContent = pt('phRetry'); b.onclick = go; list.appendChild(b); } };
+        const go = () => {
+            msg(pt('phWait'));
+            if (!navigator.geolocation) return msg(pt('phNoLoc'), true);
+            navigator.geolocation.getCurrentPosition(async p => {
+                const la = p.coords.latitude, lo = p.coords.longitude;
+                msg(pt('phLoad'));
+                let el = [];
+                try { el = await overpass(la, lo, 4000); if (el.length < 5) el = await overpass(la, lo, 15000); } catch (e) { return msg(pt('phErr'), true); }
+                if (!bg.isConnected) return;
+                const now = new Date();
+                const rows = el.map(e => { const t = e.tags || {}, y = e.lat || (e.center && e.center.lat), x = e.lon || (e.center && e.center.lon);
+                    const nm = (li() === 0 ? t['name:he'] : li() === 1 ? t['name:ar'] : li() === 5 ? t['name:ru'] : t['name:en']) || t.name || t['name:he'] || t.brand || pt('phName');
+                    const ad = [[t['addr:street'], t['addr:housenumber']].filter(Boolean).join(' '), t['addr:city']].filter(Boolean).join(', ');
+                    return { nm, ad, ph: t.phone || t['contact:phone'] || '', d: y ? distKm(la, lo, y, x) : 99, open: openNow(t.opening_hours, now), y, x }; })
+                    .filter(r => r.d < 50).sort((a, b) => a.d - b.d).slice(0, 25);
+                if (!rows.length) return msg(pt('phNone'), true);
+                list.innerHTML = '';
+                rows.forEach(r => {
+                    const c = document.createElement('div'); c.className = 'ph-card' + (r.open === true ? ' on' : r.open === false ? ' off' : '');
+                    c.innerHTML = '<div class="ph-top"><b class="ph-n"></b><span class="ph-d"></span></div><div class="ph-a"></div><div class="ph-s"></div><div class="ph-b"></div>';
+                    c.querySelector('.ph-n').textContent = r.nm;
+                    c.querySelector('.ph-d').textContent = r.d < 1 ? Math.round(r.d * 1000 / 10) * 10 + ' ' + pt('m') : r.d.toFixed(1) + ' ' + pt('km');
+                    c.querySelector('.ph-a').textContent = r.ad; if (!r.ad) c.querySelector('.ph-a').remove();
+                    c.querySelector('.ph-s').textContent = r.open === true ? pt('phOpen') : r.open === false ? pt('phClosed') : pt('phUnk');
+                    const bb = c.querySelector('.ph-b');
+                    const add = (cls, t, f) => { const b = document.createElement('button'); b.type = 'button'; b.className = cls; b.textContent = t; b.onclick = f; bb.appendChild(b); };
+                    if (r.ph) add('p-call', pt('phCall'), () => call(r.ph.split(/[;,]/)[0].trim()));
+                    add('p-nav', pt('phNav'), () => { vib(); const q = r.y ? r.y + ',' + r.x : r.nm + ' ' + r.ad; if (N && N.openWaze) N.openWaze(q); else window.open('https://waze.com/ul?ll=' + encodeURIComponent(q) + '&navigate=yes'); });
+                    add('p-hrs', pt('phHours'), () => google(r.nm + ' ' + (r.ad || '')));
+                    list.appendChild(c);
+                });
+            }, () => msg(pt('phNoLoc'), true), { enableHighAccuracy: false, timeout: 15000, maximumAge: 300000 });
+        };
+        go();
+    }
     function call(num) { vib(); if (N && typeof N.dial === 'function') N.dial(num); else location.href = 'tel:' + num; }
     function open() {
         vib();
@@ -259,8 +363,7 @@
             q('.c1').textContent = tx('mda'); q('.c1').onclick = () => call(MDA);
             q('.c2').textContent = tx('poison') + ' '; const pn = document.createElement('span'); pn.dir = 'ltr'; pn.style.whiteSpace = 'nowrap'; pn.textContent = POISON_SHOW; q('.c2').appendChild(pn); q('.c2').onclick = () => call(POISON);
             q('.fa-disc').textContent = tx('disc');
-            q('.c4').textContent = tx('pharm'); q('.c4').onclick = () => { vib(); const qq = tx('pharmQ');
-                if (N && typeof N.openMaps === 'function') N.openMaps(qq); else window.open('https://www.google.com/maps/search/' + encodeURIComponent(qq), '_blank'); };
+            q('.c4').textContent = tx('pharm'); q('.c4').onclick = () => { vib(); pharmList(); }; // M-307: a list inside the app
             q('.c3').textContent = tx('ice'); q('.c3').onclick = () => { vib(); topic = 'ice'; draw(); };
             const btns = q('.fa-btns'), inn = q('.fa-in');
             if (!topic) {
@@ -339,4 +442,25 @@
     html body .fa-sh .fa-disc::before{content:'⚠️ '}
     html body .fa-sh .fa-btns button{border-radius:999px!important;min-height:54px!important;font-size:1.15rem!important;background:linear-gradient(180deg,#475569,#1e293b)!important;box-shadow:inset 0 2px 3px rgba(255,255,255,.25),0 4px 0 #0f172a!important}`;
     document.head.appendChild(css2);
+    const css3 = document.createElement('style');
+    css3.textContent = `
+    .ph-sh .ph-list{flex:1 1 auto;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:2px 2px 8px}
+    .ph-sh .ph-msg{font-size:1.2rem;line-height:1.5;color:#e2e8f0;text-align:center;padding:22px 8px}
+    .ph-sh .ph-retry{align-self:center;min-height:50px;padding:0 22px;border-radius:999px;border:0;font-size:1.1rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#6366f1,#4338ca)}
+    .ph-sh .ph-card{border-radius:20px;padding:12px 14px;background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.16);box-shadow:0 4px 12px rgba(0,0,0,.35)}
+    .ph-sh .ph-card.on{border-color:rgba(74,222,128,.75);box-shadow:0 0 16px rgba(74,222,128,.25),0 4px 12px rgba(0,0,0,.35)}
+    .ph-sh .ph-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+    .ph-sh .ph-n{font-size:1.25rem;font-weight:900}
+    .ph-sh .ph-d{flex:none;font-size:1rem;font-weight:800;color:#93c5fd}
+    .ph-sh .ph-a{font-size:1.02rem;color:#cbd5e1;margin-top:2px}
+    .ph-sh .ph-s{font-size:1.05rem;font-weight:800;margin:6px 0 8px}
+    .ph-sh .ph-card.on .ph-s{color:#86efac}.ph-sh .ph-card.off .ph-s{color:#fca5a5}
+    .ph-sh .ph-b{display:flex;gap:8px;flex-wrap:wrap}
+    .ph-sh .ph-b button{flex:1 1 0;min-height:46px;border-radius:14px;border:0;color:#fff;font-weight:800;font-size:1rem;white-space:nowrap}
+    .ph-sh .ph-b .p-call{background:linear-gradient(135deg,#22c55e,#15803d)}
+    .ph-sh .ph-b .p-nav{background:linear-gradient(135deg,#38bdf8,#0369a1)}
+    .ph-sh .ph-b .p-hrs{background:rgba(255,255,255,.14);font-size:.92rem}
+    .ph-sh .ph-src{font-size:.82rem;color:#94a3b8;text-align:center;margin:6px 0 2px}
+    .ph-sh .fa-btns .ph-g{background:linear-gradient(135deg,#475569,#334155)!important;font-size:1rem!important}`;
+    document.head.appendChild(css3);
 })();

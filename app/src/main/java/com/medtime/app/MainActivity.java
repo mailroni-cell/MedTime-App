@@ -15,6 +15,8 @@ import android.Manifest;
 public class MainActivity extends AppCompatActivity {
 
     private WebView webView;
+    private android.webkit.GeolocationPermissions.Callback geoCb; // M-307
+    private String geoOrigin;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -68,7 +70,18 @@ public class MainActivity extends AppCompatActivity {
                 return r != null ? r : super.shouldInterceptRequest(v, req);
             }
         });
-        webView.setWebChromeClient(new WebChromeClient());
+        settings.setGeolocationEnabled(true); // M-307: nearby pharmacies
+        webView.setWebChromeClient(new WebChromeClient() {
+            // M-307: the page asks for the place (nearby pharmacies): Android asks the owner once, then the page gets it
+            @Override
+            public void onGeolocationPermissionsShowPrompt(String origin, android.webkit.GeolocationPermissions.Callback cb) {
+                boolean has = androidx.core.content.ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED
+                        || androidx.core.content.ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED;
+                if (has) { cb.invoke(origin, true, false); return; }
+                geoOrigin = origin; geoCb = cb;
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 7307);
+            }
+        });
 
         // M-005: bridge so the page can book real Android alarms
         webView.addJavascriptInterface(new NativeBridge(this, webView), "MedTimeNative");
@@ -263,6 +276,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 7307 && geoCb != null) { // M-307
+            boolean ok = false; for (int g : grantResults) ok |= g == android.content.pm.PackageManager.PERMISSION_GRANTED;
+            geoCb.invoke(geoOrigin, ok, false); geoCb = null; return;
+        }
         if (webView != null) webView.evaluateJavascript("window.mtResumed && mtResumed()", null);
     }
 
