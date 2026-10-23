@@ -393,3 +393,5 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-344 | 2026-10-23 | subst.js | Owner: medicine check search screen had no reachable exit (Cancel under the keyboard): ✕ at the top | ⏳ |
 | M-345 | 2026-10-23 | appts.js | Owner: low-vision appointment cards were taller than the screen: date on one line on top, details full width, smaller action buttons | ⏳ |
 | M-346 | 2026-10-23 | relax.js | Owner: calm mode has a clear red 'יציאה ממצב שלווה' under the other buttons and in every inner screen (6 languages); the tip no longer covers it | ⏳ |
+| M-347 | 2026-10-23 | setpills.js | Owner: settings capsules jumped in size every minute or two (every text change re-ran the fit from full size): fit now runs only when screen/language/low-vision/tiles change. Words start below the turning capsule (box as tall as the capsule at any angle), normal mode | ⏳ |
+| M-348 | 2026-10-23 | index.html | Owner: after low-vision off the main symbols did not come back: text size returns to what it was before low-vision (was forced to the smallest); home layout re-runs | ⏳ |

@@ -4509,7 +4509,9 @@
         document.getElementById('low-vision').addEventListener('change', e => {
             try { localStorage.setItem('medtime_lowvision', e.target.checked ? '1' : '0'); } catch (err) { }
             // M-065: turning low-vision off brings everything back to normal, also the text size
-            if (!e.target.checked) { applyTextSize(1); try { localStorage.setItem('medtime_ts', 1); } catch (err) { } setTimeout(fitMain, 100); }
+            // M-348 (owner: "after turning it off the main symbols do not come back"): back to the text size from before low-vision, not always the smallest
+            if (e.target.checked) { try { localStorage.setItem('medtime_ts_pre', localStorage.getItem('medtime_ts') || '1'); } catch (err) { } }
+            if (!e.target.checked) { let pre = 1; try { pre = parseInt(localStorage.getItem('medtime_ts_pre'), 10) || 1; } catch (err) { } applyTextSize(pre); try { localStorage.setItem('medtime_ts', pre); } catch (err) { } setTimeout(fitMain, 100); setTimeout(() => { if (window.mtHomeLayout) mtHomeLayout(); }, 400); }
             // M-067: after choosing, back to the main screen
             setTimeout(() => { closeTiles(); closeSettingsPage(); }, 350);
             applyLowVision(e.target.checked);
