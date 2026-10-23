@@ -82,6 +82,9 @@
     html body .home-card .hm-float :is(#main-add,#hm-now,#list-btn,#appt-btn,#sb-home,#vt-btn,#relax-btn,#fa-home) .hm-3d > *{font-size:calc(var(--hm-o,118px) * .82)!important}
     html body .home-card .hm-float #main-add .hm-3d > svg{width:calc(var(--hm-o) * .8)!important;height:calc(var(--hm-o) * .8)!important}
     html body .home-card .hm-float #list-btn .lb-count{font-size:calc(var(--hm-o,118px) * .66)!important}
+    html body .home-card .hm-float #list-btn .lb-count > .lb-time{position:absolute;left:50%;bottom:calc(var(--hm-o,118px) * -.04);transform:translateX(-50%);z-index:3;white-space:nowrap;
+      font-family:inherit;font-size:calc(var(--hm-o,118px) * .17)!important;font-weight:900;line-height:1.2;color:#fff!important;padding:1px 7px;border-radius:999px;
+      background:rgba(30,27,75,.88);border:1.5px solid #c4b5fd;text-shadow:none!important;box-shadow:0 2px 6px rgba(0,0,0,.6)}
     /* M-269 (owner: a flat edge showed when a symbol turned side-on): the symbols sway and tilt up to 38° each way but never turn edge-on,
        so they always look full and round; they still drift gently in space */
     html .home-card .hm-float .hm-3d{animation-name:hmSway!important}
@@ -208,9 +211,31 @@
     html.lowvision body .home-card #guide-btn .gl-t{color:#fff!important;font-size:1.3rem!important}
     html.hm-slim h1.mt-logo{font-size:min(3.7rem,calc((100vw - 28px) / 6.2))!important;margin-bottom:.35em!important}
         @media (prefers-reduced-motion: reduce){${B} > button{animation:none}}
-    html.lowvision ${BT}{animation:none!important}`;
+    html.lowvision ${BT}{animation:none!important}
+    /* M-273 (owner): bottom row of four equal round buttons: settings, reading glasses, SOS, close; the hand sits in the menu where first aid was */
+    ${B} > #fa-home{display:none!important}
+    ${B} > #guide-btn{justify-self:center;align-self:center}
+    html body #lv-btn{left:37%!important;bottom:calc(31px + env(safe-area-inset-bottom))!important}
+    #sos-btn{position:fixed;left:63%;bottom:calc(30px + env(safe-area-inset-bottom));z-index:5;width:66px;height:66px;border-radius:50%;padding:0;display:grid;place-items:center;overflow:visible;
+      border:3px solid #fde047;background:radial-gradient(circle at 35% 28%,#fecaca,#ef4444 40%,#7f1d1d 88%);transform:translateX(-50%);animation:sosFloat 3.6s ease-in-out infinite;animation-delay:-2.6s;
+      box-shadow:inset 0 3px 4px rgba(255,255,255,.6),inset 0 -6px 10px rgba(69,10,10,.6),0 6px 0 #450a0a,0 12px 20px rgba(0,0,0,.55),0 0 22px rgba(250,204,21,.7)}
+    #sos-btn .sos-ico{font-size:2.2rem;line-height:1;filter:drop-shadow(0 2px 0 rgba(0,0,0,.45))}
+    #sos-btn::after{content:attr(data-lbl);position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:9px;white-space:nowrap;font-size:.95rem;font-weight:900;color:#fde047;text-shadow:0 1px 2px #000,0 0 8px rgba(0,0,0,.8)}
+    #sos-btn:active{transform:translateX(-50%) translateY(4px)}
+    @keyframes sosFloat{0%,100%{transform:translateX(-50%)}50%{transform:translateX(-50%) translateY(-5px)}}
+    html.lowvision #sos-btn{animation:none}
+    body:has(.settings-page.open) #sos-btn{display:none}
+    /* M-274 (owner): the "Add reminder" words sit close under the cross, so the symbols below have more room */
+    ${B} > #main-add .ba-txt:not(#mt-x){margin-top:calc(var(--hm-big,140px) * -.16)!important}`;
     document.head.appendChild(css);
 
+    function sosBtn() {
+        const gear = $('gear-btn'); if (!gear || $('sos-btn')) return;
+        const b = document.createElement('button'); b.type = 'button'; b.id = 'sos-btn'; b.className = 'sos-btn'; b.dataset.lbl = 'SOS'; b.setAttribute('aria-label', 'SOS');
+        b.innerHTML = '<span class="sos-ico">🚑</span>';
+        b.onclick = () => { const f = $('fa-home'); if (f) f.click(); };
+        gear.parentNode.insertBefore(b, gear.nextSibling);
+    }
     function arrange() {
         const card = document.querySelector('.home-card'), add = $('main-add');
         if (!card || !add) return false;
@@ -223,7 +248,9 @@
         let bar = card.querySelector(':scope > .hm-bar');
         if (!bar) { bar = document.createElement('div'); bar.className = 'hm-bar'; }
         card.appendChild(bar);
-        const gl = $('guide-btn'); if (gl && gl.parentNode !== bar) bar.insertBefore(gl, bar.firstChild);
+        // M-273 (owner): the tour hand takes the first-aid place in the menu; first aid moves down to the bottom row as SOS
+        const gl = $('guide-btn'); if (gl && (gl.parentNode !== box || gl.nextSibling)) box.appendChild(gl);
+        sosBtn();
         card.querySelectorAll('.nav-row, .home-pair, .hm-meds, .hm-grid').forEach(d => d.classList.toggle('hm-empty', !d.querySelector('button')));
         markDone(); make3d();
         if (typeof window.fitMain === 'function') setTimeout(window.fitMain, 60);
@@ -263,10 +290,14 @@
         // M-233 (owner): the ball shows the time of the next reminder instead of how many there are; the line under it goes
         const c = btn.querySelector('.lb-count'), nx = btn.querySelector('.lb-next');
         const m = nx && /\b\d{1,2}:\d{2}\b/.exec(nx.textContent || '');
-        if (c && m) {
-            if (c.dataset.t !== m[0]) { c.dataset.t = m[0]; c.innerHTML = '<small>⏰</small><b></b>'; c.querySelector('b').textContent = m[0]; }
-            btn.classList.add('hm-next');
-        } else btn.classList.remove('hm-next');
+        // M-272 (owner: the "My reminders" symbol was tiny): a full-size 3D 📋 like its neighbours; the next time sits on it as a small tag
+        const want = m ? m[0] : '';
+        if (c && (c.dataset.t !== want || !c.querySelector(':scope > i, :scope > .hm-3d'))) {
+            c.dataset.t = want; c.innerHTML = '<i>📋</i>' + (want ? '<b class="lb-time"></b>' : '');
+            if (want) c.querySelector('.lb-time').textContent = '⏰ ' + want;
+            make3d();
+        }
+        btn.classList.toggle('hm-next', !!m);
         addPills();
     }
     // M-211 (owner approved idea): "💊 Taken now" ball, only in the 30 minutes before a reminder that was not taken yet today
