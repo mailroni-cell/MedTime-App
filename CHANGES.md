@@ -371,3 +371,5 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-322 | 2026-10-23 | appts.js, homelayout.js | Owner: appointment "when" is short and sits on the symbol itself (today = hour, tomorrow, "N days"; 6 languages); the long line under the name is gone | ⏳ |
 | M-323 | 2026-10-23 | saver.js (new), index.html, NativeBridge.java, MainActivity.java | Battery: the page pauses when the app goes to the background (WebView onPause/onResume); automatic battery saver: phone saver mode or battery ≤20% not charging stops the 3D background and animations, short toast (6 languages) | ⏳ |
 | M-324 | 2026-10-23 | onboard.js | Owner: end of the first setup shows a short tip to look at the Settings screen for a personal experience (6 languages) | ⏳ |
+| M-325 | 2026-10-23 | docs/_redirects | Fix: download error from the ad page. _redirects is only "/ /download 200" (the 301 to download.html looped with Cloudflare pretty URLs) | ⏳ |
+| M-326 | 2026-10-23 | docs/download.html | Owner: on Android (not in-app browsers) the download starts by itself 1.2 s after the page opens, once per visit; step 1 text updated (6 languages) | ⏳ |
