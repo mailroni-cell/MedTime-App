@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MedTime – האפליקציה המתקדמת בעולם</title>
+<!-- Ad page (Roni 2026-10-23): the WhatsApp ad as a full-screen page; tapping anywhere opens the download page. -->
+<meta property="og:title" content="MedTime 💊 בחינם רק בהשקה!">
+<meta property="og:description" content="תזכורות בקול לתרופות, עוזר קולי, כרטיס חירום, בלי פרסומות. לחצו להורדה.">
+<meta property="og:image" content="https://medtime.pages.dev/ad/ad.jpg">
+<meta property="og:image:width" content="1080">
+<meta property="og:image:height" content="1350">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://medtime.pages.dev/ad/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0b1024">
+<style>
+  html, body { margin: 0; height: 100%; background: #0b1024; overflow: hidden; }
+  a.all { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; text-decoration: none; }
+  .bg { position: fixed; inset: -40px; background: url(bg.jpg) center / cover no-repeat; filter: blur(28px) brightness(.45) saturate(1.3); }
+  img { position: relative; max-width: 100vw; max-height: 100dvh; width: auto; height: auto; object-fit: contain; display: block;
+        box-shadow: 0 0 40px rgba(0,0,0,.6); }
+  .btn { position: fixed; left: 50%; bottom: max(18px, env(safe-area-inset-bottom)); transform: translateX(-50%);
+         font: 800 22px/1 system-ui, sans-serif; color: #fff; background: #ff2440; border: 3px solid #f4ff1a; border-radius: 40px;
+         padding: 14px 30px; box-shadow: 0 0 22px rgba(255,36,64,.7); animation: p 1.6s ease-in-out infinite; white-space: nowrap; }
+  @keyframes p { 50% { transform: translateX(-50%) scale(1.06); } }
+  @media (min-aspect-ratio: 4/5) { .btn { display: none; } }   /* wide screens show the whole ad; the address in it is the hint */
+</style>
+</head>
+<body>
+<a class="all" href="https://medtime.pages.dev/" aria-label="להורדת MedTime">
+  <div class="bg"></div>
+  <img src="ad.jpg" alt="MedTime – תעשו חיים, אנחנו על השעון. להורדה: medtime.pages.dev" width="1080" height="1350">
+  <span class="btn">⬇️ להורדה בחינם</span>
+</a>
+</body>
+</html>

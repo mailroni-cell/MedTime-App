@@ -3,6 +3,11 @@
 כל שינוי נרשם כאן עם חתימה: מתי, איזה חשבון/שיחה, מה בדיוק, אילו קבצים, ואיך להחזיר אחורה.
 החדש ביותר למעלה. להחזרה: `git revert <commit>` או לקחת את הקובץ מה-commit הקודם.
 
+## 2026-10-23 ~19:05 · account 1 · thread "📌 MedTime – שיחה חדשה" · ad web page
+- Roni: make the ad a web page on Cloudflare, full screen, with a live link. New: docs/ad/index.html + docs/ad/ad.jpg (the 4:5 ad, JPG q92) + docs/ad/bg.jpg (blurred fill). Address: https://medtime.pages.dev/ad/ . Tap anywhere opens https://medtime.pages.dev/ ; pulsing red "⬇️ להורדה בחינם" button at the bottom on phones; WhatsApp preview (og:image) is the ad itself.
+- Pushed WITHOUT [skip ci] so Cloudflare Pages deploys (docs/** does not start an APK build).
+- Undo: git rm -r docs/ad (state before: e66a29e)
+
 ## 2026-10-23 ~19:00 · account 1 · thread "📌 MedTime – שיחה חדשה" · back to the original 4:5 ad
 - Roni: "go back to the original version, before the changes and the stretching". The ad to send is media/ads/MedTime-ad-premium.png (4:5, 1080x1350, unchanged by the tall rounds, checked pixel for pixel). The tall version (MedTime-ad-premium-tall.png, round 6) is set aside, kept only in the repo history; do not send it.
 
