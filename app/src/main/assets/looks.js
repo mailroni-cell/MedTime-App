@@ -296,6 +296,12 @@
     html body .home-card #guide-btn::after{width:22px;height:22px;margin:-11px 0 0 -11px;box-shadow:0 0 5px #f472b6!important}
     html.hm-slim body .home-card #guide-btn,html.fit5 body .home-card #guide-btn{width:56px!important;height:60px!important}
     html.hm-slim body .home-card #guide-btn > .gl-real,html.fit5 body .home-card #guide-btn > .gl-real{font-size:2.8rem!important}`;
+    /* M-271 (owner): the name MedTime spreads proudly from side to side on the main screen, with the ECG line under it edge to edge */
+    css.textContent += `
+    html:not(.hm-slim):not(.fit6) body h1.mt-logo.mt-logo{font-size:min(7rem,calc((100vw - 16px) / 4.4))!important;width:100%!important;max-width:none!important;margin-left:0!important;margin-right:0!important}
+    html body h1.mt-logo.mt-logo svg.mt-word{margin:0 auto}
+    html body h1.mt-logo.mt-logo .lg-ecg{left:0!important;width:100%!important;height:.42em!important}
+    @media (max-height:700px){html:not(.hm-slim):not(.fit6) body h1.mt-logo.mt-logo{font-size:min(5rem,calc((100vw - 16px) / 5.2))!important}}`;
     function handWord() {
         const gb = document.getElementById('guide-btn'); if (!gb) return setTimeout(handWord, 500);
         const set = () => { const i = Math.max(0, L6.indexOf(typeof LANG === 'string' ? LANG : document.documentElement.lang)); if (gb.dataset.hand !== HAND[i]) gb.dataset.hand = HAND[i];
