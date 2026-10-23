@@ -18,6 +18,7 @@ yy, xx = np.mgrid[0:H, 0:W]
 band = (xx < 56) | (xx > 1040) | (yy < 52) | (yy > 1284)   # frame only
 boxes = (xx > 980) & (xx < 1048) & (yy > 585) & (yy < 1045)   # keep the check boxes
 band &= ~boxes
+band |= (xx > 1012) & (yy > 1045)   # lower right: old frame glow column
 frame &= band
 # the old line + its soft green glow around it
 near = nd.binary_dilation(frame, disk(9))
