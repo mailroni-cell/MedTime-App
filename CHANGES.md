@@ -379,3 +379,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-329 | 2026-10-23 | docs/stats.html, docs/stats.webmanifest, docs/stats-sw.js, docs/stats-*.png | Owner: stats page installs as a home-screen app (install button + fallback tip) | ⏳ |
 | M-330 | 2026-10-23 | docs/chrome.html | Owner: external links open only in Chrome; bounce page chrome.html#<path or url> (Claude app rejects intent://) | ⏳ |
 | M-332 | 2026-10-23 | homelayout.js | Owner: no appointment count on the "תורים לרופא" symbol; greeting and add-reminder cross higher, together | ⏳ |
+| M-333 | 2026-10-23 | docs/ad/index.html, docs/ad/og.jpg | Owner: personal WhatsApp invite with a big preview under the link (wide 1200x630 image under 300KB, personal title) | ⏳ |
