@@ -20,7 +20,8 @@
 # - remove the bottom URL pill + QR, remove "6 שפות", move the language row down (more room)
 # - under the red stamp: "להורדת התוכנה" + medtime.pages.dev + the same QR, stamp style, neon
 # Run: python3 premium_fix2.py CUR.png ORIG_ddc63a0.png FONTDIR OUT.png
-import sys, numpy as np, cv2
+import sys, os, numpy as np, cv2
+TALL = os.environ.get('MT_TALL') == '1'   # base for the tall version: no bottom rows, no download text
 from scipy import ndimage as nd
 from PIL import Image, ImageDraw, ImageFont
 cur_p, orig_p, fd, out = sys.argv[1:5]
@@ -185,6 +186,7 @@ s = 1.3
 nw, nh = int((bx1-bx0)*s), int((by1-by0)*s)
 ri = cv2.resize(rowimg, (nw, nh), interpolation=cv2.INTER_CUBIC); ra = cv2.resize(rowal, (nw, nh))
 x0 = (W - nw)//2; y0 = 1300 - nh//2
+if TALL: ra = ra*0
 rg_ = np.zeros((H, W), np.float32); rg_[y0:y0+nh, x0:x0+nw] = ra
 rgo = cv2.dilate((rg_ > .5).astype(np.uint8), cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))).astype(np.float32)
 img = over(img, (255, 255, 255), rgo*0.95)   # thin white ring (1px), round 13: dark edge + ring about half as wide
@@ -193,6 +195,7 @@ s1_ = 1.26
 nw1, nh1 = int((cx1-cx0)*s1_), int((cy1-cy0)*s1_)
 r1i = cv2.resize(row1img, (nw1, nh1), interpolation=cv2.INTER_CUBIC); r1a = cv2.resize(row1al, (nw1, nh1))
 x1_ = (W - nw1)//2; y1_ = y0 - 2 - nh1
+if TALL: r1a = r1a*0
 rg_ = np.zeros((H, W), np.float32); rg_[y1_:y1_+nh1, x1_:x1_+nw1] = r1a
 rgo = cv2.dilate((rg_ > .5).astype(np.uint8), cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))).astype(np.float32)
 img = over(img, (255, 255, 255), rgo*0.95)   # thin white ring (1px), round 13: dark edge + ring about half as wide
@@ -208,7 +211,7 @@ img[spec] = fill[np.clip(np.nonzero(spec)[0] - Y0, 0, Y1-Y0-1), np.clip(np.nonze
 fhe = ImageFont.truetype(fd + '/fredoka-hebrew-700-normal.ttf', 50)   # round 11: bigger
 fla = ImageFont.truetype(fd + '/fredoka-latin-700-normal.ttf', 50)
 flaB = ImageFont.truetype(fd + '/fredoka-latin-700-normal.ttf', 55)   # the address, bigger
-tl1, tl2 = 'להורדת האפליקציה', 'medtime.pages.dev'   # the ':' comes from the Latin font (not in the Hebrew one)
+tl1, tl2 = ('', '') if TALL else ('להורדת האפליקציה', 'medtime.pages.dev')   # the ':' comes from the Latin font (not in the Hebrew one)
 cxT, yT1, yT2 = 840, 1052, 1106
 def tmask(t, f, y, sw, rtl):
     L = Image.new('L', (W, H), 0); dd_ = ImageDraw.Draw(L)
@@ -218,7 +221,8 @@ def tmask(t, f, y, sw, rtl):
     if rtl:
         wc = dd_.textlength(':', font=fla); x_ = cxT - (w_ + wc + 2)/2 + wc + 2
         dd_.text((x_, y), t, **kw)
-        kw2 = dict(font=fla, fill=255, stroke_width=sw, stroke_fill=255); dd_.text((x_ - wc - 2, y), ':', **kw2)
+        kw2 = dict(font=fla, fill=255, stroke_width=sw, stroke_fill=255)
+        if t: dd_.text((x_ - wc - 2, y), ':', **kw2)
     else:
         dd_.text((cxT - w_/2, y), t, **kw)
     return np.array(L).astype(np.float32)/255
