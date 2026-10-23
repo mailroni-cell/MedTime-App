@@ -300,3 +300,7 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-265 | 2026-10-23 | looks.js | Owner: the hand is bright pink with a white outline and waits restlessly (slow circles, wobble, impatient double tap); the guide sheet has a free-question box (offline keyword index, 6 languages) that finds the topic and "Show me" runs the live demo | ⏳ |
 | M-266 | 2026-10-23 | firstaid.js | Owner: "💊 Pharmacy open now" in First aid opens Google Maps (live opening hours). No open data source for duty pharmacies | ⏳ |
 | R-202 | 2026-10-23 | release/stable.txt | Run 202 (M-263..M-266) released to everyone | ✅ |
+| M-267 | 2026-10-23 | stats.js, looks.js | Owner: a guide question with no answer goes only to the owner's private ntfy survey topic (no id, numbers/emails masked, max 5 a day, no repeats); never to the public stats | ⏳ |
+| R-203 | 2026-10-23 | release/stable.txt | Run 203 (M-267) released to everyone | ✅ |
+| M-268 | 2026-10-23 | homelayout.js | Owner: main screen without the medicine shapes (and their running light); only the solid 3D symbols, bigger (.82 of the ball) | ⏳ |
+| R-204 | 2026-10-23 | release/stable.txt | Run 204 (M-268) released to everyone | ✅ |
