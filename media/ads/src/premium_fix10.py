@@ -57,8 +57,14 @@ warm0 = ((c0_[..., 0] - c0_[..., 2]) > 30) & ~dots
 keep = keep & ~nd.binary_dilation(warm0, disk(1))      # leave out the phone's label text under the row
 ys, xs = np.nonzero(keep); bx0, bx1, by0, by1 = xs.min(), xs.max()+1, ys.min(), ys.max()+1
 oi0 = org.astype(int); warmO0 = ((oi0[..., 0] - oi0[..., 2]) > 30) & (np.abs(oi0 - [92, 242, 143]).sum(2) > 120)
-core0 = ((nd.binary_dilation(txt, disk(4)) & ~nd.binary_dilation(warmO0 & ~dots, disk(2))) | dots) & ~six
+gl0_, _ = nd.label(gold, np.ones((3, 3))); dots0 = np.zeros_like(gold)
+for i_, o_ in enumerate(nd.find_objects(gl0_)):
+    if o_ is not None and (o_[0].stop - o_[0].start) <= 12 and (o_[1].stop - o_[1].start) <= 12 and (gl0_[o_] == i_+1).sum() >= 15 and abs((o_[0].start + o_[0].stop)/2 - np.median(txt.nonzero()[0])) < 8: dots0[o_] |= gl0_[o_] == i_+1
+dots = nd.binary_dilation(dots0, disk(2))   # bullet dots only (not the phone's label text)
+core0 = ((nd.binary_dilation(txt, disk(2)) & ~nd.binary_dilation(warmO0 & ~dots, disk(2))) | dots) & ~six
 core0 &= np.arange(H)[:, None] > (txt.nonzero()[0].min() - 5)
+cl0, _ = nd.label(core0); cnt0 = np.bincount(cl0[txt & core0], minlength=cl0.max()+1); cnt0[0] = 0
+core0 = np.isin(cl0, np.nonzero(cnt0 >= 25)[0]) | (dots & core0)
 rowimg = org[by0:by1, bx0:bx1].astype(np.float32)
 rowal = cv2.GaussianBlur((core0 & keep)[by0:by1, bx0:bx1].astype(np.float32), (3, 3), 0)
 # row 1 ("עוזר קולי • בלי פרסומות • כרטיס חירום"): same way (round 7: both rows go lower, closer)
@@ -72,15 +78,17 @@ gold1 &= nd.binary_dilation(lang1, disk(25)) & ~nd.binary_dilation(lang1, disk(0
 gl1, gn1 = nd.label(gold1, np.ones((3, 3)))
 dotm = np.zeros_like(gold1)
 for i, sl in enumerate(nd.find_objects(gl1)):   # bullet dots only: small and round
-    if sl is not None and (sl[0].stop - sl[0].start) <= 12 and (sl[1].stop - sl[1].start) <= 12 and (gl1[sl] == i+1).sum() >= 15:
+    if sl is not None and (sl[0].stop - sl[0].start) <= 12 and (sl[1].stop - sl[1].start) <= 12 and (gl1[sl] == i+1).sum() >= 15 and abs((sl[0].start + sl[0].stop)/2 - np.median(t1m.nonzero()[0])) < 8:
         dotm[sl] |= gl1[sl] == i + 1
 d1 = nd.binary_dilation(dotm, disk(2))
 keep1 = lang1 | d1
 ys, xs = np.nonzero(keep1); cx0, cx1, cy0, cy1 = xs.min(), xs.max()+1, ys.min(), ys.max()+1
 oi = org.astype(int); warmO = ((oi[..., 0] - oi[..., 2]) > 30) & (np.abs(oi - [92, 242, 143]).sum(2) > 120)
-core1 = (nd.binary_dilation(t1m, disk(4)) & ~nd.binary_dilation(warmO & ~d1, disk(2))) | d1
+core1 = (nd.binary_dilation(t1m, disk(2)) & ~nd.binary_dilation(warmO & ~d1, disk(2))) | d1
 cl_, cn_ = nd.label(core1); core1 = np.isin(cl_, np.unique(cl_[(t1m | d1) & core1]))
 core1 &= np.arange(H)[:, None] < (t1m.nonzero()[0].max() + 5)
+cl1, _ = nd.label(core1); cnt1 = np.bincount(cl1[t1m & core1], minlength=cl1.max()+1); cnt1[0] = 0
+core1 = np.isin(cl1, np.nonzero(cnt1 >= 25)[0]) | (d1 & core1)
 row1img = org[cy0:cy1, cx0:cx1].astype(np.float32)
 ylab = (a[..., 0] > 140) & (a[..., 1] > 110) & (a[..., 2] < 110) & ~d1      # phone label text under the row: leave out
 cur_ = img.astype(int)
@@ -178,16 +186,16 @@ nw, nh = int((bx1-bx0)*s), int((by1-by0)*s)
 ri = cv2.resize(rowimg, (nw, nh), interpolation=cv2.INTER_CUBIC); ra = cv2.resize(rowal, (nw, nh))
 x0 = (W - nw)//2; y0 = 1300 - nh//2
 rg_ = np.zeros((H, W), np.float32); rg_[y0:y0+nh, x0:x0+nw] = ra
-rgo = cv2.dilate((rg_ > .5).astype(np.uint8), cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))).astype(np.float32)
-img = over(img, (255, 255, 255), cv2.GaussianBlur(rgo, (3, 3), 0))   # thin white ring (2px)
+rgo = cv2.dilate((rg_ > .5).astype(np.uint8), cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))).astype(np.float32)
+img = over(img, (255, 255, 255), rgo*0.95)   # thin white ring (1px), round 13: dark edge + ring about half as wide
 reg = img[y0:y0+nh, x0:x0+nw]; img[y0:y0+nh, x0:x0+nw] = reg*(1-ra[..., None]) + ri*ra[..., None]
 s1_ = 1.26
 nw1, nh1 = int((cx1-cx0)*s1_), int((cy1-cy0)*s1_)
 r1i = cv2.resize(row1img, (nw1, nh1), interpolation=cv2.INTER_CUBIC); r1a = cv2.resize(row1al, (nw1, nh1))
 x1_ = (W - nw1)//2; y1_ = y0 - 2 - nh1
 rg_ = np.zeros((H, W), np.float32); rg_[y1_:y1_+nh1, x1_:x1_+nw1] = r1a
-rgo = cv2.dilate((rg_ > .5).astype(np.uint8), cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))).astype(np.float32)
-img = over(img, (255, 255, 255), cv2.GaussianBlur(rgo, (3, 3), 0))   # thin white ring (2px)
+rgo = cv2.dilate((rg_ > .5).astype(np.uint8), cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))).astype(np.float32)
+img = over(img, (255, 255, 255), rgo*0.95)   # thin white ring (1px), round 13: dark edge + ring about half as wide
 reg = img[y1_:y1_+nh1, x1_:x1_+nw1]; img[y1_:y1_+nh1, x1_:x1_+nw1] = reg*(1-r1a[..., None]) + r1i*r1a[..., None]
 
 # leftover phone label specks between the two rows -> background
