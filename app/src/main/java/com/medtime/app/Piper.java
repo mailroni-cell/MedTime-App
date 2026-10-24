@@ -62,14 +62,43 @@ class Piper {
     /** True when this voice can speak now (pack and pronunciation data on the phone, 64-bit phone). */
     static boolean ready(Context c, String name) {
         String[] v = voice(name);
-        if (v == null || !supported() || !hasPack(c, v[2])) return false;
+        if (v == null || !supported() || !hasPack(c, v[2]) || !engineReady(c)) return false;
         if (!packReady(c, "espeak")) copyEspeak(c); // first time: prepare now (takes a second)
         return packReady(c, "espeak");
     }
 
     static boolean supported() {
+        // M-369: the app process itself must be 64-bit (the engine is arm64 only)
+        if (Build.VERSION.SDK_INT >= 23 && !android.os.Process.is64Bit()) return false;
         for (String abi : Build.SUPPORTED_ABIS) if ("arm64-v8a".equals(abi)) return true;
         return false;
+    }
+
+    // ---------------- M-369: the voice engine (sherpa-onnx, ~8 MB) downloads with the first voice ----------------
+    static final String[] LIBS = {"libonnxruntime.so", "libsherpa-onnx-jni.so"};
+    private static volatile boolean libLoaded = false;
+
+    static boolean engineInApk(Context c) {
+        return new File(c.getApplicationInfo().nativeLibraryDir, "libsherpa-onnx-jni.so").exists();
+    }
+
+    static boolean engineReady(Context c) { return engineInApk(c) || packReady(c, "engine"); }
+
+    /** Loads the engine once; false if it cannot (then the phone voice speaks). */
+    static boolean loadEngine(Context c) {
+        if (libLoaded) return true;
+        synchronized (LIBS) {
+            if (libLoaded) return true;
+            try {
+                if (engineInApk(c)) System.loadLibrary("sherpa-onnx-jni");
+                else {
+                    File d = new File(root(c), "engine");
+                    for (String l : LIBS) System.load(new File(d, l).getAbsolutePath());
+                }
+                libLoaded = true;
+            } catch (Throwable t) { libLoaded = false; }
+            return libLoaded;
+        }
     }
 
     /** First ready Piper voice of a language (used when the phone itself has no voice for it). */
@@ -118,6 +147,7 @@ class Piper {
         if (!supported() || downloading) return;
         final boolean esp = !packReady(c, "espeak") && inApk(c, "espeak");
         final java.util.List<String> need = missing(c);
+        if (!need.isEmpty() && !engineReady(c)) need.add(0, "engine"); // M-369: the engine comes with the first voice
         if (!esp && need.isEmpty()) return;
         downloading = true;
         new Thread(() -> {
@@ -134,7 +164,8 @@ class Piper {
         java.net.HttpURLConnection con = null;
         try {
             del(tmp); tmp.mkdirs();
-            con = Updater.open(VOICES_URL + pack + ".zip");
+            // M-369: the engine lives on the release "media"; voice packs on the release "voices"
+            con = Updater.open("engine".equals(pack) ? Media.URL + "engine_arm64.zip" : VOICES_URL + pack + ".zip");
             long total = con.getContentLengthLong(), got = 0;
             try (java.util.zip.ZipInputStream z = new java.util.zip.ZipInputStream(new java.io.BufferedInputStream(con.getInputStream()))) {
                 java.util.zip.ZipEntry e; byte[] b = new byte[65536];
@@ -150,7 +181,9 @@ class Piper {
                     }
                 }
             }
-            if (!new File(tmp, "model.onnx").exists() || !new File(tmp, "tokens.txt").exists()) return;
+            String[] must = "engine".equals(pack) ? LIBS : new String[]{"model.onnx", "tokens.txt"};
+            for (String m : must) if (!new File(tmp, m).exists()) return;
+            if ("engine".equals(pack)) for (String m : must) new File(tmp, m).setReadOnly(); // Android 14: loaded code must be read-only
             del(dst);
             if (tmp.renameTo(dst)) new File(dst, ".ok").createNewFile();
         } catch (Exception ignored) {
@@ -195,6 +228,7 @@ class Piper {
     // ---------------- speaking ----------------
     private static OfflineTts engineFor(Context c, String pack) {
         if (engine != null && pack.equals(enginePack)) return engine;
+        if (!loadEngine(c)) throw new IllegalStateException("no engine");
         if (engine != null) { try { engine.free(); } catch (Throwable ignored) { } engine = null; enginePack = ""; }
         OfflineTtsVitsModelConfig vits = new OfflineTtsVitsModelConfig();
         boolean apk = inApk(c, pack);

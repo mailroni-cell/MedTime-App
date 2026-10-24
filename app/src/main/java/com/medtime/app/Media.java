@@ -65,7 +65,7 @@ class Media {
 
     /** file:// address of the saved copy, or "" (then a background download starts). */
     static String file(Context ctx, String name) {
-        if (name == null || !name.matches("[a-z0-9_]{1,40}\\.mp4")) return "";
+        if (name == null || !name.matches("[a-z0-9_]{1,40}\\.(mp4|ogg)")) return "";
         final Context c = ctx.getApplicationContext();
         File f = new File(dir(c), name);
         if (f.exists() && f.length() > 0) return "file://" + f.getAbsolutePath();

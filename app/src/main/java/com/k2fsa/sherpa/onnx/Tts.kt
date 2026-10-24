@@ -186,7 +186,8 @@ class OfflineTts(
 
     companion object {
         init {
-            System.loadLibrary("sherpa-onnx-jni")
+            // MedTime M-369: the engine may be downloaded (loaded before by Piper.java with System.load)
+            try { System.loadLibrary("sherpa-onnx-jni") } catch (e: UnsatisfiedLinkError) { }
         }
     }
 }

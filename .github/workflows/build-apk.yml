@@ -50,15 +50,13 @@ jobs:
         with:
           gradle-version: '8.11.1'
 
-      # M-087: offline voice engine (sherpa-onnx, Apache-2.0). Version must match app/src/main/java/com/k2fsa/sherpa/onnx/Tts.kt
-      - name: Offline voice engine libraries
+      # M-087/M-369: the offline voice engine (sherpa-onnx v1.12.20, Apache-2.0) is NOT inside the APK any more:
+      # the app downloads it with the first voice (release "media", engine_arm64.zip, made by media.yml).
+      # app/src/main/jniLibs/arm64-v8a holds only a placeholder so the app still installs as a 64-bit app.
+      - name: 64-bit placeholder library
         run: |
-          set -e
-          curl -sSfL -o so.tar.bz2 https://github.com/k2-fsa/sherpa-onnx/releases/download/v1.12.20/sherpa-onnx-v1.12.20-android.tar.bz2
-          tar xjf so.tar.bz2 ./jniLibs/arm64-v8a/libonnxruntime.so ./jniLibs/arm64-v8a/libsherpa-onnx-jni.so
           mkdir -p app/src/main/jniLibs/arm64-v8a
-          cp jniLibs/arm64-v8a/*.so app/src/main/jniLibs/arm64-v8a/
-          rm -rf so.tar.bz2 jniLibs
+          echo "MedTime placeholder: the voice engine downloads with the first voice (M-369); this keeps the app 64-bit." > app/src/main/jniLibs/arm64-v8a/libmedtime-placeholder.so
 
       # M-091/M-367: only the pronunciation data (espeak) goes inside the APK; the voice packs download in the app,
       # once, only for the app's language (Piper.java). Packs come from the release "voices" (workflow voices.yml)

@@ -5,7 +5,7 @@ name: Calm videos (release media)
 on:
   push:
     branches: [main]
-    paths: ['media/video/**', 'media/calm/**', '.github/workflows/media.yml']
+    paths: ['media/video/**', 'media/calm/**', 'media/ambient/**', '.github/workflows/media.yml']
   workflow_dispatch:
 
 permissions:
@@ -25,5 +25,12 @@ jobs:
           # M-368: recorded calm voices, one zip per language (Hebrew is inside the APK)
           mkdir -p out
           for d in media/calm/*/; do l=$(basename "$d"); (cd "$d" && zip -q -r -9 "../../../out/calm_$l.zip" .); done
-          gh release upload media media/video/*.mp4 out/*.zip --clobber
+          # M-369: the offline voice engine (sherpa-onnx v1.12.20, must match Tts.kt), downloaded by the app with the first voice
+          curl -sSfL -o so.tar.bz2 https://github.com/k2-fsa/sherpa-onnx/releases/download/v1.12.20/sherpa-onnx-v1.12.20-android.tar.bz2
+          tar xjf so.tar.bz2 ./jniLibs/arm64-v8a/libonnxruntime.so ./jniLibs/arm64-v8a/libsherpa-onnx-jni.so
+          (cd jniLibs/arm64-v8a && zip -q -9 ../../out/engine_arm64.zip libonnxruntime.so libsherpa-onnx-jni.so)
+          rm -rf so.tar.bz2 jniLibs
+          # M-369: nature sounds that are not inside the APK
+          cp media/ambient/*.ogg out/
+          gh release upload media media/video/*.mp4 out/*.zip out/*.ogg --clobber
           gh release view media --json assets --jq '.assets[] | "\(.name) \(.size)"'

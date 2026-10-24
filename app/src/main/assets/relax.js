@@ -542,8 +542,18 @@
     }
     // M-071: nature sounds with no cut and no noticeable repeat: two players take turns, each one starts at a
     // random spot of the recording at a slightly different speed, with a slow 3 s cross-fade, plus a gentle slow swell
+    // M-369 (app diet): only these sounds are inside the app; the others play from the internet the first time
+    // while the app keeps a copy (MedTimeNative.mediaFile), then offline.
+    const AMB_IN = ['ocean', 'night', 'zen', 'forest', 'wind', 'storm', 'fire', 'space', 'synth', 'underwater', 'rain'];
+    function ambSrc(k) {
+        if (AMB_IN.indexOf(k) >= 0) return 'ambient/' + k + '.ogg';
+        let f = '';
+        try { const N = window.MedTimeNative; if (N && typeof N.mediaFile === 'function') f = N.mediaFile(k + '.ogg') || ''; } catch (e) { }
+        return f || 'https://github.com/mailroni-cell/MedTime-App/releases/download/media/' + k + '.ogg';
+    }
     function ambPlayer(k) {
-        const els = [0, 1].map(() => { const e = new Audio('ambient/' + k + '.ogg'); e.preload = 'auto'; e.loop = true; e.volume = 0; e.preservesPitch = false; return e; });
+        const src = ambSrc(k);
+        const els = [0, 1].map(() => { const e = new Audio(src); e.preload = 'auto'; e.loop = true; e.volume = 0; e.preservesPitch = false; return e; });
         const g = [0, 0], ph = Math.random() * 6.28, t0 = Date.now();
         let cur = 0, nextAt = 0, alive = true;
         const go = i => {
