@@ -276,12 +276,13 @@
     var v = document.createElement('video');
     v.id = 'spv'; v.muted = true; v.defaultMuted = true; v.playsInline = true; v.preload = 'auto';
     v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); v.setAttribute('webkit-playsinline', '');
-    // M-095/M-096: a dark 1-pixel poster (no grey play icon); the film stays hidden until it really moves, then fades in,
-    // so the first second never shows a frozen picture
-    v.poster = 'data:image/gif;base64,R0lGODlhAQABAIAAAAIGFwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==';
     // M-177 (owner): the full film only the first time; afterwards only its last 3 seconds (the calm logo ending)
     var seen = false; try { seen = !!localStorage.getItem('medtime_sp_seen'); } catch (e) { }
     v.src = seen ? 'splash.mp4#t=8.35' : 'splash.mp4';
+    // M-360: the poster is the film's own first frame, shown at once (no dark wait before the film moves)
+    var pst = seen ? 'splash_b.jpg' : 'splash_a.jpg';
+    v.poster = pst; sp.style.background = '#000 url(' + pst + ') center / cover no-repeat';
+    v.classList.add('on');
     sp.insertBefore(v, sp.firstChild);
     sp.classList.add('sp-video');
     window.__sp3d = true; // the video ends the opening itself
@@ -289,7 +290,7 @@
     function fail() {
         if (failed || started) return;
         failed = true; try { v.pause(); } catch (e) { }
-        v.remove(); sp.classList.remove('sp-video'); window.__sp3d = false;
+        v.remove(); sp.classList.remove('sp-video'); sp.style.background = ''; window.__sp3d = false;
         start3d();
     }
     function go() { if (window.__spGo) window.__spGo(); else setTimeout(go, 16); }
