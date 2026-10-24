@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- M-364: the window shows the opening film's first frame from the very first moment the app opens (no dark wait while the page loads) -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@android:color/black" />
+    <item><bitmap android:src="@drawable/launch_frame" android:gravity="fill" /></item>
+</layer-list>

@@ -8,9 +8,9 @@ const out = path.join(root, 'app/src/main/assets/splash.mp4');
 const frames = '/tmp/medtime-splash-frames';
 const FPS = 60, SECONDS = 11.7; // M-097: 1.5 s calm end with the logo
 if (!process.env.ENCODE_ONLY) (async () => {
-  fs.rmSync(frames, { recursive: true, force: true }); fs.mkdirSync(frames, { recursive: true });
+  if (!process.env.KEEP) fs.rmSync(frames, { recursive: true, force: true }); fs.mkdirSync(frames, { recursive: true }); // KEEP=1: parts in parallel (FROM/TO), then ENCODE_ONLY=1
   const b = await chromium.launch({ args: ['--use-gl=swiftshader', '--enable-webgl', '--ignore-gpu-blocklist'] });
-  const p = await b.newPage({ viewport: { width: 360, height: 800 }, deviceScaleFactor: 2 });
+  const p = await b.newPage({ viewport: { width: 360, height: 800 }, deviceScaleFactor: +(process.env.DPR || 3) }); // M-364: 1080x2400 like most phones (was 720x1600, upscaled = soft)
   await p.addInitScript(() => {
     window.__spCapture = true; window.__sp3d = true;
     localStorage.setItem('medtime_lang', 'he'); localStorage.setItem('medtime_setup', '1');
@@ -29,6 +29,7 @@ if (!process.env.ENCODE_ONLY) (async () => {
   const N = Math.round(SECONDS * FPS);
   const A = +(process.env.FROM || 0), B = +(process.env.TO || N); // test a part only: FROM=300 TO=360
   for (let i = A; i < B; i++) {
+    if (process.env.KEEP && fs.existsSync(path.join(frames, String(i).padStart(4, '0') + '.png'))) continue;
     const ms = i * 1000 / FPS;
     await p.evaluate(ms => {
       document.getAnimations().forEach(a => { try { a.pause(); a.currentTime = ms; } catch (e) { } });

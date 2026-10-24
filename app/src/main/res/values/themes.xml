@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- M-361: same light theme; only the window behind the app is black like the opening film (no white flash at launch) -->
+    <!-- M-361/M-364: same light theme; the window behind the page shows the opening film's first frame (no white flash, no dark wait) -->
     <style name="Theme.MedTime" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:windowBackground">@drawable/launch</item>
     </style>
 </resources>

@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         // setup screen first (setup.js) and asks through MedTimeNative.requestNotifications().
 
         webView = new WebView(this);
-        webView.setBackgroundColor(0xFF000000); // M-361: black like the opening film (WebView default is white)
+        webView.setBackgroundColor(0x00000000); // M-364: see-through until the page paints, so the window's film frame shows at once (WebView default is white)
         setContentView(webView);
         getOnBackPressedDispatcher().addCallback(this, backCb);
         FullScreen.apply(this); // M-012
@@ -70,6 +70,11 @@ public class MainActivity extends AppCompatActivity {
             public android.webkit.WebResourceResponse shouldInterceptRequest(WebView v, android.webkit.WebResourceRequest req) {
                 android.webkit.WebResourceResponse r = fromOverride(req.getUrl().toString());
                 return r != null ? r : super.shouldInterceptRequest(v, req);
+            }
+            @Override
+            public void onPageFinished(WebView v, String url) {
+                // M-364: the page now paints its own opening; free the window's launch picture
+                v.postDelayed(() -> getWindow().setBackgroundDrawableResource(android.R.color.black), 1500);
             }
         });
         settings.setGeolocationEnabled(true); // M-307: nearby pharmacies
