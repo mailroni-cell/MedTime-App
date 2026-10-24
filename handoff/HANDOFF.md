@@ -1,4 +1,4 @@
-# MedTime: קובץ העברה (עודכן 2026-10-23 15:45)
+# MedTime: קובץ העברה (עודכן 2026-10-24 09:45Z)
 
 ## איפה אנחנו
 - הגרסה המלאה MedTime (הורדה ישירה) היא הגרסה הראשית (החלטת רוני 2026-10-22 23:40). MyTime/Play מטופל בשיחה אחרת.
@@ -200,3 +200,14 @@
 - 02:50Z: M-361 (deeper black/colour, repeat opening 5 s from 6.35, black window+WebView background = no white flash) built as run 237 and RELEASED to everyone (stable = 237).
 - 03:20Z: M-362 (repeat opening = own file splash_end.mp4, no seek freeze) + M-363 (film re-recorded lossless via tools/splash-capture.js, ENCODE_ONLY=1 re-encodes from /tmp frames; update APK deleted after install; Google Play workflows DISABLED per Roni) built as run 239 and RELEASED to everyone (stable = 239).
 - 04:40Z: M-364 (film recorded at 1080x2400; window shows the film's first frame from the icon tap via theme windowBackground drawable/launch.xml, WebView transparent until page paints) built as run 240 and RELEASED to everyone (stable = 240). To re-record the film: tools/splash-capture.js (parallel: KEEP=1 FROM/TO parts, then ENCODE_ONLY=1); copy splash_b.jpg to res/drawable-nodpi/launch_frame.jpg.
+
+## 29. 2026-10-24 09:45Z - M-365 דף הסטטיסטיקה (חשבון 1, פרויקט TELEGRAM_BOT, thread "לשפר דף סטטיסטיקה של MedTime")
+- איפה עומדים: https://medtime.pages.dev/stats.html מציג רק את מונה Cloudflare. המונה הישן (ntfy, summary.json, כל 3 שעות) הוסר מהדף. כל המספרים, הגרפים (30 יום) והרשימות (מקור הורדה, גרסה, שפה) מתרעננים לבד כל 10 דקות, מיד כשחוזרים לדף אחרי 10+ דקות, ויש כפתור "🔄 לרענן עכשיו".
+- מחכה לבדיקה של רוני: לפתוח את הדף בטלפון ולראות שאין חלק "המונה הישן" ושהשורה למעלה אומרת "מתרענן לבד כל 10 דקות".
+- עצור עד שרוני יגיד: (1) להוסיף ל-API של Cloudflare את פירוט הכוכבים ו"מה כדאי לשפר" מהסקר (שינוי ב-functions מפעיל בניית APK, אז לצרף לבנייה הבאה); (2) להפסיק לגמרי את השליחה ל-ntfy מהאפליקציה ומדף ההורדה ואת workflow stats.yml (עדיין רצים, לא מזיקים).
+
+### הודעת פתיחה לחשבון השני
+```
+תמשיך את MedTime מ-handoff/HANDOFF.md סעיף 29. דף הסטטיסטיקה עכשיו רק Cloudflare ומתרענן כל 10 דקות (M-365). תשאל אותי אם הדף נראה טוב, ואם להוסיף את פירוט הסקר ל-API או להפסיק את ntfy לגמרי.
+```
+

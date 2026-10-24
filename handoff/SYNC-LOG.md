@@ -3,6 +3,10 @@
 כל שינוי נרשם כאן עם חתימה: מתי, איזה חשבון/שיחה, מה בדיוק, אילו קבצים, ואיך להחזיר אחורה.
 החדש ביותר למעלה. להחזרה: `git revert <commit>` או לקחת את הקובץ מה-commit הקודם.
 
+## 2026-10-24 ~09:45Z · חשבון 1 · פרויקט TELEGRAM_BOT, thread "לשפר דף סטטיסטיקה של MedTime"
+- מה: M-365, docs/stats.html: הוסר "המונה הישן" (ntfy/summary.json); הכול מ-/api/stats של Cloudflare, כולל גרפים יומיים מ-by_day; רענון אוטומטי כל 10 דקות + כפתור רענון; תוויות התאריכים בגרפים תוקנו (היו הפוכות). CHANGES.md, HANDOFF.md סעיף 29.
+- להחזרה: git revert <commit של M-365> (או git checkout 9e8c583 -- docs/stats.html).
+
 ## 2026-10-23 ~16:30Z · חשבון שני · thread MedTime מלא (session_01A9pNaGupDEjWngj1PsdFue)
 - מה: M-326 הורדה אוטומטית בכניסה לדף ההורדה באנדרואיד (docs/download.html, sessionStorage mt_auto, 1.2 שניות); טקסט שלב 1 ב-6 שפות. whatsapp_ad_he.txt מקשר ל-/ad/.
 - להחזרה: git revert d515f0d 30260c4.
