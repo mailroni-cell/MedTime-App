@@ -3,6 +3,10 @@
 כל שינוי נרשם כאן עם חתימה: מתי, איזה חשבון/שיחה, מה בדיוק, אילו קבצים, ואיך להחזיר אחורה.
 החדש ביותר למעלה. להחזרה: `git revert <commit>` או לקחת את הקובץ מה-commit הקודם.
 
+## 2026-10-24 ~09:55Z · חשבון 1 · פרויקט TELEGRAM_BOT, thread "לשפר דף סטטיסטיקה של MedTime"
+- מה: M-366, השרת הישן (ntfy) כובה לנתוני שימוש: app/src/main/assets/stats.js (עדכון מהיר), docs/download.html, docs/privacy.html (6 שפות), .github/workflows/stats.yml (בלי cron). ההתראות הפרטיות לרוני (סקר, שאלות במדריך) נשארו ב-ntfy. בניית APK 241 בוטלה.
+- להחזרה: git revert 9ed203f 26c3207.
+
 ## 2026-10-24 ~09:45Z · חשבון 1 · פרויקט TELEGRAM_BOT, thread "לשפר דף סטטיסטיקה של MedTime"
 - מה: M-365, docs/stats.html: הוסר "המונה הישן" (ntfy/summary.json); הכול מ-/api/stats של Cloudflare, כולל גרפים יומיים מ-by_day; רענון אוטומטי כל 10 דקות + כפתור רענון; תוויות התאריכים בגרפים תוקנו (היו הפוכות). CHANGES.md, HANDOFF.md סעיף 29.
 - להחזרה: git revert cc23aae (או git checkout 9e8c583 -- docs/stats.html).
