@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
         // M-146: with a quick web update the page is built from the updated files (changed scripts / styles inlined)
         // on the same base address, so stored data stays; otherwise the built-in page as always
+        webView.resumeTimers(); // M-353: timers may still be paused by an earlier screen of this app
         loadPage();
 
         // M-034: in full screen Android does not shrink the page for the keyboard, so the keyboard
@@ -239,7 +240,9 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         if (webView != null) webView.onResume(); // M-323: the page runs again
         timers.removeCallbacks(stopTimers); // M-337
-        if (webView != null && timersStopped) { webView.resumeTimers(); timersStopped = false; }
+        // M-353 (owner: "sometimes stuck on a blank screen when opening"): pauseTimers() is for the whole app, not one page.
+        // When Android had closed the old screen, the new one never resumed them, so the page froze before drawing. Always resume.
+        if (webView != null) { webView.resumeTimers(); timersStopped = false; }
         if (webPending && System.currentTimeMillis() - pausedAt > 30_000) applyWebUpdate(); // M-334: not after a quick camera / picker trip
         WebUpdate.check(this, this::webUpdateReady); // M-334
         NativeBridge.stopWatch(); // M-095
