@@ -199,3 +199,4 @@
 - 02:41Z: run 236 RELEASED to everyone (stable = 236).
 - 02:50Z: M-361 (deeper black/colour, repeat opening 5 s from 6.35, black window+WebView background = no white flash) built as run 237 and RELEASED to everyone (stable = 237).
 - 03:20Z: M-362 (repeat opening = own file splash_end.mp4, no seek freeze) + M-363 (film re-recorded lossless via tools/splash-capture.js, ENCODE_ONLY=1 re-encodes from /tmp frames; update APK deleted after install; Google Play workflows DISABLED per Roni) built as run 239 and RELEASED to everyone (stable = 239).
+- 04:40Z: M-364 (film recorded at 1080x2400; window shows the film's first frame from the icon tap via theme windowBackground drawable/launch.xml, WebView transparent until page paints) built as run 240 and RELEASED to everyone (stable = 240). To re-record the film: tools/splash-capture.js (parallel: KEEP=1 FROM/TO parts, then ENCODE_ONLY=1); copy splash_b.jpg to res/drawable-nodpi/launch_frame.jpg.
