@@ -197,3 +197,4 @@
 - 02:31Z: run 235 RELEASED to everyone (stable = 235, release-stable.yml success).
 - 02:45Z: M-360 (opening film stronger colours/sharper + first frame shown at once, no dark wait) built as run 236 on test. Waiting for "שחרר לכולם". Stable = 235. The failed-build email (run 234, 1b38e8c) is old and was fixed by run 235.
 - 02:41Z: run 236 RELEASED to everyone (stable = 236).
+- 02:50Z: M-361 (deeper black/colour, repeat opening 5 s from 6.35, black window+WebView background = no white flash) built as run 237 and RELEASED to everyone (stable = 237).
