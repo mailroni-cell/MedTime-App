@@ -403,3 +403,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-354 | 2026-10-24 | index.html | Owner (low-vision): yellow strip at the top of settings panels (e.g. vitals) removed | ⏳ |
 | M-355 | 2026-10-24 | index.html | Owner: still a faint trace of the strip: low-vision panels have square corners and no edge shadow | ⏳ |
 | M-356 | 2026-10-24 | index.html | Owner: grey drag handle at the top of settings panels removed | ⏳ |
+| M-357 | 2026-10-24 | themes.xml (new), AndroidManifest.xml, MainActivity.java | Owner: white/blue flash before the splash: dark app theme (window + Android 12 start screen) and dark WebView background | ⏳ |

@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         // setup screen first (setup.js) and asks through MedTimeNative.requestNotifications().
 
         webView = new WebView(this);
+        webView.setBackgroundColor(0xFF0B1026); // M-357: dark until the page draws (was white)
         setContentView(webView);
         getOnBackPressedDispatcher().addCallback(this, backCb);
         FullScreen.apply(this); // M-012
