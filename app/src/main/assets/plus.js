@@ -291,6 +291,7 @@
     }
     function chart(rows) {
         const svg = s.querySelector('.vt-chart');
+        svg.style.display = rows.length ? '' : 'none'; // M-352 (owner): no empty black box before the first measurement
         if (rows.length < 1) { svg.innerHTML = ''; return; }
         const series = kind === 'bp' ? [rows.map(e => e.v[0]), rows.map(e => e.v[1])] : [rows.map(e => e.v)];
         const all = series.flat(), lo = Math.min(...all) * 0.9, hi = Math.max(...all) * 1.1 || 1;

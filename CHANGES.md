@@ -398,3 +398,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-349 | 2026-10-23 | tools/ui-audit/audit.js | Owner: automatic UI audit (3 sizes x normal/low-vision, overflow and cut text) kept in the repo; run before every release | ⏳ |
 | M-350 | 2026-10-23 | backbtn.js, homelayout.js, setpills.js | Owner (screenshots, low-vision): back-button words were cut (max 62vw): now up to screen width; long medicine line no longer runs under Edit/Delete; settings words below the capsules in low-vision too | ⏳ |
 | M-351 | 2026-10-23 | appts.js | Owner: appointment form exit moved to the bottom (red, next to Next, above the keyboard); top one hidden | ⏳ |
+| M-352 | 2026-10-24 | homelayout.js, plus.js | Owner screenshots (low-vision): floating Done covered the bottom of appointment cards: in low-vision Done sits at the end of the page; vitals: no empty chart box before the first measurement. UI audit run on all screens at 412x893 low-vision: no overflow | ⏳ |

@@ -306,6 +306,9 @@
     /* M-350 (owner): low-vision reminders: a long medicine line ran under Edit / Delete; it wraps in its own column now */
     html.lowvision body #list-page .med-item .med-info:not(#mt-x){min-width:0!important;flex:1 1 0!important}
     html.lowvision body #list-page .med-item .med-info :is(h3,ul,li,span):not(#mt-x){white-space:normal!important;overflow-wrap:anywhere!important}
+    /* M-352 (owner, low-vision): the floating Done button covered the bottom of cards (Edit / Delete cut). In low-vision it sits
+       at the end of the page instead; the back button at the top is always there */
+    html.lowvision body .page-done-wrap:not(#mt-x){position:static!important;bottom:auto!important}
     /* M-339 (owner): no appointment badge at all on the symbol (also the when-pill) */
     html body .home-card .hm-float #appt-btn :is(.ab-when,.ab-count,.lb-count):not(#mt-x){display:none!important}
     html body #hello-line.hello-line:not(#mt-x){margin-top:-46px!important}
