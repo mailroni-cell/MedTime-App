@@ -3,6 +3,10 @@
 כל שינוי נרשם כאן עם חתימה: מתי, איזה חשבון/שיחה, מה בדיוק, אילו קבצים, ואיך להחזיר אחורה.
 החדש ביותר למעלה. להחזרה: `git revert <commit>` או לקחת את הקובץ מה-commit הקודם.
 
+## 2026-10-24 ~14:50Z · חשבון 1 · פרויקט TELEGRAM_BOT, thread "להפיץ את MedTime בלי אזהרות התקנה"
+- מה: לבקשת רוני, כל מה שקשור ל-MedTime מפרויקט הטלגרם רוכז ב-handoff/from-telegram-project/README.md (2 שיחות: סטטיסטיקה + Uptodown), כולל files/MedTime-ad.jpg ו-MedTime-post.txt. מעכשיו MedTime רק בפרויקט MedTime.
+- להחזרה: git revert של ה-commit (מסמכים בלבד).
+
 ## 2026-10-24 ~14:40Z · חשבון 1 · פרויקט TELEGRAM_BOT, thread "להפיץ את MedTime בלי אזהרות התקנה"
 - מה: רוני העלה את MedTime ל-Uptodown בהנחיה (נשלח לבדיקה). נוספו media/store/uptodown/MedTime-Uptodown-images.zip ו-images/icon-200.png. HANDOFF סעיף 34 עודכן.
 - להחזרה: אין קוד; ב-Uptodown אפשר למחוק את האפליקציה מה-Console.
