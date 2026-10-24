@@ -3,6 +3,10 @@
 כל שינוי נרשם כאן עם חתימה: מתי, איזה חשבון/שיחה, מה בדיוק, אילו קבצים, ואיך להחזיר אחורה.
 החדש ביותר למעלה. להחזרה: `git revert <commit>` או לקחת את הקובץ מה-commit הקודם.
 
+## 2026-10-24 ~10:45Z · חשבון 1 · thread "📌 MedTime – הרזיית האפליקציה"
+- מה: M-368 דיאטה סבב 2 (רוני בחר 2+3): קולות שלווה מוקלטים - רק עברית בתוך האפליקציה, שאר השפות כ-calm_<lang>.zip ב-release media (media/calm, Media.calm, NativeBridge.calmBase, relax.js calmBase); כיווץ קוד R8 בבניית debug (app/build.gradle, app/proguard-rules.pro). בנייה 243 = 62.6 MB, על test בלבד.
+- להחזרה: git revert e0fe14a.
+
 ## 2026-10-24 ~10:30Z · חשבון 1 · thread "📌 MedTime – הרזיית האפליקציה"
 - מה: רוני "שחרר לכולם": release/stable.txt = run 242 (M-367). release latest מאומת = run 242.
 - להחזרה: לכתוב "run 240" ב-release/stable.txt ולדחוף (git revert f75c265).
