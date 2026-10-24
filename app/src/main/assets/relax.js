@@ -1011,12 +1011,23 @@
     }
     // M-196: a real nature video instead of the 3D world (3D drawing pauses meanwhile)
     let vidOn = false;
+    // M-367 (app diet): only these videos are inside the app; the others play from the internet the first time
+    // and the app keeps a copy (MedTimeNative.mediaFile), so after that they work offline too.
+    const VID_IN = ['v_ocean', 'v_beach', 'v_stars'];
+    const VID_URL = 'https://github.com/mailroni-cell/MedTime-App/releases/download/media/';
+    function vidSrc(k) {
+        if (VID_IN.indexOf(k) >= 0) return 'video/' + k + '.mp4';
+        let f = '';
+        try { const N = window.MedTimeNative; if (N && typeof N.mediaFile === 'function') f = N.mediaFile(k + '.mp4') || ''; } catch (e) { }
+        return f || VID_URL + k + '.mp4';
+    }
     function setVideo(k) {
         const v = root.querySelector('#rx-video');
         vidOn = !!(k && k.indexOf('v_') === 0);
         root.classList.toggle('rx-vid', vidOn);
         if (vidOn) {
-            if (v.dataset.k !== k) { v.dataset.k = k; v.src = 'video/' + k + '.mp4'; }
+            if (!v.dataset.fb) { v.dataset.fb = '1'; v.addEventListener('error', () => { if (v.dataset.k && VID_IN.indexOf(v.dataset.k) < 0) { v.dataset.k = 'v_ocean'; v.src = 'video/v_ocean.mp4'; const pr = v.play(); if (pr && pr.catch) pr.catch(() => { }); } }); } // no internet: a built-in video instead
+            if (v.dataset.k !== k) { v.dataset.k = k; v.src = vidSrc(k); }
             v.muted = true; const pr = v.play(); if (pr && pr.catch) pr.catch(() => { });
         } else if (v.getAttribute('src')) { try { v.pause(); v.removeAttribute('src'); v.load(); } catch (e) { } v.dataset.k = ''; }
     }

@@ -1,0 +1,26 @@
+name: Calm videos (release media)
+
+# M-367 (app diet): calm-mode videos that are not inside the APK live on the release "media".
+# The app plays them from there the first time and keeps a copy on the phone. Runs when media/video changes.
+on:
+  push:
+    branches: [main]
+    paths: ['media/video/**', '.github/workflows/media.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  media:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish release "media"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          gh release view media >/dev/null 2>&1 || gh release create media --target "${{ github.sha }}" --title "MedTime calm videos" --notes "Calm-mode videos, downloaded by the app when first chosen" --prerelease
+          gh release upload media media/video/*.mp4 --clobber
+          gh release view media --json assets --jq '.assets[] | "\(.name) \(.size)"'

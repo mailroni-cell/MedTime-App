@@ -21,8 +21,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * M-087/M-091: offline Piper voices (sherpa-onnx), inside the APK (assets/piper, added by the build
- * from the release "voices", see tools/voices.txt). They work with no internet.
+ * M-087/M-091/M-367: offline Piper voices (sherpa-onnx). Only the small pronunciation data (espeak) is inside
+ * the APK. The voice packs download once, only for the app's language (ar/ro/fr/en), from the release "voices"
+ * (see tools/voices.txt), then work with no internet. Hebrew and Russian use the phone voice only.
  * Voice name format used everywhere: "piper:<pack>:<speaker>".
  */
 class Piper {
@@ -40,6 +41,8 @@ class Piper {
     static final String[] PACKS = {"espeak", "ar_kareem", "ro_mihai", "fr_upmc", "en_amy", "en_ryan"};
 
     private static volatile boolean downloading = false;
+    private static volatile int pct = 0;
+    static final String VOICES_URL = "https://github.com/mailroni-cell/MedTime-App/releases/download/voices/";
     private static OfflineTts engine;
     private static String enginePack = "";
     private static AudioTrack track;
@@ -59,7 +62,7 @@ class Piper {
     /** True when this voice can speak now (pack and pronunciation data on the phone, 64-bit phone). */
     static boolean ready(Context c, String name) {
         String[] v = voice(name);
-        if (v == null || !supported() || !inApk(c, v[2])) return false;
+        if (v == null || !supported() || !hasPack(c, v[2])) return false;
         if (!packReady(c, "espeak")) copyEspeak(c); // first time: prepare now (takes a second)
         return packReady(c, "espeak");
     }
@@ -85,7 +88,7 @@ class Piper {
                 boolean ok = ready(c, v[0]);
                 arr.put(new JSONObject().put("name", v[0]).put("piper", true).put("label", v[4]).put("g", v[5])
                         .put("local", true).put("installed", ok).put("ready", ok)
-                        .put("pct", 0));
+                        .put("pct", ok ? 100 : pct));
             }
         } catch (Exception ignored) { }
         return arr;
@@ -99,13 +102,62 @@ class Piper {
         } catch (Exception e) { return false; }
     }
 
+    /** M-367: pack inside the APK (older builds) or downloaded to the phone. */
+    static boolean hasPack(Context c, String pack) { return inApk(c, pack) || packReady(c, pack); }
+
+    /** Packs the current app language needs that are not on the phone yet. */
+    private static java.util.List<String> missing(Context c) {
+        java.util.List<String> m = new java.util.ArrayList<>();
+        String lang = Voices.norm(I18n.lang(c));
+        for (String[] v : VOICES) if (v[1].equals(lang) && !m.contains(v[2]) && !hasPack(c, v[2])) m.add(v[2]);
+        return m;
+    }
+
     static void ensure(Context ctx) {
         final Context c = ctx.getApplicationContext();
-        if (!supported() || downloading || packReady(c, "espeak") || !inApk(c, "espeak")) return;
+        if (!supported() || downloading) return;
+        final boolean esp = !packReady(c, "espeak") && inApk(c, "espeak");
+        final java.util.List<String> need = missing(c);
+        if (!esp && need.isEmpty()) return;
         downloading = true;
         new Thread(() -> {
-            try { copyEspeak(c); } finally { downloading = false; }
+            try {
+                if (esp) copyEspeak(c);
+                for (int i = 0; i < need.size(); i++) download(c, need.get(i), i, need.size());
+            } finally { downloading = false; pct = 0; }
         }, "piper-prepare").start();
+    }
+
+    /** M-367: downloads <pack>.zip (model.onnx + tokens.txt) once into files/piper/<pack>. */
+    private static void download(Context c, String pack, int idx, int count) {
+        File tmp = new File(root(c), pack + ".tmp"), dst = new File(root(c), pack);
+        java.net.HttpURLConnection con = null;
+        try {
+            del(tmp); tmp.mkdirs();
+            con = Updater.open(VOICES_URL + pack + ".zip");
+            long total = con.getContentLengthLong(), got = 0;
+            try (java.util.zip.ZipInputStream z = new java.util.zip.ZipInputStream(new java.io.BufferedInputStream(con.getInputStream()))) {
+                java.util.zip.ZipEntry e; byte[] b = new byte[65536];
+                while ((e = z.getNextEntry()) != null) {
+                    String n = new File(e.getName()).getName(); // flat: no folders, no ../
+                    if (e.isDirectory() || n.isEmpty()) continue;
+                    try (OutputStream out = new FileOutputStream(new File(tmp, n))) {
+                        int r;
+                        while ((r = z.read(b)) > 0) {
+                            out.write(b, 0, r); got += r;
+                            if (total > 0) pct = (int) Math.min(99, (idx * 100 + Math.min(100, got * 100 / (total * 13 / 10))) / count);
+                        }
+                    }
+                }
+            }
+            if (!new File(tmp, "model.onnx").exists() || !new File(tmp, "tokens.txt").exists()) return;
+            del(dst);
+            if (tmp.renameTo(dst)) new File(dst, ".ok").createNewFile();
+        } catch (Exception ignored) {
+        } finally {
+            if (con != null) try { con.disconnect(); } catch (Exception ignored) { }
+            if (tmp.exists()) del(tmp);
+        }
     }
 
     private static synchronized void copyEspeak(Context c) {
@@ -145,15 +197,18 @@ class Piper {
         if (engine != null && pack.equals(enginePack)) return engine;
         if (engine != null) { try { engine.free(); } catch (Throwable ignored) { } engine = null; enginePack = ""; }
         OfflineTtsVitsModelConfig vits = new OfflineTtsVitsModelConfig();
-        vits.setModel("piper/" + pack + "/model.onnx"); // read straight from the APK
-        vits.setTokens("piper/" + pack + "/tokens.txt");
+        boolean apk = inApk(c, pack);
+        File dir = new File(root(c), pack);
+        // inside the APK (older builds): read straight from the APK; downloaded (M-367): read from the phone's files
+        vits.setModel(apk ? "piper/" + pack + "/model.onnx" : new File(dir, "model.onnx").getAbsolutePath());
+        vits.setTokens(apk ? "piper/" + pack + "/tokens.txt" : new File(dir, "tokens.txt").getAbsolutePath());
         vits.setDataDir(new File(new File(root(c), "espeak"), "espeak-ng-data").getAbsolutePath());
         OfflineTtsModelConfig mc = new OfflineTtsModelConfig();
         mc.setVits(vits);
         mc.setNumThreads(2);
         OfflineTtsConfig cfg = new OfflineTtsConfig();
         cfg.setModel(mc);
-        engine = new OfflineTts(c.getAssets(), cfg);
+        engine = new OfflineTts(apk ? c.getAssets() : null, cfg);
         enginePack = pack;
         return engine;
     }
@@ -224,7 +279,7 @@ class Piper {
     static JSONObject status(Context c) {
         JSONObject o = new JSONObject();
         try {
-            o.put("busy", downloading).put("supported", supported());
+            o.put("busy", downloading).put("pct", pct).put("supported", supported());
         } catch (Exception ignored) { }
         return o;
     }

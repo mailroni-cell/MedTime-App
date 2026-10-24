@@ -28,6 +28,10 @@ public class NativeBridge {
         this.web = web;
     }
 
+    /** M-367: saved copy of a calm video that is not inside the APK ("" = not yet; a download starts). */
+    @JavascriptInterface
+    public String mediaFile(String name) { return Media.file(activity, name); }
+
     /** M-337: calm mode keeps the screen on (and its sounds / sleep timer running in the background); off everywhere else. */
     @JavascriptInterface
     public void keepScreenOn(boolean on) {

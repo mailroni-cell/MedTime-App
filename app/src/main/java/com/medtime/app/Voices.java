@@ -88,6 +88,7 @@ class Voices {
                             .put("installed", !notInstalled).put("country", v.getLocale().getCountry()));
                 }
                 // M-087: the offline Piper voices of this language (downloaded once by the app)
+                Piper.ensure(a); // M-367: download this language's voice now if it is missing
                 JSONArray pv = Piper.list(a, norm(I18n.lang(a)));
                 for (int i = 0; i < pv.length(); i++) arr.put(pv.get(i));
                 o.put("ok", ready).put("voices", arr).put("chosen", chosen(a)).put("piper", Piper.status(a));

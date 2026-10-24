@@ -66,7 +66,7 @@
         if (pv.length) {
             items.push({ head: tx('offline') });
         } else if (li() === 0) items.push({ head: tx('noHe'), small: true });
-        pv.forEach(v => items.push({ name: v.name, label: (v.g === 'f' ? '👩 ' : '👨 ') + v.label, sub: tx(v.g === 'f' ? 'woman' : 'man'), off: !v.ready }));
+        pv.forEach(v => items.push({ name: v.name, label: (v.g === 'f' ? '👩 ' : '👨 ') + v.label, sub: v.ready ? tx(v.g === 'f' ? 'woman' : 'man') : '⬇️ ' + ((data.piper && data.piper.pct) || 0) + '%', off: !v.ready })); // M-367: still downloading
         items.forEach(it => {
             if (it.head) { const h = document.createElement('div'); h.className = 'vc-note'; h.style.marginTop = it.small ? '2px' : '12px'; h.style.opacity = it.small ? '.75' : '1'; h.style.fontWeight = it.small ? '500' : '700'; h.textContent = it.head; list.appendChild(h); return; }
             const r = document.createElement('div'); r.className = 'vc-row';
