@@ -1,8 +1,7 @@
 name: Collect usage stats
 # M-238: every 3 hours, collect the app's anonymous usage messages from ntfy.sh (kept there ~12 h) into docs/stats/
+# M-366 (owner 2026-10-24): stopped; the app and the download page send only to Cloudflare now. Kept for a manual run.
 on:
-  schedule:
-    - cron: '23 */3 * * *'
   workflow_dispatch:
 permissions:
   contents: write
