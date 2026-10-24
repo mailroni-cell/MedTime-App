@@ -194,3 +194,4 @@
 - 02:12Z: run 233 RELEASED to everyone (stable = 233).
 - 02:30Z: M-358: real cause of the slow/blank start = with a web update the app read+compared ALL 4.7 MB page files on the main thread at every start. web-update.yml now zips only index.html + files changed since the APK's sha (web.zip 4.7MB -> 120KB). No APK needed.
 - 02:40Z: M-359 run 235 built (internet web updates, timer pause and dark theme removed; start as before). Waiting for 'שחרר לכולם'. Stable = 233.
+- 02:31Z: run 235 RELEASED to everyone (stable = 235, release-stable.yml success).
