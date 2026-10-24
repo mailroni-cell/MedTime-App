@@ -191,3 +191,4 @@
 - 2026-10-24 01:45Z: M-353 (blank screen on opening: app-wide pauseTimers never resumed after the screen was recreated) built as run 232 on test, waiting for Roni's 'שחרר לכולם'. Stable = 231.
 - 01:40Z: run 232 RELEASED to everyone (stable = 232).
 - 02:15Z: M-354..M-356 web updates (LV panel strip/handle). M-357 dark theme (no white flash) built as run 233 on test, waiting for 'שחרר לכולם'. Stable = 232.
+- 02:12Z: run 233 RELEASED to everyone (stable = 233).
