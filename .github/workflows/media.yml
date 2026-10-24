@@ -5,7 +5,7 @@ name: Calm videos (release media)
 on:
   push:
     branches: [main]
-    paths: ['media/video/**', '.github/workflows/media.yml']
+    paths: ['media/video/**', 'media/calm/**', '.github/workflows/media.yml']
   workflow_dispatch:
 
 permissions:
@@ -22,5 +22,8 @@ jobs:
         run: |
           set -e
           gh release view media >/dev/null 2>&1 || gh release create media --target "${{ github.sha }}" --title "MedTime calm videos" --notes "Calm-mode videos, downloaded by the app when first chosen" --prerelease
-          gh release upload media media/video/*.mp4 --clobber
+          # M-368: recorded calm voices, one zip per language (Hebrew is inside the APK)
+          mkdir -p out
+          for d in media/calm/*/; do l=$(basename "$d"); (cd "$d" && zip -q -r -9 "../../../out/calm_$l.zip" .); done
+          gh release upload media media/video/*.mp4 out/*.zip --clobber
           gh release view media --json assets --jq '.assets[] | "\(.name) \(.size)"'

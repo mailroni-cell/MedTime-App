@@ -19,6 +19,50 @@ class Media {
 
     static File dir(Context c) { return new File(c.getFilesDir(), "media"); }
 
+    /** M-368: recorded calm voices of one language: file:// folder when on the phone, or "" (then the zip downloads once). */
+    static String calm(Context ctx, String lang) {
+        if (lang == null || !lang.matches("[a-z]{2}")) return "";
+        final Context c = ctx.getApplicationContext();
+        final File d = new File(new File(c.getFilesDir(), "calm"), lang);
+        if (new File(d, ".ok").exists()) return "file://" + d.getAbsolutePath() + "/";
+        final String key = "calm_" + lang;
+        synchronized (busy) { if (!busy.add(key)) return ""; }
+        new Thread(() -> {
+            File tmp = new File(d.getParentFile(), lang + ".tmp");
+            java.net.HttpURLConnection con = null;
+            try {
+                del(tmp); tmp.mkdirs();
+                con = Updater.open(URL + key + ".zip");
+                String root = tmp.getCanonicalPath() + File.separator;
+                try (java.util.zip.ZipInputStream z = new java.util.zip.ZipInputStream(new java.io.BufferedInputStream(con.getInputStream()))) {
+                    java.util.zip.ZipEntry e; byte[] b = new byte[65536];
+                    while ((e = z.getNextEntry()) != null) {
+                        File f = new File(tmp, e.getName());
+                        if (!f.getCanonicalPath().startsWith(root)) continue; // no ../ in the zip
+                        if (e.isDirectory()) { f.mkdirs(); continue; }
+                        f.getParentFile().mkdirs();
+                        try (OutputStream out = new FileOutputStream(f)) { int n; while ((n = z.read(b)) > 0) out.write(b, 0, n); }
+                    }
+                }
+                del(d);
+                if (tmp.renameTo(d)) new File(d, ".ok").createNewFile();
+            } catch (Exception ignored) {
+            } finally {
+                if (con != null) try { con.disconnect(); } catch (Exception ignored) { }
+                if (tmp.exists()) del(tmp);
+                synchronized (busy) { busy.remove(key); }
+            }
+        }, "calm-get").start();
+        return "";
+    }
+
+    private static void del(File f) {
+        if (f == null || !f.exists()) return;
+        File[] k = f.listFiles();
+        if (k != null) for (File x : k) del(x);
+        f.delete();
+    }
+
     /** file:// address of the saved copy, or "" (then a background download starts). */
     static String file(Context ctx, String name) {
         if (name == null || !name.matches("[a-z0-9_]{1,40}\\.mp4")) return "";

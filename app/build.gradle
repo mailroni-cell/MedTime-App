@@ -48,6 +48,9 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            // M-368 (app diet): remove unused code from the libraries (smaller APK). Rules: proguard-rules.pro
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
             if (System.getenv('UPLOAD_KEYSTORE')) signingConfig signingConfigs.upload

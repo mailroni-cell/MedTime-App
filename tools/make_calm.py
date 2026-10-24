@@ -3,6 +3,7 @@
 import asyncio, json, os, subprocess, edge_tts
 ROOT = os.path.join(os.path.dirname(__file__), '..')
 OUT = os.path.join(ROOT, 'app/src/main/assets/calm')
+OUT_DL = os.path.join(ROOT, 'media/calm')  # M-368: only Hebrew stays inside the APK; the rest download per language
 LINES = json.load(open(os.path.join(ROOT, 'tools/calm_lines.json'), encoding='utf-8'))
 ML_F, ML_M = 'en-US-AvaMultilingualNeural', 'en-US-AndrewMultilingualNeural'
 NATIVE = {'he': ('he-IL-HilaNeural', 'he-IL-AvriNeural'), 'ar': ('ar-SA-ZariyahNeural', 'ar-SA-HamedNeural'),
@@ -27,10 +28,10 @@ async def one(text, voice, rate, pitch, soft, dst):
     subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', raw, '-af', af, '-ac', '1', '-ar', '24000', '-b:a', '40k', dst], check=True)
     os.remove(raw)
 async def main():
-    import shutil; shutil.rmtree(OUT, ignore_errors=True)
+    import shutil; shutil.rmtree(OUT, ignore_errors=True); shutil.rmtree(OUT_DL, ignore_errors=True)
     for l, lines in LINES.items():
         for vid, (voice, rate, pitch, soft) in voices(l).items():
-            d = os.path.join(OUT, l, vid); os.makedirs(d, exist_ok=True)
+            d = os.path.join(OUT if l == 'he' else OUT_DL, l, vid); os.makedirs(d, exist_ok=True)
             for k, text in lines.items():
                 await one(text, voice, rate, pitch, soft, os.path.join(d, k + '.mp3'))
             print('done', l, vid)

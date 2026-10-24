@@ -32,6 +32,10 @@ public class NativeBridge {
     @JavascriptInterface
     public String mediaFile(String name) { return Media.file(activity, name); }
 
+    /** M-368: folder of the recorded calm voices of a language ("" = not yet; the download starts). */
+    @JavascriptInterface
+    public String calmBase(String lang) { return Media.calm(activity, lang); }
+
     /** M-337: calm mode keeps the screen on (and its sounds / sleep timer running in the background); off everywhere else. */
     @JavascriptInterface
     public void keepScreenOn(boolean on) {

@@ -307,7 +307,7 @@
                 if (b.dataset.s === 'go') { hidePanel(); return; }
                 if (b.dataset.s === 'exit') { closeRelax(); return; }
                 if (b.dataset.s === 'breath') { st.breath = !st.breath; save(); drawBreath(); drawPanel(); poke(); bPh = ''; bT0 = -1; if (!st.breath) hush(); return; }
-                if (b.dataset.s === 'bvoice') { setSec(sec === 'voice' ? '' : 'voice'); loadVoices(); poke(); return; } // M-176: its own voice list
+                if (b.dataset.s === 'bvoice') { setSec(sec === 'voice' ? '' : 'voice'); loadVoices(); calmBase(); poke(); return; } // M-176: its own voice list
                 setSec(sec === b.dataset.s ? '' : b.dataset.s); poke();
             });
         });
@@ -1119,11 +1119,20 @@
         try { N.listVoices(); } catch (e) { window.mtVoices = prev; }
     }
     let clip = null;
+    // M-368 (app diet): only the Hebrew recordings are inside the app; other languages download once (MedTimeNative.calmBase).
+    // Until then the phone voice speaks instead.
+    function calmBase() {
+        const l = L5[li()];
+        if (l === 'he') return 'calm/he/';
+        try { const N = window.MedTimeNative; if (N && typeof N.calmBase === 'function') return N.calmBase(l) || ''; } catch (e) { }
+        return 'calm/' + l + '/'; // older app: the recordings are still inside it
+    }
     function calmSay(text, key, secs) {
         const N = window.MedTimeNative;
         if (/^c:(ava|andrew)$/.test(st.bvname || '') && L5[li()] !== 'en') st.bvname = 'c:f';
-        if (/^c:/.test(st.bvname || '')) { // M-182: a ready recording, starts at once (exact timing)
-            try { if (clip) clip.pause(); const a = clip = new Audio('calm/' + L5[li()] + '/' + st.bvname.slice(2) + '/' + (key || 'sample') + '.mp3'); a.volume = 1;
+        const cb = /^c:/.test(st.bvname || '') ? calmBase() : '';
+        if (cb) { // M-182: a ready recording, starts at once (exact timing)
+            try { if (clip) clip.pause(); const a = clip = new Audio(cb + st.bvname.slice(2) + '/' + (key || 'sample') + '.mp3'); a.volume = 1;
                 // M-191: the phase waits until the line is fully spoken, then a calm pause, then the next line
                 if (secs) { const t0 = BM.t0; BM.end = t0 + secs + 0.01;
                     a.addEventListener('loadedmetadata', () => { if (BM.t0 === t0 && isFinite(a.duration)) BM.end = Math.max(BM.end, t0 + a.duration + 1.2); });
@@ -1132,7 +1141,7 @@
             return;
         }
         try {
-            if (N && typeof N.speakCalmVoice === 'function') N.speakCalmVoice(st.bvname || '', text.replace(/…/g, ', '));
+            if (N && typeof N.speakCalmVoice === 'function') N.speakCalmVoice(/^c:/.test(st.bvname || '') ? '' : (st.bvname || ''), text.replace(/…/g, ', '));
             else if (N && typeof N.speakCalm === 'function') N.speakCalm(text.replace(/…/g, ', '));
             else if (N && typeof N.speakGuide === 'function') N.speakGuide(text.replace(/…/g, ', '));
             else if (window.speechSynthesis) { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = ['he-IL', 'ar', 'ro-RO', 'fr-FR', 'en-US', 'ru-RU'][li()]; u.rate = 0.75; u.pitch = 0.9; speechSynthesis.speak(u); }
