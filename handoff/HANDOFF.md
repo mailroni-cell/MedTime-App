@@ -192,3 +192,4 @@
 - 01:40Z: run 232 RELEASED to everyone (stable = 232).
 - 02:15Z: M-354..M-356 web updates (LV panel strip/handle). M-357 dark theme (no white flash) built as run 233 on test, waiting for 'שחרר לכולם'. Stable = 232.
 - 02:12Z: run 233 RELEASED to everyone (stable = 233).
+- 02:30Z: M-358: real cause of the slow/blank start = with a web update the app read+compared ALL 4.7 MB page files on the main thread at every start. web-update.yml now zips only index.html + files changed since the APK's sha (web.zip 4.7MB -> 120KB). No APK needed.
