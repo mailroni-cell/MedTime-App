@@ -402,3 +402,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-353 | 2026-10-24 | MainActivity.java | Owner: sometimes a blank blue screen on opening. pauseTimers() is app-wide; when Android recreated the screen, the new one never resumed timers and the page froze. Timers are now always resumed on create and resume | ⏳ |
 | M-354 | 2026-10-24 | index.html | Owner (low-vision): yellow strip at the top of settings panels (e.g. vitals) removed | ⏳ |
 | M-355 | 2026-10-24 | index.html | Owner: still a faint trace of the strip: low-vision panels have square corners and no edge shadow | ⏳ |
+| M-356 | 2026-10-24 | index.html | Owner: grey drag handle at the top of settings panels removed | ⏳ |
