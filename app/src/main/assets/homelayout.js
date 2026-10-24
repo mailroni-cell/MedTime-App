@@ -1,3 +1,4 @@
+// M-358: web updates carry only changed files.
 // M-205 / M-209 (owner): main menu in a logical order, as big glossy 3D symbols floating over the background (no button frames).
 // Row 1: Add reminder (biggest). Rows 2-3: My reminders, appointments, medicine check / vitals, serenity, first aid.
 // M-210 (owner): a green ✓ on "My reminders" once every reminder due today was taken.
