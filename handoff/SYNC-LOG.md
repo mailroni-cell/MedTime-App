@@ -3,6 +3,10 @@
 כל שינוי נרשם כאן עם חתימה: מתי, איזה חשבון/שיחה, מה בדיוק, אילו קבצים, ואיך להחזיר אחורה.
 החדש ביותר למעלה. להחזרה: `git revert <commit>` או לקחת את הקובץ מה-commit הקודם.
 
+## 2026-10-24 ~10:15Z · חשבון 1 · thread "📌 MedTime – הרזיית האפליקציה" (session_011Z3KyZMgrnCK6NN9VAyN4e)
+- מה: M-367 דיאטה (רוני בחר א+ב+ג): קולות Piper יורדים רק לשפת האפליקציה (Piper.java, Voices.java, voices.js; build-apk.yml מכניס רק espeak); 32 צלילי טבע ב-Opus 48k (assets/ambient); 13 סרטוני שלווה הועברו ל-media/video ומתפרסמים ב-release media (media.yml), Media.java + NativeBridge.mediaFile + relax.js vidSrc. נשארו בפנים: v_ocean, v_beach, v_stars. APK צפוי ~70 MB במקום 204.
+- להחזרה: git revert 18b94e6 (ואז בנייה).
+
 ## 2026-10-24 ~09:55Z · חשבון 1 · פרויקט TELEGRAM_BOT, thread "לשפר דף סטטיסטיקה של MedTime"
 - מה: M-366, השרת הישן (ntfy) כובה לנתוני שימוש: app/src/main/assets/stats.js (עדכון מהיר), docs/download.html, docs/privacy.html (6 שפות), .github/workflows/stats.yml (בלי cron). ההתראות הפרטיות לרוני (סקר, שאלות במדריך) נשארו ב-ntfy. בניית APK 241 בוטלה.
 - להחזרה: git revert 9ed203f 26c3207.

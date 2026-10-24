@@ -19,3 +19,4 @@
 - 2026-10-21: Roni's test: M-133 auto backup and M-137 cross failed; M-138 fixes them + settings spacing + red stop-counting button. Only gated items remain (release to all, Google Play, installer autostart fix, Orly).
 - 2026-10-21: owner waits for Google Play approval; release to all users only via Play Store, not via GitHub 'latest'.
 - 2026-10-21: Google Play prep started (M-158/M-159). Two editions full/play. Upload key is created by workflow from the owner's own secret UPLOAD_PASSWORD; never handle passwords in chat or files.
+- 2026-10-24: M-367 app diet (run 242, 71 MB instead of 204): Piper voice packs download per app language (not in APK), nature sounds Opus 48k, only 3 calm videos inside; 13 others on release 'media' (media/video + media.yml), streamed first time and cached by Media.java.
