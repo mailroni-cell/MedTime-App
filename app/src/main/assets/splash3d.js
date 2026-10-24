@@ -276,9 +276,9 @@
     var v = document.createElement('video');
     v.id = 'spv'; v.muted = true; v.defaultMuted = true; v.playsInline = true; v.preload = 'auto';
     v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); v.setAttribute('webkit-playsinline', '');
-    // M-177 (owner): the full film only the first time; afterwards only its last 3 seconds (the calm logo ending)
+    // M-177 (owner): the full film only the first time; afterwards only its last 5 seconds (M-361) (the calm logo ending)
     var seen = false; try { seen = !!localStorage.getItem('medtime_sp_seen'); } catch (e) { }
-    v.src = seen ? 'splash.mp4#t=8.35' : 'splash.mp4';
+    v.src = seen ? 'splash.mp4#t=6.35' : 'splash.mp4'; // M-361: repeat opening 2 s longer (was 8.35)
     // M-360: the poster is the film's own first frame, shown at once (no dark wait before the film moves)
     var pst = seen ? 'splash_b.jpg' : 'splash_a.jpg';
     v.poster = pst; sp.style.background = '#000 url(' + pst + ') center / cover no-repeat';
@@ -306,7 +306,7 @@
     window.addEventListener('resize', placeTag);
     v.addEventListener('playing', function () { if (started) return; started = true; try { localStorage.setItem('medtime_sp_seen', '1'); } catch (e) { } v.classList.add('on'); placeTag(); go(); });
     v.addEventListener('timeupdate', function () {
-        if (v.currentTime >= (seen ? 8.9 : 9.8)) window.__spPrewarm = true; // main screen gets ready during the calm end
+        if (v.currentTime >= 9.8) window.__spPrewarm = true; // main screen gets ready during the calm end
         if (v.currentTime >= endAt && window.endSplash) window.endSplash(); // fade starts while the video still moves
     });
     v.addEventListener('ended', function () { if (window.endSplash) window.endSplash(); });
