@@ -3,6 +3,10 @@
 כל שינוי נרשם כאן עם חתימה: מתי, איזה חשבון/שיחה, מה בדיוק, אילו קבצים, ואיך להחזיר אחורה.
 החדש ביותר למעלה. להחזרה: `git revert <commit>` או לקחת את הקובץ מה-commit הקודם.
 
+## 2026-10-24 ~11:00Z · חשבון 1 · thread "📌 MedTime – הרזיית האפליקציה"
+- מה: M-369 דיאטה סבב 3 (רוני: "א ב לך על זה ועדכן את השרת ושחרר לכולם"): מנוע הקול (sherpa-onnx) יורד עם הקול הראשון (engine_arm64.zip ב-release media; Piper.java, Tts.kt, build-apk.yml placeholder 64-bit, media.yml); 11 צלילי טבע בפנים, 21 הועברו ל-media/ambient ונמשכים בבחירה ראשונה (relax.js ambSrc, Media.java). בנייה 244 = 44.0 MB. שוחררה לכולם: stable = run 244 (כולל M-367, M-368).
+- להחזרה: לכתוב "run 242" ב-release/stable.txt ולדחוף; קוד: git revert a898977 e0fe14a.
+
 ## 2026-10-24 ~10:45Z · חשבון 1 · thread "📌 MedTime – הרזיית האפליקציה"
 - מה: M-368 דיאטה סבב 2 (רוני בחר 2+3): קולות שלווה מוקלטים - רק עברית בתוך האפליקציה, שאר השפות כ-calm_<lang>.zip ב-release media (media/calm, Media.calm, NativeBridge.calmBase, relax.js calmBase); כיווץ קוד R8 בבניית debug (app/build.gradle, app/proguard-rules.pro). בנייה 243 = 62.6 MB, על test בלבד.
 - להחזרה: git revert e0fe14a.

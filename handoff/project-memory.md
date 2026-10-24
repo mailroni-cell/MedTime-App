@@ -20,3 +20,4 @@
 - 2026-10-21: owner waits for Google Play approval; release to all users only via Play Store, not via GitHub 'latest'.
 - 2026-10-21: Google Play prep started (M-158/M-159). Two editions full/play. Upload key is created by workflow from the owner's own secret UPLOAD_PASSWORD; never handle passwords in chat or files.
 - 2026-10-24: M-367 app diet (run 242, 71 MB instead of 204): Piper voice packs download per app language (not in APK), nature sounds Opus 48k, only 3 calm videos inside; 13 others on release 'media' (media/video + media.yml), streamed first time and cached by Media.java.
+- 2026-10-24: M-368/M-369 diet rounds 2-3: run 244 = 44 MB, released to everyone (stable 244). Voice engine + 21 nature sounds + non-Hebrew calm voices download on demand from release 'media'. Heavy content goes to media/, not assets.
