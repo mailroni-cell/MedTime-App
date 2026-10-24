@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 50
+          fetch-depth: 300
 
       - name: Only page files changed?
         id: chk
@@ -44,8 +44,18 @@ jobs:
           gh release download test -p build-info.txt -O build-info.txt
           base=$(grep -oE 'run [0-9]+' build-info.txt | grep -oE '[0-9]+')
           vc=$((100 + base))
+          # M-358 (owner: "the splash used to appear at once"): the app read and compared ALL 4.7 MB of page files at every start.
+          # Now web.zip holds only index.html + the files changed since the commit the installed APK was built from.
+          bsha=$(grep -oE '[0-9a-f]{40}' build-info.txt | head -1)
+          git fetch -q --depth=300 origin main || true
           cd app/src/main/assets
-          zip -q -r ../../../../web.zip . -i '*.html' '*.js' '*.css'
+          if [ -n "$bsha" ] && git cat-file -e "$bsha" 2>/dev/null; then
+            files=$( (echo index.html; git diff --name-only "$bsha" "${{ github.sha }}" -- . | grep -E '\.(html|js|css)$' | sed 's#^app/src/main/assets/##') | sort -u)
+          else
+            files=$(ls *.html *.js *.css 2>/dev/null)
+          fi
+          echo "web.zip files:"; echo "$files"
+          zip -q ../../../../web.zip $files
           cd ../../../..
           echo "web ${{ github.sha }} base $vc" > web-info.txt
           gh release upload test web.zip web-info.txt --clobber

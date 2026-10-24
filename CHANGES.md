@@ -404,3 +404,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-355 | 2026-10-24 | index.html | Owner: still a faint trace of the strip: low-vision panels have square corners and no edge shadow | ⏳ |
 | M-356 | 2026-10-24 | index.html | Owner: grey drag handle at the top of settings panels removed | ⏳ |
 | M-357 | 2026-10-24 | themes.xml (new), AndroidManifest.xml, MainActivity.java | Owner: white/blue flash before the splash: dark app theme (window + Android 12 start screen) and dark WebView background | ⏳ |
+| M-358 | 2026-10-24 | web-update.yml | Owner: the splash must appear at once. Cause: with a quick web update the app read and compared all 4.7 MB of page files on every start, before drawing. web.zip now holds only index.html + files changed since the installed APK | ⏳ |
