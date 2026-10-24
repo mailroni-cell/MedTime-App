@@ -3,6 +3,10 @@
 כל שינוי נרשם כאן עם חתימה: מתי, איזה חשבון/שיחה, מה בדיוק, אילו קבצים, ואיך להחזיר אחורה.
 החדש ביותר למעלה. להחזרה: `git revert <commit>` או לקחת את הקובץ מה-commit הקודם.
 
+## 2026-10-24 ~14:10Z · חשבון 1 · פרויקט TELEGRAM_BOT, thread "להפיץ את MedTime בלי אזהרות התקנה"
+- מה: M-370, חבילת Uptodown: media/store/uptodown/ (texts.md טקסטים ב-6 שפות, steps-he.md הוראות העלאה, images/ אייקון + 18 צילומי מסך + 6 תמונות ראשיות, src/ הסקריפטים שיצרו אותם מהאפליקציה עצמה). קוד האפליקציה לא השתנה. החלטת רוני: בלי עוסק פטור, לכן לא Google Play לגרסה המלאה; ממשיכים ב-Uptodown.
+- להחזרה: git revert של ה-commit הזה (רק קבצי מדיה ומסמכים).
+
 ## 2026-10-24 ~11:00Z · חשבון 1 · thread "📌 MedTime – הרזיית האפליקציה"
 - מה: M-369 דיאטה סבב 3 (רוני: "א ב לך על זה ועדכן את השרת ושחרר לכולם"): מנוע הקול (sherpa-onnx) יורד עם הקול הראשון (engine_arm64.zip ב-release media; Piper.java, Tts.kt, build-apk.yml placeholder 64-bit, media.yml); 11 צלילי טבע בפנים, 21 הועברו ל-media/ambient ונמשכים בבחירה ראשונה (relax.js ambSrc, Media.java). בנייה 244 = 44.0 MB. שוחררה לכולם: stable = run 244 (כולל M-367, M-368).
 - להחזרה: לכתוב "run 242" ב-release/stable.txt ולדחוף; קוד: git revert a898977 e0fe14a.
