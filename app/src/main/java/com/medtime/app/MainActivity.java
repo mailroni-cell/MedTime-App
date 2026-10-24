@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         // setup screen first (setup.js) and asks through MedTimeNative.requestNotifications().
 
         webView = new WebView(this);
-        webView.setBackgroundColor(0xFF0B1026); // M-357: dark until the page draws (was white)
         setContentView(webView);
         getOnBackPressedDispatcher().addCallback(this, backCb);
         FullScreen.apply(this); // M-012
@@ -90,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
 
         // M-146: with a quick web update the page is built from the updated files (changed scripts / styles inlined)
         // on the same base address, so stored data stays; otherwise the built-in page as always
-        webView.resumeTimers(); // M-353: timers may still be paused by an earlier screen of this app
         loadPage();
 
         // M-034: in full screen Android does not shrink the page for the keyboard, so the keyboard
@@ -112,33 +110,9 @@ public class MainActivity extends AppCompatActivity {
 
     private int lastKb = -1;
 
-    // M-337: calm mode is open (set by NativeBridge.keepScreenOn)
+    // M-359 (owner): back to the start as it was: no internet web updates (M-334) and no app-wide timer pause (M-337).
+    // calm is still set by NativeBridge.keepScreenOn (calm mode keeps the screen on).
     static volatile boolean calm = false;
-    private final android.os.Handler timers = new android.os.Handler(android.os.Looper.getMainLooper());
-    private boolean timersStopped = false;
-    private final Runnable stopTimers = () -> { if (webView != null && !calm) { webView.pauseTimers(); timersStopped = true; } };
-
-    private void loadPage() {
-        String upd = webOverride != null ? overridePage() : null;
-        if (upd != null) webView.loadDataWithBaseURL("file:///android_asset/index.html", upd, "text/html", "UTF-8", null);
-        else webView.loadUrl("file:///android_asset/index.html");
-    }
-
-    // M-334: a quick web update came over the internet.
-    // M-343 (owner: "stuck on opening"): never reload while the app is in use, the page restarting looked like a hang;
-    // it is used from the next time the app comes back after 30 s or more in the background (or the next start).
-    private boolean webPending = false;
-    private long pausedAt = 0;
-
-    private void webUpdateReady() { webPending = true; }
-
-    private void applyWebUpdate() {
-        webPending = false;
-        webOverride = validWebOverride();
-        if (webOverride == null || webView == null) return;
-        loadPage();
-        android.widget.Toast.makeText(this, "✨ MedTime", android.widget.Toast.LENGTH_SHORT).show();
-    }
 
     // ---------- M-140: quick web updates (owner's test phone only) ----------
     private java.io.File webOverride;
@@ -228,11 +202,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         if (webView != null) webView.onPause();
-        pausedAt = System.currentTimeMillis();
-        // M-337 (battery): a few seconds in the background (time for the auto backup), then all page timers stop.
-        // Calm mode keeps running (its sounds and sleep timer). Reminders are native alarms and never depend on this.
-        timers.removeCallbacks(stopTimers);
-        if (!calm) timers.postDelayed(stopTimers, 5000);
     }
 
     // M-076: tell the page when we come back from an Android permission screen
@@ -240,12 +209,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (webView != null) webView.onResume(); // M-323: the page runs again
-        timers.removeCallbacks(stopTimers); // M-337
-        // M-353 (owner: "sometimes stuck on a blank screen when opening"): pauseTimers() is for the whole app, not one page.
-        // When Android had closed the old screen, the new one never resumed them, so the page froze before drawing. Always resume.
-        if (webView != null) { webView.resumeTimers(); timersStopped = false; }
-        if (webPending && System.currentTimeMillis() - pausedAt > 30_000) applyWebUpdate(); // M-334: not after a quick camera / picker trip
-        WebUpdate.check(this, this::webUpdateReady); // M-334
         NativeBridge.stopWatch(); // M-095
         Piper.ensure(this); // M-087: offline voices download once by themselves (Wi-Fi only)
         if (webView != null) webView.evaluateJavascript("window.mtResumed && mtResumed()", null);

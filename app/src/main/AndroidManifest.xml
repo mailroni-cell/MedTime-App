@@ -28,7 +28,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:hardwareAccelerated="true"
-        android:theme="@style/Theme.MedTime">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
             android:name=".MainActivity"
             android:exported="true"
