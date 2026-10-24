@@ -400,3 +400,4 @@ Status: ✅ tested / ⏳ waiting / ❌ failed
 | M-351 | 2026-10-23 | appts.js | Owner: appointment form exit moved to the bottom (red, next to Next, above the keyboard); top one hidden | ⏳ |
 | M-352 | 2026-10-24 | homelayout.js, plus.js | Owner screenshots (low-vision): floating Done covered the bottom of appointment cards: in low-vision Done sits at the end of the page; vitals: no empty chart box before the first measurement. UI audit run on all screens at 412x893 low-vision: no overflow | ⏳ |
 | M-353 | 2026-10-24 | MainActivity.java | Owner: sometimes a blank blue screen on opening. pauseTimers() is app-wide; when Android recreated the screen, the new one never resumed timers and the page froze. Timers are now always resumed on create and resume | ⏳ |
+| M-354 | 2026-10-24 | index.html | Owner (low-vision): yellow strip at the top of settings panels (e.g. vitals) removed | ⏳ |
