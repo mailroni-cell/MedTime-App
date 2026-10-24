@@ -278,7 +278,9 @@
     v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); v.setAttribute('webkit-playsinline', '');
     // M-177 (owner): the full film only the first time; afterwards only its last 5 seconds (M-361) (the calm logo ending)
     var seen = false; try { seen = !!localStorage.getItem('medtime_sp_seen'); } catch (e) { }
-    v.src = seen ? 'splash.mp4#t=6.35' : 'splash.mp4'; // M-361: repeat opening 2 s longer (was 8.35)
+    // M-362: the repeat opening is its own short file (the film from 6.35 s), so it starts at once with no seek (seek = frozen first frame)
+    v.src = seen ? 'splash_end.mp4' : 'splash.mp4';
+    var off = seen ? 6.35 : 0; // times below are on the full film's clock
     // M-360: the poster is the film's own first frame, shown at once (no dark wait before the film moves)
     var pst = seen ? 'splash_b.jpg' : 'splash_a.jpg';
     v.poster = pst; sp.style.background = '#000 url(' + pst + ') center / cover no-repeat';
@@ -286,7 +288,7 @@
     sp.insertBefore(v, sp.firstChild);
     sp.classList.add('sp-video');
     window.__sp3d = true; // the video ends the opening itself
-    var started = false, failed = false, endAt = 11.35; // M-096/M-097: the film plays (almost) to its end, incl. the calm logo ending
+    var started = false, failed = false, endAt = 11.35 - off; // M-096/M-097: the film plays (almost) to its end, incl. the calm logo ending
     function fail() {
         if (failed || started) return;
         failed = true; try { v.pause(); } catch (e) { }
@@ -306,7 +308,7 @@
     window.addEventListener('resize', placeTag);
     v.addEventListener('playing', function () { if (started) return; started = true; try { localStorage.setItem('medtime_sp_seen', '1'); } catch (e) { } v.classList.add('on'); placeTag(); go(); });
     v.addEventListener('timeupdate', function () {
-        if (v.currentTime >= 9.8) window.__spPrewarm = true; // main screen gets ready during the calm end
+        if (v.currentTime >= 9.8 - off) window.__spPrewarm = true; // main screen gets ready during the calm end
         if (v.currentTime >= endAt && window.endSplash) window.endSplash(); // fade starts while the video still moves
     });
     v.addEventListener('ended', function () { if (window.endSplash) window.endSplash(); });
