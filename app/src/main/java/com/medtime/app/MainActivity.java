@@ -114,6 +114,12 @@ public class MainActivity extends AppCompatActivity {
     // calm is still set by NativeBridge.keepScreenOn (calm mode keeps the screen on).
     static volatile boolean calm = false;
 
+    private void loadPage() {
+        String upd = webOverride != null ? overridePage() : null;
+        if (upd != null) webView.loadDataWithBaseURL("file:///android_asset/index.html", upd, "text/html", "UTF-8", null);
+        else webView.loadUrl("file:///android_asset/index.html");
+    }
+
     // ---------- M-140: quick web updates (owner's test phone only) ----------
     private java.io.File webOverride;
 
