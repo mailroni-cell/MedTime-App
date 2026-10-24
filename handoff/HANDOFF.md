@@ -188,3 +188,4 @@
 - 19:05Z: run 231 RELEASED to everyone (Roni: 'שחרר לכולם'). stable = run 231.
 - 19:30Z: M-350/M-351 as web update for run 231 (= stable, so ALL users on 231 get it).
 - 2026-10-24 01:30Z: M-352 web update (low-vision Done at page end, no empty vitals chart). Audit at 412x893 LV clean.
+- 2026-10-24 01:45Z: M-353 (blank screen on opening: app-wide pauseTimers never resumed after the screen was recreated) built as run 232 on test, waiting for Roni's 'שחרר לכולם'. Stable = 231.
