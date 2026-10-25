@@ -218,6 +218,7 @@
 - קוד: flavor חדש playfull (app/build.gradle), כתובת io.github.mailronicell.medtime.full, שם MedTime. דגל חדש BuildConfig.GPLAY (=כללי Play: בלי עדכון עצמי, בלי עדכוני web, SMS נפתח מוכן במקום אוטומטי) בנפרד מ-STORE (=מראה MyTime). app/src/playfull/AndroidManifest.xml מסיר REQUEST_INSTALL_PACKAGES, SEND_SMS, USE_EXACT_ALARM. app/src/playfull/assets/store.js מסתיר רק את אריח/כפתור העדכון. מנוע הקול בפנים.
 - workflow ידני: .github/workflows/medtime-play-full.yml -> release "play-full": MedTime-full-play.aab (versionCode 100+run).
 - מחכה לרוני ב-Play Console: Create app (שם MedTime, App, Free) > Testing > Internal testing > Testers: Create email list > Releases: Create new release > Upload את ה-AAB > Next > Save > Start rollout > לשונית Testers: Copy link ולשלוח לטסטרים. ייתכן שגוגל יבקשו קודם את ה-App content הבסיסי (Privacy policy, App access, Ads, Content rating, Target audience, Data safety, Health apps).
+- 17:05Z: הקובץ נבנה ונבדק (run 1, versionCode 101, 52 MB, הכתובת נכונה, בלי ההרשאות החסומות). מדריך מלא עם כל התשובות ל-App content: handoff/play-full-guide.md. רוני ביקש שClaude יעשה הכול לבד; נשאר רק מה שדורש לחיצות שלו ב-Play Console.
 - MedTime הרגילה וגם MyTime לא השתנו בהתנהגות (GPLAY=false ב-full; ב-play GPLAY=STORE=true כמו קודם).
 
 ### הודעת פתיחה לחשבון השני

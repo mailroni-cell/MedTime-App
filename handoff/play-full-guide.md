@@ -17,7 +17,7 @@
 
 ## שלב 2: רשימת בודקים והעלאה (5 דקות)
 1. בתפריט מימין: **Test and release ← Testing ← Internal testing**
-2. לשונית **Testers** ← **Create email list** ← שם: `MedTime testers` ← מדביקים מיילים (מופרדים בפסיק) ← **Save changes**. מסמנים V ליד הרשימה ← **Save**.
+2. לשונית **Testers** ← **Create email list** ← שם: `MedTime testers` ← הכי קל: **Upload CSV file** ובוחרים `C:\Projects\MedTime\testers.csv` (8 המיילים של בודקי MyTime כבר שם; אפשר גם להדביק מיילים מופרדים בפסיק) ← **Save changes**. מסמנים V ליד הרשימה ← **Save**.
 3. לשונית **Releases** (או הכפתור **Create new release**)
 4. אם נשאלים על Play App Signing: **Use Google-generated key** (ברירת המחדל) ← Continue
 5. גוררים את הקובץ MedTime-full-play.aab לתיבה ← מחכים שיעלה
