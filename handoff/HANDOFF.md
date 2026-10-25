@@ -261,3 +261,9 @@
 תמשיך את MedTime מ-handoff/HANDOFF.md סעיף 34 ומ-handoff/from-telegram-project/README.md (כל מה שנעשה ב-24.10 בפרויקט הטלגרם). הכנו חבילת Uptodown בתיקייה media/store/uptodown (טקסטים ב-6 שפות, תמונות, הוראות ב-steps-he.md). האפליקציה כבר נשלחה לבדיקה ב-Uptodown (24.10). תשאל אותי אם הגיע מייל אישור, ואם יש קישור לדף - תוסיף כפתור "הורדה מ-Uptodown" לדף ההורדה. החלטתי לא לפתוח עוסק פטור, אז בלי Google Play לגרסה המלאה.
 ```
 
+## 2026-10-25 00:40Z: שאלה - העלאה אוטומטית ל-Play כמו ב-ApexDash
+- תשובה: אפשרי, עבור MyTime בלבד (io.github.mailronicell.medtime, ענף play-edition). MedTime המלאה לא יכולה להיות ב-Play מחשבון פרטי (מדיניות בריאות).
+- מה צריך: (1) רוני: ב-Play Console להוסיף ל-play-uploader@apexdash-play.iam.gserviceaccount.com גישה לאפליקציה MyTime (שחרור למסלולי בדיקה בלבד, לא Admin). (2) Claude: הרשאת Workload Identity למאגר mailroni-cell/MedTime-App בפרויקט apexdash-play (gcloud במחשב). (3) Claude: workflow play-upload.yml בענף play-edition, משתמש במפתח הקיים app/medtime-upload.keystore וב-secret UPLOAD_PASSWORD; versionCode חייב להיות מעל 104.
+- Android Auto: לא אפשרי. Android Auto מקבל רק מדיה, הודעות, ניווט, IoT, מזג אוויר ומשחקים/וידאו בחניה. תזכורות תרופות לא בקטגוריה.
+- נעצר עד שתגיד: MyTime מושהית (HANDOFF בענף play-edition). לא מתחילים עד שרוני בוחר בכרטיס.
+- נחתם: Claude, 2026-10-25, שיחת "העלאת MedTime ל-Play בדיקות פנימיות"
