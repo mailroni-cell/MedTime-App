@@ -3,6 +3,10 @@
 כל שינוי נרשם כאן עם חתימה: מתי, איזה חשבון/שיחה, מה בדיוק, אילו קבצים, ואיך להחזיר אחורה.
 החדש ביותר למעלה. להחזרה: `git revert <commit>` או לקחת את הקובץ מה-commit הקודם.
 
+## 2026-10-25 ~01:30Z · חשבון 1 · thread "📌 MedTime – הרזיית האפליקציה"
+- מה: M-372 MyTime (גרסת Google Play) הועברה ל-main: קבצי app/src/play, תנאי MT_STORE/BuildConfig.STORE בקבצים משותפים (MedTime לא משתנה), workflow חדש mytime-bundle.yml (play-bundle.yml היה מושבת). AAB ריצה 1 = versionCode 1101 ב-release play. MedTime בנייה 245 על test.
+- להחזרה: git revert bd8ef72. ענף play-edition הישן לא נגעתי בו.
+
 ## 2026-10-25 ~01:25Z · חשבון 1 · thread "📌 MedTime – הרזיית האפליקציה"
 - מה: M-371 דף הסטטיסטיקה: תוויות "התחילו הורדה" ו"התקנות שנפתחו" + הסבר במשפט הסיכום (docs/stats.html). stats.js שולח ping גם מיד אחרי עדכון גרסה (ייכנס לבנייה הבאה). סנכרון מהמחשב: HANDOFF במחשב זהה לשרת; 244 הותקנה בטלפון 24.10 14:24.
 - להחזרה: git revert <commit זה>.

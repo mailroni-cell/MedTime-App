@@ -1,4 +1,4 @@
-# MedTime: קובץ העברה (עודכן 2026-10-25 01:25Z)
+# MedTime: קובץ העברה (עודכן 2026-10-25 01:35Z)
 
 ## איפה אנחנו
 - הגרסה המלאה MedTime (הורדה ישירה) היא הגרסה הראשית (החלטת רוני 2026-10-22 23:40). MyTime/Play מטופל בשיחה אחרת.
@@ -264,7 +264,14 @@
 
 - 01:20Z: רוני שקל להעביר את MedTime למסלול טסטרים בגוגל (כמו spex3d). הוסבר: MedTime המלאה נדחתה ב-21.10 גם בבדיקה סגורה (אפליקציית תרופות = חשבון ארגון); "בדיקה פנימית" עם MedTime = נגד הכללים, סיכון לחשבון, לא מומלץ. **צילום מסך מרוני: MyTime ב-Closed testing = Active (אושרה).** הוצע לרוני: לשלוח קישור Join on the web לטסטרים (צריך 12, יש 8-9), ולעדכן את MyTime (גרסה 104, ענף play-edition) לכל השיפורים מאז בלי חלקי התרופות. מחכה לתשובה.
 
+## 36. 2026-10-25 01:35Z - M-372 MyTime מעודכנת לחנות (חשבון 1, אותו thread)
+- רוני אישר לעדכן את MyTime. הקוד שלה עכשיו ב-main (תיקיית app/src/play + תנאי MT_STORE). בונים עם workflow "MyTime - build Google Play bundle (AAB)" (mytime-bundle.yml, הרצה ידנית). versionCode = 1100 + מספר הריצה.
+- ריצה 1: https://github.com/mailroni-cell/MedTime-App/releases/download/play/MedTime-play.aab (versionCode 1101) + MyTime-preview.apk.
+- מחכה לרוני: להעלות את ה-AAB ב-Play Console: Testing > Closed testing > המסלול > Create new release > Upload > Next > Save > Send for review. ואז לשלוח לטסטרים את Join on the web (צריך 12, יש 8-9).
+- ב-MyTime אין: מילון/בדיקת תרופה, מדדים, תורים, עזרה ראשונה/SOS, בתי מרקחת/מיקום, עדכון עצמי, SMS אוטומטי, נתוני שימוש. מנוע הקול נשאר בפנים (גוגל אוסרת הורדת קוד).
+- MedTime בנייה 245 (אותו commit, כולל M-371) על test בלבד; stable = 244.
+
 ### הודעת פתיחה לחשבון השני
 ```
-תמשיך את MedTime מ-handoff/HANDOFF.md סעיף 35. גרסה 244 (44 MB) אצל כולם ובטלפון שלי. דף הסטטיסטיקה עודכן: "התחילו הורדה" מול "התקנות שנפתחו" (M-371). תשאל אותי אם הגיע מייל אישור מ-Uptodown, ואם בדקתי עם מכרים איפה ההתקנה נתקעת.
+תמשיך את MedTime מ-handoff/HANDOFF.md סעיף 36. MyTime (גרסת גוגל) עודכנה ונבנתה (AAB בשחרור play, versionCode 1101). תשאל אותי אם העליתי את ה-AAB למסלול הטסטרים ב-Play Console ואם שלחתי לטסטרים את הקישור. MedTime: 244 אצל כולם, 245 על test.
 ```
