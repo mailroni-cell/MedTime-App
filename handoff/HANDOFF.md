@@ -266,4 +266,5 @@
 - מה צריך: (1) רוני: ב-Play Console להוסיף ל-play-uploader@apexdash-play.iam.gserviceaccount.com גישה לאפליקציה MyTime (שחרור למסלולי בדיקה בלבד, לא Admin). (2) Claude: הרשאת Workload Identity למאגר mailroni-cell/MedTime-App בפרויקט apexdash-play (gcloud במחשב). (3) Claude: workflow play-upload.yml בענף play-edition, משתמש במפתח הקיים app/medtime-upload.keystore וב-secret UPLOAD_PASSWORD; versionCode חייב להיות מעל 104.
 - Android Auto: לא אפשרי. Android Auto מקבל רק מדיה, הודעות, ניווט, IoT, מזג אוויר ומשחקים/וידאו בחניה. תזכורות תרופות לא בקטגוריה.
 - נעצר עד שתגיד: MyTime מושהית (HANDOFF בענף play-edition). לא מתחילים עד שרוני בוחר בכרטיס.
+- אבטחה: המאגר ציבורי ו-app/medtime-upload.keystore נמצא בו (מוצפן בסיסמה). פרטי = שובר GitHub Pages והורדות release, לא מומלץ. הצעה (ממתינה לאישור רוני): להעביר את המפתח ל-GitHub Secrets ולבקש מגוגל איפוס מפתח העלאה (Play App Signing).
 - נחתם: Claude, 2026-10-25, שיחת "העלאת MedTime ל-Play בדיקות פנימיות"
