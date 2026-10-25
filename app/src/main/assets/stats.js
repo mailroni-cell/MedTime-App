@@ -58,7 +58,8 @@
         const d = today();
         let days = []; try { days = JSON.parse(get('medtime_days', '[]')); } catch (e) { }
         if (!days.includes(d)) { days.push(d); put('medtime_days', JSON.stringify(days.slice(-30))); }
-        if (get('medtime_ping', '') !== d) { put('medtime_ping', d); send('ping'); }
+        // M-371: also right after an update, so the stats page shows the version people really have
+        if (get('medtime_ping', '') !== d || get('medtime_pingv', '') !== ver()) { put('medtime_ping', d); put('medtime_pingv', ver()); send('ping'); }
         return days;
     }
 

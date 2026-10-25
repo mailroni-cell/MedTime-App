@@ -23,7 +23,7 @@ h2{font-size:1.1rem;margin:18px 0 6px}.ch{max-width:640px;background:#1e293b;bor
 <h2>☁️ מונה Cloudflare (פרטי)</h2>
 <div class="sum" id="sum">…</div>
 <div class="g" id="cf"><div class="k"><b id="cf-ad">-</b><span>צפיות בדף המודעה</span></div><div class="k"><b id="cf-vis">-</b><span>כניסות לדף ההורדה</span></div>
-<div class="k"><b id="cf-dl">-</b><span>הורדות</span></div><div class="k"><b id="cf-in">-</b><span>התקנות (פתיחה ראשונה)</span></div>
+<div class="k"><b id="cf-dl">-</b><span>התחילו הורדה</span></div><div class="k"><b id="cf-in">-</b><span>התקנות שנפתחו</span></div>
 <div class="k"><b id="cf-a7">-</b><span>פעילים השבוע</span></div><div class="k"><b id="cf-a30">-</b><span>פעילים החודש</span></div>
 <div class="k"><b id="cf-rm">-</b><span>הוסרו (משוער: 14 יום בלי פתיחה)</span></div><div class="k"><b id="cf-sh">-</b><span>שיתופים</span></div>
 <div class="k"><b id="cf-sv">-</b><span>סקרים שמולאו</span></div><div class="k"><b id="cf-st">-</b><span>ממוצע כוכבים</span></div></div>
@@ -72,7 +72,7 @@ function load() {
     bars('c-act', series(by, 'active'), '#4ade80'); bars('c-new', series(by, 'new'), '#38bdf8'); bars('c-sh', series(by, 'share'), '#f472b6');
     rows('src', c.downloads_by_source, k => SRCN[k] || k); rows('ver', c.by_version, k => 'גרסה ' + k); rows('lang', c.by_language, k => LN[k] || k);
     const top = (Object.entries(c.by_version || {}).sort((a, b) => b[1] - a[1])[0] || [])[0];
-    document.getElementById('sum').textContent = c.installs ? `בשבוע האחרון היו ${c.active_7d} משתמשים פעילים. ${c.visits} נכנסו לדף ההורדה ו־${c.downloads} הורידו. מאז ההתחלה נרשמו ${c.installs} התקנות ו־${c.shares} שיתופים.` +
+    document.getElementById('sum').textContent = c.installs ? `בשבוע האחרון היו ${c.active_7d} משתמשים פעילים. ${c.visits} נכנסו לדף ההורדה ו־${c.downloads} התחילו הורדה (ההורדה מתחילה לבד בכניסה מאנדרואיד). מאז ההתחלה נפתחה האפליקציה ב־${c.installs} טלפונים (נספר רק בפתיחה הראשונה עם אינטרנט) ו־${c.shares} שיתופים.` +
       (top ? ` הגרסה הנפוצה: ${top}.` : '') + (c.surveys ? ` ${c.surveys} סקרים, ממוצע ${c.stars_avg} כוכבים.` : '') : 'עדיין אין התקנות שנרשמו במונה.';
     const t = new Date().toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
     document.getElementById('up').textContent = 'עודכן ב־' + t + ' · מתרענן לבד כל 10 דקות';
