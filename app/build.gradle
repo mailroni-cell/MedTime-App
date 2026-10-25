@@ -12,8 +12,9 @@ android {
         minSdk 24
         targetSdk 36 // Google Play: new apps must target API 36 (from 2026-08-31)
         // Build number from GitHub Actions, so every build has a higher version
-        versionCode 100 + (System.getenv('GITHUB_RUN_NUMBER') ?: '0').toInteger()
-        versionName "1.0." + (System.getenv('GITHUB_RUN_NUMBER') ?: '0')
+        // MT_VERSION_RUN: the MyTime store workflow sets its own number (its run counter restarted when the workflow file was renamed)
+        versionCode 100 + (System.getenv('MT_VERSION_RUN') ?: System.getenv('GITHUB_RUN_NUMBER') ?: '0').toInteger()
+        versionName "1.0." + (System.getenv('MT_VERSION_RUN') ?: System.getenv('GITHUB_RUN_NUMBER') ?: '0')
     }
 
     // Fixed signing key: every new APK installs over the previous one on the phone
@@ -30,8 +31,8 @@ android {
     // "play" = the store edition (no self-update, no automatic SMS, no USE_EXACT_ALARM), signed with the upload key
     flavorDimensions 'store'
     productFlavors {
-        full { dimension 'store'; buildConfigField 'boolean', 'STORE', 'false' }
-        play { dimension 'store'; buildConfigField 'boolean', 'STORE', 'true'; applicationId 'io.github.mailronicell.medtime' } // com.medtime.app is taken on Google Play
+        full { dimension 'store'; buildConfigField 'boolean', 'STORE', 'false'; manifestPlaceholders = [appLabel: 'MedTime'] }
+        play { dimension 'store'; buildConfigField 'boolean', 'STORE', 'true'; applicationId 'io.github.mailronicell.medtime'; manifestPlaceholders = [appLabel: 'MyTime'] } // com.medtime.app is taken on Google Play
     }
     buildFeatures { buildConfig true }
     if (System.getenv('UPLOAD_KEYSTORE')) {

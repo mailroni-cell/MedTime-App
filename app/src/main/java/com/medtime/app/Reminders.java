@@ -277,10 +277,10 @@ public class Reminders {
         for (int i = 0; i < a.length(); i++) {
             JSONObject o = a.optJSONObject(i);
             if (o == null) { out[i] = ""; continue; }
-            String label = typeLabel(ctx, o.optString("type"));
+            String label = BuildConfig.STORE ? "" : typeLabel(ctx, o.optString("type")); // Play edition: no medicine types
             String s = (label.isEmpty() ? "" : label + " ") + o.optString("name", "").trim();
             String dose = o.optString("dose", "").trim();
-            if (withDose && !dose.isEmpty()) s += " · " + I18n.t(ctx, "dose") + ": " + dose;
+            if (withDose && !dose.isEmpty() && !BuildConfig.STORE) s += " · " + I18n.t(ctx, "dose") + ": " + dose;
             out[i] = s;
         }
         return out;

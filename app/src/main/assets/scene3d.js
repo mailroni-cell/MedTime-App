@@ -183,7 +183,7 @@
     });
     function capsule(c1, c2, scale, glow) {
         const g = new THREE.Group();
-        const r = 0.5, len = 1.0;
+        const r = 0.5, len = window.MT_STORE ? 0 : 1.0; // Play edition: round glossy orbs instead of capsules
         const m1 = glow ? vividMat(c1, glow) : glossy(c1, { emissive: c1, emissiveIntensity: 0.12 });
         const m2 = glow ? vividMat(c2, glow * 0.8) : glossy(c2, { emissive: c2, emissiveIntensity: 0.08 });
         const body1 = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len / 2, 40, 1, true), m1);
@@ -275,10 +275,10 @@
         const p = PALETTE[i % PALETTE.length];
         addFloater(capsule(p[0], p[1], rnd(0.6, 1.1)), rnd(-7, 7), rnd(-5, 6), rnd(-14, -2));
     }
-    for (let i = 0; i < 6; i++) addFloater(tablet([0xf8fafc, 0xfde68a, 0xbae6fd, 0xfbcfe8][i % 4], rnd(0.6, 1.0)), rnd(-7, 7), rnd(-5, 6), rnd(-14, -3));
-    for (let i = 0; i < 3; i++) addFloater(vial([0x22d3ee, 0xa855f7, 0x10b981][i], rnd(0.8, 1.1)), rnd(-6, 6), rnd(-4, 5), rnd(-12, -4));
-    addFloater(syringe(0.9), rnd(-5, -2), rnd(1, 4), -6);
-    addFloater(syringe(0.8), rnd(2, 5), rnd(-3, 0), -8);
+    if (window.MT_STORE) for (let i = 0; i < 8; i++) { const p = PALETTE[(i + 3) % PALETTE.length]; addFloater(capsule(p[0], p[1], rnd(0.7, 1.3)), rnd(-7, 7), rnd(-5, 6), rnd(-14, -2)); }
+    else for (let i = 0; i < 6; i++) addFloater(tablet([0xf8fafc, 0xfde68a, 0xbae6fd, 0xfbcfe8][i % 4], rnd(0.6, 1.0)), rnd(-7, 7), rnd(-5, 6), rnd(-14, -3));
+    if (!window.MT_STORE) for (let i = 0; i < 3; i++) addFloater(vial([0x22d3ee, 0xa855f7, 0x10b981][i], rnd(0.8, 1.1)), rnd(-6, 6), rnd(-4, 5), rnd(-12, -4));
+    if (!window.MT_STORE) { addFloater(syringe(0.9), rnd(-5, -2), rnd(1, 4), -6); addFloater(syringe(0.8), rnd(2, 5), rnd(-3, 0), -8); }
 
     // ---- hero capsule at the top of the screen ----
     const hero = capsule(0xd4001f, 0x0066ee, 1.25, 0.12); // M-017: strong red + bright blue

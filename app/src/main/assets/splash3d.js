@@ -78,7 +78,7 @@
     // ---- glossy capsule (two halves + shiny band) ----
     var cap = new THREE.Group();
     function half(color, up) {
-        var pts = [], R = 0.62, L = 0.95;
+        var pts = [], R = window.MT_STORE ? 1.0 : 0.62, L = window.MT_STORE ? 0 : 0.95; // Play edition: a glossy orb
         for (var k = 0; k <= 16; k++) { var t = k / 16 * Math.PI / 2; pts.push(new THREE.Vector2(Math.cos(t) * R, L + Math.sin(t) * R)); }
         pts.unshift(new THREE.Vector2(R, 0)); pts.unshift(new THREE.Vector2(0.001, 0));
         pts.sort(function (p, q) { return p.y - q.y; });
@@ -89,7 +89,7 @@
     var top = half(0xff0a1e, true), bot = half(0x1d5cff, false);
     cap.add(top); cap.add(bot);
     var band = new THREE.Mesh(new THREE.TorusGeometry(0.62, 0.035, 12, 48), new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: 1, roughness: 0.15 }));
-    band.rotation.x = Math.PI / 2; cap.add(band);
+    band.rotation.x = Math.PI / 2; if (window.MT_STORE) band.scale.setScalar(1.0 / 0.62); cap.add(band);
     var capGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glow, color: 0x60a5fa, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }));
     capGlow.scale.set(6, 6, 1); cap.add(capGlow);
     cap.scale.setScalar(0.001);
@@ -115,7 +115,7 @@
     helix.add(new THREE.Points(hGeo, new THREE.PointsMaterial({ map: glow, size: 0.24, color: 0xffffff, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false })));
     var rGeo = new THREE.BufferGeometry(); rGeo.setAttribute('position', new THREE.Float32BufferAttribute(rPos, 3));
     helix.add(new THREE.LineSegments(rGeo, new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.3, blending: THREE.AdditiveBlending, depthWrite: false })));
-    helix.rotation.z = 0.5; helix.scale.setScalar(0.001);
+    helix.rotation.z = 0.5; helix.scale.setScalar(0.001); if (window.MT_STORE) helix.visible = false; // Play edition: no DNA
     scene.add(helix);
 
     // ---- shock-wave ring + spark burst ----
@@ -269,7 +269,7 @@
     if (first) { window.__spBegin = begin; return; }
     begin();
     function begin() {
-    if (CAP || /[?&]novideo/.test(location.search)) { start3d(); return; }
+    if (CAP || window.MT_STORE || /[?&]novideo/.test(location.search)) { start3d(); return; } // Play edition: live show (the film has the capsule)
 
     // ---- M-093: the opening is a ready-made video (recorded from this same 3D show), so it plays smooth like a film
     // on every phone; the language line under the title stays live text. If the video cannot play, the live 3D show runs.

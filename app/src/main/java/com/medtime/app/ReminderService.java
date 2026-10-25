@@ -231,8 +231,8 @@ public class ReminderService extends Service {
         if (nm.getNotificationChannel("medtime_reminders_v1") != null) nm.deleteNotificationChannel("medtime_reminders_v1");
         if (nm.getNotificationChannel("medtime_reminders_v2") != null) nm.deleteNotificationChannel("medtime_reminders_v2");
         if (nm.getNotificationChannel(CHANNEL_ID) != null) return;
-        NotificationChannel ch = new NotificationChannel(CHANNEL_ID, "תזכורות תרופות", NotificationManager.IMPORTANCE_HIGH);
-        ch.setDescription("תזכורת בזמן לקחת תרופה, גם כשהאפליקציה סגורה");
+        NotificationChannel ch = new NotificationChannel(CHANNEL_ID, BuildConfig.STORE ? "תזכורות" : "תזכורות תרופות", NotificationManager.IMPORTANCE_HIGH);
+        ch.setDescription(BuildConfig.STORE ? "תזכורת בזמן, גם כשהאפליקציה סגורה" : "תזכורת בזמן לקחת תרופה, גם כשהאפליקציה סגורה");
         ch.setSound(null, null);
         ch.enableVibration(false);
         ch.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);

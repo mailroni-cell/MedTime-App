@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Google Play edition: permissions the store does not allow for this app are removed here.
      Self-update (REQUEST_INSTALL_PACKAGES), automatic SMS (SEND_SMS) and USE_EXACT_ALARM;
-     exact reminders use SCHEDULE_EXACT_ALARM, which the user allows once (the setup screen already guides it). -->
+     exact reminders use SCHEDULE_EXACT_ALARM, which the user allows once (the setup screen already guides it).
+     2026-10-25: location too (nearby pharmacies are a full-edition feature; Data safety says no data collected). -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" tools:node="remove" />
     <uses-permission android:name="android.permission.SEND_SMS" tools:node="remove" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" tools:node="remove" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" tools:remove="android:maxSdkVersion" />
 </manifest>

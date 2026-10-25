@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
     private java.io.File webOverride;
 
     private java.io.File validWebOverride() {
+        if (BuildConfig.STORE) return null; // Play edition: only the built-in page
         try {
             java.io.File dir = getExternalFilesDir("web");
             if (dir == null) return null;

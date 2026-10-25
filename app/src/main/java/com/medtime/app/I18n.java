@@ -78,6 +78,27 @@ public class I18n {
         put("type_syrup", "סירופ", "شراب", "sirop", "sirop", "syrup", "сироп");
         put("type_cream", "משחה", "مرهم", "cremă", "crème", "cream", "крем");
         put("type_inhaler", "משאף", "بخاخ", "inhalator", "inhalateur", "inhaler", "ингалятор");
+        if (BuildConfig.STORE) storeTexts();
+    }
+
+    /** Google Play edition: a general daily reminders app (no medicine wording). */
+    private static void storeTexts() {
+        put("notif_title", "⏰ תזכורת", "⏰ تذكير", "⏰ Memento", "⏰ Rappel", "⏰ Reminder", "⏰ Напоминание");
+        put("body_prefix", "הגיע הזמן:", "حان الوقت:", "Este timpul:", "C'est l'heure :", "It is time:", "Пора:");
+        put("screen_one", "הגיע הזמן לתזכורת", "حان وقت التذكير", "Este timpul pentru memento", "C'est l'heure de votre rappel", "Time for your reminder", "Пора: напоминание");
+        put("screen_many", "הגיע הזמן לתזכורות", "حان وقت التذكيرات", "Este timpul pentru mementouri", "C'est l'heure de vos rappels", "Time for your reminders", "Пора: напоминания");
+        put("taken", "✅ ביצעתי", "✅ تم", "✅ Gata", "✅ Fait", "✅ Done", "✅ Сделано");
+        put("fam_sms", "MedTime: {who} עוד לא אישר/ה את התזכורת {items} (משעה {time}, לפני שעה). כדאי לבדוק שהכל בסדר.",
+                "MedTime: {who} لم يؤكد بعد التذكير {items} (الساعة {time}، قبل ساعة). يُستحسن الاطمئنان.",
+                "MedTime: {who} nu a confirmat încă mementoul {items} (de la {time}, acum o oră). Verificați dacă e totul bine.",
+                "MedTime : {who} n'a pas encore confirmé le rappel {items} ({time}, il y a une heure). Vérifiez que tout va bien.",
+                "MedTime: {who} has not confirmed the reminder {items} yet ({time}, an hour ago). Please check all is well.", "MedTime: {who} ещё не подтвердил(а) напоминание {items} ({time}, час назад). Проверьте, всё ли в порядке.");
+        put("skip", "✖️ דילוג (לא הפעם)", "✖️ تخطٍّ (ليس هذه المرة)", "✖️ Sari (nu acum)", "✖️ Passer (pas cette fois)", "✖️ Skip (not this time)", "✖️ Пропустить (не в этот раз)");
+        put("speech_one", "תזכורת. הגיע הזמן:", "تذكير. حان الوقت:", "Memento. Este timpul:", "Rappel. C'est l'heure :", "Reminder. It is time:", "Напоминание. Пора:");
+        put("speech_many", "תזכורת. הגיע הזמן:", "تذكير. حان الوقت:", "Memento. Este timpul:", "Rappel. C'est l'heure :", "Reminder. It is time:", "Напоминание. Пора:");
+        put("speech_generic_one", "תזכורת. הגיע הזמן.", "تذكير. حان الوقت.", "Memento. Este timpul.", "Rappel. C'est l'heure.", "Reminder. It is time.", "Напоминание. Пора.");
+        put("speech_generic_many", "תזכורת. הגיע הזמן.", "تذكير. حان الوقت.", "Memento. Este timpul.", "Rappel. C'est l'heure.", "Reminder. It is time.", "Напоминание. Пора.");
+        put("w_next", "התזכורת הבאה", "التذكير التالي", "Următorul memento", "Prochain rappel", "Next reminder", "Следующее напоминание");
     }
 
     static String lang(Context ctx) {

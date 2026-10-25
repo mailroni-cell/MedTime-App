@@ -1,4 +1,4 @@
-name: Play - build store bundle (AAB)
+name: MyTime - build Google Play bundle (AAB)
 
 # Google Play edition (flavor "play"), release build signed with the upload key.
 # Run by hand when the owner approves a version for the store. The AAB goes to the release "play".
@@ -36,12 +36,13 @@ jobs:
           cp jniLibs/arm64-v8a/*.so app/src/main/jniLibs/arm64-v8a/
           rm -rf so.tar.bz2 jniLibs
 
-      # M-091: the offline voices go inside the APK (owner's choice). Packs come from the release "voices" (workflow voices.yml)
-      - name: Offline voices into the APK
+      # M-367: only the pronunciation data goes inside; voice packs (data) download in the app for ar/ro/fr/en.
+      # The engine libraries above STAY inside for Google Play (Play does not allow downloading native code).
+      - name: Offline voice data into the bundle
         run: |
           set -e
           base=https://github.com/mailroni-cell/MedTime-App/releases/download/voices
-          for p in espeak ar_kareem ro_mihai fr_upmc en_amy en_ryan; do
+          for p in espeak; do
             curl -sSfL -o v.zip "$base/$p.zip"
             mkdir -p app/src/main/assets/piper/$p
             unzip -q -o v.zip -d app/src/main/assets/piper/$p
@@ -57,8 +58,10 @@ jobs:
           UPLOAD_KEY_ALIAS: upload
         run: |
           set -o pipefail
+          # 2026-10-25: renamed workflow = new run counter; MyTime 1.0 on Play was versionCode 104, so start at 1100+
+          export MT_VERSION_RUN=$((1000 + GITHUB_RUN_NUMBER))
           test -f app/medtime-upload.keystore || { echo "::error::No upload key yet - run 'Play - create upload key (once)' first"; exit 1; }
-          gradle bundlePlayRelease --stacktrace 2>&1 | tee build.log
+          gradle bundlePlayRelease assemblePlayRelease --stacktrace 2>&1 | tee build.log
 
       - name: Report build errors
         if: failure()
@@ -70,6 +73,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cp app/build/outputs/bundle/playRelease/*.aab MedTime-play.aab
-          echo "run ${{ github.run_number }} / ${{ github.sha }} / versionCode $((100 + ${{ github.run_number }}))" > play-info.txt
+          # preview APK for the owner's phone (installs next to MedTime; uninstall it before installing from Play)
+          cp app/build/outputs/apk/play/release/*.apk MyTime-preview.apk
+          echo "run ${{ github.run_number }} / ${{ github.sha }} / versionCode $((1100 + ${{ github.run_number }}))" > play-info.txt
           gh release delete play --yes --cleanup-tag || true
-          gh release create play MedTime-play.aab play-info.txt --target "${{ github.sha }}" --title "MedTime for Google Play (run ${{ github.run_number }})" --notes "Store bundle - upload this AAB in Play Console" --prerelease
+          gh release create play MedTime-play.aab MyTime-preview.apk play-info.txt --target "${{ github.sha }}" --title "MedTime for Google Play (run ${{ github.run_number }})" --notes "Store bundle - upload this AAB in Play Console" --prerelease
