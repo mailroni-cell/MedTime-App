@@ -49,9 +49,19 @@ $docFiles = @{ 'handoff/HANDOFF.md' = 'HANDOFF.md'; 'STATE.md' = 'docs\STATE.md'
 $nextDocs = Get-Date
 $hashFor = ''; $hashVal = ''; $lastWebErr = ''
 $myTime = (Get-Item $PSCommandPath).LastWriteTime
+$nextAlarmLog = Get-Date  # M-374: copy the phone's alarm diary to the PC every 10 minutes (cable connected)
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 while ($true) {
   try {
+    if ((Get-Date) -ge $nextAlarmLog) {
+      $nextAlarmLog = (Get-Date).AddMinutes(10)
+      try {
+        if (& $adb devices 2>$null | Select-String "`tdevice$") {
+          $alog = Join-Path $dir 'alarm_log.txt'
+          & $adb pull "/sdcard/Android/data/$pkg/files/alarm_log.txt" "$alog" 2>&1 | Out-Null
+        }
+      } catch { }
+    }
     if ((Get-Date) -ge $nextCheck) {
       $nextCheck = (Get-Date).AddSeconds(60)
       try {

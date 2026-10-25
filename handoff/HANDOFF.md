@@ -1,4 +1,4 @@
-# MedTime: קובץ העברה (עודכן 2026-10-25 07:10Z)
+# MedTime: קובץ העברה (עודכן 2026-10-25 07:15Z)
 
 ## איפה אנחנו
 - הגרסה המלאה MedTime (הורדה ישירה) היא הגרסה הראשית (החלטת רוני 2026-10-22 23:40). MyTime/Play מטופל בשיחה אחרת.
@@ -276,6 +276,8 @@
 - תוקן בבנייה 246 (test בלבד). נוסף יומן צלצולים בטלפון: Android/data/com.medtime.app/files/alarm_log.txt. בכבל: adb pull /sdcard/Android/data/com.medtime.app/files/alarm_log.txt (רעיון: שהמתקין במחשב ימשוך אותו לבד).
 - 07:10Z: רוני "שחרר לכולם": run 246 שוחררה לכולם (stable = 246, מאומת). עדיין לשאול: האם תזכורת המים דלוקה אצלו, והאם התזכורות מדויקות; אם לא - לקרוא את alarm_log.txt.
 - MyTime: AAB 1101 מוכן להעלאה (סעיף 36).
+
+- 07:15Z M-374: יומן הצלצולים נמשך לבד למחשב: C:\Projects\MedTime\alarm_log.txt (כל 10 דקות בכבל). MyTime AAB חדש: versionCode 1102 (https://github.com/mailroni-cell/MedTime-App/releases/download/play/MedTime-play.aab) - את ההעלאה ל-Play Console רוני עושה (לClaude אין לחיצות בדפדפן).
 
 ### הודעת פתיחה לחשבון השני
 ```

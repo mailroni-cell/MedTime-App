@@ -3,6 +3,10 @@
 כל שינוי נרשם כאן עם חתימה: מתי, איזה חשבון/שיחה, מה בדיוק, אילו קבצים, ואיך להחזיר אחורה.
 החדש ביותר למעלה. להחזרה: `git revert <commit>` או לקחת את הקובץ מה-commit הקודם.
 
+## 2026-10-25 ~07:15Z · חשבון 1 · thread "📌 MedTime – הרזיית האפליקציה"
+- מה: M-374 המתקין במחשב (tools/medtime_autoinstall.ps1 -> C:\Projects\MedTime) מושך כל 10 דקות בכבל את alarm_log.txt מהטלפון ל-C:\Projects\MedTime\alarm_log.txt. התחיל מחדש לבד 09:10. MyTime AAB נבנה מחדש: versionCode 1102 (כולל M-373).
+- להחזרה: git checkout HEAD~1 -- tools/medtime_autoinstall.ps1 והעתקה למחשב.
+
 ## 2026-10-25 ~07:10Z · חשבון 1 · thread "📌 MedTime – הרזיית האפליקציה"
 - מה: רוני "שחרר לכולם": release/stable.txt = run 246. latest מאומת.
 - להחזרה: "run 244" ב-release/stable.txt (git revert 28ec363).
