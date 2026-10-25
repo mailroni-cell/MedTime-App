@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- M-375: full MedTime for Google Play internal testing. Only what Play blocks in every track is removed:
+     self-update (REQUEST_INSTALL_PACKAGES), automatic SMS (SEND_SMS) and USE_EXACT_ALARM.
+     Exact reminders use SCHEDULE_EXACT_ALARM (the setup screen guides the user to allow it). -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" tools:node="remove" />
+    <uses-permission android:name="android.permission.SEND_SMS" tools:node="remove" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" tools:node="remove" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" tools:remove="android:maxSdkVersion" />
+</manifest>

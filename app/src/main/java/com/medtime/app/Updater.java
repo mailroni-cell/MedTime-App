@@ -70,7 +70,7 @@ class Updater {
     static void check(Activity a, WebView wv) {
         final int cur = currentRun(a);
         // Google Play edition: updates come only from the store, so the app is always "up to date" here
-        if (BuildConfig.STORE) { send(a, wv, "{\"type\":\"check\",\"ok\":true,\"cur\":" + cur + ",\"latest\":" + cur + "}"); return; }
+        if (BuildConfig.GPLAY) { send(a, wv, "{\"type\":\"check\",\"ok\":true,\"cur\":" + cur + ",\"latest\":" + cur + "}"); return; }
         new Thread(() -> {
             try {
                 HttpURLConnection c = open(BASE + "build-info.txt?t=" + System.currentTimeMillis());
@@ -90,7 +90,7 @@ class Updater {
 
     /** Downloads the APK (progress {type:'progress', pct}) and opens the Android installer. */
     static void download(Activity a, WebView wv) {
-        if (busy || BuildConfig.STORE) return;
+        if (busy || BuildConfig.GPLAY) return;
         if (Build.VERSION.SDK_INT >= 26 && !a.getPackageManager().canRequestPackageInstalls()) {
             // Android asks once: "allow MedTime to install apps".
             // M-076: the page first explains it kindly, then opens the screen (openInstallPermission).

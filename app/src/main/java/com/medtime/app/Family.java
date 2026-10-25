@@ -36,7 +36,7 @@ class Family {
     }
 
     static boolean canSend(Context c) {
-        if (BuildConfig.STORE) return true; // Play edition: the phone's SMS app sends it, no permission needed
+        if (BuildConfig.GPLAY) return true; // Play edition: the phone's SMS app sends it, no permission needed
         return Build.VERSION.SDK_INT < 23 || c.checkSelfPermission(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED;
     }
 
@@ -48,7 +48,7 @@ class Family {
         String time = src.getStringExtra(Reminders.EXTRA_TIME);
         String msg = I18n.t(c, "fam_sms").replace("{who}", who.isEmpty() ? I18n.t(c, "fam_someone") : who)
                 .replace("{items}", items).replace("{time}", time == null ? "" : time);
-        if (BuildConfig.STORE) { notifyToSend(c, msg); return; }
+        if (BuildConfig.GPLAY) { notifyToSend(c, msg); return; }
         if (!send(c, msg)) notifyToSend(c, msg); // M-185: SMS could not go out (no permission / no SIM chosen): a notification opens it ready to send
     }
 
@@ -81,7 +81,7 @@ class Family {
     static boolean send(Context c, String text) {
         String phone = p(c).getString(PHONE, "");
         if (phone.isEmpty() || !canSend(c)) return false;
-        if (BuildConfig.STORE) { // Play edition: open the SMS app with the message ready
+        if (BuildConfig.GPLAY) { // Play edition: open the SMS app with the message ready
             try { c.startActivity(smsIntent(c, text)); return true; } catch (Exception e) { return false; }
         }
         try {

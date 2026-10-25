@@ -31,8 +31,11 @@ android {
     // "play" = the store edition (no self-update, no automatic SMS, no USE_EXACT_ALARM), signed with the upload key
     flavorDimensions 'store'
     productFlavors {
-        full { dimension 'store'; buildConfigField 'boolean', 'STORE', 'false'; manifestPlaceholders = [appLabel: 'MedTime'] }
-        play { dimension 'store'; buildConfigField 'boolean', 'STORE', 'true'; applicationId 'io.github.mailronicell.medtime'; manifestPlaceholders = [appLabel: 'MyTime'] } // com.medtime.app is taken on Google Play
+        // STORE = MyTime look (no medicine wording). GPLAY = Google Play rules (no self-update, no web updates, no automatic SMS).
+        full { dimension 'store'; buildConfigField 'boolean', 'STORE', 'false'; buildConfigField 'boolean', 'GPLAY', 'false'; manifestPlaceholders = [appLabel: 'MedTime'] }
+        // M-375: the full MedTime for Google Play internal testing only (separate app, testers by e-mail)
+        playfull { dimension 'store'; buildConfigField 'boolean', 'STORE', 'false'; buildConfigField 'boolean', 'GPLAY', 'true'; applicationId 'io.github.mailronicell.medtime.full'; manifestPlaceholders = [appLabel: 'MedTime'] }
+        play { dimension 'store'; buildConfigField 'boolean', 'STORE', 'true'; buildConfigField 'boolean', 'GPLAY', 'true'; applicationId 'io.github.mailronicell.medtime'; manifestPlaceholders = [appLabel: 'MyTime'] } // com.medtime.app is taken on Google Play
     }
     buildFeatures { buildConfig true }
     if (System.getenv('UPLOAD_KEYSTORE')) {
