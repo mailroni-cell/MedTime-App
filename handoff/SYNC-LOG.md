@@ -3,6 +3,10 @@
 כל שינוי נרשם כאן עם חתימה: מתי, איזה חשבון/שיחה, מה בדיוק, אילו קבצים, ואיך להחזיר אחורה.
 החדש ביותר למעלה. להחזרה: `git revert <commit>` או לקחת את הקובץ מה-commit הקודם.
 
+## 2026-10-25 ~16:55Z · חשבון 1 · thread "📌 MedTime – הרזיית האפליקציה"
+- מה: M-375 גרסת MedTime מלאה ל-Google Play בדיקה פנימית: flavor playfull (io.github.mailronicell.medtime.full), דגל BuildConfig.GPLAY ב-MainActivity/Family/Updater, app/src/playfull/ (manifest + store.js), workflow medtime-play-full.yml -> release play-full.
+- להחזרה: git revert 3420008.
+
 ## 2026-10-25 ~07:15Z · חשבון 1 · thread "📌 MedTime – הרזיית האפליקציה"
 - מה: M-374 המתקין במחשב (tools/medtime_autoinstall.ps1 -> C:\Projects\MedTime) מושך כל 10 דקות בכבל את alarm_log.txt מהטלפון ל-C:\Projects\MedTime\alarm_log.txt. התחיל מחדש לבד 09:10. MyTime AAB נבנה מחדש: versionCode 1102 (כולל M-373).
 - להחזרה: git checkout HEAD~1 -- tools/medtime_autoinstall.ps1 והעתקה למחשב.

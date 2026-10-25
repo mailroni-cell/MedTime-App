@@ -213,6 +213,13 @@
 - מחכה לבדיקה של רוני: אחרי יום-יומיים, שהמספרים בדף https://medtime.pages.dev/stats.html ממשיכים לעלות.
 - עצור עד שרוני יגיד: פירוט כוכבי הסקר ו"מה כדאי לשפר" בדף (דורש שינוי ב-functions, שמפעיל בניית APK).
 
+## 38. 2026-10-25 16:55Z - M-375 MedTime המלאה לבדיקה פנימית בגוגל (חשבון 1, אותו thread)
+- רוני בחר: אפליקציה נפרדת ב-Play Console, רק Internal testing (עד 100 טסטרים לפי מייל), כמו APEX3D. הוסבר הסיכון: גוגל דחו את MedTime 21.10 (אפליקציית תרופות דורשת חשבון ארגון); בבדיקה פנימית בדרך כלל אין בדיקה מוקדמת אבל הכללים חלים.
+- קוד: flavor חדש playfull (app/build.gradle), כתובת io.github.mailronicell.medtime.full, שם MedTime. דגל חדש BuildConfig.GPLAY (=כללי Play: בלי עדכון עצמי, בלי עדכוני web, SMS נפתח מוכן במקום אוטומטי) בנפרד מ-STORE (=מראה MyTime). app/src/playfull/AndroidManifest.xml מסיר REQUEST_INSTALL_PACKAGES, SEND_SMS, USE_EXACT_ALARM. app/src/playfull/assets/store.js מסתיר רק את אריח/כפתור העדכון. מנוע הקול בפנים.
+- workflow ידני: .github/workflows/medtime-play-full.yml -> release "play-full": MedTime-full-play.aab (versionCode 100+run).
+- מחכה לרוני ב-Play Console: Create app (שם MedTime, App, Free) > Testing > Internal testing > Testers: Create email list > Releases: Create new release > Upload את ה-AAB > Next > Save > Start rollout > לשונית Testers: Copy link ולשלוח לטסטרים. ייתכן שגוגל יבקשו קודם את ה-App content הבסיסי (Privacy policy, App access, Ads, Content rating, Target audience, Data safety, Health apps).
+- MedTime הרגילה וגם MyTime לא השתנו בהתנהגות (GPLAY=false ב-full; ב-play GPLAY=STORE=true כמו קודם).
+
 ### הודעת פתיחה לחשבון השני
 ```
 תמשיך את MedTime מ-handoff/HANDOFF.md סעיף 30. דף הסטטיסטיקה מציג רק Cloudflare ומתרענן כל 10 דקות (M-365), והשליחה לשרת הישן ntfy כובתה (M-366). תשאל אותי אם המספרים בדף נראים תקינים, ואם להוסיף לדף את פירוט הסקר.
@@ -281,5 +288,5 @@
 
 ### הודעת פתיחה לחשבון השני
 ```
-תמשיך את MedTime מ-handoff/HANDOFF.md סעיף 37. גרסה 246 (תיקון דיוק תזכורות M-373 + יומן צלצולים alarm_log.txt) שוחררה לכולם. תשאל אותי אם התזכורות מדויקות עכשיו ואם תזכורת המים דלוקה, ואם העליתי את MyTime (AAB 1101) לגוגל.
+תמשיך את MedTime מ-handoff/HANDOFF.md סעיף 38. הכנו את MedTime המלאה לבדיקה פנימית בגוגל כאפליקציה נפרדת (io.github.mailronicell.medtime.full, release play-full, M-375). תשאל אותי איפה אני עומד ב-Play Console (יצירת האפליקציה, רשימת טסטרים, העלאת ה-AAB), ואם התזכורות מדויקות עכשיו ואם העליתי את MyTime (AAB 1102).
 ```
