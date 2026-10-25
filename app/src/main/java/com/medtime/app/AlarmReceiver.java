@@ -13,6 +13,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         String items = intent.getStringExtra(Reminders.EXTRA_ITEMS);
         String time = intent.getStringExtra(Reminders.EXTRA_TIME);
         boolean daily = intent.getBooleanExtra(Reminders.EXTRA_DAILY, false);
+        // M-373: alarm diary
+        Reminders.log(ctx, "FIRE " + (Appointments.isAppt(intent) ? "appt" : Reminders.isWater(intent) ? "water" : daily ? "daily" : intent.hasExtra(Reminders.EXTRA_NAG) ? "repeat#" + intent.getIntExtra(Reminders.EXTRA_NAG, 0) : "snooze/test")
+                + " id=" + id + " time=" + time + " " + Reminders.firstName(items));
 
         // Daily reminder: book tomorrow's alarm right away (M-036: appointments are one-time)
         if (daily && time != null && !Appointments.isAppt(intent)) {

@@ -30,6 +30,7 @@ public class ActionReceiver extends BroadcastReceiver {
         }
         // M-080: an answer stops the repeating; taken / skip go into the log
         String act = intent.getAction();
+        Reminders.log(ctx, "ANSWER " + String.valueOf(act).replace("com.medtime.app.", "") + " id=" + id); // M-373
         if (ACTION_TAKEN.equals(act) || ACTION_SKIP.equals(act)) {
             Reminders.cancel(ctx, id, false);
             MedLog.record(ctx, intent, ACTION_TAKEN.equals(act) ? "taken" : "skipped");

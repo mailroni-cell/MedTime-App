@@ -57,7 +57,8 @@ public class ReminderService extends Service {
         boolean appt = Appointments.isAppt(intent); // M-036
         Notification n = appt ? Appointments.buildNotification(this, intent) : buildNotification(this, intent);
         // M-094: the medicine reminder opens on top of everything (also while another app is in use) until taken / snoozed / skipped
-        if (!appt && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && android.provider.Settings.canDrawOverlays(this)) {
+        // M-373: water reminders are a notification only (no full screen), so they never look like a medicine reminder
+        if (!appt && !Reminders.isWater(intent) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && android.provider.Settings.canDrawOverlays(this)) {
             try {
                 Intent full = new Intent(this, AlarmActivity.class).putExtras(intent);
                 full.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -84,7 +85,7 @@ public class ReminderService extends Service {
         String vk = Vibe.chosen(this);
         Vibe.play(this, nag >= 2 && !"off".equals(vk) ? "strong" : vk); // M-079
         if (!appt && !Reminders.isWater(intent)) { // M-317: water reminders ring once
-            if (nag < Reminders.NAG_MAX) Reminders.nag(this, intent, nag + 1);
+            if (nag < Reminders.NAG_MAX) { Reminders.nag(this, intent, nag + 1); Reminders.log(this, "repeat booked in " + Reminders.NAG_MINUTES + " min id=" + id); }
             else { MedLog.record(this, intent, "missed"); Family.alertMissed(this, intent); } // M-100
         }
         if (Reminders.voiceOn(this)) {

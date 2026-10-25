@@ -42,9 +42,15 @@ public class Reminders {
     static void sync(Context ctx, String json) {
         SharedPreferences prefs = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
         JSONArray old = parse(prefs.getString(KEY_LIST, "[]"));
+        java.util.Set<Integer> keep = new java.util.HashSet<>();
+        JSONArray now = parse(json == null ? "[]" : json);
+        for (int i = 0; i < now.length(); i++) { JSONObject r = now.optJSONObject(i); if (r != null) keep.add(r.optInt("id")); }
         for (int i = 0; i < old.length(); i++) {
             JSONObject r = old.optJSONObject(i);
-            if (r != null) cancel(ctx, r.optInt("id"), true);
+            if (r == null) continue;
+            cancel(ctx, r.optInt("id"), true);
+            // M-373: a deleted reminder (or water reminders switched off) must not keep ringing from a pending snooze / repeat
+            if (!keep.contains(r.optInt("id"))) cancel(ctx, r.optInt("id"), false);
         }
         prefs.edit().putString(KEY_LIST, json == null ? "[]" : json).apply();
         scheduleAll(ctx);
@@ -149,6 +155,7 @@ public class Reminders {
     static void snooze(Context ctx, int id, String items, String time, int minutes) {
         if (minutes <= 0) minutes = SNOOZE_MINUTES;
         long at = System.currentTimeMillis() + minutes * 60_000L;
+        log(ctx, "snooze " + minutes + " min -> " + new java.text.SimpleDateFormat("HH:mm", java.util.Locale.US).format(new java.util.Date(at)) + " id=" + id);
         schedule(ctx, id, items, time, at, false);
     }
 
@@ -169,6 +176,28 @@ public class Reminders {
         PendingIntent pi = PendingIntent.getBroadcast(ctx, id * 2 + 1, i,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         setAlarm(ctx, System.currentTimeMillis() + NAG_MINUTES * 60_000L, pi);
+    }
+
+    // ---------- M-373: alarm diary (Android/data/com.medtime.app/files/alarm_log.txt, last 400 lines) to check timing ----------
+    static synchronized void log(Context ctx, String line) {
+        try {
+            java.io.File d = ctx.getExternalFilesDir(null);
+            if (d == null) return;
+            java.io.File f = new java.io.File(d, "alarm_log.txt");
+            java.util.List<String> lines = new java.util.ArrayList<>();
+            if (f.exists()) try (java.io.BufferedReader r = new java.io.BufferedReader(new java.io.FileReader(f))) {
+                for (String l; (l = r.readLine()) != null; ) lines.add(l);
+            }
+            lines.add(new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.US).format(new java.util.Date()) + "  " + line);
+            while (lines.size() > 400) lines.remove(0);
+            try (java.io.PrintWriter w = new java.io.PrintWriter(new java.io.FileWriter(f))) { for (String l : lines) w.println(l); }
+        } catch (Throwable ignored) { }
+    }
+
+    static String firstName(String items) {
+        JSONArray a = parse(items);
+        JSONObject o = a.optJSONObject(0);
+        return o == null ? "" : o.optString("name", "");
     }
 
     static void cancel(Context ctx, int id, boolean daily) {
