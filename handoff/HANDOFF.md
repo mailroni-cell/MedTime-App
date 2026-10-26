@@ -302,3 +302,4 @@
 ```
 תמשיך את MedTime מ-handoff/HANDOFF.md סעיף 38. M-376 עובד: יומן הצלצולים נמשך למחשב (C:\Projects\MedTime\alarm_log.txt) והתזכורות מדויקות. MedTime המלאה מוכנה לבדיקה פנימית בגוגל (release play-full, M-375). תשאל אותי איפה אני עומד ב-Play Console (יצירת האפליקציה, רשימת טסטרים, העלאת ה-AAB), אם העליתי את MyTime (AAB 1102), ואם להדליק תזכורת מים. Uptodown אישרו (M-377): תשאל אם בדקתי את הכפתור בדף ההורדה ואם העליתי ל-Uptodown את גרסה 246. הודעת השיתוף החדשה (M-378) על test: תשאל אם היא נראית טוב בטלפון.
 ```
+- 2026-10-26 17:35Z: M-381 download page shortened (fits one screen, safety card, mini steps, details under 'need help?'); after download the button becomes '📲 Install now' that opens the phone's downloads list (intent VIEW_DOWNLOADS; a page can't install by itself). Live on https://medtime.pages.dev (Cloudflare check success). Not yet verified on a real phone.
