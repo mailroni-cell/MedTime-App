@@ -19,6 +19,19 @@ function AdbInstall($file, $sec) {
   }
   return ((Get-Content $o -Raw -ErrorAction SilentlyContinue) + ' ' + (Get-Content $e -Raw -ErrorAction SilentlyContinue)).Trim()
 }
+# M-380: adb calls with a time limit (a stuck adb call froze the whole watcher on 2026-10-26)
+function AdbT([string]$argStr, [int]$sec = 20) {
+  $o = Join-Path $dir 'adbt_out.txt'; $e = Join-Path $dir 'adbt_err.txt'
+  $p = Start-Process -FilePath $adb -ArgumentList $argStr -NoNewWindow -PassThru -RedirectStandardOutput $o -RedirectStandardError $e
+  if (-not $p.WaitForExit($sec * 1000)) {
+    try { $p.Kill() } catch { }
+    Log ('ADB TIMEOUT (' + $sec + ' s): adb ' + $argStr + ' - restarting adb')
+    & $adb kill-server 2>&1 | Out-Null
+    $global:LASTEXITCODE = 1; return @()
+  }
+  $global:LASTEXITCODE = $p.ExitCode
+  return @(Get-Content $o -ErrorAction SilentlyContinue) + @(Get-Content $e -ErrorAction SilentlyContinue)
+}
 $timedOut = ''
 # Only ONE copy may ever run: a second copy sees the lock and quits at once
 $mtx = New-Object System.Threading.Mutex($false, 'Global\MedTimeAutoInstall')
@@ -56,27 +69,27 @@ while ($true) {
   try {
     # M-376: more than one Android device on the cable -> adb needs a serial. Use the one that has MedTime installed (ANDROID_SERIAL is read by every adb call)
     try {
-      $devs = @(& $adb devices 2>$null | Select-String "`tdevice$" | ForEach-Object { ("$_" -split "`t")[0] })
+      $devs = @(AdbT 'devices' | Select-String "`tdevice$" | ForEach-Object { ("$_" -split "`t")[0] })
       $dkey = ($devs -join ',')
       if ($dkey -ne $lastDevKey) {
         $lastDevKey = $dkey; Remove-Item Env:ANDROID_SERIAL -ErrorAction SilentlyContinue
         if ($devs.Count -ge 1) {
           # prefer a real phone (not an emulator) that has MedTime installed
-          $pick = $devs | Where-Object { $_ -notlike 'emulator-*' -and "$(& $adb -s $_ shell pm path $pkg 2>$null)" -match 'package:' } | Select-Object -First 1
+          $pick = $devs | Where-Object { $_ -notlike 'emulator-*' -and "$(AdbT ('-s ' + $_ + ' shell pm path ' + $pkg))" -match 'package:' } | Select-Object -First 1
           if (-not $pick) { $pick = $devs | Where-Object { $_ -notlike 'emulator-*' } | Select-Object -First 1 }
           if (-not $pick) { $pick = $devs[0] }
           $env:ANDROID_SERIAL = $pick
-          $dl = (@(& $adb devices 2>$null | Select-Object -Skip 1 | Where-Object { $_ } | ForEach-Object { "$_" -replace "`t", ':' }) -join ', '); Log ('ADB: ' + $dl + ' - using ' + $pick)
+          $dl = (@(AdbT 'devices' | Select-Object -Skip 1 | Where-Object { $_ } | ForEach-Object { "$_" -replace "`t", ':' }) -join ', '); Log ('ADB: ' + $dl + ' - using ' + $pick)
         }
       }
     } catch { }
     # M-376: pull the alarm diary right when the phone is plugged in (then every 10 min), and log the result
     try {
-      $conn = [bool](& $adb devices 2>$null | Select-String "`tdevice$")
+      $conn = [bool](AdbT 'devices' | Select-String "`tdevice$")
       if ($conn -and (-not $wasConn -or (Get-Date) -ge $nextAlarmLog)) {
         $nextAlarmLog = (Get-Date).AddMinutes(10)
         $alog = Join-Path $dir 'alarm_log.txt'
-        $pres = "$(& $adb pull "/sdcard/Android/data/$pkg/files/alarm_log.txt" "$alog" 2>&1)".Trim()
+        $pres = "$(AdbT ('pull /sdcard/Android/data/' + $pkg + '/files/alarm_log.txt "' + $alog + '"') 60)".Trim()
         if ($LASTEXITCODE -eq 0 -and (Test-Path $alog)) { $msg = 'ALARM LOG PULLED (' + (Get-Content $alog).Count + ' lines)' }
         else { $msg = 'ALARM LOG PULL FAILED: ' + $pres }
         if (-not $wasConn -or $msg -ne $lastAlarmMsg) { Log $msg; $lastAlarmMsg = $msg }
@@ -157,7 +170,7 @@ while ($true) {
         if ($winfo -is [byte[]]) { $winfo = [Text.Encoding]::UTF8.GetString($winfo) }
         $winfo = "$winfo".Trim()
         $wseen = ''; if (Test-Path $webSeen) { $wseen = "$(Get-Content $webSeen -Raw)".Trim() }
-        if ($winfo -match 'base (\d+)' -and $winfo -ne $wseen -and (& $adb devices 2>$null | Select-String "`tdevice$")) {
+        if ($winfo -match 'base (\d+)' -and $winfo -ne $wseen -and (AdbT 'devices' | Select-String "`tdevice$")) {
           $base = $Matches[1]
           $wz = Join-Path $dir 'web.zip'; $wd = Join-Path $dir 'web'
           Invoke-WebRequest -Uri $webZipUrl -OutFile $wz -UseBasicParsing -TimeoutSec 120
@@ -187,7 +200,7 @@ while ($true) {
       $h = $hashVal
       $last = ''; if (Test-Path $stamp) { $last = (Get-Content $stamp -Raw).Trim() }
       if ($h -ne $last) {
-        $dev = & $adb devices 2>$null | Select-String "`tdevice$"
+        $dev = AdbT 'devices' | Select-String "`tdevice$"
         if (-not $dev) {
           if ($waitedFor -ne $h) { Log 'new APK found - waiting for the phone (connect USB)'; $waitedFor = $h }
         } else {

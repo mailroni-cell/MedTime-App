@@ -3,6 +3,12 @@
 כל שינוי נרשם כאן עם חתימה: מתי, איזה חשבון/שיחה, מה בדיוק, אילו קבצים, ואיך להחזיר אחורה.
 החדש ביותר למעלה. להחזרה: `git revert <commit>` או לקחת את הקובץ מה-commit הקודם.
 
+## 2026-10-26 ~12:55Z · חשבון 1 · session claude.ai/code
+- מה: M-380 (1) web-update.yml: שינוי ב-docs/ (האתר) באותה דחיפה כבר לא מונע עדכון web לטלפון. (2) המתקין במחשב: כל קריאת adb (devices, pm path, pull) עם הגבלת זמן (פונקציה AdbT); בתקיעה: שורת ADB TIMEOUT ביומן + איפוס adb. המתקין נתקע ב-14:41 מקומי.
+- לקח: device_commit_files שומר עותק לפי שם הקובץ ב-outputs; להעתיק למחשב תמיד בשם חדש (למשל medtime_autoinstall_m380.ps1) ולבדוק גודל אחרי.
+- קבצים: tools/medtime_autoinstall.ps1 (הועתק ל-C:\Projects\MedTime), .github/workflows/web-update.yml.
+- להחזרה: git revert של ה-commits.
+
 ## 2026-10-26 ~12:50Z · חשבון 1 · session claude.ai/code
 - מה: M-379 הרגעה מאומתת: לפי דוח האבטחה של Uptodown (26.10: 76 אנטי-וירוסים, אפס איומים, No Virus/Spyware/Malware, Certified by Uptodown). בדף ההורדה תיבת "✅ נבדק ונמצא בטוח" עם 4 תגים וקישור לדוח VirusTotal; בהודעת השיתוף שורת ✅. 6 שפות.
 - קבצים: docs/download.html, app/src/main/assets/more.js.
