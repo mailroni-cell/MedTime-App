@@ -220,6 +220,7 @@
 - מחכה לרוני ב-Play Console: Create app (שם MedTime, App, Free) > Testing > Internal testing > Testers: Create email list > Releases: Create new release > Upload את ה-AAB > Next > Save > Start rollout > לשונית Testers: Copy link ולשלוח לטסטרים. ייתכן שגוגל יבקשו קודם את ה-App content הבסיסי (Privacy policy, App access, Ads, Content rating, Target audience, Data safety, Health apps).
 - 17:05Z: הקובץ נבנה ונבדק (run 1, versionCode 101, 52 MB, הכתובת נכונה, בלי ההרשאות החסומות). מדריך מלא עם כל התשובות ל-App content: handoff/play-full-guide.md. רוני ביקש שClaude יעשה הכול לבד; נשאר רק מה שדורש לחיצות שלו ב-Play Console.
 - MedTime הרגילה וגם MyTime לא השתנו בהתנהגות (GPLAY=false ב-full; ב-play GPLAY=STORE=true כמו קודם).
+- 2026-10-26 11:50Z (חשבון 1, Claude עם גישה מלאה לכונן C): נבדק יומן המחשב. run 247 הותקנה בטלפון 25.10 19:30 (מקומי). הקובץ C:\Projects\MedTime\alarm_log.txt לא קיים - המשיכה האוטומטית (M-374) עוד לא הצליחה אף פעם: היא רצה רק פעם ב-10 דקות, והטלפון היה מחובר לכבל רק כדקה; כשלון נבלע בשקט (Out-Null). מחכה לרוני: לחבר כבל ל-10 דקות, או לאשר תיקון שימשוך את היומן מיד כשהטלפון מתחבר ויכתוב שגיאה ל-install_log.
 
 ### הודעת פתיחה לחשבון השני
 ```
@@ -289,5 +290,5 @@
 
 ### הודעת פתיחה לחשבון השני
 ```
-תמשיך את MedTime מ-handoff/HANDOFF.md סעיף 38. הכנו את MedTime המלאה לבדיקה פנימית בגוגל כאפליקציה נפרדת (io.github.mailronicell.medtime.full, release play-full, M-375). תשאל אותי איפה אני עומד ב-Play Console (יצירת האפליקציה, רשימת טסטרים, העלאת ה-AAB), ואם התזכורות מדויקות עכשיו ואם העליתי את MyTime (AAB 1102).
+תמשיך את MedTime מ-handoff/HANDOFF.md סעיף 38 (כולל השורה מ-26.10 על alarm_log). הכנו את MedTime המלאה לבדיקה פנימית בגוגל כאפליקציה נפרדת (io.github.mailronicell.medtime.full, release play-full, M-375). תשאל אותי איפה אני עומד ב-Play Console (יצירת האפליקציה, רשימת טסטרים, העלאת ה-AAB), ואם התזכורות מדויקות עכשיו ואם העליתי את MyTime (AAB 1102).
 ```
