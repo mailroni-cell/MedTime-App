@@ -46,6 +46,13 @@
   .trust .sh { font-size: 2.3rem; animation: bob 3s ease-in-out infinite; }
   .trust b { display: block; font-size: 1.08rem; margin-bottom: 2px; }
   .trust span { color: #cbd5e1; font-size: .98rem; }
+  /* M-379: verified safety badges (Uptodown security report 2026-10-26: 76 antivirus engines, no threats) */
+  .safe { background: var(--card); border: 1px solid rgba(74,222,128,.35); border-radius: 18px; padding: 14px; margin: 0 0 16px; }
+  .safe h2 { margin: 0 0 10px; font-size: 1.12rem; text-align: center; color: #bbf7d0; }
+  .safe ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .safe li { display: flex; gap: 10px; align-items: center; background: rgba(34,197,94,.08); border-radius: 12px; padding: 9px 11px; line-height: 1.35; font-size: 1rem; }
+  .safe li i { font-style: normal; font-size: 1.35rem; flex: 0 0 auto; }
+  .safe a { display: block; text-align: center; color: #93c5fd; font-size: .9rem; margin-top: 10px; }
   .step { display: flex; gap: 14px; align-items: center; background: var(--card); border-radius: 18px; padding: 12px 14px; margin-bottom: 12px; }
   .step .n { flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%; background: #334155; display: grid; place-items: center; font-weight: 800; }
   .step .tx { flex: 1; line-height: 1.45; }
@@ -81,6 +88,7 @@
   <a class="utd" id="utd" href="https://medtime.en.uptodown.com/android" target="_blank" rel="noopener"><span>🏪</span><span><span id="utdT"></span><small id="utdS"></small></span></a>
   <p class="hint" id="hint"></p>
   <div class="trust"><div class="sh">🛡️</div><div><b id="trT"></b><span id="trS"></span></div></div>
+  <div class="safe"><h2 id="sfT"></h2><ul id="sfL"></ul><a id="sfR" href="https://www.virustotal.com/gui/file/346975219117f212d654ace24087144d399dbfccca72df8e48f7189d2faea68b" target="_blank" rel="noopener"></a></div>
   <div id="steps"></div>
   <div class="sam" id="sam"></div>
   <div class="ver" id="ver"></div>
@@ -99,6 +107,16 @@
     inapp: ['🌐 פתחו את הדף ב-Chrome כדי להוריד', '🌐 افتح الصفحة في Chrome للتنزيل', '🌐 Deschide pagina în Chrome pentru descărcare', '🌐 Ouvrez la page dans Chrome pour télécharger', '🌐 Open this page in Chrome to download', '🌐 Откройте страницу в Chrome для загрузки'],
     utdT: ['להורדה מחנות Uptodown', 'التنزيل من متجر Uptodown', 'Descarcă din magazinul Uptodown', 'Télécharger depuis le store Uptodown', 'Get it on the Uptodown store', 'Скачать в магазине Uptodown'],
     utdS: ['חנות אפליקציות מוכרת, נבדק על ידם', 'متجر تطبيقات معروف، تمت مراجعته', 'Magazin de aplicații cunoscut, verificat de ei', 'Store d’applications reconnu, vérifié par eux', 'A well-known app store, reviewed by them', 'Известный магазин приложений, проверено ими'],
+    sfT: ['✅ נבדק ונמצא בטוח', '✅ تم فحصه وهو آمن', '✅ Verificat și sigur', '✅ Vérifiée et sûre', '✅ Checked and safe', '✅ Проверено и безопасно'],
+    sfL: [
+      [['🦠', 'נקי מווירוסים: נסרק ב-76 תוכנות אנטי-וירוס, אפס איומים'], ['🕵️', 'בלי רוגלות ובלי תוכנות זדוניות'], ['🏪', 'נבדק ואושר על ידי חנות Uptodown'], ['🔒', 'בלי פרסומות, בלי הרשמה, המידע נשאר רק בטלפון שלך']],
+      [['🦠', 'خالٍ من الفيروسات: فُحص بـ76 برنامج مكافحة فيروسات، بلا أي تهديد'], ['🕵️', 'بلا برامج تجسس وبلا برامج ضارة'], ['🏪', 'تمت مراجعته واعتماده من متجر Uptodown'], ['🔒', 'بلا إعلانات، بلا تسجيل، ومعلوماتك تبقى في هاتفك فقط']],
+      [['🦠', 'Fără viruși: scanat de 76 de antivirusuri, zero amenințări'], ['🕵️', 'Fără spyware și fără malware'], ['🏪', 'Verificat și aprobat de magazinul Uptodown'], ['🔒', 'Fără reclame, fără înregistrare, datele rămân doar în telefonul tău']],
+      [['🦠', 'Sans virus : analysée par 76 antivirus, aucune menace'], ['🕵️', 'Sans logiciel espion ni malware'], ['🏪', 'Vérifiée et approuvée par le store Uptodown'], ['🔒', 'Sans pub, sans inscription, vos données restent sur votre téléphone']],
+      [['🦠', 'Virus-free: scanned by 76 antivirus engines, zero threats'], ['🕵️', 'No spyware, no malware'], ['🏪', 'Reviewed and approved by the Uptodown store'], ['🔒', 'No ads, no sign-up, your data stays only on your phone']],
+      [['🦠', 'Без вирусов: проверено 76 антивирусами, угроз нет'], ['🕵️', 'Без шпионских и вредоносных программ'], ['🏪', 'Проверено и одобрено магазином Uptodown'], ['🔒', 'Без рекламы и регистрации, данные остаются только в телефоне']]
+    ],
+    sfR: ['לדוח הסריקה המלא (VirusTotal) ←', 'التقرير الكامل للفحص (VirusTotal) ←', 'Raportul complet al scanării (VirusTotal) →', 'Rapport d’analyse complet (VirusTotal) →', 'Full scan report (VirusTotal) →', 'Полный отчёт проверки (VirusTotal) →'],
     hint: ['כדאי לפתוח את הדף ב-Chrome 🙂', 'يُفضّل فتح الصفحة في Chrome 🙂', 'Cel mai bine deschide pagina în Chrome 🙂', 'Ouvrez de préférence la page dans Chrome 🙂', 'Best opened in Chrome 🙂', 'Лучше открыть страницу в Chrome 🙂'],
     trT: ['הטלפון ישאל אם מותר, וזה בסדר גמור', 'سيسأل الهاتف إن كان مسموحًا، وهذا طبيعي تمامًا', 'Telefonul va întreba dacă are voie, e perfect normal', 'Le téléphone demandera la permission, c’est tout à fait normal', 'Your phone will ask first, and that is perfectly fine', 'Телефон спросит разрешения, и это нормально'],
     trS: ['האפליקציה מגיעה ישירות מאיתנו ולא דרך חנות, אז הטלפון פשוט מוודא איתך. MedTime לא אוסף שום מידע, הכול נשמר רק אצלך.', 'التطبيق يصلك منّا مباشرة وليس من متجر، فالهاتف يتأكد منك فقط. MedTime لا يجمع أي معلومات، وكل شيء يبقى عندك.', 'Aplicația vine direct de la noi, nu dintr-un magazin, așa că telefonul doar verifică cu tine. MedTime nu colectează date, totul rămâne la tine.', 'L’application vient directement de nous et non d’un store, le téléphone vérifie donc avec vous. MedTime ne collecte aucune donnée, tout reste chez vous.', 'The app comes straight from us, not from a store, so the phone just checks with you. MedTime collects no data; everything stays on your phone.', 'Приложение приходит напрямую от нас, а не из магазина, поэтому телефон просто уточняет у вас. MedTime не собирает данные, всё остаётся у вас.'],
@@ -119,7 +137,9 @@
     document.getElementById('sub').textContent = T.sub[i];
     if (!busy) document.getElementById('dl').textContent = T.dl[i];
     document.getElementById('dl2').textContent = T.dl2[i];
-    ['inapp', 'hint', 'trT', 'trS', 'sam', 'utdT', 'utdS'].forEach(k => document.getElementById(k).textContent = T[k][i]);
+    ['inapp', 'hint', 'trT', 'trS', 'sam', 'utdT', 'utdS', 'sfT', 'sfR'].forEach(k => document.getElementById(k).textContent = T[k][i]);
+    const ul = document.getElementById('sfL'); ul.innerHTML = '';
+    T.sfL[i].forEach(r => { const li = document.createElement('li'); li.innerHTML = '<i></i><span></span>'; li.firstChild.textContent = r[0]; li.lastChild.textContent = r[1]; ul.appendChild(li); });
     const PH = ['<div class="bar"><i></i></div><span style="font-size:1.5rem">📥</span>', '<div class="tg"></div>', '<div class="ok">✓</div>'];
     const box = document.getElementById('steps'); box.innerHTML = '';
     T.steps[i].forEach((st, k) => { const d = document.createElement('div'); d.className = 'step';
