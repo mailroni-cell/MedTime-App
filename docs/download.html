@@ -73,6 +73,23 @@
   @keyframes tgkr { 0%, 35% { transform: none } 50%, 100% { transform: translateX(-15px) } }
   @keyframes pop { 0%, 30% { transform: scale(.3); opacity: 0 } 45% { transform: scale(1.15); opacity: 1 } 55%, 100% { transform: scale(1) } }
   @keyframes bob { 50% { transform: translateY(-4px) rotate(-4deg) } }
+  /* M-381 (Roni): short page: button, a short safety card, 3 mini steps; details folded under "help". Finished download -> big Install button */
+  .dl.inst { background: linear-gradient(135deg, #22c55e, #15803d); animation: instp 1.6s ease-in-out infinite; font-size: 1.45rem; }
+  @keyframes instp { 50% { box-shadow: 0 6px 0 #14532d, 0 0 0 8px rgba(34,197,94,.25), 0 12px 32px rgba(34,197,94,.6); } }
+  .instS { display: none; text-align: center; color: #bbf7d0; font-size: 1rem; margin: 10px 0 0; }
+  .safe2 { display: flex; gap: 12px; align-items: center; background: linear-gradient(135deg, rgba(34,197,94,.18), rgba(56,189,248,.12)); border: 1px solid rgba(74,222,128,.45); border-radius: 18px; padding: 12px 14px; margin: 18px 0 14px; }
+  .safe2 .sh { font-size: 2.4rem; animation: bob 3s ease-in-out infinite; }
+  .safe2 b { display: block; font-size: 1.15rem; color: #bbf7d0; margin-bottom: 4px; }
+  .safe2 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .safe2 .chips span { background: rgba(34,197,94,.14); border-radius: 999px; padding: 3px 9px; font-size: .9rem; color: #e2e8f0; }
+  .mini { display: flex; justify-content: space-between; gap: 6px; margin: 0 0 14px; }
+  .mini div { flex: 1; text-align: center; background: var(--card); border-radius: 14px; padding: 10px 4px; font-size: .92rem; line-height: 1.3; }
+  .mini i { display: block; font-style: normal; font-size: 1.5rem; margin-bottom: 2px; }
+  details.help { background: var(--card); border-radius: 16px; padding: 10px 14px; }
+  details.help summary { cursor: pointer; color: var(--mut); text-align: center; font-size: 1rem; list-style: none; }
+  details.help[open] summary { margin-bottom: 12px; }
+  details.help .utd { margin: 10px 0; }
+  details.help .dl2 { margin: 8px 0; }
   .ver { text-align: center; color: #64748b; font-size: .85rem; margin-top: 18px; }
 </style>
 </head>
@@ -84,13 +101,18 @@
   <p class="sub" id="sub"></p>
   <a class="inapp" id="inapp" href="intent://medtime.pages.dev/#Intent;scheme=https;package=com.android.chrome;end"></a>
   <a class="dl" id="dl" href="https://github.com/mailroni-cell/MedTime-App/releases/download/latest/MedTime-latest.apk" download="MedTime.apk"></a>
-  <a class="dl2" id="dl2" href="https://drive.google.com/uc?export=download&amp;id=1apKoeQwAAktW8kWhakTzHdviexF_qoqx"></a>
-  <a class="utd" id="utd" href="https://medtime.en.uptodown.com/android" target="_blank" rel="noopener"><span>🏪</span><span><span id="utdT"></span><small id="utdS"></small></span></a>
-  <p class="hint" id="hint"></p>
-  <div class="trust"><div class="sh">🛡️</div><div><b id="trT"></b><span id="trS"></span></div></div>
-  <div class="safe"><h2 id="sfT"></h2><ul id="sfL"></ul><a id="sfR" href="https://www.virustotal.com/gui/file/346975219117f212d654ace24087144d399dbfccca72df8e48f7189d2faea68b" target="_blank" rel="noopener"></a></div>
-  <div id="steps"></div>
-  <div class="sam" id="sam"></div>
+  <p class="instS" id="instS"></p>
+  <div class="safe2"><div class="sh">🛡️</div><div><b id="sfT"></b><div class="chips" id="sfL"></div></div></div>
+  <div class="mini" id="mini"></div>
+  <details class="help"><summary id="helpT"></summary>
+    <p class="hint" id="hint" style="margin:0 0 10px"></p>
+    <div class="trust"><div><b id="trT"></b><span id="trS"></span></div></div>
+    <div id="steps"></div>
+    <div class="sam" id="sam"></div>
+    <a class="utd" id="utd" href="https://medtime.en.uptodown.com/android" target="_blank" rel="noopener"><span>🏪</span><span><span id="utdT"></span><small id="utdS"></small></span></a>
+    <a class="dl2" id="dl2" href="https://drive.google.com/uc?export=download&amp;id=1apKoeQwAAktW8kWhakTzHdviexF_qoqx"></a>
+    <a class="dl2" id="sfR" href="https://www.virustotal.com/gui/file/346975219117f212d654ace24087144d399dbfccca72df8e48f7189d2faea68b" target="_blank" rel="noopener"></a>
+  </details>
   <div class="ver" id="ver"></div>
 </main>
 <script>
@@ -107,7 +129,26 @@
     inapp: ['🌐 פתחו את הדף ב-Chrome כדי להוריד', '🌐 افتح الصفحة في Chrome للتنزيل', '🌐 Deschide pagina în Chrome pentru descărcare', '🌐 Ouvrez la page dans Chrome pour télécharger', '🌐 Open this page in Chrome to download', '🌐 Откройте страницу в Chrome для загрузки'],
     utdT: ['להורדה מחנות Uptodown', 'التنزيل من متجر Uptodown', 'Descarcă din magazinul Uptodown', 'Télécharger depuis le store Uptodown', 'Get it on the Uptodown store', 'Скачать в магазине Uptodown'],
     utdS: ['חנות אפליקציות מוכרת, נבדק על ידם', 'متجر تطبيقات معروف، تمت مراجعته', 'Magazin de aplicații cunoscut, verificat de ei', 'Store d’applications reconnu, vérifié par eux', 'A well-known app store, reviewed by them', 'Известный магазин приложений, проверено ими'],
-    sfT: ['✅ נבדק ונמצא בטוח', '✅ تم فحصه وهو آمن', '✅ Verificat și sigur', '✅ Vérifiée et sûre', '✅ Checked and safe', '✅ Проверено и безопасно'],
+    inst: ['📲 התקן עכשיו', '📲 ثبّت الآن', '📲 Instalează acum', '📲 Installer maintenant', '📲 Install now', '📲 Установить сейчас'],
+    instS: ['בוחרים MedTime.apk ולוחצים "התקנה" ✓', 'اختر MedTime.apk واضغط "تثبيت" ✓', 'Alege MedTime.apk și apasă „Instalează” ✓', 'Choisissez MedTime.apk puis « Installer » ✓', 'Pick MedTime.apk and tap "Install" ✓', 'Выберите MedTime.apk и нажмите «Установить» ✓'],
+    sf2: [
+      ['🦠 76 אנטי-וירוס: נקי', '🏪 אושר ב-Uptodown', '🔒 בלי פרסומות ובלי איסוף מידע'],
+      ['🦠 76 مضاد فيروسات: نظيف', '🏪 معتمد في Uptodown', '🔒 بلا إعلانات وبلا جمع بيانات'],
+      ['🦠 76 antivirusuri: curat', '🏪 Aprobat pe Uptodown', '🔒 Fără reclame, fără colectare de date'],
+      ['🦠 76 antivirus : propre', '🏪 Approuvée sur Uptodown', '🔒 Sans pub, sans collecte de données'],
+      ['🦠 76 antivirus engines: clean', '🏪 Approved on Uptodown', '🔒 No ads, no data collection'],
+      ['🦠 76 антивирусов: чисто', '🏪 Одобрено в Uptodown', '🔒 Без рекламы и сбора данных']
+    ],
+    mini: [
+      ['📥 מורידים', '👍 מאשרים פעם אחת', '✅ מתקינים'],
+      ['📥 تنزيل', '👍 موافقة مرة واحدة', '✅ تثبيت'],
+      ['📥 Descarci', '👍 Aprobi o dată', '✅ Instalezi'],
+      ['📥 Téléchargez', '👍 Autorisez une fois', '✅ Installez'],
+      ['📥 Download', '👍 Allow once', '✅ Install'],
+      ['📥 Скачайте', '👍 Разрешите раз', '✅ Установите']
+    ],
+    helpT: ['❔ צריכים עזרה בהתקנה?', '❔ تحتاج مساعدة في التثبيت؟', '❔ Ai nevoie de ajutor?', '❔ Besoin d’aide ?', '❔ Need help installing?', '❔ Нужна помощь с установкой?'],
+    sfT: ['בטוח לגמרי', 'آمن تمامًا', 'Complet sigur', 'Totalement sûre', 'Completely safe', 'Полностью безопасно'],
     sfL: [
       [['🦠', 'נקי מווירוסים: נסרק ב-76 תוכנות אנטי-וירוס, אפס איומים'], ['🕵️', 'בלי רוגלות ובלי תוכנות זדוניות'], ['🏪', 'נבדק ואושר על ידי חנות Uptodown'], ['🔒', 'בלי פרסומות, בלי הרשמה, המידע נשאר רק בטלפון שלך']],
       [['🦠', 'خالٍ من الفيروسات: فُحص بـ76 برنامج مكافحة فيروسات، بلا أي تهديد'], ['🕵️', 'بلا برامج تجسس وبلا برامج ضارة'], ['🏪', 'تمت مراجعته واعتماده من متجر Uptodown'], ['🔒', 'بلا إعلانات، بلا تسجيل، ومعلوماتك تبقى في هاتفك فقط']],
@@ -137,9 +178,12 @@
     document.getElementById('sub').textContent = T.sub[i];
     if (!busy) document.getElementById('dl').textContent = T.dl[i];
     document.getElementById('dl2').textContent = T.dl2[i];
-    ['inapp', 'hint', 'trT', 'trS', 'sam', 'utdT', 'utdS', 'sfT', 'sfR'].forEach(k => document.getElementById(k).textContent = T[k][i]);
+    ['inapp', 'hint', 'trT', 'trS', 'sam', 'utdT', 'utdS', 'sfT', 'sfR', 'helpT', 'instS'].forEach(k => document.getElementById(k).textContent = T[k][i]);
+    if (file && !busy) btn.textContent = T.inst[i];
     const ul = document.getElementById('sfL'); ul.innerHTML = '';
-    T.sfL[i].forEach(r => { const li = document.createElement('li'); li.innerHTML = '<i></i><span></span>'; li.firstChild.textContent = r[0]; li.lastChild.textContent = r[1]; ul.appendChild(li); });
+    T.sf2[i].forEach(r => { const c = document.createElement('span'); c.textContent = r; ul.appendChild(c); });
+    const mi = document.getElementById('mini'); mi.innerHTML = '';
+    T.mini[i].forEach(r => { const d = document.createElement('div'), k = r.indexOf(' '); d.innerHTML = '<i></i><span></span>'; d.firstChild.textContent = r.slice(0, k); d.lastChild.textContent = r.slice(k + 1); mi.appendChild(d); });
     const PH = ['<div class="bar"><i></i></div><span style="font-size:1.5rem">📥</span>', '<div class="tg"></div>', '<div class="ok">✓</div>'];
     const box = document.getElementById('steps'); box.innerHTML = '';
     T.steps[i].forEach((st, k) => { const d = document.createElement('div'); d.className = 'step';
@@ -189,13 +233,18 @@
     return b;
   }
   function save() { const a = document.createElement('a'); a.href = URL.createObjectURL(file); a.download = 'MedTime.apk'; document.body.appendChild(a); a.click(); a.remove(); }
+  // M-381: a web page may not install an app by itself (Android rule). After the download the button becomes "Install":
+  // it opens the phone's downloads list, where one tap on MedTime.apk starts the install (Chrome's "Open" bar does the same)
+  function install() { ping('install'); location.href = 'intent:#Intent;action=android.intent.action.VIEW_DOWNLOADS;end'; }
+  let saved = false;
   btn.addEventListener('click', e => {
     if (!window.fetch || !window.ReadableStream) { ping('dl', 'gh'); return; }  // old browser: plain GitHub download
     e.preventDefault();
-    if (file) return save();
+    if (file) { if (/Android/.test(navigator.userAgent) && saved) return install(); return save(); }
     if (busy) return;
     busy = true; btn.classList.add('go'); btn.textContent = T.prep[LI];
-    fast().then(b => { file = b; save(); ping('dl', 'fast'); btn.style.setProperty('--p', '100%'); btn.textContent = T.done[LI]; busy = false; })
+    fast().then(b => { file = b; save(); saved = true; ping('dl', 'fast'); btn.classList.remove('go'); btn.classList.add('inst'); btn.textContent = T.inst[LI];
+        document.getElementById('instS').style.display = 'block'; busy = false; })
       .catch(() => { btn.classList.remove('go'); btn.textContent = T.alt[LI]; ping('dl', 'gh'); setTimeout(() => { busy = false; location.href = REL; }, 900); });
   });
   // M-314: links opened inside Facebook / Instagram / other in-app browsers often cannot download files: offer Chrome first
