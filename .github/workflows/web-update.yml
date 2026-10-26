@@ -32,7 +32,7 @@ jobs:
         run: |
           before="${{ github.event.before }}"
           if ! git cat-file -e "$before" 2>/dev/null; then echo "only=no" >> $GITHUB_OUTPUT; exit 0; fi
-          other=$(git diff --name-only "$before" "${{ github.sha }}" | grep -vE '^app/src/main/assets/.*\.(html|js|css)$' | grep -vE '\.md$' || true)
+          other=$(git diff --name-only "$before" "${{ github.sha }}" | grep -vE '^app/src/main/assets/.*\.(html|js|css)$' | grep -vE '\.md$' | grep -vE '^docs/' || true)  # M-379: the website (docs/) does not need an APK either
           if [ -n "$other" ]; then echo "Other files changed, the APK build handles it:"; echo "$other"; echo "only=no" >> $GITHUB_OUTPUT
           else echo "only=yes" >> $GITHUB_OUTPUT; fi
 
