@@ -3,6 +3,11 @@
 כל שינוי נרשם כאן עם חתימה: מתי, איזה חשבון/שיחה, מה בדיוק, אילו קבצים, ואיך להחזיר אחורה.
 החדש ביותר למעלה. להחזרה: `git revert <commit>` או לקחת את הקובץ מה-commit הקודם.
 
+## 2026-10-26 ~12:00Z · חשבון 1 · session claude.ai/code (גישה מלאה ל-C:)
+- מה: M-376 המתקין במחשב: (1) מושך את alarm_log.txt מיד כשהטלפון מתחבר (ואז כל 10 דקות) וכותב ל-install_log הצלחה/כשלון; (2) כשמחוברים כמה מכשירי אנדרואיד (טלפון + אמולטור TV של Streamer) - adb מכוון לטלפון שיש בו MedTime (ANDROID_SERIAL). הסיבה שהיומן לא הגיע אף פעם: "more than one device/emulator".
+- קבצים: tools/medtime_autoinstall.ps1 (הועתק ל-C:\Projects\MedTime).
+- להחזרה: git revert של ה-commit הזה והעתקת הקובץ הקודם למחשב.
+
 ## 2026-10-25 ~16:55Z · חשבון 1 · thread "📌 MedTime – הרזיית האפליקציה"
 - מה: M-375 גרסת MedTime מלאה ל-Google Play בדיקה פנימית: flavor playfull (io.github.mailronicell.medtime.full), דגל BuildConfig.GPLAY ב-MainActivity/Family/Updater, app/src/playfull/ (manifest + store.js), workflow medtime-play-full.yml -> release play-full.
 - להחזרה: git revert 3420008.

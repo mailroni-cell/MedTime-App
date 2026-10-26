@@ -49,19 +49,40 @@ $docFiles = @{ 'handoff/HANDOFF.md' = 'HANDOFF.md'; 'STATE.md' = 'docs\STATE.md'
 $nextDocs = Get-Date
 $hashFor = ''; $hashVal = ''; $lastWebErr = ''
 $myTime = (Get-Item $PSCommandPath).LastWriteTime
+$wasConn = $false; $lastAlarmMsg = ''; $lastDevKey = ''
 $nextAlarmLog = Get-Date  # M-374: copy the phone's alarm diary to the PC every 10 minutes (cable connected)
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 while ($true) {
   try {
-    if ((Get-Date) -ge $nextAlarmLog) {
-      $nextAlarmLog = (Get-Date).AddMinutes(10)
-      try {
-        if (& $adb devices 2>$null | Select-String "`tdevice$") {
-          $alog = Join-Path $dir 'alarm_log.txt'
-          & $adb pull "/sdcard/Android/data/$pkg/files/alarm_log.txt" "$alog" 2>&1 | Out-Null
+    # M-376: more than one Android device on the cable -> adb needs a serial. Use the one that has MedTime installed (ANDROID_SERIAL is read by every adb call)
+    try {
+      $devs = @(& $adb devices 2>$null | Select-String "`tdevice$" | ForEach-Object { ("$_" -split "`t")[0] })
+      $dkey = ($devs -join ',')
+      if ($dkey -ne $lastDevKey) {
+        $lastDevKey = $dkey; Remove-Item Env:ANDROID_SERIAL -ErrorAction SilentlyContinue
+        if ($devs.Count -ge 1) {
+          # prefer a real phone (not an emulator) that has MedTime installed
+          $pick = $devs | Where-Object { $_ -notlike 'emulator-*' -and "$(& $adb -s $_ shell pm path $pkg 2>$null)" -match 'package:' } | Select-Object -First 1
+          if (-not $pick) { $pick = $devs | Where-Object { $_ -notlike 'emulator-*' } | Select-Object -First 1 }
+          if (-not $pick) { $pick = $devs[0] }
+          $env:ANDROID_SERIAL = $pick
+          $dl = (@(& $adb devices 2>$null | Select-Object -Skip 1 | Where-Object { $_ } | ForEach-Object { "$_" -replace "`t", ':' }) -join ', '); Log ('ADB: ' + $dl + ' - using ' + $pick)
         }
-      } catch { }
-    }
+      }
+    } catch { }
+    # M-376: pull the alarm diary right when the phone is plugged in (then every 10 min), and log the result
+    try {
+      $conn = [bool](& $adb devices 2>$null | Select-String "`tdevice$")
+      if ($conn -and (-not $wasConn -or (Get-Date) -ge $nextAlarmLog)) {
+        $nextAlarmLog = (Get-Date).AddMinutes(10)
+        $alog = Join-Path $dir 'alarm_log.txt'
+        $pres = "$(& $adb pull "/sdcard/Android/data/$pkg/files/alarm_log.txt" "$alog" 2>&1)".Trim()
+        if ($LASTEXITCODE -eq 0 -and (Test-Path $alog)) { $msg = 'ALARM LOG PULLED (' + (Get-Content $alog).Count + ' lines)' }
+        else { $msg = 'ALARM LOG PULL FAILED: ' + $pres }
+        if (-not $wasConn -or $msg -ne $lastAlarmMsg) { Log $msg; $lastAlarmMsg = $msg }
+      }
+      $wasConn = $conn
+    } catch { }
     if ((Get-Date) -ge $nextCheck) {
       $nextCheck = (Get-Date).AddSeconds(60)
       try {
