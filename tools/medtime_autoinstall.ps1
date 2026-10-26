@@ -23,6 +23,7 @@ function AdbInstall($file, $sec) {
 function AdbT([string]$argStr, [int]$sec = 20) {
   $o = Join-Path $dir 'adbt_out.txt'; $e = Join-Path $dir 'adbt_err.txt'
   $p = Start-Process -FilePath $adb -ArgumentList $argStr -NoNewWindow -PassThru -RedirectStandardOutput $o -RedirectStandardError $e
+  $null = $p.Handle  # without this, ExitCode stays empty (PowerShell quirk)
   if (-not $p.WaitForExit($sec * 1000)) {
     try { $p.Kill() } catch { }
     Log ('ADB TIMEOUT (' + $sec + ' s): adb ' + $argStr + ' - restarting adb')
@@ -90,7 +91,7 @@ while ($true) {
         $nextAlarmLog = (Get-Date).AddMinutes(10)
         $alog = Join-Path $dir 'alarm_log.txt'
         $pres = "$(AdbT ('pull /sdcard/Android/data/' + $pkg + '/files/alarm_log.txt "' + $alog + '"') 60)".Trim()
-        if ($LASTEXITCODE -eq 0 -and (Test-Path $alog)) { $msg = 'ALARM LOG PULLED (' + (Get-Content $alog).Count + ' lines)' }
+        if (($LASTEXITCODE -eq 0 -or $pres -match 'file pulled') -and (Test-Path $alog)) { $msg = 'ALARM LOG PULLED (' + (Get-Content $alog).Count + ' lines)' }
         else { $msg = 'ALARM LOG PULL FAILED: ' + $pres }
         if (-not $wasConn -or $msg -ne $lastAlarmMsg) { Log $msg; $lastAlarmMsg = $msg }
       }
