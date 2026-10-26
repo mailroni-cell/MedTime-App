@@ -7,7 +7,7 @@
     const has = f => !!(N && typeof N[f] === 'function');
     const grid = document.querySelector('#settings-page .set-grid');
     if (!grid) return;
-    const UTD = 'https://medtime.en.uptodown.com/android'; // M-378: Uptodown store page (approved 2026-10-26)
+    const UTD = 'https://medtime.en.uptodown.com/android'; // M-378: Uptodown store page (approved 2026-10-26). M-379: share text also says scanned by 76 antivirus engines
     const LINK = 'https://medtime.pages.dev'; // M-318 official address (was GitHub Pages). M-229: the download page (direct APK links failed for some people)
 
     const T = {
