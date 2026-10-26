@@ -7,6 +7,7 @@
     const has = f => !!(N && typeof N[f] === 'function');
     const grid = document.querySelector('#settings-page .set-grid');
     if (!grid) return;
+    const UTD = 'https://medtime.en.uptodown.com/android'; // M-378: Uptodown store page (approved 2026-10-26)
     const LINK = 'https://medtime.pages.dev'; // M-318 official address (was GitHub Pages). M-229: the download page (direct APK links failed for some people)
 
     const T = {
@@ -85,11 +86,14 @@
         shSub: ['שלחו לחברים ולמשפחה', 'أرسل للأصدقاء والعائلة', 'Trimiteți prietenilor', 'Envoyer à vos proches', 'Send to friends and family', 'Отправьте друзьям и семье'],
         shX: ['ההודעה הזאת תישלח, עם קישור להורדה:', 'سيتم إرسال هذه الرسالة مع رابط التنزيل:', 'Se trimite acest mesaj cu link de descărcare:', 'Ce message sera envoyé avec le lien :', 'This message is sent, with a download link:', 'Будет отправлено это сообщение со ссылкой на загрузку:'],
         shGo: ['📤 שיתוף בוואטסאפ או בכל דרך', '📤 مشاركة عبر واتساب أو غيره', '📤 Distribuie pe WhatsApp sau altfel', '📤 Partager par WhatsApp ou autre', '📤 Share by WhatsApp or any way', '📤 Поделиться через WhatsApp или иначе'],
-        shMsg: ['היי 😊 אני משתמש ב-MedTime, אפליקציה שמזכירה לקחת תרופות ולהגיע לתורים לרופא. מומלץ!\n\nלהתקנה לוחצים על הקישור, ואם הטלפון שואל, מאשרים התקנה. האפליקציה מסבירה לבד על מה ללחוץ:\n',
-            'مرحبًا 😊 أستخدم MedTime، تطبيق يذكّر بتناول الأدوية ومواعيد الطبيب. أنصح به!\n\nللتثبيت اضغط على الرابط، وإن سأل الهاتف وافق على التثبيت. التطبيق يشرح بنفسه:\n',
-            'Salut 😊 Folosesc MedTime, o aplicație care amintește de medicamente și programări. O recomand!\n\nPentru instalare apăsați linkul și, dacă telefonul întreabă, permiteți instalarea:\n',
-            'Salut 😊 J\'utilise MedTime, une appli qui rappelle les médicaments et les rendez-vous. Je recommande !\n\nPour l\'installer, ouvrez le lien et, si le téléphone demande, autorisez l\'installation :\n',
-            'Hi 😊 I use MedTime, an app that reminds you to take medicine and go to doctor appointments. Recommended!\n\nTo install, open the link and, if the phone asks, allow the install. The app explains the rest:\n', 'Привет 😊 Я пользуюсь MedTime — приложением, которое напоминает принимать лекарства и ходить на приёмы к врачу. Рекомендую!\n\nЧтобы установить, откройте ссылку и, если телефон спросит, разрешите установку. Остальное приложение объяснит само:\n']
+        // M-378 (Roni 2026-10-26): reassurance about the phone's install questions comes first, plus the Uptodown store link
+        shMsg: ['היי 😊 אני משתמש ב-MedTime, אפליקציה שמזכירה לקחת תרופות ולהגיע לתורים לרופא. מומלץ!\n\n🛡️ חשוב לדעת: בהתקנה הטלפון ישאל אם מותר, ואולי יציג אזהרה. זה רגיל לגמרי לאפליקציה שלא מגיעה מ-Google Play. מאשרים וממשיכים. האפליקציה בטוחה, בלי פרסומות ובלי הרשמה, ולא אוספת שום מידע.\n\n⬇️ להתקנה (הדף מסביר על מה ללחוץ):\n',
+            'مرحبًا 😊 أستخدم MedTime، تطبيق يذكّر بتناول الأدوية ومواعيد الطبيب. أنصح به!\n\n🛡️ مهم: أثناء التثبيت سيسأل الهاتف إن كان مسموحًا، وقد يعرض تحذيرًا. هذا طبيعي تمامًا لتطبيق لا يأتي من Google Play. وافق وتابع. التطبيق آمن، بلا إعلانات وبلا تسجيل، ولا يجمع أي معلومات.\n\n⬇️ للتثبيت (الصفحة تشرح على ماذا تضغط):\n',
+            'Salut 😊 Folosesc MedTime, o aplicație care amintește de medicamente și programări la medic. O recomand!\n\n🛡️ Bine de știut: la instalare telefonul va întreba dacă are voie și poate arăta un avertisment. E complet normal pentru o aplicație care nu vine din Google Play. Aprobi și continui. Aplicația e sigură, fără reclame, fără înregistrare și nu colectează date.\n\n⬇️ Pentru instalare (pagina explică pe ce să apeși):\n',
+            'Salut 😊 J\'utilise MedTime, une appli qui rappelle les médicaments et les rendez-vous chez le médecin. Je recommande !\n\n🛡️ Bon à savoir : à l\'installation, le téléphone demandera la permission et affichera peut-être un avertissement. C\'est tout à fait normal pour une appli qui ne vient pas de Google Play. Autorisez et continuez. L\'appli est sûre, sans pub, sans inscription et ne collecte aucune donnée.\n\n⬇️ Pour l\'installer (la page explique où appuyer) :\n',
+            'Hi 😊 I use MedTime, an app that reminds you to take medicine and go to doctor appointments. Recommended!\n\n🛡️ Good to know: while installing, the phone will ask for permission and may show a warning. That is completely normal for an app that does not come from Google Play. Allow it and continue. The app is safe, with no ads, no sign-up, and it collects no data.\n\n⬇️ To install (the page shows what to tap):\n',
+            'Привет 😊 Я пользуюсь MedTime — приложением, которое напоминает принимать лекарства и ходить на приёмы к врачу. Рекомендую!\n\n🛡️ Важно: при установке телефон спросит разрешение и, возможно, покажет предупреждение. Это совершенно нормально для приложения не из Google Play. Разрешите и продолжайте. Приложение безопасное, без рекламы и регистрации, и не собирает никаких данных.\n\n⬇️ Для установки (страница подскажет, что нажать):\n'],
+        shUtd: ['\n\n🏪 או מחנות Uptodown:\n', '\n\n🏪 أو من متجر Uptodown:\n', '\n\n🏪 Sau din magazinul Uptodown:\n', '\n\n🏪 Ou depuis le store Uptodown :\n', '\n\n🏪 Or from the Uptodown store:\n', '\n\n🏪 Или из магазина Uptodown:\n']
     };
     const tx = k => (T[k] || [k])[li()];
     const fill = (s, o) => s.replace(/\{(\w+)\}/g, (m, k) => (k in o ? o[k] : m));
@@ -475,7 +479,7 @@
     // ---------------- 📤 share ----------------
     const sh = tile('tile-share', '📤', 'linear-gradient(135deg,#25d366,#128c7e)',
         '<div class="mo-x" id="sh-x"></div><div class="mo-msg" id="sh-msg"></div><button type="button" class="mo-btn" id="sh-go"></button>');
-    const shareMsg = () => window.MT_STORE && window.mtStoreShare ? window.mtStoreShare() : tx('shMsg') + LINK; // Play edition: store link
+    const shareMsg = () => window.MT_STORE && window.mtStoreShare ? window.mtStoreShare() : tx('shMsg') + LINK + tx('shUtd') + UTD; // Play edition: store link. M-378: + Uptodown
     function drawShare() {
         heads(sh, 'shT', tx('shSub'));
         document.getElementById('sh-x').textContent = tx('shX');
