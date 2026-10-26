@@ -3,6 +3,11 @@
 כל שינוי נרשם כאן עם חתימה: מתי, איזה חשבון/שיחה, מה בדיוק, אילו קבצים, ואיך להחזיר אחורה.
 החדש ביותר למעלה. להחזרה: `git revert <commit>` או לקחת את הקובץ מה-commit הקודם.
 
+## 2026-10-26 ~12:35Z · חשבון 1 · session claude.ai/code
+- מה: M-377 Uptodown אישרו את MedTime (פורסם, גרסה 1.0.244, https://medtime.en.uptodown.com/android). בדף ההורדה נוסף כפתור "להורדה מחנות Uptodown" ב-6 שפות + ספירה אנונימית src=uptodown.
+- קבצים: docs/download.html.
+- להחזרה: git revert של ה-commit הזה.
+
 ## 2026-10-26 ~12:00Z · חשבון 1 · session claude.ai/code (גישה מלאה ל-C:)
 - מה: M-376 המתקין במחשב: (1) מושך את alarm_log.txt מיד כשהטלפון מתחבר (ואז כל 10 דקות) וכותב ל-install_log הצלחה/כשלון; (2) כשמחוברים כמה מכשירי אנדרואיד (טלפון + אמולטור TV של Streamer) - adb מכוון לטלפון שיש בו MedTime (ANDROID_SERIAL). הסיבה שהיומן לא הגיע אף פעם: "more than one device/emulator".
 - קבצים: tools/medtime_autoinstall.ps1 (הועתק ל-C:\Projects\MedTime).

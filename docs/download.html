@@ -30,7 +30,11 @@
         background: linear-gradient(135deg, #22c55e, #15803d); box-shadow: 0 6px 0 #14532d, 0 12px 28px rgba(34,197,94,.35); }
   .dl.go { background: linear-gradient(90deg, #22c55e var(--p, 0%), #166534 var(--p, 0%)); font-size: 1.2rem; }
   .dl:active { transform: translateY(3px); box-shadow: 0 3px 0 #14532d; }
-  .dl2 { display: block; text-align: center; color: var(--mut); margin: 14px 0 24px; font-size: .98rem; }
+  .dl2 { display: block; text-align: center; color: var(--mut); margin: 14px 0 12px; font-size: .98rem; }
+  /* M-377: Uptodown store button (app approved 2026-10-26) */
+  .utd { display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; color: #e0f2fe; font-weight: 700; font-size: 1.05rem; padding: 12px 14px; border-radius: 16px; margin: 0 0 24px;
+         background: rgba(14,165,233,.14); border: 1px solid rgba(56,189,248,.45); }
+  .utd small { display: block; color: #93c5fd; font-weight: 400; font-size: .85rem; }
   ol { background: var(--card); border-radius: 18px; padding: 16px 18px; padding-inline-start: 40px; margin: 0 0 16px; line-height: 1.55; font-size: 1.08rem; }
   ol li { margin-bottom: 8px; }
   .note { background: rgba(250,204,21,.1); border: 1px solid rgba(250,204,21,.4); border-radius: 14px; padding: 12px 14px; color: #fde68a; font-size: .98rem; line-height: 1.5; }
@@ -74,6 +78,7 @@
   <a class="inapp" id="inapp" href="intent://medtime.pages.dev/#Intent;scheme=https;package=com.android.chrome;end"></a>
   <a class="dl" id="dl" href="https://github.com/mailroni-cell/MedTime-App/releases/download/latest/MedTime-latest.apk" download="MedTime.apk"></a>
   <a class="dl2" id="dl2" href="https://drive.google.com/uc?export=download&amp;id=1apKoeQwAAktW8kWhakTzHdviexF_qoqx"></a>
+  <a class="utd" id="utd" href="https://medtime.en.uptodown.com/android" target="_blank" rel="noopener"><span>🏪</span><span><span id="utdT"></span><small id="utdS"></small></span></a>
   <p class="hint" id="hint"></p>
   <div class="trust"><div class="sh">🛡️</div><div><b id="trT"></b><span id="trS"></span></div></div>
   <div id="steps"></div>
@@ -92,6 +97,8 @@
     done: ['✅ ירד! פותחים מההודעה למטה', '✅ تم! افتحه من الإشعار بالأسفل', '✅ Gata! Deschide din notificarea de jos', '✅ C’est fait ! Ouvrez depuis la notification', '✅ Done! Open it from the notification below', '✅ Готово! Откройте из уведомления внизу'],
     alt: ['🔁 עוברים למקור חלופי…', '🔁 ننتقل إلى مصدر بديل…', '🔁 Trecem la o sursă alternativă…', '🔁 Passage à une source alternative…', '🔁 Switching to a backup source…', '🔁 Переключаемся на запасной источник…'],
     inapp: ['🌐 פתחו את הדף ב-Chrome כדי להוריד', '🌐 افتح الصفحة في Chrome للتنزيل', '🌐 Deschide pagina în Chrome pentru descărcare', '🌐 Ouvrez la page dans Chrome pour télécharger', '🌐 Open this page in Chrome to download', '🌐 Откройте страницу в Chrome для загрузки'],
+    utdT: ['להורדה מחנות Uptodown', 'التنزيل من متجر Uptodown', 'Descarcă din magazinul Uptodown', 'Télécharger depuis le store Uptodown', 'Get it on the Uptodown store', 'Скачать в магазине Uptodown'],
+    utdS: ['חנות אפליקציות מוכרת, נבדק על ידם', 'متجر تطبيقات معروف، تمت مراجعته', 'Magazin de aplicații cunoscut, verificat de ei', 'Store d’applications reconnu, vérifié par eux', 'A well-known app store, reviewed by them', 'Известный магазин приложений, проверено ими'],
     hint: ['כדאי לפתוח את הדף ב-Chrome 🙂', 'يُفضّل فتح الصفحة في Chrome 🙂', 'Cel mai bine deschide pagina în Chrome 🙂', 'Ouvrez de préférence la page dans Chrome 🙂', 'Best opened in Chrome 🙂', 'Лучше открыть страницу в Chrome 🙂'],
     trT: ['הטלפון ישאל אם מותר, וזה בסדר גמור', 'سيسأل الهاتف إن كان مسموحًا، وهذا طبيعي تمامًا', 'Telefonul va întreba dacă are voie, e perfect normal', 'Le téléphone demandera la permission, c’est tout à fait normal', 'Your phone will ask first, and that is perfectly fine', 'Телефон спросит разрешения, и это нормально'],
     trS: ['האפליקציה מגיעה ישירות מאיתנו ולא דרך חנות, אז הטלפון פשוט מוודא איתך. MedTime לא אוסף שום מידע, הכול נשמר רק אצלך.', 'التطبيق يصلك منّا مباشرة وليس من متجر، فالهاتف يتأكد منك فقط. MedTime لا يجمع أي معلومات، وكل شيء يبقى عندك.', 'Aplicația vine direct de la noi, nu dintr-un magazin, așa că telefonul doar verifică cu tine. MedTime nu colectează date, totul rămâne la tine.', 'L’application vient directement de nous et non d’un store, le téléphone vérifie donc avec vous. MedTime ne collecte aucune donnée, tout reste chez vous.', 'The app comes straight from us, not from a store, so the phone just checks with you. MedTime collects no data; everything stays on your phone.', 'Приложение приходит напрямую от нас, а не из магазина, поэтому телефон просто уточняет у вас. MedTime не собирает данные, всё остаётся у вас.'],
@@ -112,7 +119,7 @@
     document.getElementById('sub').textContent = T.sub[i];
     if (!busy) document.getElementById('dl').textContent = T.dl[i];
     document.getElementById('dl2').textContent = T.dl2[i];
-    ['inapp', 'hint', 'trT', 'trS', 'sam'].forEach(k => document.getElementById(k).textContent = T[k][i]);
+    ['inapp', 'hint', 'trT', 'trS', 'sam', 'utdT', 'utdS'].forEach(k => document.getElementById(k).textContent = T[k][i]);
     const PH = ['<div class="bar"><i></i></div><span style="font-size:1.5rem">📥</span>', '<div class="tg"></div>', '<div class="ok">✓</div>'];
     const box = document.getElementById('steps'); box.innerHTML = '';
     T.steps[i].forEach((st, k) => { const d = document.createElement('div'); d.className = 'step';
@@ -174,6 +181,7 @@
   // M-314: links opened inside Facebook / Instagram / other in-app browsers often cannot download files: offer Chrome first
   if (/FBAN|FBAV|FB_IAB|Instagram|Line\/|TikTok|musical_ly|; wv\)/.test(navigator.userAgent) && /Android/.test(navigator.userAgent)) document.getElementById('inapp').style.display = 'block';
   document.getElementById('dl2').addEventListener('click', () => ping('dl', 'drive'));
+  document.getElementById('utd').addEventListener('click', () => ping('dl', 'uptodown'));
   // M-326 (Roni): on Android the download starts by itself when the page opens (once per visit; not in in-app browsers, which can't save files)
   const inApp = /FBAN|FBAV|FB_IAB|Instagram|Line\/|TikTok|musical_ly|; wv\)/.test(navigator.userAgent);
   try { if (/Android/.test(navigator.userAgent) && !inApp && !sessionStorage.getItem('mt_auto')) { sessionStorage.setItem('mt_auto', '1'); setTimeout(() => btn.click(), 1200); } } catch (e) { }
