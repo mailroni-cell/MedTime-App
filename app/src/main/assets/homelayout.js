@@ -419,7 +419,9 @@
                 try { if (N.isTakenEarly && N.isTakenEarly(m.id)) return; } catch (e) { }
                 const t = (wk && typeof wkTimeOf === 'function' && wkTimeOf(m)) || m.time || '';
                 const p = t.split(':'); if (p.length < 2) return;
-                const left = (+p[0]) * 60 + (+p[1]) - nowMin;
+                let left = (+p[0]) * 60 + (+p[1]) - nowMin;
+                // M-382: a reminder that rang and was snoozed can be marked taken here too (stops the snooze)
+                try { if (N.isSnoozed && N.isSnoozed(m.id)) left = 0.5; } catch (e) { }
                 if (left > 0 && left <= 30 && (!best || left < best.left)) best = { m: m, t: t, left: left };
             });
             return best;

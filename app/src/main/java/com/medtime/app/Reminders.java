@@ -157,6 +157,23 @@ public class Reminders {
         long at = System.currentTimeMillis() + minutes * 60_000L;
         log(ctx, "snooze " + minutes + " min -> " + new java.text.SimpleDateFormat("HH:mm", java.util.Locale.US).format(new java.util.Date(at)) + " id=" + id);
         schedule(ctx, id, items, time, at, false);
+        markPending(ctx, id, at);
+    }
+
+    // M-382: a snoozed / repeating reminder is "pending" until answered, so "taken" inside the app can stop it too
+    static final String KEY_PEND = "pend_";
+
+    static void markPending(Context ctx, int id, long at) {
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putLong(KEY_PEND + id, at).apply();
+    }
+
+    static boolean pending(Context ctx, int id) {
+        long at = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getLong(KEY_PEND + id, 0);
+        return at > 0 && at > System.currentTimeMillis() - 2 * 60 * 60_000L;
+    }
+
+    static boolean pendingAny(Context ctx, int baseId) {
+        return pending(ctx, baseId) || pending(ctx, baseId + 100000000);
     }
 
     // M-080: a reminder nobody answers (taken / snooze / skip) comes back every 5 minutes, up to 12 times (1 hour)
@@ -175,7 +192,9 @@ public class Reminders {
         i.putExtra(EXTRA_NAG, count);
         PendingIntent pi = PendingIntent.getBroadcast(ctx, id * 2 + 1, i,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        setAlarm(ctx, System.currentTimeMillis() + NAG_MINUTES * 60_000L, pi);
+        long at = System.currentTimeMillis() + NAG_MINUTES * 60_000L;
+        setAlarm(ctx, at, pi);
+        markPending(ctx, id, at);
     }
 
     // ---------- M-373: alarm diary (Android/data/com.medtime.app/files/alarm_log.txt, last 400 lines) to check timing ----------
@@ -204,6 +223,7 @@ public class Reminders {
         AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
         if (am == null) return;
         am.cancel(alarmIntent(ctx, id, "[]", "", daily));
+        if (!daily) ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().remove(KEY_PEND + id).apply(); // M-382
     }
 
     private static PendingIntent alarmIntent(Context ctx, int id, String items, String time, boolean daily) {
@@ -239,6 +259,15 @@ public class Reminders {
             int id = r.optInt("id");
             if (id != baseId && id != baseId + 100000000) continue;
             String time = r.optString("time", "");
+            // M-382: the reminder already rang and was snoozed (or keeps repeating): "taken" in the app stops it
+            if (pending(ctx, id)) {
+                Intent ans = new Intent(ActionReceiver.ACTION_TAKEN);
+                ans.putExtra(EXTRA_ID, id);
+                ans.putExtra(EXTRA_ITEMS, itemsOf(r).toString());
+                ans.putExtra(EXTRA_TIME, time);
+                ActionReceiver.handle(ctx, ans);
+                return time;
+            }
             long at = nextOccurrence(time, daysOf(r));
             if (at <= 0 || !isToday(at) || today().equals(prefs.getString(KEY_EARLY + id, ""))) continue;
             prefs.edit().putString(KEY_EARLY + id, today()).apply();

@@ -556,6 +556,10 @@ public class NativeBridge {
     @JavascriptInterface
     public boolean isTakenEarly(int id) { return Reminders.earlyToday(activity.getApplicationContext(), id); }
 
+    // M-382: snoozed / repeating right now (rang, not answered yet)
+    @JavascriptInterface
+    public boolean isSnoozed(int id) { return Reminders.pendingAny(activity.getApplicationContext(), id); }
+
     // ---------- M-148: medicine photos ----------
     @JavascriptInterface
     public void pickPhoto(String name) {
