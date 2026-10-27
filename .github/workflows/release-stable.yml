@@ -56,6 +56,16 @@ jobs:
             --title "MedTime (run $have)" --notes "Released to everyone: build $have"
           echo "::notice::Released run $have to everyone"
 
+      # M-384: on 2026-10-27 "latest" (run 249) was left as a draft, so the apps' updater got 404.
+      # Always make sure the release is published (also fixes it on a manual re-run).
+      - name: Make sure "latest" is published
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          gh release edit latest -R "$REPO" --draft=false --tag latest || echo "::warning::could not publish latest"
+          gh release view latest -R "$REPO" --json isDraft,tagName,name
+
       # M-309: fast second source for the download page. The APK is split into small parts on branch "dl"
       # (raw.githubusercontent.com, a CDN that lets the page download in parallel, show progress and notice a stall).
       # The branch is replaced each time, so it holds only the current build.
