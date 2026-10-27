@@ -1,4 +1,6 @@
 // M-080: three settings tiles: 📒 "did I take it?" log, 💾 backup & restore, 📤 share MedTime.
+// Updated M-383 2026-10-27 (Claude, project "NOVA", thread "להמשיך את SUPER NOVA אחרי פרסום 108"): 📺 tile: link to the SUPER NOVA TV app
+//       (code from the TV), the alarm list goes to the TV, "taken" on the TV is marked here (functions/api/tv.js).
 (function () {
     'use strict';
     const L5 = ['he', 'ar', 'ro', 'fr', 'en', 'ru'];
@@ -39,6 +41,15 @@
         watT: ['💧 תזכורת לשתות מים', '💧 تذكير بشرب الماء', '💧 Memento pentru apă', '💧 Rappel pour boire', '💧 Drink water reminder', '💧 Напоминание пить воду'],
         watOn: ['פעיל · כל שעתיים, 9:00 עד 21:00', 'مفعّل · كل ساعتين، 9:00 حتى 21:00', 'Activ · la 2 ore, 9:00-21:00', 'Actif · toutes les 2 h, 9h-21h', 'On · every 2 hours, 9:00-21:00', 'Вкл. · каждые 2 часа, 9:00-21:00'],
         watX: ['מדליקים פעם אחת, והאפליקציה מזכירה לבד לשתות כוס מים כל שעתיים, בין 9:00 בבוקר ל-21:00 בערב. בלילה היא לא מפריעה, וזה לא נשלח למשפחה.', 'شغّله مرة واحدة، وسيذكّرك التطبيق بشرب كوب ماء كل ساعتين، من 9:00 صباحًا حتى 21:00 مساءً. لا إزعاج في الليل، ولا يُرسل شيء للعائلة.', 'Porniți o dată și aplicația vă amintește singură să beți un pahar cu apă la fiecare 2 ore, între 9:00 și 21:00. Noaptea nu deranjează, iar familia nu primește nimic.', 'Activez une fois : l\'application vous rappelle de boire un verre d\'eau toutes les 2 heures, de 9h à 21h. Rien la nuit, et rien n\'est envoyé à la famille.', 'Turn it on once and the app reminds you to drink a glass of water every 2 hours, from 9:00 to 21:00. Nothing at night, and nothing is sent to family.', 'Включите один раз, и приложение само напомнит выпить стакан воды каждые 2 часа, с 9:00 до 21:00. Ночью не беспокоит, семье ничего не отправляется.'],
+        // M-383: 📺 SUPER NOVA TV link
+        tvT: ['📺 תזכורת גם בטלוויזיה', '📺 التذكير على التلفاز أيضًا', '📺 Memento și pe televizor', '📺 Rappel aussi sur la télé', '📺 Reminder on the TV too', '📺 Напоминание и на телевизоре'],
+        tvX: ['באפליקציית SUPER NOVA בטלוויזיה: הגדרות > MedTime. מופיע שם קוד של 6 ספרות. כותבים אותו כאן ולוחצים "חיבור". מאז, בשעת התרופה יופיע חלון גם על המסך של הטלוויזיה, ו"לקחתי" בטלוויזיה נרשם גם כאן.', 'في تطبيق SUPER NOVA على التلفاز: الإعدادات > MedTime. يظهر رمز من 6 أرقام. اكتبه هنا واضغط "ربط". بعدها تظهر نافذة التذكير على شاشة التلفاز أيضًا، و"تناولت" على التلفاز يُسجَّل هنا أيضًا.', 'În aplicația SUPER NOVA de pe televizor: Setări > MedTime. Apare un cod de 6 cifre. Scrieți-l aici și apăsați „Conectare”. De atunci, la ora medicamentului apare o fereastră și pe televizor, iar „Am luat” de pe televizor se notează și aici.', 'Dans l\'appli SUPER NOVA sur la télé : Réglages > MedTime. Un code de 6 chiffres s\'affiche. Écrivez-le ici et appuyez sur « Connecter ». Ensuite, à l\'heure du médicament, une fenêtre apparaît aussi sur la télé, et « Pris » sur la télé est noté ici aussi.', 'In the SUPER NOVA app on the TV: Settings > MedTime. A 6-digit code appears. Type it here and press "Connect". From then on, at pill time a window also shows on the TV screen, and "Taken" on the TV is recorded here too.', 'В приложении SUPER NOVA на телевизоре: Настройки > MedTime. Появится код из 6 цифр. Введите его здесь и нажмите «Подключить». После этого в час приёма окно появится и на экране телевизора, а «Принял» на телевизоре отметится и здесь.'],
+        tvCode: ['קוד מהטלוויזיה', 'الرمز من التلفاز', 'Codul de pe televizor', 'Code de la télé', 'Code from the TV', 'Код с телевизора'],
+        tvGo: ['חיבור', 'ربط', 'Conectare', 'Connecter', 'Connect', 'Подключить'],
+        tvOff: ['ניתוק מהטלוויזיה', 'فصل التلفاز', 'Deconectare de la televizor', 'Déconnecter la télé', 'Disconnect the TV', 'Отключить телевизор'],
+        tvOn: ['מחובר לטלוויזיה ✓', 'متصل بالتلفاز ✓', 'Conectat la televizor ✓', 'Connecté à la télé ✓', 'Connected to the TV ✓', 'Подключено к телевизору ✓'],
+        tvBad: ['הקוד לא נמצא. בדקו את 6 הספרות בטלוויזיה ונסו שוב.', 'الرمز غير موجود. تحقق من الأرقام الستة على التلفاز وحاول مرة أخرى.', 'Codul nu a fost găsit. Verificați cele 6 cifre de pe televizor și încercați din nou.', 'Code introuvable. Vérifiez les 6 chiffres sur la télé et réessayez.', 'Code not found. Check the 6 digits on the TV and try again.', 'Код не найден. Проверьте 6 цифр на телевизоре и попробуйте снова.'],
+        tvNet: ['אין חיבור לאינטרנט. נסו שוב בעוד רגע.', 'لا يوجد اتصال بالإنترنت. حاول بعد قليل.', 'Nu există internet. Încercați din nou imediat.', 'Pas d\'internet. Réessayez dans un instant.', 'No internet. Try again in a moment.', 'Нет интернета. Попробуйте чуть позже.'],
         watSw: ['תזכורת אוטומטית לשתות', 'تذكير تلقائي بالشرب', 'Memento automat', 'Rappel automatique', 'Automatic reminder', 'Автоматическое напоминание'],
         famSw: ['לשלוח התראה כשתרופה לא נלקחה', 'إرسال تنبيه عند عدم تناول الدواء', 'Trimite alertă', 'Envoyer l\'alerte', 'Send the alert when a medicine is missed', 'Отправлять оповещение, когда лекарство пропущено'],
         famTest: ['✉️ שליחת הודעת ניסיון', '✉️ إرسال رسالة تجربة', '✉️ Trimite un test', '✉️ Envoyer un test', '✉️ Send a test message', '✉️ Отправить тестовое сообщение'],
@@ -306,6 +317,77 @@
         drawWat();
     };
     drawWat();
+
+    // ---------------- 📺 M-383: SUPER NOVA TV link (functions/api/tv.js on medtime.pages.dev) ----------------
+    const TVAPI = LINK + '/api/tv';
+    const tvKey = () => { try { return localStorage.getItem('medtime_tv_key') || ''; } catch (e) { return ''; } };
+    const tvPost = body => fetch(TVAPI, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(body) }).then(r => r.json());
+    const tvt = tile('tile-tv', '📺', 'linear-gradient(135deg,#7FD3FF,#2F7BFF)',
+        '<div class="mo-x" id="tv-x"></div><div id="tv-in"><input id="tv-code" inputmode="numeric" maxlength="6" autocomplete="off" style="width:100%;font-size:1.6rem;text-align:center;letter-spacing:.3em;padding:12px;border-radius:14px;border:0;margin:12px 0 4px">' +
+        '<button type="button" class="mo-btn" id="tv-go"></button></div><button type="button" class="mo-btn alt" id="tv-off"></button>');
+    function drawTv() {
+        const on = !!tvKey();
+        heads(tvt, 'tvT', on ? tx('tvOn') : tx('famOff'));
+        document.getElementById('tv-x').textContent = tx('tvX');
+        document.getElementById('tv-code').placeholder = tx('tvCode');
+        document.getElementById('tv-go').textContent = tx('tvGo');
+        document.getElementById('tv-off').textContent = tx('tvOff');
+        document.getElementById('tv-in').style.display = on ? 'none' : '';
+        document.getElementById('tv-off').style.display = on ? '' : 'none';
+    }
+    // The alarm list exactly as the phone books it (index.html syncNative), without the water reminders.
+    let tvTimer = 0;
+    window.mtTvPush = function (alarms) {
+        if (!tvKey()) return;
+        clearTimeout(tvTimer);
+        tvTimer = setTimeout(() => {
+            const r = (alarms || []).filter(a => !(a.items || []).some(i => i.type === 'water'))
+                .map(a => ({ id: a.id, time: a.time, days: a.days || [], items: (a.items || []).map(i => ({ name: i.name || '', dose: i.dose || '' })) }));
+            tvPost({ op: 'push', key: tvKey(), sched: { v: 1, r: r } }).catch(() => { });
+        }, 1500);
+    };
+    // "Taken" pressed on the TV: mark it here like "taken early" (stops today's alarm, log, stock). Each event once.
+    function tvEvents() {
+        if (!tvKey() || !has('takenEarly')) return;
+        tvPost({ op: 'events', key: tvKey() }).then(j => {
+            if (!j || !j.ok) { if (j && j.why === 'gone') { try { localStorage.removeItem('medtime_tv_key'); } catch (e) { } drawTv(); } return; }
+            let done = []; try { done = JSON.parse(localStorage.getItem('medtime_tv_done') || '[]'); } catch (e) { }
+            const today = dayKey(new Date());
+            (j.ev || []).forEach(e => {
+                const k = e.id + '@' + e.at;
+                if (e.d !== today || done.includes(k)) return;
+                done.push(k);
+                try { N.takenEarly(e.id >= 100000000 ? e.id - 100000000 : e.id); } catch (err) { }
+            });
+            try { localStorage.setItem('medtime_tv_done', JSON.stringify(done.slice(-60))); } catch (e) { }
+            if (typeof renderMeds === 'function') try { renderMeds(); } catch (e) { }
+        }).catch(() => { });
+    }
+    document.getElementById('tv-go').onclick = () => {
+        vib();
+        const code = document.getElementById('tv-code').value.replace(/\D/g, '');
+        if (code.length !== 6) { if (window.mtAlert) mtAlert(tx('tvBad')); return; }
+        tvPost({ op: 'link', code: code }).then(j => {
+            if (!j || !j.ok) { if (window.mtAlert) mtAlert(tx('tvBad')); return; }
+            try { localStorage.setItem('medtime_tv_key', j.key); } catch (e) { }
+            if (typeof saveMeds === 'function' && typeof loadMeds === 'function') saveMeds(loadMeds()); // sends the list now
+            drawTv();
+            if (window.mtAlert) mtAlert(tx('tvOn'), '📺');
+        }).catch(() => { if (window.mtAlert) mtAlert(tx('tvNet')); });
+    };
+    document.getElementById('tv-off').onclick = () => {
+        vib();
+        const k = tvKey();
+        try { localStorage.removeItem('medtime_tv_key'); } catch (e) { }
+        if (k) tvPost({ op: 'unlink', key: k }).catch(() => { });
+        drawTv();
+    };
+    drawTv();
+    tvEvents();
+    setInterval(tvEvents, 60000);
+    const prevResTv = window.mtResumed;
+    window.mtResumed = function () { if (typeof prevResTv === 'function') try { prevResTv(); } catch (e) { } tvEvents(); };
+
     document.getElementById('fm-test').onclick = () => {
         vib();
         famInput();
