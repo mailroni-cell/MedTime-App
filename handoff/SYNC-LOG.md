@@ -3,6 +3,11 @@
 כל שינוי נרשם כאן עם חתימה: מתי, איזה חשבון/שיחה, מה בדיוק, אילו קבצים, ואיך להחזיר אחורה.
 החדש ביותר למעלה. להחזרה: `git revert <commit>` או לקחת את הקובץ מה-commit הקודם.
 
+## 2026-10-27 15:30Z · שיחה "להמשיך את SUPER NOVA אחרי פרסום 115" (פרויקט NOVA)
+- מה: רוני ביקש לשחרר לכולם. release/stable.txt = run 249 (424abc0). השחרור יצא כטיוטה (draft) ולכן העדכון לא היה זמין; נוסף ב-release-stable.yml צעד שמוודא פרסום (M-384, e5004bb) והרצה ידנית פרסמה. latest = run 249, MedTime-latest.apk 44MB.
+- קבצים: release/stable.txt, .github/workflows/release-stable.yml, CHANGES.md, handoff/SYNC-LOG.md
+- ביטול: run 248 ב-release/stable.txt לא יעבוד (ה-test הוא 249); צריך לבנות 248 מחדש. את M-384 אפשר git revert.
+
 ## 2026-10-27 ~14:20Z · שיחה "להמשיך את SUPER NOVA אחרי פרסום 108" (פרויקט NOVA)
 - מה: M-383 תזכורת MedTime גם בטלוויזיה (SUPER NOVA). אריח 📺 בהגדרות: קוד מהטלוויזיה, הרשימה נשלחת לטלוויזיה, "לקחתי" בטלוויזיה נרשם בטלפון. בענף claude/project-thread-ugjmh6, לא ב-main (מחכה לאישור מיזוג של רוני; המיזוג מפעיל עדכון מהיר לטלפון של רוני ומעלה את /api/tv ל-Cloudflare).
 - קבצים: functions/api/tv.js (חדש), app/src/main/assets/more.js, app/src/main/assets/index.html (שורה אחת ב-syncNative), CHANGES.md.
