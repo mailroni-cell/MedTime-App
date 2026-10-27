@@ -3188,6 +3188,7 @@
                     for (let h = 9; h <= 21; h += 2) out.push({ id: 99500000 + h, time: String(h).padStart(2, '0') + ':00', items: [{ name: wn, dose: '', type: 'water' }], days: [] });
                 }
                 Native.syncReminders(JSON.stringify(out));
+                if (window.mtTvPush) window.mtTvPush(out); // M-383: the same list to the SUPER NOVA TV (more.js), when linked
             } catch (e) { console.error(e); }
         }
 

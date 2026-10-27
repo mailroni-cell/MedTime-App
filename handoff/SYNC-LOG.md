@@ -3,6 +3,11 @@
 כל שינוי נרשם כאן עם חתימה: מתי, איזה חשבון/שיחה, מה בדיוק, אילו קבצים, ואיך להחזיר אחורה.
 החדש ביותר למעלה. להחזרה: `git revert <commit>` או לקחת את הקובץ מה-commit הקודם.
 
+## 2026-10-27 ~14:20Z · שיחה "להמשיך את SUPER NOVA אחרי פרסום 108" (פרויקט NOVA)
+- מה: M-383 תזכורת MedTime גם בטלוויזיה (SUPER NOVA). אריח 📺 בהגדרות: קוד מהטלוויזיה, הרשימה נשלחת לטלוויזיה, "לקחתי" בטלוויזיה נרשם בטלפון. בענף claude/project-thread-ugjmh6, לא ב-main (מחכה לאישור מיזוג של רוני; המיזוג מפעיל עדכון מהיר לטלפון של רוני ומעלה את /api/tv ל-Cloudflare).
+- קבצים: functions/api/tv.js (חדש), app/src/main/assets/more.js, app/src/main/assets/index.html (שורה אחת ב-syncNative), CHANGES.md.
+- להחזרה: לא למזג / git revert לקומיט M-383.
+
 ## 2026-10-27 ~07:15Z · חשבון 1 · שיחה "המשך עבודה על MedTime"
 - מה: שחרור run 248 (M-382) לכולם לבקשת רוני. release/stable.txt = run 248.
 - להחזרה: release/stable.txt = run 246.
