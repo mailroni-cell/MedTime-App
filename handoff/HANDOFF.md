@@ -300,6 +300,7 @@
 - 2026-10-26 17:35Z: M-381 download page shortened (fits one screen, safety card, mini steps, details under 'need help?'); after download the button becomes '📲 Install now' that opens the phone's downloads list (intent VIEW_DOWNLOADS; a page can't install by itself). Live on https://medtime.pages.dev (Cloudflare check success). Not yet verified on a real phone.
 - 2026-10-27 06:35Z (חשבון 1, שיחה "המשך עבודה על MedTime"): M-382 - רוני: אחרי "דחה" ואז "לקחתי" התזכורת חזרה אחרי חצי שעה. הסיבה: "לקחתי" בתוך האפליקציה (כפתור "לקחתי עכשיו" בבית / "לקחתי מוקדם" ברשימה) לא ביטל דחייה ממתינה. תוקן: תזכורת דחויה/חוזרת מסומנת "ממתינה" ו"לקחתי" באפליקציה מבטל אותה; כפתור "לקחתי עכשיו" בבית מופיע גם לתזכורת דחויה. בנייה run 248 הצליחה, ב-release test (הטלפון של רוני בכבל). מחכה לרוני: לבדוק דחה -> לקחתי באפליקציה -> לא מצלצל שוב; אם תקין "שחרר לכולם" (stable = 248). אם עדיין חוזר: לחבר כבל ולקרוא C:\Projects\MedTime\alarm_log.txt (שורות ANSWER/snooze).
 - 2026-10-27 07:15Z (חשבון 1): רוני כתב "שחרר את התיקון" (בלי פונקציות נוספות - לא להוסיף יומן צלצולים במסך): run 248 (M-382) שוחררה לכולם, stable = 248, release latest מאומת (build-info run 248).
+- 2026-10-28 06:10Z (חשבון 1): רוני דיווח שוב על תזכורת שחוזרת אחרי "לקחתי", עם "הגיע הזמן לתזכורת" וכפתור "ביצעתי". אלה טקסטים של גרסת STORE בלבד = אפליקציית MyTime (גרסת Play, חבילה נפרדת) שמותקנת אצלו עם רשימה משלה. נאמר לרוני למחוק את MyTime. אם זה עדיין קורה אחרי המחיקה: לחבר כבל ולקרוא alarm_log.txt (המתקין משך לאחרונה מהאמולטור emulator-5554 במקום מהטלפון).
 
 ### הודעת פתיחה לחשבון השני
 ```
