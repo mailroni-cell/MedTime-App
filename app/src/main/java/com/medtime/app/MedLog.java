@@ -14,6 +14,7 @@ import java.util.Locale;
 /**
  * M-080: "did I take it?" log. One entry per reminder answer: taken / skipped / missed.
  * Kept on the phone (last 600 entries) and included in the backup file.
+ * Updated M-385 2026-10-28 (Claude, project "NOVA", thread "להמשיך את SUPER NOVA אחרי פרסום 147"): an answer is sent to the linked TV (TvLink).
  */
 class MedLog {
     static final String PREFS = "medtime_log";
@@ -48,6 +49,7 @@ class MedLog {
             log.put(e);
             while (log.length() > MAX) log.remove(0);
             p.edit().putString(KEY, log.toString()).apply();
+            if (!"missed".equals(status)) TvLink.answered(ctx, id, day); // M-385: the TV window closes too
         } catch (Exception ignored) { }
     }
 

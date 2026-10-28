@@ -6,6 +6,8 @@
 //       TV {op:"pull"} reads it; TV {op:"taken"} adds an event; phone {op:"events"} reads them; {op:"unlink"} deletes.
 // Stored: the code, hashes of the two random keys, the alarm list (times, days, pill names / doses) and the last
 //       "taken" events. No name, phone number or device id. A code nobody linked is dropped after a day.
+// Updated M-385 2026-10-28 (Claude, thread "להמשיך את SUPER NOVA אחרי פרסום 147"): phone {op:"ans", id, d} = answered on the phone
+//       (taken / skipped); kept in sched.done ("id@day", last 40) so the TV closes its reminder window.
 import { CORS, json } from '../../cf/db.js';
 
 const MAX_SCHED = 20000;
@@ -50,6 +52,15 @@ export async function onRequestPost({ request, env }) {
     if (s.length > MAX_SCHED) return json({ ok: false, why: 'big' }, 413);
     const r = await db.prepare('UPDATE tvlink SET sched = ?1, t = ?2 WHERE pk = ?3').bind(s, now, h).run();
     return json({ ok: !!(r.meta && r.meta.changes) });
+  }
+  if (op === 'ans') {
+    const row = await db.prepare('SELECT sched FROM tvlink WHERE pk = ?1').bind(h).first();
+    if (!row) return json({ ok: false, why: 'gone' });
+    let s = {}; try { s = JSON.parse(row.sched || '{}') || {}; } catch (e) { }
+    const k = (parseInt(m.id) || 0) + '@' + String(m.d || '').slice(0, 10);
+    s.done = (Array.isArray(s.done) ? s.done : []).filter(x => x !== k).concat([k]).slice(-40);
+    await db.prepare('UPDATE tvlink SET sched = ?1, t = ?2 WHERE pk = ?3').bind(JSON.stringify(s), now, h).run();
+    return json({ ok: true });
   }
   if (op === 'pull') {
     const row = await db.prepare('SELECT pk, sched FROM tvlink WHERE tk = ?1').bind(h).first();

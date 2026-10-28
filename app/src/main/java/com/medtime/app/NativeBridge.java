@@ -144,6 +144,10 @@ public class NativeBridge {
     @JavascriptInterface
     public void setLog(String json) { MedLog.set(activity.getApplicationContext(), json); }
 
+    /** M-385: the phone key of the SUPER NOVA TV link, so an answer reaches the TV even with the app closed. */
+    @JavascriptInterface
+    public void setTvKey(String key) { TvLink.setKey(activity.getApplicationContext(), key); }
+
     /** M-080: Android share sheet with a text (WhatsApp, mail, SMS...). */
     @JavascriptInterface
     public void shareText(String text) {

@@ -1,6 +1,8 @@
 // M-080: three settings tiles: 📒 "did I take it?" log, 💾 backup & restore, 📤 share MedTime.
 // Updated M-383 2026-10-27 (Claude, project "NOVA", thread "להמשיך את SUPER NOVA אחרי פרסום 108"): 📺 tile: link to the SUPER NOVA TV app
 //       (code from the TV), the alarm list goes to the TV, "taken" on the TV is marked here (functions/api/tv.js).
+// Updated M-385 2026-10-28 (Claude, project "NOVA", thread "להמשיך את SUPER NOVA אחרי פרסום 147"): the TV list also carries today's
+//       answers from the phone (done: "id@day", taken / skipped), so the reminder window on the TV closes by itself.
 (function () {
     'use strict';
     const L5 = ['he', 'ar', 'ro', 'fr', 'en', 'ru'];
@@ -336,18 +338,33 @@
         document.getElementById('tv-off').style.display = on ? '' : 'none';
     }
     // The alarm list exactly as the phone books it (index.html syncNative), without the water reminders.
-    let tvTimer = 0;
+    let tvTimer = 0, tvR = null, tvDoneSent = '';
+    // M-385: today's answers on the phone (taken / skipped), so the TV closes its window too.
+    function tvDone() {
+        try {
+            const log = has('getLog') ? JSON.parse(N.getLog()) || [] : [];
+            const today = dayKey(new Date());
+            return log.filter(e => e.d === today && e.s && e.s !== 'missed').map(e => e.id + '@' + e.d);
+        } catch (e) { return []; }
+    }
+    function tvSend() {
+        if (!tvKey() || !tvR) return;
+        const done = tvDone();
+        tvDoneSent = done.join(',');
+        tvPost({ op: 'push', key: tvKey(), sched: { v: 1, r: tvR, done: done } }).catch(() => { });
+    }
     window.mtTvPush = function (alarms) {
         if (!tvKey()) return;
         clearTimeout(tvTimer);
         tvTimer = setTimeout(() => {
-            const r = (alarms || []).filter(a => !(a.items || []).some(i => i.type === 'water'))
+            tvR = (alarms || []).filter(a => !(a.items || []).some(i => i.type === 'water'))
                 .map(a => ({ id: a.id, time: a.time, days: a.days || [], items: (a.items || []).map(i => ({ name: i.name || '', dose: i.dose || '' })) }));
-            tvPost({ op: 'push', key: tvKey(), sched: { v: 1, r: r } }).catch(() => { });
+            tvSend();
         }, 1500);
     };
     // "Taken" pressed on the TV: mark it here like "taken early" (stops today's alarm, log, stock). Each event once.
     function tvEvents() {
+        if (tvKey() && tvR && tvDone().join(',') !== tvDoneSent) tvSend(); // M-385: an answer on the phone reaches the TV within a minute
         if (!tvKey() || !has('takenEarly')) return;
         tvPost({ op: 'events', key: tvKey() }).then(j => {
             if (!j || !j.ok) { if (j && j.why === 'gone') { try { localStorage.removeItem('medtime_tv_key'); } catch (e) { } drawTv(); } return; }
@@ -370,6 +387,7 @@
         tvPost({ op: 'link', code: code }).then(j => {
             if (!j || !j.ok) { if (window.mtAlert) mtAlert(tx('tvBad')); return; }
             try { localStorage.setItem('medtime_tv_key', j.key); } catch (e) { }
+            if (has('setTvKey')) try { N.setTvKey(j.key); } catch (e) { } // M-385
             if (typeof saveMeds === 'function' && typeof loadMeds === 'function') saveMeds(loadMeds()); // sends the list now
             drawTv();
             if (window.mtAlert) mtAlert(tx('tvOn'), '📺');
@@ -380,9 +398,11 @@
         const k = tvKey();
         try { localStorage.removeItem('medtime_tv_key'); } catch (e) { }
         if (k) tvPost({ op: 'unlink', key: k }).catch(() => { });
+        if (has('setTvKey')) try { N.setTvKey(''); } catch (e) { } // M-385
         drawTv();
     };
     drawTv();
+    if (tvKey() && has('setTvKey')) try { N.setTvKey(tvKey()); } catch (e) { } // M-385: phones linked before this version
     tvEvents();
     setInterval(tvEvents, 60000);
     const prevResTv = window.mtResumed;
