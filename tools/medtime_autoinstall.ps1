@@ -147,6 +147,18 @@ while ($true) {
           }
         } catch { }
       }
+      # M-386 (Roni 2026-11-08): HANDOFF.md goes to GitHub AND Google Drive in the same action - the PC mirrors it to Z:\My Drive\MedTime\HANDOFF.md
+      try {
+        $hSrc = Join-Path $dir 'HANDOFF.md'; $hDst = Join-Path $driveDir 'HANDOFF.md'
+        if ((Test-Path 'Z:\My Drive') -and (Test-Path $hSrc)) {
+          $hNew = [IO.File]::ReadAllBytes($hSrc); $hOld = $null; if (Test-Path $hDst) { $hOld = [IO.File]::ReadAllBytes($hDst) }
+          if (-not ($hOld -and [Convert]::ToBase64String($hOld) -eq [Convert]::ToBase64String($hNew))) {
+            if (-not (Test-Path $driveDir)) { New-Item -ItemType Directory -Path $driveDir | Out-Null }
+            [IO.File]::WriteAllBytes($hDst, $hNew)
+            Log 'DRIVE HANDOFF UPDATED (Z:\My Drive\MedTime\HANDOFF.md)'
+          }
+        }
+      } catch { Log ('DRIVE HANDOFF ERROR: ' + $_) }
       # M-319: one desktop shortcut "MedTime - continue" (copies the start prompt for the second Claude account)
       try {
         $lnk = Join-Path ([Environment]::GetFolderPath('Desktop')) 'MedTime - continue.lnk'

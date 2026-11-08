@@ -3,6 +3,11 @@
 כל שינוי נרשם כאן עם חתימה: מתי, איזה חשבון/שיחה, מה בדיוק, אילו קבצים, ואיך להחזיר אחורה.
 החדש ביותר למעלה. להחזרה: `git revert <commit>` או לקחת את הקובץ מה-commit הקודם.
 
+## 2026-11-08 ~10:45Z · חשבון 1 · שיחה "MedTime" (claude.ai/code)
+- מה: M-386 - כל עדכון HANDOFF לגיט ולדרייב באותה פעולה (בקשת רוני). כלל חדש ב-CLAUDE.md; המתקין במחשב מעתיק HANDOFF.md ל-Z:\My Drive\MedTime\HANDOFF.md בכל סבב; Claude העתיק מיד. נכתבה תמונת מצב (HANDOFF סעיף 39, STATE.md CURRENT).
+- קבצים: CLAUDE.md, tools/medtime_autoinstall.ps1 (הועתק ל-C:\Projects\MedTime), handoff/HANDOFF.md, STATE.md, CHANGES.md; Drive: MedTime/HANDOFF.md.
+- להחזרה: git revert של ה-commit הזה; העתקת הסקריפט הקודם למחשב; מחיקת HANDOFF.md מתיקיית MedTime בדרייב.
+
 ## 2026-10-28 ~06:25Z · חשבון 1 · שיחה "המשך עבודה על MedTime"
 - מה: שחרור run 250 לכולם לבקשת רוני. release/stable.txt = run 250.
 - להחזרה: release/stable.txt = run 249.

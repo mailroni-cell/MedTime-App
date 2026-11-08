@@ -1,6 +1,11 @@
 # MedTime - STATE (updated 2026-10-18, stage 1)
 
-## CURRENT (2026-10-22 18:35 UTC) - read this first; older sections below are history
+## CURRENT (2026-11-08 10:45 UTC) - read this first; older sections below are history
+- Full app MedTime: run 250 (M-385) released to everyone 2026-10-28 06:21Z; no code changes since. Owner's phone has run 250. Drive Z:\My Drive\MedTime has MedTime.apk (run 250) and HANDOFF.md.
+- M-386: every HANDOFF update goes to GitHub AND Google Drive in the same action (watcher mirrors it; Claude copies right away when the PC is linked).
+- Full status and what waits for the owner: handoff/HANDOFF.md section 39.
+
+## OLDER (2026-10-22 18:35 UTC)
 - Full app MedTime: run 200 (M-259..M-261) released to everyone and approved by the owner. PAUSED: work only on the Play edition until the owner says "חוזרים לגרסה המלאה".
 - Play edition MyTime (branch play-edition, flavor play, release "play"): closed test Alpha versionCode 104 submitted to Google review 2026-10-22 17:21 UTC. Next: after approval send the join link to testers; need 12 testers (8 valid now, 4 missing) for 14 days, then Apply for production.
 - PC: everything in C:\Projects\MedTime (watcher, log, HANDOFF, MyTime-images). Full status: handoff/HANDOFF.md.
